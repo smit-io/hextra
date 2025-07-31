@@ -1,6 +1,7 @@
 /* Code syntax highlight */
 @import "./chroma/light.css";
 @import "./chroma/dark.css";
+@import "tailwindcss";
 
 .hextra-code-block {
   @apply hx:text-[.9em] hx:leading-5;
