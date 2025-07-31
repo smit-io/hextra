@@ -30,7 +30,9 @@
     @apply hx:bg-primary-700/5 hx:mb-4 hx:overflow-x-auto hx:rounded-xl hx:font-medium hx:subpixel-antialiased hx:dark:bg-primary-300/10 hx:text-[.9em] hx:contrast-more:border hx:contrast-more:border-primary-900/20 hx:contrast-more:contrast-150 hx:contrast-more:dark:border-primary-100/40 hx:py-4;
   }
   :where(code):not(:where(.hextra-code-block code, [class~=not-prose],[class~=not-prose] *)) {
-    @apply hx:border-black/4 hx:bg-black/3 hx:break-words hx:rounded-md hx:border hx:py-0.5 hx:px-[.25em] hx:text-[.9em] hx:dark:border-white/10 hx:dark:bg-white/10;
+    box-decoration-break: slice;
+    font-feature-settings: 'rlig' 1, 'calt' 1, 'ss01' 1;
+    @apply hx:text-sm hx:p-[.12em_.25em] hx:rounded-[.375em] hx:border-black/4 hx:bg-black/3 hx:break-words hx:border hx:text-[.9em] hx:dark:border-white/10 hx:dark:bg-white/10;
   }
   :where(table):not(:where(.hextra-code-block table, [class~=not-prose],[class~=not-prose] *)) {
     @apply hx:block hx:overflow-x-auto hx:mt-6 hx:p-0 hx:first:mt-0;
