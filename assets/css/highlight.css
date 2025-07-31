@@ -7,6 +7,14 @@
 
   pre {
     @apply hx:text-[.9em] hx:bg-primary-700/5 hx:overflow-x-auto hx:font-medium hx:subpixel-antialiased hx:dark:bg-primary-300/10 hx:contrast-more:border hx:contrast-more:border-primary-900/20 hx:contrast-more:contrast-150 hx:contrast-more:dark:border-primary-100/40;
+    display: grid;
+    counter-reset: line;
+  }
+
+  code {
+    box-decoration-break: slice;
+    font-feature-settings: 'rlig' 1, 'calt' 1, 'ss01' 1;
+    @apply hx:text-sm;
   }
 
   .filename {
@@ -14,9 +22,41 @@
   }
 
   .filename + pre:not(.lntable pre) {
-    /* Override padding for code blocks with filename but no highlight */
     @apply hx:pt-12;
   }
+
+  pre code:not([class*='twoslash-']) {
+    @apply hx:grid;
+  }
+
+  pre code[data-line-numbers] > span {
+    @apply hx:pl-2;
+    @apply hx:before:text-gray-600 hx:dark:before:text-gray-400;
+  }
+  pre code[data-line-numbers] > span::before {
+    counter-increment: line;
+    content: counter(line);
+    @apply hx:inline-block hx:pr-4 hx:text-right hx:min-w-[2.6rem];
+  }
+
+  pre code > span {
+    @apply hx:px-4;
+  }
+  pre code > span[data-highlighted-line] {
+    @apply hx:bg-primary-600/10 hx:dark:bg-primary-600/20 hx:text-primary-600/80 hx:shadow-[2px_0_currentColor_inset];
+  }
+  pre code [data-highlighted-chars] {
+    @apply hx:rounded-sm hx:ring-2 hx:ring-primary-600/20 hx:dark:ring-primary-600/40 hx:bg-primary-600/20 hx:dark:bg-primary-600/40;
+  }
+}
+
+.hextra-code-copy-btn {
+  animation: fade-in 0.3s ease forwards;
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .hextra-code-block pre:not(.lntable pre) {
