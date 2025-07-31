@@ -1,4 +1,5 @@
 {
+  "name": "hextra (Hugo + go + node)",
   "image": "mcr.microsoft.com/devcontainers/go:1",
   "features": {
     "ghcr.io/devcontainers/features/hugo:1": {
