@@ -34,7 +34,10 @@
 
   {{- /* Production build */ -}}
   {{- if hugo.IsProduction }}
-    {{- $styles := slice $variablesCss $mainCss $customCss | resources.Concat "css/compiled/main.css" | minify | fingerprint }}
+    {{- $cssResources := slice $variablesCss -}}
+    {{- if $mainCss }}{{ $cssResources = $cssResources | append $mainCss }}{{ end -}}
+    {{- if $customCss }}{{ $cssResources = $cssResources | append $customCss }}{{ end -}}
+    {{- $styles := $cssResources | resources.Concat "css/compiled/main.css" | minify | fingerprint }}
     <link rel="preload" href="{{ $styles.RelPermalink }}" as="style" integrity="{{ $styles.Data.Integrity }}" />
     <link href="{{ $styles.RelPermalink }}" rel="stylesheet" integrity="{{ $styles.Data.Integrity }}" />
 
@@ -43,14 +46,13 @@
     {{- $devStyles := resources.Get "css/styles.css" | postCSS (dict "inlineImports" true) }}
     <link href="{{ $devStyles.RelPermalink }}" rel="stylesheet" />
     <link href="{{ $variablesCss.RelPermalink }}" rel="stylesheet" />
-    <link href="{{ $customCss.RelPermalink }}" rel="stylesheet" />
+    {{- if $customCss }}<link href="{{ $customCss.RelPermalink }}" rel="stylesheet" />{{ end }}
 
   {{- /* User local development */ -}}
   {{- else }}
-    {{- $styles := resources.Get "css/compiled/main.css" -}}
-    <link href="{{ $styles.RelPermalink }}" rel="stylesheet" />
+    {{- if $mainCss }}<link href="{{ $mainCss.RelPermalink }}" rel="stylesheet" />{{ end }}
     <link href="{{ $variablesCss.RelPermalink }}" rel="stylesheet" />
-    <link href="{{ $customCss.RelPermalink }}" rel="stylesheet" />
+    {{- if $customCss }}<link href="{{ $customCss.RelPermalink }}" rel="stylesheet" />{{ end }}
   {{- end }}
 
 
