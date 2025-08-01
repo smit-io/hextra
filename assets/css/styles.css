@@ -16,8 +16,8 @@
   --color-dark: #111;
   /* for details tag*/
   /* border-width: thin */
-  --color-border-gray: #404040;
-   --color-details: okclh(0.2002 0 0) /* #161616; */
+  --color-codeblock-border-gray: #404040;
+  --color-codeblock-dark: hls(185, 0%, 9%) /* #161616; */
 }
 
 html {
@@ -38,8 +38,8 @@ body {
 
 .dark {
   --primary-hue: 204deg;
-  --primary-saturation: 100%;
-  --primary-lightness: 50%;
+  --primary-saturation: 0%;
+  --primary-lightness: 100%;
 }
 
 @import "./typography.css";
