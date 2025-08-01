@@ -14,6 +14,10 @@
   --color-primary-800: hsl(var(--primary-hue) var(--primary-saturation) calc(calc(var(--primary-lightness) / 50) * 32));
   --color-primary-900: hsl(var(--primary-hue) var(--primary-saturation) calc(calc(var(--primary-lightness) / 50) * 24));
   --color-dark: #111;
+  /* for details tag*/
+  /* border-width: thin */
+  --color-border-gray: #404040;
+   --color-details: okclh(0.2002 0 0) /* #161616; */
 }
 
 html {
