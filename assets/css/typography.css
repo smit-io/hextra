@@ -27,7 +27,11 @@
     @apply hx:mt-6 hx:border-gray-300 hx:italic hx:text-gray-700 hx:dark:border-gray-700 hx:dark:text-gray-400 hx:first:mt-0 hx:ltr:border-l-2 hx:ltr:pl-6 hx:rtl:border-r-2 hx:rtl:pr-6;
   }
   :where(pre):not(:where(.hextra-code-block pre, [class~=not-prose],[class~=not-prose] *)) {
-    @apply hx:bg-primary-700/5 hx:mb-4 hx:overflow-x-auto hx:rounded-xl hx:font-medium hx:subpixel-antialiased hx:dark:bg-primary-300/10 hx:text-[.9em] hx:contrast-more:border hx:contrast-more:border-primary-900/20 hx:contrast-more:contrast-150 hx:contrast-more:dark:border-primary-100/40 hx:py-4;
+    @apply hx:bg-primary-700/5 hx:mb-4 hx:overflow-x-auto hx:rounded-xl hx:font-medium hx:subpixel-antialiased hx:text-[.9em] hx:contrast-more:border hx:contrast-more:border-primary-900/20 hx:contrast-more:contrast-150 hx:contrast-more:dark:border-primary-100/40 hx:py-4;
+  }
+  
+  :where(pre):not(:where(.hextra-code-block pre, [class~=not-prose],[class~=not-prose] *)):where(.dark, .dark *) {
+    background-color: #000 !important;
   }
   :where(code):not(:where(.hextra-code-block code, [class~=not-prose],[class~=not-prose] *)) {
     box-decoration-break: slice;
