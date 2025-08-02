@@ -3890,7 +3890,7 @@ article details > summary {
     }
     &::before {
       content: var(--tw-content);
-      background-color: var(--hx-color-gray-100);
+      background-color: var(--hx-color-gray-200);
     }
     &:where(.dark, .dark *) {
       &::before {
@@ -3926,6 +3926,9 @@ article details > summary {
       --tw-font-weight: var(--hx-font-weight-normal);
       font-weight: var(--hx-font-weight-normal);
       color: var(--hx-color-neutral-400);
+      &:where(.dark, .dark *) {
+        background-color: var(--hx-color-neutral-200);
+      }
     }
   }
 }
