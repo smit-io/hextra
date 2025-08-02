@@ -3795,6 +3795,24 @@ article details > summary {
     padding: calc(var(--hx-spacing) * 0);
     vertical-align: top;
   }
+  .lntd:first-child pre {
+    border-top-left-radius: var(--hx-radius-sm);
+    border-bottom-left-radius: var(--hx-radius-sm);
+    border-block-style: var(--tw-border-style);
+    border-block-width: 1px;
+    border-left-style: var(--tw-border-style);
+    border-left-width: 1px;
+    border-right: none;
+  }
+  .lntd:last-child pre {
+    border-top-right-radius: var(--hx-radius-sm);
+    border-bottom-right-radius: var(--hx-radius-sm);
+    border-block-style: var(--tw-border-style);
+    border-block-width: 1px;
+    border-right-style: var(--tw-border-style);
+    border-right-width: 1px;
+    border-left: none;
+  }
   .lntd:last-of-type {
     width: 100%;
   }
