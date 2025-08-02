@@ -74,4 +74,11 @@
     /* @apply hx:block hx:w-full hx:bg-primary-800/10; */
     @apply hx:block hx:w-full hx:dark:bg-hextra-accent-950 hx:dark:border-l-2 hx:dark:border-hextra-accent-500 hx:bg-hextra-accent-200 hx:border-l-2 hx:border-hextra-accent-500;
   }
+  .lntd:last-child pre code .hl {
+  border-left: none !important;
+  /* Or with Tailwind, apply 'border-l-0' if using utilities:
+  @apply border-l-0;
+  */
+}
+
 }
