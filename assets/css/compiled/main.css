@@ -1562,6 +1562,20 @@
       }
     }
   }
+  .hx\:hover\:text-hextra-accent-500 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--hx-color-hextra-accent-500);
+      }
+    }
+  }
+  .hx\:hover\:text-hextra-accent-600 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--hx-color-hextra-accent-600);
+      }
+    }
+  }
   .hx\:hover\:text-primary-600 {
     &:hover {
       @media (hover: hover) {
@@ -2942,6 +2956,24 @@
       @media (hover: hover) {
         &:where(.dark, .dark *) {
           color: var(--hx-color-hextra-accent-100);
+        }
+      }
+    }
+  }
+  .hx\:hover\:dark\:text-hextra-accent-200 {
+    &:hover {
+      @media (hover: hover) {
+        &:where(.dark, .dark *) {
+          color: var(--hx-color-hextra-accent-200);
+        }
+      }
+    }
+  }
+  .hx\:hover\:dark\:text-hextra-accent-300 {
+    &:hover {
+      @media (hover: hover) {
+        &:where(.dark, .dark *) {
+          color: var(--hx-color-hextra-accent-300);
         }
       }
     }
