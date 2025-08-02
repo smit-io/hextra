@@ -112,11 +112,13 @@
     --hx-color-hextra-light-50: oklch(98.8235% 0 0);
     --hx-color-hextra-light-200: oklch(93.7255% 0 0);
     --hx-color-hextra-light-300: oklch(90.5882% 0 0);
-    --hx-color-hextra-light-400: oklch(87.0588% 0 0);
     --hx-color-hextra-light-600: oklch(80.3922% 0 0);
     --hx-color-hextra-dark-50: oklch(3.1373% 0 0);
     --hx-color-hextra-dark-700: oklch(20.0% 0 0);
     --hx-color-hextra-dark-800: oklch(22.3529% 0 0);
+    --hx-color-hextra-accent-200: oklch(0.901 0.058 230.902);
+    --hx-color-hextra-accent-500: oklch(0.685 0.169 237.323);
+    --hx-color-hextra-accent-950: oklch(0.293 0.066 243.157);
   }
 }
 @layer base {
@@ -3778,9 +3780,19 @@ article details > summary {
   .hl {
     display: block;
     width: 100%;
-    background-color: var(--hx-color-primary-800);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--hx-color-primary-800) 10%, transparent);
+    border-left-style: var(--tw-border-style);
+    border-left-width: 2px;
+    border-color: var(--hx-color-hextra-accent-500);
+    background-color: var(--hx-color-hextra-accent-200);
+    &:where(.dark, .dark *) {
+      border-left-style: var(--tw-border-style);
+      border-left-width: 2px;
+    }
+    &:where(.dark, .dark *) {
+      border-color: var(--hx-color-hextra-accent-500);
+    }
+    &:where(.dark, .dark *) {
+      background-color: var(--hx-color-hextra-accent-950);
     }
   }
 }

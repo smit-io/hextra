@@ -49,6 +49,7 @@
   }
   /* LineHighlight */
   .hl {
-    @apply hx:block hx:w-full hx:bg-primary-800/10;
+    /* @apply hx:block hx:w-full hx:bg-primary-800/10; */
+    @apply hx:block hx:w-full hx:dark:bg-hextra-accent-950 hx:dark:border-l-2 hx:dark:border-hextra-accent-500 hx:bg-hextra-accent-200 hx:border-l-2 hx:border-hextra-accent-500;
   }
 }
