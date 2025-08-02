@@ -109,14 +109,14 @@
     --hx-color-primary-800: hsl(var(--primary-hue) var(--primary-saturation) calc(calc(var(--primary-lightness) / 50) * 32));
     --hx-color-primary-900: hsl(var(--primary-hue) var(--primary-saturation) calc(calc(var(--primary-lightness) / 50) * 24));
     --hx-color-dark: #111;
+    --hx-color-hextra-light-50: oklch(98.8235% 0 0);
     --hx-color-hextra-light-200: oklch(93.7255% 0 0);
     --hx-color-hextra-light-300: oklch(90.5882% 0 0);
+    --hx-color-hextra-light-400: oklch(87.0588% 0 0);
     --hx-color-hextra-light-600: oklch(80.3922% 0 0);
     --hx-color-hextra-dark-50: oklch(3.1373% 0 0);
-    --hx-color-hextra-dark-600: oklch(17.6471% 0 0);
     --hx-color-hextra-dark-700: oklch(20.0% 0 0);
     --hx-color-hextra-dark-800: oklch(22.3529% 0 0);
-    --hx-color-hextra-dark-950: oklch(26.6667% 0 0);
   }
 }
 @layer base {
@@ -2115,22 +2115,12 @@
       }
     }
   }
-  .hx\:dark\:border-hextra-dark-600 {
-    &:where(.dark, .dark *) {
-      border-color: var(--hx-color-hextra-dark-600);
-    }
-  }
   .hx\:dark\:border-indigo-200\/30 {
     &:where(.dark, .dark *) {
       border-color: var(--hx-color-indigo-200);
       @supports (color: color-mix(in lab, red, red)) {
         border-color: color-mix(in oklab, var(--hx-color-indigo-200) 30%, transparent);
       }
-    }
-  }
-  .hx\:dark\:border-neutral-600 {
-    &:where(.dark, .dark *) {
-      border-color: var(--hx-color-neutral-600);
     }
   }
   .hx\:dark\:border-neutral-700 {
@@ -2220,29 +2210,9 @@
       }
     }
   }
-  .hx\:dark\:bg-hextra-dark-50 {
-    &:where(.dark, .dark *) {
-      background-color: var(--hx-color-hextra-dark-50);
-    }
-  }
-  .hx\:dark\:bg-hextra-dark-600 {
-    &:where(.dark, .dark *) {
-      background-color: var(--hx-color-hextra-dark-600);
-    }
-  }
   .hx\:dark\:bg-hextra-dark-700 {
     &:where(.dark, .dark *) {
       background-color: var(--hx-color-hextra-dark-700);
-    }
-  }
-  .hx\:dark\:bg-hextra-dark-800 {
-    &:where(.dark, .dark *) {
-      background-color: var(--hx-color-hextra-dark-800);
-    }
-  }
-  .hx\:dark\:bg-hextra-dark-950 {
-    &:where(.dark, .dark *) {
-      background-color: var(--hx-color-hextra-dark-950);
     }
   }
   .hx\:dark\:bg-indigo-900\/30 {
@@ -3708,10 +3678,7 @@ article details > summary {
   line-height: calc(var(--hx-spacing) * 5);
   pre {
     overflow-x: auto;
-    background-color: var(--hx-color-primary-700);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--hx-color-primary-700) 5%, transparent);
-    }
+    background-color: var(--hx-color-hextra-light-50);
     font-size: .9em;
     --tw-font-weight: var(--hx-font-weight-medium);
     font-weight: var(--hx-font-weight-medium);
@@ -3732,10 +3699,7 @@ article details > summary {
       filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
     }
     &:where(.dark, .dark *) {
-      background-color: var(--hx-color-primary-300);
-      @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--hx-color-primary-300) 10%, transparent);
-      }
+      background-color: var(--hx-color-hextra-dark-50);
     }
     @media (prefers-contrast: more) {
       &:where(.dark, .dark *) {
@@ -3756,20 +3720,14 @@ article details > summary {
     white-space: nowrap;
     border-top-left-radius: var(--hx-radius-xl);
     border-top-right-radius: var(--hx-radius-xl);
-    background-color: var(--hx-color-primary-700);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--hx-color-primary-700) 5%, transparent);
-    }
+    background-color: var(--hx-color-hextra-light-200);
     padding-inline: calc(var(--hx-spacing) * 4);
     padding-block: calc(var(--hx-spacing) * 2);
     font-size: var(--hx-text-xs);
     line-height: var(--tw-leading, var(--hx-text-xs--line-height));
     color: var(--hx-color-gray-700);
     &:where(.dark, .dark *) {
-      background-color: var(--hx-color-primary-300);
-      @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--hx-color-primary-300) 10%, transparent);
-      }
+      background-color: var(--hx-color-hextra-dark-700);
     }
     &:where(.dark, .dark *) {
       color: var(--hx-color-gray-200);
