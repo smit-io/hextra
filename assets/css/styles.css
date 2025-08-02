@@ -89,6 +89,7 @@ html {
 
 body {
   @apply hx:w-full hx:bg-white hx:dark:bg-dark hx:dark:text-gray-100;
+  /* @apply hx:w-full hx:bg-hextra-light-50 hx:dark:bg-hextra-dark-50 hx:dark:text-gray-100; */
 }
 
 :root {

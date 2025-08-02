@@ -110,16 +110,13 @@
     --hx-color-primary-900: hsl(var(--primary-hue) var(--primary-saturation) calc(calc(var(--primary-lightness) / 50) * 24));
     --hx-color-dark: #111;
     --hx-color-hextra-light-200: oklch(93.7255% 0 0);
-    --hx-color-hextra-dark-200: oklch(9.0196% 0 0);
-    --hx-color-hextra-accent-100: oklch(0.951 0.026 236.824);
-    --hx-color-hextra-accent-200: oklch(0.901 0.058 230.902);
-    --hx-color-hextra-accent-300: oklch(0.828 0.111 230.318);
-    --hx-color-hextra-accent-500: oklch(0.685 0.169 237.323);
-    --hx-color-hextra-accent-600: oklch(0.588 0.158 241.966);
-    --hx-color-hextra-accent-700: oklch(0.5 0.134 242.749);
-    --hx-color-hextra-accent-800: oklch(0.443 0.11 240.79);
-    --hx-color-hextra-accent-900: oklch(0.391 0.09 240.876);
-    --hx-color-hextra-accent-950: oklch(0.293 0.066 243.157);
+    --hx-color-hextra-light-300: oklch(90.5882% 0 0);
+    --hx-color-hextra-light-600: oklch(80.3922% 0 0);
+    --hx-color-hextra-dark-50: oklch(3.1373% 0 0);
+    --hx-color-hextra-dark-600: oklch(17.6471% 0 0);
+    --hx-color-hextra-dark-700: oklch(20.0% 0 0);
+    --hx-color-hextra-dark-800: oklch(22.3529% 0 0);
+    --hx-color-hextra-dark-950: oklch(26.6667% 0 0);
   }
 }
 @layer base {
@@ -716,8 +713,8 @@
   .hx\:border-green-200 {
     border-color: var(--hx-color-green-200);
   }
-  .hx\:border-hextra-accent-600 {
-    border-color: var(--hx-color-hextra-accent-600);
+  .hx\:border-hextra-light-600 {
+    border-color: var(--hx-color-hextra-light-600);
   }
   .hx\:border-indigo-200 {
     border-color: var(--hx-color-indigo-200);
@@ -751,12 +748,6 @@
   }
   .hx\:bg-green-100 {
     background-color: var(--hx-color-green-100);
-  }
-  .hx\:bg-hextra-accent-200 {
-    background-color: var(--hx-color-hextra-accent-200);
-  }
-  .hx\:bg-hextra-accent-950 {
-    background-color: var(--hx-color-hextra-accent-950);
   }
   .hx\:bg-hextra-light-200 {
     background-color: var(--hx-color-hextra-light-200);
@@ -1376,38 +1367,10 @@
       }
     }
   }
-  .hx\:hover\:bg-hextra-accent-100 {
+  .hx\:hover\:bg-hextra-light-300 {
     &:hover {
       @media (hover: hover) {
-        background-color: var(--hx-color-hextra-accent-100);
-      }
-    }
-  }
-  .hx\:hover\:bg-hextra-accent-200 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--hx-color-hextra-accent-200);
-      }
-    }
-  }
-  .hx\:hover\:bg-hextra-accent-300 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--hx-color-hextra-accent-300);
-      }
-    }
-  }
-  .hx\:hover\:bg-hextra-accent-700 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--hx-color-hextra-accent-700);
-      }
-    }
-  }
-  .hx\:hover\:bg-hextra-accent-800 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--hx-color-hextra-accent-800);
+        background-color: var(--hx-color-hextra-light-300);
       }
     }
   }
@@ -2152,9 +2115,9 @@
       }
     }
   }
-  .hx\:dark\:border-hextra-accent-500 {
+  .hx\:dark\:border-hextra-dark-600 {
     &:where(.dark, .dark *) {
-      border-color: var(--hx-color-hextra-accent-500);
+      border-color: var(--hx-color-hextra-dark-600);
     }
   }
   .hx\:dark\:border-indigo-200\/30 {
@@ -2163,6 +2126,11 @@
       @supports (color: color-mix(in lab, red, red)) {
         border-color: color-mix(in oklab, var(--hx-color-indigo-200) 30%, transparent);
       }
+    }
+  }
+  .hx\:dark\:border-neutral-600 {
+    &:where(.dark, .dark *) {
+      border-color: var(--hx-color-neutral-600);
     }
   }
   .hx\:dark\:border-neutral-700 {
@@ -2252,29 +2220,29 @@
       }
     }
   }
-  .hx\:dark\:bg-hextra-accent-200 {
+  .hx\:dark\:bg-hextra-dark-50 {
     &:where(.dark, .dark *) {
-      background-color: var(--hx-color-hextra-accent-200);
+      background-color: var(--hx-color-hextra-dark-50);
     }
   }
-  .hx\:dark\:bg-hextra-accent-800 {
+  .hx\:dark\:bg-hextra-dark-600 {
     &:where(.dark, .dark *) {
-      background-color: var(--hx-color-hextra-accent-800);
+      background-color: var(--hx-color-hextra-dark-600);
     }
   }
-  .hx\:dark\:bg-hextra-accent-900 {
+  .hx\:dark\:bg-hextra-dark-700 {
     &:where(.dark, .dark *) {
-      background-color: var(--hx-color-hextra-accent-900);
+      background-color: var(--hx-color-hextra-dark-700);
     }
   }
-  .hx\:dark\:bg-hextra-accent-950 {
+  .hx\:dark\:bg-hextra-dark-800 {
     &:where(.dark, .dark *) {
-      background-color: var(--hx-color-hextra-accent-950);
+      background-color: var(--hx-color-hextra-dark-800);
     }
   }
-  .hx\:dark\:bg-hextra-dark-200 {
+  .hx\:dark\:bg-hextra-dark-950 {
     &:where(.dark, .dark *) {
-      background-color: var(--hx-color-hextra-dark-200);
+      background-color: var(--hx-color-hextra-dark-950);
     }
   }
   .hx\:dark\:bg-indigo-900\/30 {
@@ -2544,20 +2512,11 @@
       }
     }
   }
-  .hx\:dark\:hover\:bg-hextra-accent-700 {
+  .hx\:dark\:hover\:bg-hextra-dark-800 {
     &:where(.dark, .dark *) {
       &:hover {
         @media (hover: hover) {
-          background-color: var(--hx-color-hextra-accent-700);
-        }
-      }
-    }
-  }
-  .hx\:dark\:hover\:bg-hextra-accent-800 {
-    &:where(.dark, .dark *) {
-      &:hover {
-        @media (hover: hover) {
-          background-color: var(--hx-color-hextra-accent-800);
+          background-color: var(--hx-color-hextra-dark-800);
         }
       }
     }
