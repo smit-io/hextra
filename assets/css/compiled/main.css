@@ -110,11 +110,13 @@
     --hx-color-primary-900: hsl(var(--primary-hue) var(--primary-saturation) calc(calc(var(--primary-lightness) / 50) * 24));
     --hx-color-dark: #111;
     --hx-color-hextra-light-50: oklch(98.8235% 0 0);
+    --hx-color-hextra-light-100: oklch(97.2549% 0 0);
     --hx-color-hextra-light-200: oklch(93.7255% 0 0);
     --hx-color-hextra-light-300: oklch(90.5882% 0 0);
     --hx-color-hextra-light-600: oklch(80.3922% 0 0);
     --hx-color-hextra-light-900: oklch(70.1961% 0 0);
     --hx-color-hextra-dark-50: oklch(3.1373% 0 0);
+    --hx-color-hextra-dark-600: oklch(17.6471% 0 0);
     --hx-color-hextra-dark-700: oklch(20.0% 0 0);
     --hx-color-hextra-dark-800: oklch(22.3529% 0 0);
     --hx-color-hextra-accent-200: oklch(0.901 0.058 230.902);
@@ -751,6 +753,9 @@
   }
   .hx\:bg-green-100 {
     background-color: var(--hx-color-green-100);
+  }
+  .hx\:bg-hextra-light-100 {
+    background-color: var(--hx-color-hextra-light-100);
   }
   .hx\:bg-hextra-light-200 {
     background-color: var(--hx-color-hextra-light-200);
@@ -1464,6 +1469,11 @@
           --tw-shadow-color: color-mix(in oklab, var(--hx-color-gray-100) var(--tw-shadow-alpha), transparent);
         }
       }
+    }
+  }
+  .hx\:focus\:bg-hextra-light-100 {
+    &:focus {
+      background-color: var(--hx-color-hextra-light-100);
     }
   }
   .hx\:focus\:bg-white {
@@ -2213,6 +2223,19 @@
       }
     }
   }
+  .hx\:dark\:bg-hextra-dark-600 {
+    &:where(.dark, .dark *) {
+      background-color: var(--hx-color-hextra-dark-600);
+    }
+  }
+  .hx\:dark\:bg-hextra-dark-600\/50 {
+    &:where(.dark, .dark *) {
+      background-color: var(--hx-color-hextra-dark-600);
+      @supports (color: color-mix(in lab, red, red)) {
+        background-color: color-mix(in oklab, var(--hx-color-hextra-dark-600) 50%, transparent);
+      }
+    }
+  }
   .hx\:dark\:bg-hextra-dark-700 {
     &:where(.dark, .dark *) {
       background-color: var(--hx-color-hextra-dark-700);
@@ -2634,6 +2657,13 @@
       }
     }
   }
+  .hx\:dark\:focus\:bg-hextra-dark-600 {
+    &:where(.dark, .dark *) {
+      &:focus {
+        background-color: var(--hx-color-hextra-dark-600);
+      }
+    }
+  }
   .hx\:dark\:focus\:ring-primary-800 {
     &:where(.dark, .dark *) {
       &:focus {
@@ -2764,9 +2794,9 @@ html {
 }
 body {
   width: 100%;
-  background-color: var(--hx-color-white);
+  background-color: var(--hx-color-hextra-light-100);
   &:where(.dark, .dark *) {
-    background-color: var(--hx-color-dark);
+    background-color: var(--hx-color-hextra-dark-600);
   }
   &:where(.dark, .dark *) {
     color: var(--hx-color-gray-100);
@@ -4073,10 +4103,10 @@ article details > summary {
     z-index: 15;
     width: 100%;
     overscroll-behavior: contain;
-    background-color: var(--hx-color-white);
+    background-color: var(--hx-color-hextra-light-100);
     padding-top: calc(var(--navbar-height));
     &:where(.dark, .dark *) {
-      background-color: var(--hx-color-dark);
+      background-color: var(--hx-color-hextra-dark-600);
     }
     transition: transform 0.4s cubic-bezier(0.52, 0.16, 0.04, 1);
     will-change: transform, opacity;
@@ -4106,17 +4136,17 @@ nav {
 }
 @supports ( (-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px)) ) {
   .nav-container-blur {
-    background-color: var(--hx-color-white);
+    background-color: var(--hx-color-hextra-light-100);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--hx-color-white) 85%, transparent);
+      background-color: color-mix(in oklab, var(--hx-color-hextra-light-100) 85%, transparent);
     }
     --tw-backdrop-blur: blur(var(--hx-blur-md));
     -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
     backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
     &:where(.dark, .dark *) {
-      background-color: var(--hx-color-dark) !important;
+      background-color: var(--hx-color-hextra-dark-600) !important;
       @supports (color: color-mix(in lab, red, red)) {
-        background-color: color-mix(in oklab, var(--hx-color-dark) 80%, transparent) !important;
+        background-color: color-mix(in oklab, var(--hx-color-hextra-dark-600) 80%, transparent) !important;
       }
     }
   }
