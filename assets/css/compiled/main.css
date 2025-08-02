@@ -120,6 +120,7 @@
     --hx-color-hextra-dark-700: oklch(20.0% 0 0);
     --hx-color-hextra-dark-800: oklch(22.3529% 0 0);
     --hx-color-hextra-dark-900: oklch(24.3137% 0 0);
+    --hx-color-hextra-accent-50: oklch(0.977 0.013 236.62);
     --hx-color-hextra-accent-100: oklch(0.951 0.026 236.824);
     --hx-color-hextra-accent-200: oklch(0.901 0.058 230.902);
     --hx-color-hextra-accent-300: oklch(0.828 0.111 230.318);
@@ -760,6 +761,12 @@
   }
   .hx\:bg-green-100 {
     background-color: var(--hx-color-green-100);
+  }
+  .hx\:bg-hextra-accent-50 {
+    background-color: var(--hx-color-hextra-accent-50);
+  }
+  .hx\:bg-hextra-accent-100 {
+    background-color: var(--hx-color-hextra-accent-100);
   }
   .hx\:bg-hextra-accent-200 {
     background-color: var(--hx-color-hextra-accent-200);
