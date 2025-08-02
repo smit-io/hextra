@@ -3834,6 +3834,9 @@ article details > summary {
       background-color: var(--hx-color-hextra-accent-950);
     }
   }
+  .lntd:last-child pre code .hl {
+    border-left: none !important;
+  }
 }
 .hextra-cards {
   grid-template-columns: repeat(auto-fill, minmax(max(250px, calc((100% - 1rem * 2) / var(--hextra-cards-grid-cols))), 1fr));
