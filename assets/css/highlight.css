@@ -59,12 +59,12 @@
     } */
   }
   .lntd:first-child pre {
-    @apply hx:rounded-tl-sm hx:rounded-bl-sm hx:border-l hx:border-y;
-    border-right: none;
+    @apply hx:rounded-tl-sm hx:rounded-bl-sm hx:border-l hx:border-y hx:border-r-0;
+    /* border-right: none; */
   }
   .lntd:last-child pre {
-      @apply hx:rounded-tr-sm hx:rounded-br-sm hx:border-r hx:border-y;
-      border-left: none;
+      @apply hx:rounded-tr-sm hx:rounded-br-sm hx:border-r hx:border-y hx:border-l-0;
+      /* border-left: none; */
   }
   .lntd:last-of-type {
     @apply hx:w-full;
