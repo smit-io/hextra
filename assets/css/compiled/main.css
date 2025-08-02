@@ -119,8 +119,13 @@
     --hx-color-hextra-dark-600: oklch(17.6471% 0 0);
     --hx-color-hextra-dark-700: oklch(20.0% 0 0);
     --hx-color-hextra-dark-800: oklch(22.3529% 0 0);
+    --hx-color-hextra-accent-100: oklch(0.951 0.026 236.824);
     --hx-color-hextra-accent-200: oklch(0.901 0.058 230.902);
+    --hx-color-hextra-accent-300: oklch(0.828 0.111 230.318);
+    --hx-color-hextra-accent-400: oklch(0.746 0.16 232.661);
     --hx-color-hextra-accent-500: oklch(0.685 0.169 237.323);
+    --hx-color-hextra-accent-600: oklch(0.588 0.158 241.966);
+    --hx-color-hextra-accent-700: oklch(0.5 0.134 242.749);
     --hx-color-hextra-accent-950: oklch(0.293 0.066 243.157);
   }
 }
@@ -754,6 +759,21 @@
   .hx\:bg-green-100 {
     background-color: var(--hx-color-green-100);
   }
+  .hx\:bg-hextra-accent-200 {
+    background-color: var(--hx-color-hextra-accent-200);
+  }
+  .hx\:bg-hextra-accent-300 {
+    background-color: var(--hx-color-hextra-accent-300);
+  }
+  .hx\:bg-hextra-accent-400 {
+    background-color: var(--hx-color-hextra-accent-400);
+  }
+  .hx\:bg-hextra-accent-500 {
+    background-color: var(--hx-color-hextra-accent-500);
+  }
+  .hx\:bg-hextra-accent-600 {
+    background-color: var(--hx-color-hextra-accent-600);
+  }
   .hx\:bg-hextra-light-100 {
     background-color: var(--hx-color-hextra-light-100);
   }
@@ -1372,6 +1392,27 @@
         @supports (color: color-mix(in lab, red, red)) {
           background-color: color-mix(in oklab, var(--hx-color-gray-800) 5%, transparent);
         }
+      }
+    }
+  }
+  .hx\:hover\:bg-hextra-accent-100 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--hx-color-hextra-accent-100);
+      }
+    }
+  }
+  .hx\:hover\:bg-hextra-accent-600 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--hx-color-hextra-accent-600);
+      }
+    }
+  }
+  .hx\:hover\:bg-hextra-accent-700 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--hx-color-hextra-accent-700);
       }
     }
   }
@@ -2223,6 +2264,11 @@
       }
     }
   }
+  .hx\:dark\:bg-hextra-accent-500 {
+    &:where(.dark, .dark *) {
+      background-color: var(--hx-color-hextra-accent-500);
+    }
+  }
   .hx\:dark\:bg-hextra-dark-600 {
     &:where(.dark, .dark *) {
       background-color: var(--hx-color-hextra-dark-600);
@@ -2504,6 +2550,15 @@
           @supports (color: color-mix(in lab, red, red)) {
             background-color: color-mix(in oklab, var(--hx-color-gray-100) 5%, transparent);
           }
+        }
+      }
+    }
+  }
+  .hx\:dark\:hover\:bg-hextra-accent-600 {
+    &:where(.dark, .dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--hx-color-hextra-accent-600);
         }
       }
     }
