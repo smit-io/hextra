@@ -10,7 +10,7 @@
     }
 
     .active {
-      @apply hx:rounded-md hx:bg-neutral-800 hx:contrast-more:border-primary-500;
+      @apply hx:rounded-md hx:bg-hextra-accent-200 hx:dark:bg-hextra-accent-950 hx:contrast-more:border-hextra-dark-500;
     }
   }
 
