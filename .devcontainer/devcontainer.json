@@ -13,7 +13,11 @@
         "mhutchie.git-graph",
         "esbenp.prettier-vscode",
         "tamasfe.even-better-toml",
-        "budparr.language-hugo-vscode"
+        "budparr.language-hugo-vscode",
+        "bradlc.vscode-tailwindcss",
+        "austenc.tailwind-docs",
+        "Zarifprogrammer.tailwind-snippets",
+        "kamikillerto.vscode-colorize"
       ]
     }
   },
