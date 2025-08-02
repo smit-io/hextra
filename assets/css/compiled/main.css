@@ -113,12 +113,14 @@
     --hx-color-hextra-light-100: oklch(97.2549% 0 0);
     --hx-color-hextra-light-200: oklch(93.7255% 0 0);
     --hx-color-hextra-light-300: oklch(90.5882% 0 0);
+    --hx-color-hextra-light-500: oklch(83.5294% 0 0);
     --hx-color-hextra-light-600: oklch(80.3922% 0 0);
     --hx-color-hextra-light-900: oklch(70.1961% 0 0);
     --hx-color-hextra-dark-50: oklch(3.1373% 0 0);
     --hx-color-hextra-dark-600: oklch(17.6471% 0 0);
     --hx-color-hextra-dark-700: oklch(20.0% 0 0);
     --hx-color-hextra-dark-800: oklch(22.3529% 0 0);
+    --hx-color-hextra-dark-900: oklch(24.3137% 0 0);
     --hx-color-hextra-accent-100: oklch(0.951 0.026 236.824);
     --hx-color-hextra-accent-200: oklch(0.901 0.058 230.902);
     --hx-color-hextra-accent-300: oklch(0.828 0.111 230.318);
@@ -1052,6 +1054,9 @@
   .hx\:text-current {
     color: currentcolor;
   }
+  .hx\:text-dark {
+    color: var(--hx-color-dark);
+  }
   .hx\:text-gray-100 {
     color: var(--hx-color-gray-100);
   }
@@ -1420,6 +1425,13 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--hx-color-hextra-accent-700);
+      }
+    }
+  }
+  .hx\:hover\:bg-hextra-light-200 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--hx-color-hextra-light-200);
       }
     }
   }
@@ -2577,6 +2589,15 @@
       }
     }
   }
+  .hx\:dark\:hover\:bg-dark {
+    &:where(.dark, .dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--hx-color-dark);
+        }
+      }
+    }
+  }
   .hx\:dark\:hover\:bg-gray-100\/5 {
     &:where(.dark, .dark *) {
       &:hover {
@@ -2607,11 +2628,47 @@
       }
     }
   }
+  .hx\:dark\:hover\:bg-hextra-dark-50 {
+    &:where(.dark, .dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--hx-color-hextra-dark-50);
+        }
+      }
+    }
+  }
   .hx\:dark\:hover\:bg-hextra-dark-800 {
     &:where(.dark, .dark *) {
       &:hover {
         @media (hover: hover) {
           background-color: var(--hx-color-hextra-dark-800);
+        }
+      }
+    }
+  }
+  .hx\:dark\:hover\:bg-hextra-dark-900 {
+    &:where(.dark, .dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--hx-color-hextra-dark-900);
+        }
+      }
+    }
+  }
+  .hx\:dark\:hover\:bg-hextra-light-300 {
+    &:where(.dark, .dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--hx-color-hextra-light-300);
+        }
+      }
+    }
+  }
+  .hx\:dark\:hover\:bg-hextra-light-500 {
+    &:where(.dark, .dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--hx-color-hextra-light-500);
         }
       }
     }
