@@ -1439,6 +1439,27 @@
       }
     }
   }
+  .hx\:hover\:bg-hextra-accent-300 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--hx-color-hextra-accent-300);
+      }
+    }
+  }
+  .hx\:hover\:bg-hextra-accent-400 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--hx-color-hextra-accent-400);
+      }
+    }
+  }
+  .hx\:hover\:bg-hextra-accent-500 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--hx-color-hextra-accent-500);
+      }
+    }
+  }
   .hx\:hover\:bg-hextra-accent-600 {
     &:hover {
       @media (hover: hover) {
