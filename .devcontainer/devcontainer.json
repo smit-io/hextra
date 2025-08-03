@@ -17,7 +17,9 @@
         "bradlc.vscode-tailwindcss",
         "austenc.tailwind-docs",
         "Zarifprogrammer.tailwind-snippets",
-        "kamikillerto.vscode-colorize"
+        "kamikillerto.vscode-colorize",
+        "ecmel.vscode-html-css",
+        "Zignd.html-css-class-completion"
       ]
     }
   },
