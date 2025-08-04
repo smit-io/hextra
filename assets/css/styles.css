@@ -15,7 +15,7 @@
   --color-primary-900: hsl(var(--primary-hue) var(--primary-saturation) calc(calc(var(--primary-lightness) / 50) * 24));
   --color-dark: #111;
 
-  /* Rather than having a hue, saturation and lightness, it is better to generate a custom palette for hextra-hextra-light and dark modes and have an accent color /*
+  /* Rather than having a hue, saturation and lightness, it is better to generate a custom palette for hextra-light and dark modes and have an accent color */
   
   /* Light mode palette */
   /* 
