@@ -1,10 +1,11 @@
 .steps {
   :where(h2, h3, h4, h5, h6):not(.no-step-marker) {
     counter-increment: step;
+    @apply hx:bg-hextra-light-100 hx:dark:bg-dark;
     @apply hx:ltr:before:ml-[-41px] hx:rtl:before:mr-[-44px];
     /* https://github.com/tailwindlabs/tailwindcss/issues/15597#issuecomment-2582673546 */
     @apply hx:before:bg-gray-200 hx:dark:before:bg-neutral-800;
-    @apply hx:before:border-4 hx:before:border-white hx:dark:before:border-dark;
+    @apply hx:before:border-4 hx:before:border-hextra-light-100 hx:dark:before:border-dark;
     /* @apply before:content-[''] before:text-gray-700 dark:before:text-white; */
     /* @apply hx:before:text-neutral-400 hx:dark:before:text-neutral-200; */
     &:before {
