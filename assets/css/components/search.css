@@ -10,7 +10,7 @@
     }
 
     .active {
-      @apply hx:rounded-md hx:bg-primary-500/10 hx:contrast-more:border-primary-500;
+      @apply hx:rounded-md hx:bg-hextra-accent-200 hx:dark:bg-hextra-accent-950 hx:contrast-more:border-hextra-dark-500;
     }
   }
 
@@ -19,7 +19,7 @@
   }
 
   .prefix {
-    @apply hx:mx-2.5 hx:mb-2 hx:mt-6 hx:select-none hx:border-b hx:border-black/10 hx:px-2.5 hx:pb-1.5 hx:text-xs hx:font-semibold
+    @apply hx:mx-2.5 hx:mb-2 hx:mt-6 hx:select-none hx:border-b hx:border-hextra-dark-700 hx:px-2.5 hx:pb-1.5 hx:text-xs hx:font-semibold
     hx:uppercase hx:text-gray-500 hx:first:mt-0 hx:dark:border-white/20 hx:dark:text-gray-300 hx:contrast-more:border-gray-600
     hx:contrast-more:text-gray-900 hx:contrast-more:dark:border-gray-50 hx:contrast-more:dark:text-gray-50;
   }
@@ -33,6 +33,10 @@
   }
 
   .match {
-    @apply hx:text-primary-600;
+    @apply hx:text-hextra-accent-600;
   }
+}
+
+.search-input {
+  @apply hx:border-1 hx:border-hextra-light-950 hx:dark:border-neutral-700 hx:rounded-sm hx:dark:rounded-sm;
 }
