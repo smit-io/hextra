@@ -67,7 +67,7 @@ menu:
 
 ### ロゴとタイトル
 
-デフォルトのロゴを変更するには、`hugo.yaml`を編集し、`static`ディレクトリ下のロゴファイルへのパスを追加します。
+デフォルトのロゴを変更するには、`hugo.yaml`を編集し、`static/icons`ディレクトリ下のロゴファイルへのパスを追加します。
 オプションで、ロゴをクリックしたときにユーザーがリダイレクトされるリンクや、ロゴの幅と高さをピクセル単位で設定できます。
 
 ```yaml {filename="hugo.yaml"}
@@ -76,8 +76,8 @@ params:
     displayTitle: true
     displayLogo: true
     logo:
-      path: images/logo.svg
-      dark: images/logo-dark.svg
+      path: icons/images/logo.svg
+      dark: icons/images/logo-dark.svg
       link: /
       width: 40
       height: 20
@@ -170,19 +170,21 @@ copyright: "© 2024 YOUR TEXT HERE"
 
 ### ファビコン
 
-サイトの[ファビコン](https://ja.wikipedia.org/wiki/Favicon)をカスタマイズするには、`static`フォルダ下にアイコンファイルを配置して、[テーマのデフォルトのファビコン](https://github.com/imfing/hextra/tree/main/static)を上書きします：
+サイトの[ファビコン](https://ja.wikipedia.org/wiki/Favicon)をカスタマイズするには、`static/icons`フォルダ下にアイコンファイルを配置して、[テーマのデフォルトのファビコン](https://github.com/imfing/hextra/tree/main/static)を上書きします：
 
 {{< filetree/container >}}
   {{< filetree/folder name="static" >}}
-    {{< filetree/file name="android-chrome-192x192.png" >}}
-    {{< filetree/file name="android-chrome-512x512.png" >}}
-    {{< filetree/file name="apple-touch-icon.png" >}}
-    {{< filetree/file name="favicon-16x16.png" >}}
-    {{< filetree/file name="favicon-32x32.png" >}}
-    {{< filetree/file name="favicon-dark.svg" >}}
-    {{< filetree/file name="favicon.ico" >}}
-    {{< filetree/file name="favicon.svg" >}}
-    {{< filetree/file name="site.webmanifest" >}}
+    {{< filetree/folder name="icons" >}}
+      {{< filetree/file name="android-chrome-192x192.png" >}}
+      {{< filetree/file name="android-chrome-512x512.png" >}}
+      {{< filetree/file name="apple-touch-icon.png" >}}
+      {{< filetree/file name="favicon-16x16.png" >}}
+      {{< filetree/file name="favicon-32x32.png" >}}
+      {{< filetree/file name="favicon-dark.svg" >}}
+      {{< filetree/file name="favicon.ico" >}}
+      {{< filetree/file name="favicon.svg" >}}
+      {{< filetree/file name="site.webmanifest" >}}
+    {{< /filetree/folder >}}
   {{< /filetree/folder >}}
 {{< /filetree/container >}}
 

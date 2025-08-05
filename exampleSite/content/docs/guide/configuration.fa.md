@@ -67,7 +67,7 @@ menu:
 
 ### آرم و عنوان
 
-برای تغییر آرم پیش‌فرض، `hugo.yaml` را ویرایش کنید و مسیر را به پرونده آرم خود در دایرکتوری `static` اضافه کنید.
+برای تغییر آرم پیش‌فرض، `hugo.yaml` را ویرایش کنید و مسیر را به پرونده آرم خود در دایرکتوری `static/icons` اضافه کنید.
  به صورت اختیاری، می‌توانید پیوندی را که کاربران هنگام کلیک کردن روی آرم شما به آن هدایت می‌شوند، تغییر دهید، همچنین عرض و ارتفاع آرم را به پیکسل تنظیم کنید.
 
 ```yaml {filename="hugo.yaml"}
@@ -76,8 +76,8 @@ params:
     displayTitle: true
     displayLogo: true
     logo:
-      path: images/logo.svg
-      dark: images/logo-dark.svg
+      path: icons/images/logo.svg
+      dark: icons/images/logo-dark.svg
       link: /
       width: 40
       height: 20
@@ -170,26 +170,28 @@ copyright: "© ۲۰۲۴ متن شما در اینجا"
 
 ### Favicon
 
-برای سفارشی کردن [favicon](https://en.wikipedia.org/wiki/Favicon) برای سایت خود، پرونده‌های آیکون را درون پوشه `static` قرار دهید تا [faviconهای پیش‌فرض در تم](https://github.com/imfing/hextra/tree/main/static) جایگزین شود:
+برای سفارشی کردن [favicon](https://en.wikipedia.org/wiki/Favicon) برای سایت خود، پرونده‌های آیکون را درون پوشه `static/icons` قرار دهید تا [faviconهای پیش‌فرض در تم](https://github.com/imfing/hextra/tree/main/static) جایگزین شود:
 
 {{< filetree/container >}}
   {{< filetree/folder name="static" >}}
-    {{< filetree/file name="android-chrome-192x192.png" >}}
-    {{< filetree/file name="android-chrome-512x512.png" >}}
-    {{< filetree/file name="apple-touch-icon.png" >}}
-    {{< filetree/file name="favicon-16x16.png" >}}
-    {{< filetree/file name="favicon-32x32.png" >}}
-    {{< filetree/file name="favicon-dark.svg" >}}
-    {{< filetree/file name="favicon.ico" >}}
-    {{< filetree/file name="favicon.svg" >}}
-    {{< filetree/file name="site.webmanifest" >}}
+    {{< filetree/folder name="icons" >}}
+      {{< filetree/file name="android-chrome-192x192.png" >}}
+      {{< filetree/file name="android-chrome-512x512.png" >}}
+      {{< filetree/file name="apple-touch-icon.png" >}}
+      {{< filetree/file name="favicon-16x16.png" >}}
+      {{< filetree/file name="favicon-32x32.png" >}}
+      {{< filetree/file name="favicon-dark.svg" >}}
+      {{< filetree/file name="favicon.ico" >}}
+      {{< filetree/file name="favicon.svg" >}}
+      {{< filetree/file name="site.webmanifest" >}}
+    {{< /filetree/folder >}}
   {{< /filetree/folder >}}
 {{< /filetree/container >}}
 
 هر دو پرونده `favicon.ico` و `favicon.svg` را در پروژه خود قرار دهید، تا از نمایش صحیح faviconهای سایت خود مطمئن شوید.
 
 در حالی که `favicon.ico` به طور کلی برای مرورگرهای قدیمی‌تر است، `favicon.svg` توسط مرورگرهای مدرن پشتیبانی می‌شود. favicon`favicon-dark.svg` اختیاری را می‌توانید برای یک تجربه سفارشی در حالت تیره اضافه کرد.
- با خیال راحت از ابزارهایی مانند [favicon.io](https://favicon.io/) یا [favycon](https://github.com/ruisaraiva19/favycon) برای تولید این آیکون‌ها استفاده کنید.
+با خیال راحت از ابزارهایی مانند [favicon.io](https://favicon.io/) یا [favycon](https://github.com/ruisaraiva19/favycon) برای تولید این آیکون‌ها استفاده کنید.
 
 ### پیکربندی تم
 
