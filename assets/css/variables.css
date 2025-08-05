@@ -14,13 +14,19 @@
 {{- $headingFont := "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" -}}
 {{- $bodyFont := "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" -}}
 {{- $codeFont := "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace" -}}
+{{- $googleFontsImport := "" -}}
 
 {{- if and $fonts $fonts.enable -}}
   {{- $headingFont = printf "\"%s\", %s" $fonts.heading.family $fonts.fallbacks.heading -}}
   {{- $bodyFont = printf "\"%s\", %s" $fonts.body.family $fonts.fallbacks.body -}}
   {{- $codeFont = printf "\"%s\", %s" $fonts.code.family $fonts.fallbacks.code -}}
+  {{- $googleFontsImport = printf "@import url('https://fonts.googleapis.com/css2?family=%s:wght@%s&family=%s:wght@%s&family=%s:wght@%s&display=%s');" ($fonts.heading.family | replace " " "+") (delimit $fonts.heading.weights ",") ($fonts.body.family | replace " " "+") (delimit $fonts.body.weights ",") ($fonts.code.family | replace " " "+") (delimit $fonts.code.weights ",") $fonts.heading.display -}}
 {{- end -}}
 */
+
+{{- if and $fonts $fonts.enable -}}
+{{ $googleFontsImport }}
+{{- end -}}
 
 :root {
   --hextra-max-page-width: {{ $maxPageWidth }};

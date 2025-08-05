@@ -69,7 +69,7 @@ These menu items can be sorted by setting the `weight` parameter.
 
 ### Logo and Title
 
-To modify the default logo, edit `hugo.yaml` and add the path to your logo file under `static` directory.
+To modify the default logo, edit `hugo.yaml` and add the path to your logo file under `static/icons` directory.
 Optionally, you can change the link that users are redirected to when clicking on your logo, as well as set the width & height of the logo in pixels.
 
 ```yaml {filename="hugo.yaml"}
@@ -78,8 +78,8 @@ params:
     displayTitle: true
     displayLogo: true
     logo:
-      path: images/logo.svg
-      dark: images/logo-dark.svg
+      path: icons/images/logo.svg
+      dark: icons/images/logo-dark.svg
       link: /
       width: 40
       height: 20
@@ -172,19 +172,21 @@ For your reference, an example [`i18n/en.yaml`](https://github.com/imfing/hextra
 
 ### Favicon
 
-To customize the [favicon](https://en.wikipedia.org/wiki/Favicon) for your site, place icon files under the `static` folder to override the [default favicons from the theme](https://github.com/imfing/hextra/tree/main/static):
+To customize the [favicon](https://en.wikipedia.org/wiki/Favicon) for your site, place icon files under the `static/icons` folder to override the [default favicons from the theme](https://github.com/imfing/hextra/tree/main/static):
 
 {{< filetree/container >}}
   {{< filetree/folder name="static" >}}
-    {{< filetree/file name="android-chrome-192x192.png" >}}
-    {{< filetree/file name="android-chrome-512x512.png" >}}
-    {{< filetree/file name="apple-touch-icon.png" >}}
-    {{< filetree/file name="favicon-16x16.png" >}}
-    {{< filetree/file name="favicon-32x32.png" >}}
-    {{< filetree/file name="favicon-dark.svg" >}}
-    {{< filetree/file name="favicon.ico" >}}
-    {{< filetree/file name="favicon.svg" >}}
-    {{< filetree/file name="site.webmanifest" >}}
+    {{< filetree/folder name="icons" >}}
+      {{< filetree/file name="android-chrome-192x192.png" >}}
+      {{< filetree/file name="android-chrome-512x512.png" >}}
+      {{< filetree/file name="apple-touch-icon.png" >}}
+      {{< filetree/file name="favicon-16x16.png" >}}
+      {{< filetree/file name="favicon-32x32.png" >}}
+      {{< filetree/file name="favicon-dark.svg" >}}
+      {{< filetree/file name="favicon.ico" >}}
+      {{< filetree/file name="favicon.svg" >}}
+      {{< filetree/file name="site.webmanifest" >}}
+    {{< /filetree/folder >}}
   {{< /filetree/folder >}}
 {{< /filetree/container >}}
 
@@ -349,3 +351,173 @@ params:
     - "/img/config-image.jpg"
   audio: "config-talk.mp3"
 ```
+
+### Google Fonts
+
+The Hextra theme supports configurable Google Fonts for heading, body, and code block fonts. This feature allows you to customize the typography of your site using Google Fonts.
+
+#### Basic Configuration
+
+Add the following configuration to your `hugo.yaml` file:
+
+```yaml {filename="hugo.yaml"}
+params:
+  # Google Fonts Configuration
+  fonts:
+    # Enable Google Fonts integration
+    enable: true
+    
+    # Heading font configuration
+    heading:
+      family: "Inter"
+      weights: [400, 500, 600, 700]
+      display: "swap"
+    
+    # Body font configuration
+    body:
+      family: "Inter"
+      weights: [400, 500]
+      display: "swap"
+    
+    # Code block font configuration
+    code:
+      family: "JetBrains Mono"
+      weights: [400, 500]
+      display: "swap"
+    
+    # Fallback fonts (used if Google Fonts fail to load)
+    fallbacks:
+      heading: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+      body: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+      code: "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace"
+```
+
+#### Parameters
+
+##### `enable`
+- **Type**: `boolean`
+- **Default**: `false`
+- **Description**: Enable or disable Google Fonts integration
+
+##### `heading`, `body`, `code`
+Each font type has the following parameters:
+
+###### `family`
+- **Type**: `string`
+- **Description**: The Google Font family name (e.g., "Inter", "Roboto", "Open Sans")
+
+###### `weights`
+- **Type**: `array`
+- **Description**: Array of font weights to load (e.g., `[400, 500, 600, 700]`)
+- **Available weights**: 100, 200, 300, 400, 500, 600, 700, 800, 900
+
+###### `display`
+- **Type**: `string`
+- **Default**: `"swap"`
+- **Description**: Font display strategy
+- **Available options**: `"auto"`, `"block"`, `"swap"`, `"fallback"`, `"optional"`
+
+##### `fallbacks`
+Fallback fonts used when Google Fonts fail to load:
+
+###### `heading`
+- **Type**: `string`
+- **Description**: Fallback font stack for headings
+
+###### `body`
+- **Type**: `string`
+- **Description**: Fallback font stack for body text
+
+###### `code`
+- **Type**: `string`
+- **Description**: Fallback font stack for code elements
+
+#### Popular Font Combinations
+
+##### Modern & Clean
+```yaml {filename="hugo.yaml"}
+params:
+  fonts:
+    enable: true
+    heading:
+      family: "Inter"
+      weights: [400, 500, 600, 700]
+    body:
+      family: "Inter"
+      weights: [400, 500]
+    code:
+      family: "JetBrains Mono"
+      weights: [400, 500]
+```
+
+##### Classic & Readable
+```yaml {filename="hugo.yaml"}
+params:
+  fonts:
+    enable: true
+    heading:
+      family: "Merriweather"
+      weights: [400, 700]
+    body:
+      family: "Open Sans"
+      weights: [400, 600]
+    code:
+      family: "Source Code Pro"
+      weights: [400, 500]
+```
+
+##### Professional & Elegant
+```yaml {filename="hugo.yaml"}
+params:
+  fonts:
+    enable: true
+    heading:
+      family: "Playfair Display"
+      weights: [400, 700]
+    body:
+      family: "Lato"
+      weights: [400, 700]
+    code:
+      family: "Fira Code"
+      weights: [400, 500]
+```
+
+#### Disabling Google Fonts
+
+To disable Google Fonts and use system fonts:
+
+```yaml {filename="hugo.yaml"}
+params:
+  fonts:
+    enable: false
+```
+
+Or simply remove the `fonts` section from your configuration.
+
+#### Performance Considerations
+
+1. **Font Loading**: Google Fonts are loaded asynchronously with `display: swap` by default
+2. **Font Weights**: Only load the font weights you actually use to reduce file size
+3. **Fallbacks**: Always provide fallback fonts for better user experience
+4. **Caching**: Google Fonts are cached by browsers, improving subsequent page loads
+
+#### Browser Support
+
+Google Fonts are supported by all modern browsers. The theme includes fallback fonts for older browsers or when Google Fonts are unavailable.
+
+#### Troubleshooting
+
+##### Fonts Not Loading
+1. Check that `fonts.enable` is set to `true`
+2. Verify the font family name is correct (check [Google Fonts](https://fonts.google.com/))
+3. Ensure the font weights are available for the selected font family
+
+##### Performance Issues
+1. Reduce the number of font weights loaded
+2. Consider using system fonts for better performance
+3. Use `display: "optional"` for non-critical fonts
+
+##### Font Display Issues
+1. Check that fallback fonts are properly configured
+2. Verify CSS specificity isn't overriding font declarations
+3. Test with different browsers to ensure compatibility

@@ -128,7 +128,7 @@ params:
     
     # Heading font configuration
     heading:
-      family: "Inter"
+      family: "Sora"
       weights: [400, 500, 600, 700]
       display: "swap"
     
@@ -140,7 +140,7 @@ params:
     
     # Code block font configuration
     code:
-      family: "Fira Code"
+      family: "Google Sans Code"
       weights: [400, 500]
       display: "swap"
     

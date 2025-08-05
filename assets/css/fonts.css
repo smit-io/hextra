@@ -1,16 +1,7 @@
 /* Google Fonts Configuration */
-{{- $fonts := .Site.Params.fonts -}}
-{{- if and $fonts $fonts.enable -}}
 
-/* Google Fonts Import */
-@import url('https://fonts.googleapis.com/css2?family={{ $fonts.heading.family | replace " " "+" }}:wght@{{ delimit $fonts.heading.weights "," }}&family={{ $fonts.body.family | replace " " "+" }}:wght@{{ delimit $fonts.body.weights "," }}&family={{ $fonts.code.family | replace " " "+" }}:wght@{{ delimit $fonts.code.weights "," }}&display={{ $fonts.heading.display }}');
-
-/* Font Variables */
-:root {
-  --font-heading: "{{ $fonts.heading.family }}", {{ $fonts.fallbacks.heading }};
-  --font-body: "{{ $fonts.body.family }}", {{ $fonts.fallbacks.body }};
-  --font-code: "{{ $fonts.code.family }}", {{ $fonts.fallbacks.code }};
-}
+/* Google Fonts Import - this will be handled by variables.css */
+/* Font variables are defined in variables.css */
 
 /* Apply fonts to elements */
 html {
@@ -34,15 +25,4 @@ pre, code, kbd, samp {
 /* Inline code */
 :not(pre) > code {
   font-family: var(--font-code);
-}
-
-{{- else -}}
-
-/* Default system fonts when Google Fonts are disabled */
-:root {
-  --font-heading: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-code: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
-}
-
-{{- end -}} 
+} 

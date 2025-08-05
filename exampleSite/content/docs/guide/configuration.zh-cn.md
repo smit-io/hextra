@@ -67,7 +67,7 @@ menu:
 
 ### 徽标和标题
 
-要修改默认徽标，编辑 `hugo.yaml` 并在 `static` 目录下添加徽标文件的路径。
+要修改默认徽标，编辑 `hugo.yaml` 并在 `static/icons` 目录下添加徽标文件的路径。
 您还可以更改用户点击徽标时重定向的链接，以及设置徽标的宽度和高度（以像素为单位）。
 
 ```yaml {filename="hugo.yaml"}
@@ -76,8 +76,8 @@ params:
     displayTitle: true
     displayLogo: true
     logo:
-      path: images/logo.svg
-      dark: images/logo-dark.svg
+      path: icons/images/logo.svg
+      dark: icons/images/logo-dark.svg
       link: /
       width: 40
       height: 20
@@ -170,19 +170,21 @@ copyright: "© 2024 您的文本"
 
 ### 网站图标
 
-要为您的站点自定义 [网站图标](https://en.wikipedia.org/wiki/Favicon)，请将图标文件放在 `static` 文件夹下，以覆盖 [主题的默认网站图标](https://github.com/imfing/hextra/tree/main/static)：
+要为您的站点自定义 [网站图标](https://en.wikipedia.org/wiki/Favicon)，请将图标文件放在 `static/icons` 文件夹下，以覆盖 [主题的默认网站图标](https://github.com/imfing/hextra/tree/main/static)：
 
 {{< filetree/container >}}
   {{< filetree/folder name="static" >}}
-    {{< filetree/file name="android-chrome-192x192.png" >}}
-    {{< filetree/file name="android-chrome-512x512.png" >}}
-    {{< filetree/file name="apple-touch-icon.png" >}}
-    {{< filetree/file name="favicon-16x16.png" >}}
-    {{< filetree/file name="favicon-32x32.png" >}}
-    {{< filetree/file name="favicon-dark.svg" >}}
-    {{< filetree/file name="favicon.ico" >}}
-    {{< filetree/file name="favicon.svg" >}}
-    {{< filetree/file name="site.webmanifest" >}}
+    {{< filetree/folder name="icons" >}}
+      {{< filetree/file name="android-chrome-192x192.png" >}}
+      {{< filetree/file name="android-chrome-512x512.png" >}}
+      {{< filetree/file name="apple-touch-icon.png" >}}
+      {{< filetree/file name="favicon-16x16.png" >}}
+      {{< filetree/file name="favicon-32x32.png" >}}
+      {{< filetree/file name="favicon-dark.svg" >}}
+      {{< filetree/file name="favicon.ico" >}}
+      {{< filetree/file name="favicon.svg" >}}
+      {{< filetree/file name="site.webmanifest" >}}
+    {{< /filetree/folder >}}
   {{< /filetree/folder >}}
 {{< /filetree/container >}}
 

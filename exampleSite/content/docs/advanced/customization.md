@@ -32,17 +32,29 @@ The color of text mixed with `other text` can customized with:
 }
 ```
 
-### Primary Color
+### Accent Color
 
-The primary color of the theme can be customized by setting the `--primary-hue`, `--primary-saturation` and `--primary-lightness` variables:
+The theme now supports a single accent color that can be customized by adding the accent color variables to your `assets/css/custom.css` file:
 
 ```css {filename="assets/css/custom.css"}
 :root {
-  --primary-hue: 100deg;
-  --primary-saturation: 90%;
-  --primary-lightness: 50%;
+  --color-accent-color-50: oklch(0.977 0.013 236.62);
+  --color-accent-color-100: oklch(0.951 0.026 236.824);
+  --color-accent-color-200: oklch(0.901 0.058 230.902);
+  --color-accent-color-300: oklch(0.828 0.111 230.318);
+  --color-accent-color-400: oklch(0.746 0.16 232.661);
+  --color-accent-color-500: oklch(0.685 0.169 237.323);
+  --color-accent-color-600: oklch(0.588 0.158 241.966);
+  --color-accent-color-700: oklch(0.5 0.134 242.749);
+  --color-accent-color-800: oklch(0.443 0.11 240.79);
+  --color-accent-color-900: oklch(0.391 0.09 240.876);
+  --color-accent-color-950: oklch(0.293 0.066 243.157);
 }
 ```
+
+This accent color system provides a complete color palette with 11 shades (50-950) that will be used throughout the theme for links, buttons, highlights, and other accent elements.
+
+You can generate custom accent color palettes for free using [UI Colors](https://uicolors.app) - simply input your desired color and it will generate all the necessary shades for your theme.
 
 ### Further Theme Customization
 
