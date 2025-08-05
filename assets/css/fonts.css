@@ -1,7 +1,11 @@
 /* Google Fonts Configuration */
 
-/* Google Fonts Import - this will be handled by variables.css */
-/* Font variables are defined in variables.css */
+/* Font variables - these will be overridden by variables.css if fonts are enabled */
+/* :root {
+  --font-heading: "Inter", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-code: "JetBrains Mono", ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+} */
 
 /* Apply fonts to elements */
 html {

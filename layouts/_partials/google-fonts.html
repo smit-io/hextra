@@ -1,0 +1,40 @@
+  <!-- Google Fonts -->
+  <!-- Debug: fonts.enable = {{ site.Params.fonts.enable }} -->
+  {{- if site.Params.fonts.enable -}}
+    <!-- Debug: Raw font family values -->
+    <!-- Heading: "{{ site.Params.fonts.heading.family }}" -->
+    <!-- Body: "{{ site.Params.fonts.body.family }}" -->
+    <!-- Code: "{{ site.Params.fonts.code.family }}" -->
+    
+    {{- $font_heading_raw := site.Params.fonts.heading.family -}}
+    {{- $font_body_raw := site.Params.fonts.body.family -}}
+    {{- $font_code_raw := site.Params.fonts.code.family -}}
+    
+    {{- $font_heading := replace $font_heading_raw " " "+" -}}
+    {{- $font_body := replace $font_body_raw " " "+" -}}
+    {{- $font_code := replace $font_code_raw " " "+" -}}
+    {{- $font_heading_weights := delimit site.Params.fonts.heading.weights "," -}}
+    {{- $font_body_weights := delimit site.Params.fonts.body.weights "," -}}
+    {{- $font_code_weights := delimit site.Params.fonts.code.weights "," -}}
+    {{- $font_heading_display := site.Params.fonts.heading.display -}}
+    {{- $font_body_display := site.Params.fonts.body.display -}}
+    {{- $font_code_display := site.Params.fonts.code.display -}}
+
+    <!-- Debug: Processed values -->
+    <!-- Heading raw: "{{ $font_heading_raw }}" -->
+    <!-- Heading processed: "{{ $font_heading }}" -->
+    <!-- Body raw: "{{ $font_body_raw }}" -->
+    <!-- Body processed: "{{ $font_body }}" -->
+    <!-- Code raw: "{{ $font_code_raw }}" -->
+    <!-- Code processed: "{{ $font_code }}" -->
+
+    {{- $font_heading_url := printf "https://fonts.googleapis.com/css2?family=%s:wght@100..800&display=%s" ($font_heading | safeHTMLAttr ) $font_heading_display -}}
+    {{- $font_body_url := printf "https://fonts.googleapis.com/css2?family=%s:wght@100..800&display=%s" ($font_body | safeHTMLAttr ) $font_body_display -}}
+    {{- $font_code_url := printf "https://fonts.googleapis.com/css2?family=%s:wght@100..800&display=%s" ($font_code | safeHTMLAttr ) $font_code_display -}}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="{{ $font_heading_url }}" rel="stylesheet" />
+    <link href="{{ $font_body_url }}" rel="stylesheet" />
+    <link href="{{ $font_code_url }}" rel="stylesheet" />
+  {{- end -}}
