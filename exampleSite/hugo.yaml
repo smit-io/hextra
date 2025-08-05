@@ -125,19 +125,17 @@ params:
   fonts:
     # Enable Google Fonts integration
     enable: true
-    
     # Heading font configuration
     heading:
       family: "Sora"
       weights: [400, 500, 600, 700]
       display: "swap"
-    
+      what: "when"
     # Body font configuration
     body:
       family: "Inter"
       weights: [400, 500]
       display: "swap"
-    
     # Code block font configuration
     code:
       family: "Google Sans Code"
