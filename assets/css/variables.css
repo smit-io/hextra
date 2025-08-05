@@ -9,12 +9,28 @@
 
 {{- $footerWidth := .Site.Params.footer.width -}}
 {{- $maxFooterWidth := cond (eq $footerWidth "wide") "90rem" (cond (eq $footerWidth "full") "100%" "80rem") -}}
+
+{{- $fonts := .Site.Params.fonts -}}
+{{- $headingFont := "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" -}}
+{{- $bodyFont := "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" -}}
+{{- $codeFont := "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace" -}}
+
+{{- if and $fonts $fonts.enable -}}
+  {{- $headingFont = printf "\"%s\", %s" $fonts.heading.family $fonts.fallbacks.heading -}}
+  {{- $bodyFont = printf "\"%s\", %s" $fonts.body.family $fonts.fallbacks.body -}}
+  {{- $codeFont = printf "\"%s\", %s" $fonts.code.family $fonts.fallbacks.code -}}
+{{- end -}}
 */
 
 :root {
   --hextra-max-page-width: {{ $maxPageWidth }};
   --hextra-max-navbar-width: {{ $maxNavbarWidth }};
   --hextra-max-footer-width: {{ $maxFooterWidth }};
+  
+  /* Font variables */
+  --font-heading: {{ $headingFont }};
+  --font-body: {{ $bodyFont }};
+  --font-code: {{ $codeFont }};
 }
 
 .hextra-max-page-width {
