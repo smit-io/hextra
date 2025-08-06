@@ -128,18 +128,17 @@ params:
     # Heading font configuration
     heading:
       family: "Sora"
-      weights: [400, 500, 600, 700]
+      axes: "wght@100..800"
       display: "swap"
-      what: "when"
     # Body font configuration
     body:
-      family: "Inter"
-      weights: [400, 500]
+      family: "Mozilla Headline"
+      axes: "wght@200"
       display: "swap"
     # Code block font configuration
     code:
       family: "Google Sans Code"
-      weights: [400, 500]
+      axes: "ital,wght@0,300..800;1,300..800"
       display: "swap"
     
     # Fallback fonts (used if Google Fonts fail to load)
