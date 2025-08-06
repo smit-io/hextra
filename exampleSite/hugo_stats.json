@@ -356,6 +356,7 @@
       "hx:group-data-[theme=light]:hidden",
       "hx:group-hover/code:opacity-100",
       "hx:group-hover:text-hextra-accent-600",
+      "hx:group-hover:text-hextra-accent-700",
       "hx:group-hover:underline",
       "hx:group-open:before:rotate-90",
       "hx:group/code",

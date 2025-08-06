@@ -114,7 +114,9 @@
                   {{ end }}
                   
                   <p class="hx:mb-4 hx:text-sm hx:text-gray-600 hx:dark:text-gray-400 hx:line-clamp-3">
-                    {{- partial "utils/page-description" . -}}
+                    <a href="{{ .RelPermalink }}" class="hx:text-inherit hx:no-underline">
+                      {{- partial "utils/page-description" . -}}
+                    </a>
                   </p>
                 </div>
                 
