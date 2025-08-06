@@ -5,7 +5,9 @@
       "extended": true,
       "version": "0.147.7"
     },
-    "ghcr.io/devcontainers/features/node:1": {}
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    }
   },
   "customizations": {
     "vscode": {
