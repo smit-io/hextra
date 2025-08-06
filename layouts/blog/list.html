@@ -1,194 +1,196 @@
 {{ define "main" }}
   {{- $readMore := (T "readMore") | default "Read more →" -}}
-  <div class="hx:mx-auto hx:flex hextra-max-page-width">
-    <!-- Left Sidebar - Profile Section -->
-    <aside class="hx:sticky hx:top-16 hx:h-fit hx:w-64 hx:shrink-0 hx:p-6 hx:max-xl:hidden">
-      <div class="hx:flex hx:flex-col hx:items-center hx:gap-6">
-        <!-- Profile Photo -->
-        <div class="hx:relative hx:p-2">
-          <img 
-            src="/images/profile.png" 
-            alt="Profile Photo" 
-            class="hx:h-32 hx:w-32 hx:rounded-full hx:object-cover hx:object-center"
-          />
-        </div>
-        
-        <!-- Social Links -->
-        <div class="hx:flex hx:flex-col hx:gap-3 hx:w-full">
-          <a 
-            href="https://youtube.com" 
-            target="_blank" 
-            rel="noreferrer"
-            class="hx:flex hx:items-center hx:gap-3 hx:rounded-lg hx:px-4 hx:py-3 hx:text-sm hx:font-medium hx:text-gray-700 hx:transition-colors hx:hover:bg-gray-100 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800"
-          >
-            {{ partial "utils/icon.html" (dict "name" "youtube" "attributes" "height=24") }}
-            YouTube
-          </a>
-          
-          <a 
-            href="https://github.com" 
-            target="_blank" 
-            rel="noreferrer"
-            class="hx:flex hx:items-center hx:gap-3 hx:rounded-lg hx:px-4 hx:py-3 hx:text-sm hx:font-medium hx:text-gray-700 hx:transition-colors hx:hover:bg-gray-100 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800"
-          >
-            {{ partial "utils/icon.html" (dict "name" "github" "attributes" "height=24") }}
-            GitHub
-          </a>
-          
-          <a 
-            href="https://ko-fi.com" 
-            target="_blank" 
-            rel="noreferrer"
-            class="hx:flex hx:items-center hx:gap-3 hx:rounded-lg hx:px-4 hx:py-3 hx:text-sm hx:font-medium hx:text-gray-700 hx:transition-colors hx:hover:bg-gray-100 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800"
-          >
-            {{ partial "utils/icon.html" (dict "name" "ko-fi" "attributes" "height=24") }}
-            Ko-fi
-          </a>
-          
-          <a 
-            href="https://patreon.com" 
-            target="_blank" 
-            rel="noreferrer"
-            class="hx:flex hx:items-center hx:gap-3 hx:rounded-lg hx:px-4 hx:py-3 hx:text-sm hx:font-medium hx:text-gray-700 hx:transition-colors hx:hover:bg-gray-100 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800"
-          >
-            {{ partial "utils/icon.html" (dict "name" "patreon" "attributes" "height=24") }}
-            Patreon
-          </a>
-        </div>
-        
-        <!-- Language Switch and Theme Toggle -->
-        {{ $displayThemeToggle := (site.Params.theme.displayToggle | default true) -}}
-        {{ if or hugo.IsMultilingual $displayThemeToggle }}
-          <div class="hx:justify-end hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-hextra-light-100 hx:dark:bg-hextra-dark-600 hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show">
-            <div class="hx:flex hx:justify-items-start hx:grow">
-              {{- with hugo.IsMultilingual -}}
-                {{- partial "language-switch" (dict "context" $ "grow" true) -}}
-                {{- with $displayThemeToggle }}{{ partial "theme-toggle" (dict "hideLabel" true) }}{{ end -}}
-              {{- else -}}
-                {{- with $displayThemeToggle -}}
-                  <div class="hx:flex hx:grow hx:flex-col">{{ partial "theme-toggle" }}</div>
-                {{- end -}}
-              {{- end -}}
-            </div>
+  <div class="hx:flex hx:flex-col hx:min-h-[calc(100vh-var(--navbar-height))]">
+    <div class="hx:mx-auto hx:flex hx:flex-1 hextra-max-page-width">
+      <!-- Left Sidebar - Profile Section -->
+      <aside class="hx:sticky hx:top-16 hx:h-fit hx:w-64 hx:shrink-0 hx:p-6 hx:max-xl:hidden">
+        <div class="hx:flex hx:flex-col hx:items-center hx:gap-6">
+          <!-- Profile Photo -->
+          <div class="hx:relative hx:p-4">
+            <img 
+              src="/images/profile.png" 
+              alt="Profile Photo" 
+              class="hx:h-32 hx:w-32 hx:rounded-full hx:object-cover hx:object-center"
+            />
           </div>
-        {{- end -}}
-      </div>
-    </aside>
-
-    <!-- Main Content - Blog Cards -->
-    <main class="hx:flex-1 hx:min-w-0 hx:px-6 hx:pt-4 hx:md:px-12">
-      {{ if .Title }}<h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">{{ .Title }}</h1>{{ end }}
-      <div class="content hx:mb-8">{{ .Content }}</div>
-      
-      {{- $pages := partial "utils/sort-pages" (dict "page" . "by" site.Params.blog.list.sortBy "order" site.Params.blog.list.sortOrder) -}}
-      {{- $pagerSize := site.Params.blog.list.pagerSize | default 10 -}}
-      {{- $paginator := .Paginate $pages $pagerSize -}}
-      
-      <!-- Blog Cards Grid -->
-      <div class="hx:grid hx:grid-cols-1 hx:md:grid-cols-2 hx:lg:grid-cols-3 hx:gap-6">
-        {{- range $paginator.Pages }}
-          <article class="hx:group hx:flex hx:flex-col hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:shadow-sm hx:transition-all hx:duration-200 hx:hover:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-800">
-            {{- if .Params.image -}}
-              <div class="hx:aspect-video hx:overflow-hidden">
-                <img 
-                  src="{{ .Params.image }}" 
-                  alt="{{ .Title }}" 
-                  class="hx:h-full hx:w-full hx:object-cover hx:transition-transform hx:duration-200 hx:group-hover:scale-105"
-                />
-              </div>
-            {{- end -}}
+          
+          <!-- Social Links -->
+          <div class="hx:flex hx:flex-col hx:gap-3 hx:w-full">
+            <a 
+              href="https://youtube.com" 
+              target="_blank" 
+              rel="noreferrer"
+              class="hx:flex hx:items-center hx:gap-3 hx:rounded-lg hx:px-4 hx:py-3 hx:text-sm hx:font-medium hx:text-gray-700 hx:transition-colors hx:hover:bg-gray-100 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800"
+            >
+              {{ partial "utils/icon.html" (dict "name" "youtube" "attributes" "height=24") }}
+              YouTube
+            </a>
             
-            <div class="hx:flex hx:flex-1 hx:flex-col hx:p-6">
-              <div class="hx:flex-1">
-                <h3 class="hx:mb-2 hx:text-xl hx:font-semibold hx:text-gray-900 hx:dark:text-gray-100">
-                  <a href="{{ .RelPermalink }}" class="hx:text-inherit hx:no-underline hx:hover:text-hextra-accent-600">
-                    {{ .Title }}
-                  </a>
-                </h3>
-                
-                {{ if site.Params.blog.list.displayTags }}
-                  <div class="hx:mb-3">
-                    {{ partial "tags.html" . }}
-                  </div>
-                {{ end }}
-                
-                <p class="hx:mb-4 hx:text-sm hx:text-gray-600 hx:dark:text-gray-400 hx:line-clamp-3">
-                  {{- partial "utils/page-description" . -}}
-                </p>
-              </div>
-              
-              <div class="hx:mt-auto hx:flex hx:items-center hx:justify-between">
-                <time class="hx:text-xs hx:text-gray-500 hx:dark:text-gray-400">
-                  {{ partial "utils/format-date" .Date }}
-                </time>
-                <a 
-                  href="{{ .RelPermalink }}" 
-                  class="hx:text-sm hx:font-medium hx:text-hextra-accent-600 hx:transition-colors hx:hover:text-hextra-accent-700"
-                >
-                  {{- $readMore -}}
-                </a>
+            <a 
+              href="https://github.com" 
+              target="_blank" 
+              rel="noreferrer"
+              class="hx:flex hx:items-center hx:gap-3 hx:rounded-lg hx:px-4 hx:py-3 hx:text-sm hx:font-medium hx:text-gray-700 hx:transition-colors hx:hover:bg-gray-100 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800"
+            >
+              {{ partial "utils/icon.html" (dict "name" "github" "attributes" "height=24") }}
+              GitHub
+            </a>
+            
+            <a 
+              href="https://ko-fi.com" 
+              target="_blank" 
+              rel="noreferrer"
+              class="hx:flex hx:items-center hx:gap-3 hx:rounded-lg hx:px-4 hx:py-3 hx:text-sm hx:font-medium hx:text-gray-700 hx:transition-colors hx:hover:bg-gray-100 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800"
+            >
+              {{ partial "utils/icon.html" (dict "name" "ko-fi" "attributes" "height=24") }}
+              Ko-fi
+            </a>
+            
+            <a 
+              href="https://patreon.com" 
+              target="_blank" 
+              rel="noreferrer"
+              class="hx:flex hx:items-center hx:gap-3 hx:rounded-lg hx:px-4 hx:py-3 hx:text-sm hx:font-medium hx:text-gray-700 hx:transition-colors hx:hover:bg-gray-100 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800"
+            >
+              {{ partial "utils/icon.html" (dict "name" "patreon" "attributes" "height=24") }}
+              Patreon
+            </a>
+          </div>
+          
+          <!-- Language Switch and Theme Toggle -->
+          {{ $displayThemeToggle := (site.Params.theme.displayToggle | default true) -}}
+          {{ if or hugo.IsMultilingual $displayThemeToggle }}
+            <div class="hx:justify-end hx:sticky hx:bottom-0 hx:max-h-(--menu-height) hx:bg-hextra-light-100 hx:dark:bg-hextra-dark-600 hx:mx-4 hx:py-4 hx:shadow-[0_-12px_16px_#fff] hx:flex hx:items-center hx:gap-2 hx:border-gray-200 hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none hx:border-t" data-toggle-animation="show">
+              <div class="hx:flex hx:justify-items-start hx:grow">
+                {{- with hugo.IsMultilingual -}}
+                  {{- partial "language-switch" (dict "context" $ "grow" true) -}}
+                  {{- with $displayThemeToggle }}{{ partial "theme-toggle" (dict "hideLabel" true) }}{{ end -}}
+                {{- else -}}
+                  {{- with $displayThemeToggle -}}
+                    <div class="hx:flex hx:grow hx:flex-col">{{ partial "theme-toggle" }}</div>
+                  {{- end -}}
+                {{- end -}}
               </div>
             </div>
-          </article>
-        {{- end -}}
-      </div>
-      
-      {{- if gt $paginator.TotalPages 1 -}}
-        {{ partial "components/blog-pager.html" $paginator }}
-      {{- end -}}
-    </main>
+          {{- end -}}
+        </div>
+      </aside>
 
-    <!-- Right Sidebar -->
-    <aside class="hx:sticky hx:top-16 hx:h-fit hx:w-64 hx:shrink-0 hx:p-6 hx:max-xl:hidden">
-      <div class="hx:flex hx:flex-col hx:gap-8">
-        <!-- Recently Updated -->
-        <div>
-          <h3 class="hx:mb-4 hx:text-lg hx:font-semibold hx:text-gray-900 hx:dark:text-gray-100">Recently Updated</h3>
-          <div class="hx:flex hx:flex-col hx:gap-3">
-            {{- range first 5 (where site.RegularPages "Type" "blog") -}}
-              <a 
-                href="{{ .RelPermalink }}" 
-                class="hx:group hx:flex hx:items-start hx:gap-3 hx:rounded-lg hx:p-3 hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800"
-              >
-                {{- if .Params.image -}}
+      <!-- Main Content - Blog Cards -->
+      <main class="hx:flex-1 hx:min-w-0 hx:px-6 hx:pt-4 hx:md:px-12">
+        {{ if .Title }}<h1 class="hx:text-center hx:mt-2 hx:text-4xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100">{{ .Title }}</h1>{{ end }}
+        <div class="content hx:mb-8">{{ .Content }}</div>
+        
+        {{- $pages := partial "utils/sort-pages" (dict "page" . "by" site.Params.blog.list.sortBy "order" site.Params.blog.list.sortOrder) -}}
+        {{- $pagerSize := site.Params.blog.list.pagerSize | default 10 -}}
+        {{- $paginator := .Paginate $pages $pagerSize -}}
+        
+        <!-- Blog Cards Grid -->
+        <div class="hx:grid hx:grid-cols-1 hx:md:grid-cols-2 hx:lg:grid-cols-3 hx:gap-6">
+          {{- range $paginator.Pages }}
+            <article class="hx:group hx:flex hx:flex-col hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:bg-white hx:shadow-sm hx:transition-all hx:duration-200 hx:hover:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-800">
+              {{- if .Params.image -}}
+                <div class="hx:aspect-video hx:overflow-hidden">
                   <img 
                     src="{{ .Params.image }}" 
                     alt="{{ .Title }}" 
-                    class="hx:h-12 hx:w-12 hx:rounded hx:object-cover hx:shrink-0"
+                    class="hx:h-full hx:w-full hx:object-cover hx:transition-transform hx:duration-200 hx:group-hover:scale-105"
                   />
-                {{- else -}}
-                  <div class="hx:h-12 hx:w-12 hx:rounded hx:bg-gray-200 hx:dark:bg-neutral-700 hx:shrink-0"></div>
-                {{- end -}}
-                <div class="hx:min-w-0 hx:flex-1">
-                  <h4 class="hx:text-sm hx:font-medium hx:text-gray-900 hx:dark:text-gray-100 hx:line-clamp-2 hx:group-hover:text-hextra-accent-600">
-                    {{ .Title }}
-                  </h4>
+                </div>
+              {{- end -}}
+              
+              <div class="hx:flex hx:flex-1 hx:flex-col hx:p-6">
+                <div class="hx:flex-1">
+                  <h3 class="hx:mb-2 hx:text-xl hx:font-semibold hx:text-gray-900 hx:dark:text-gray-100">
+                    <a href="{{ .RelPermalink }}" class="hx:text-inherit hx:no-underline hx:hover:text-hextra-accent-600">
+                      {{ .Title }}
+                    </a>
+                  </h3>
+                  
+                  {{ if site.Params.blog.list.displayTags }}
+                    <div class="hx:mb-3">
+                      {{ partial "tags.html" . }}
+                    </div>
+                  {{ end }}
+                  
+                  <p class="hx:mb-4 hx:text-sm hx:text-gray-600 hx:dark:text-gray-400 hx:line-clamp-3">
+                    {{- partial "utils/page-description" . -}}
+                  </p>
+                </div>
+                
+                <div class="hx:mt-auto hx:flex hx:items-center hx:justify-between">
                   <time class="hx:text-xs hx:text-gray-500 hx:dark:text-gray-400">
                     {{ partial "utils/format-date" .Date }}
                   </time>
+                  <a 
+                    href="{{ .RelPermalink }}" 
+                    class="hx:text-sm hx:font-medium hx:text-hextra-accent-600 hx:transition-colors hx:hover:text-hextra-accent-700"
+                  >
+                    {{- $readMore -}}
+                  </a>
                 </div>
-              </a>
-            {{- end -}}
-          </div>
+              </div>
+            </article>
+          {{- end -}}
         </div>
+        
+        {{- if gt $paginator.TotalPages 1 -}}
+          {{ partial "components/blog-pager.html" $paginator }}
+        {{- end -}}
+      </main>
 
-        <!-- Trending Tags -->
-        <div>
-          <h3 class="hx:mb-4 hx:text-lg hx:font-semibold hx:text-gray-900 hx:dark:text-gray-100">Trending Tags</h3>
-          <div class="hx:flex hx:flex-wrap hx:gap-2">
-            {{- $tags := site.Taxonomies.tags -}}
-            {{- range first 10 (sort $tags "Count" "desc") -}}
-              <a 
-                href="{{ .Page.RelPermalink }}" 
-                class="hx:inline-flex hx:items-center hx:rounded-full hx:bg-gray-100 hx:px-3 hx:py-1 hx:text-xs hx:font-medium hx:text-gray-700 hx:transition-colors hx:hover:bg-gray-200 hx:dark:bg-neutral-700 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-600"
-              >
-                {{ .Page.Title }}
-                <span class="hx:ml-1 hx:text-xs hx:text-gray-500 hx:dark:text-gray-400">({{ .Count }})</span>
-              </a>
-            {{- end -}}
+      <!-- Right Sidebar -->
+      <aside class="hx:sticky hx:top-16 hx:h-fit hx:w-64 hx:shrink-0 hx:p-6 hx:max-xl:hidden">
+        <div class="hx:flex hx:flex-col hx:gap-8">
+          <!-- Recently Updated -->
+          <div>
+            <h3 class="hx:mb-4 hx:text-lg hx:font-semibold hx:text-gray-900 hx:dark:text-gray-100">Recently Updated</h3>
+            <div class="hx:flex hx:flex-col hx:gap-3">
+              {{- range first 5 (where site.RegularPages "Type" "blog") -}}
+                <a 
+                  href="{{ .RelPermalink }}" 
+                  class="hx:group hx:flex hx:items-start hx:gap-3 hx:rounded-lg hx:p-3 hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800"
+                >
+                  {{- if .Params.image -}}
+                    <img 
+                      src="{{ .Params.image }}" 
+                      alt="{{ .Title }}" 
+                      class="hx:h-12 hx:w-12 hx:rounded hx:object-cover hx:shrink-0"
+                    />
+                  {{- else -}}
+                    <div class="hx:h-12 hx:w-12 hx:rounded hx:bg-gray-200 hx:dark:bg-neutral-700 hx:shrink-0"></div>
+                  {{- end -}}
+                  <div class="hx:min-w-0 hx:flex-1">
+                    <h4 class="hx:text-sm hx:font-medium hx:text-gray-900 hx:dark:text-gray-100 hx:line-clamp-2 hx:group-hover:text-hextra-accent-600">
+                      {{ .Title }}
+                    </h4>
+                    <time class="hx:text-xs hx:text-gray-500 hx:dark:text-gray-400">
+                      {{ partial "utils/format-date" .Date }}
+                    </time>
+                  </div>
+                </a>
+              {{- end -}}
+            </div>
+          </div>
+
+          <!-- Trending Tags -->
+          <div>
+            <h3 class="hx:mb-4 hx:text-lg hx:font-semibold hx:text-gray-900 hx:dark:text-gray-100">Trending Tags</h3>
+            <div class="hx:flex hx:flex-wrap hx:gap-2">
+              {{- $tags := site.Taxonomies.tags -}}
+              {{- range first 10 (sort $tags "Count" "desc") -}}
+                <a 
+                  href="{{ .Page.RelPermalink }}" 
+                  class="hx:inline-flex hx:items-center hx:rounded-full hx:bg-gray-100 hx:px-3 hx:py-1 hx:text-xs hx:font-medium hx:text-gray-700 hx:transition-colors hx:hover:bg-gray-200 hx:dark:bg-neutral-700 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-600"
+                >
+                  {{ .Page.Title }}
+                  <span class="hx:ml-1 hx:text-xs hx:text-gray-500 hx:dark:text-gray-400">({{ .Count }})</span>
+                </a>
+              {{- end -}}
+            </div>
           </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    </div>
   </div>
 {{- end -}}
