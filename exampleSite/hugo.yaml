@@ -121,6 +121,32 @@ menu:
 params:
   description: Modern, responsive, batteries-included Hugo theme for creating beautiful static websites.
 
+  # Google Fonts Configuration
+  fonts:
+    # Enable Google Fonts integration
+    enable: true
+    # Heading font configuration
+    heading:
+      family: "Sora"
+      axes: "wght@100..800"
+      display: "swap"
+    # Body font configuration
+    body:
+      family: "Mozilla Text"
+      axes: "wght@200..700"
+      display: "swap"
+    # Code block font configuration
+    code:
+      family: "Google Sans Code"
+      axes: "ital,wght@0,300;1,300"
+      display: "swap"
+    
+    # Fallback fonts (used if Google Fonts fail to load)
+    fallbacks:
+      heading: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+      body: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+      code: "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace"
+
   navbar:
     displayTitle: true
     displayLogo: true
