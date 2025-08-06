@@ -132,13 +132,13 @@ params:
       display: "swap"
     # Body font configuration
     body:
-      family: "Mozilla Headline"
-      axes: "wght@200"
+      family: "Mozilla Text"
+      axes: "wght@200..700"
       display: "swap"
     # Code block font configuration
     code:
       family: "Google Sans Code"
-      axes: "ital,wght@0,300..800;1,300..800"
+      axes: "ital,wght@0,300;1,300"
       display: "swap"
     
     # Fallback fonts (used if Google Fonts fail to load)

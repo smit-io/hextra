@@ -354,7 +354,22 @@ params:
 
 ### Google Fonts
 
-The Hextra theme supports configurable Google Fonts for heading, body, and code block fonts. This feature allows you to customize the typography of your site using Google Fonts.
+The Hextra theme supports configurable Google Fonts for heading, body, and code block fonts. This feature allows you to customize the typography of your site using Google Fonts with the new axes-based configuration.
+
+#### Getting Font Axes from Google Fonts
+
+1. Visit [fonts.google.com](https://fonts.google.com/)
+2. Search for and select your desired font then "Get Font" and then "Get embed code"
+4. In the sidebar that appears, click "Embed" tab
+5. Copy the `<link>` tag from the "Embed" section
+6. Extract the font family name and axes from the URL
+
+For example, if the embed code is:
+```html
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+```
+
+The font family is `Inter` and the axes are `ital,wght@0,400;0,500;0,600;0,700;1,400`.
 
 #### Basic Configuration
 
@@ -370,19 +385,19 @@ params:
     # Heading font configuration
     heading:
       family: "Inter"
-      weights: [400, 500, 600, 700]
+      axes: "ital,wght@0,400;0,500;0,600;0,700;1,400"
       display: "swap"
     
     # Body font configuration
     body:
       family: "Inter"
-      weights: [400, 500]
+      axes: "ital,wght@0,400;0,500;1,400"
       display: "swap"
     
     # Code block font configuration
     code:
       family: "JetBrains Mono"
-      weights: [400, 500]
+      axes: "wght@400;500"
       display: "swap"
     
     # Fallback fonts (used if Google Fonts fail to load)
@@ -406,10 +421,11 @@ Each font type has the following parameters:
 - **Type**: `string`
 - **Description**: The Google Font family name (e.g., "Inter", "Roboto", "Open Sans")
 
-###### `weights`
-- **Type**: `array`
-- **Description**: Array of font weights to load (e.g., `[400, 500, 600, 700]`)
-- **Available weights**: 100, 200, 300, 400, 500, 600, 700, 800, 900
+###### `axes`
+- **Type**: `string`
+- **Description**: Font axes configuration from Google Fonts embed code
+- **Format**: `"axis1,axis2@value1,value2;value3,value4"`
+- **Common axes**: `wght` (weight), `ital` (italic), `slnt` (slant), `opsz` (optical size)
 
 ###### `display`
 - **Type**: `string`
@@ -441,13 +457,13 @@ params:
     enable: true
     heading:
       family: "Inter"
-      weights: [400, 500, 600, 700]
+      axes: "ital,wght@0,400;0,500;0,600;0,700;1,400"
     body:
       family: "Inter"
-      weights: [400, 500]
+      axes: "ital,wght@0,400;0,500;1,400"
     code:
       family: "JetBrains Mono"
-      weights: [400, 500]
+      axes: "wght@400;500"
 ```
 
 ##### Classic & Readable
@@ -457,13 +473,13 @@ params:
     enable: true
     heading:
       family: "Merriweather"
-      weights: [400, 700]
+      axes: "ital,wght@0,400;0,700;1,400;1,700"
     body:
       family: "Open Sans"
-      weights: [400, 600]
+      axes: "ital,wght@0,400;0,600;1,400;1,600"
     code:
       family: "Source Code Pro"
-      weights: [400, 500]
+      axes: "ital,wght@0,400;0,500;1,400;1,500"
 ```
 
 ##### Professional & Elegant
@@ -473,13 +489,13 @@ params:
     enable: true
     heading:
       family: "Playfair Display"
-      weights: [400, 700]
+      axes: "ital,wght@0,400;0,700;1,400;1,700"
     body:
       family: "Lato"
-      weights: [400, 700]
+      axes: "ital,wght@0,400;0,700;1,400;1,700"
     code:
       family: "Fira Code"
-      weights: [400, 500]
+      axes: "ital,wght@0,400;0,500;1,400;1,500"
 ```
 
 #### Disabling Google Fonts
@@ -497,7 +513,7 @@ Or simply remove the `fonts` section from your configuration.
 #### Performance Considerations
 
 1. **Font Loading**: Google Fonts are loaded asynchronously with `display: swap` by default
-2. **Font Weights**: Only load the font weights you actually use to reduce file size
+2. **Font Axes**: Only include the axes and values you actually use to reduce file size
 3. **Fallbacks**: Always provide fallback fonts for better user experience
 4. **Caching**: Google Fonts are cached by browsers, improving subsequent page loads
 
@@ -510,10 +526,11 @@ Google Fonts are supported by all modern browsers. The theme includes fallback f
 ##### Fonts Not Loading
 1. Check that `fonts.enable` is set to `true`
 2. Verify the font family name is correct (check [Google Fonts](https://fonts.google.com/))
-3. Ensure the font weights are available for the selected font family
+3. Ensure the axes configuration matches the font's available variations
+4. Copy the exact axes string from the Google Fonts embed code
 
 ##### Performance Issues
-1. Reduce the number of font weights loaded
+1. Reduce the number of axes and values loaded
 2. Consider using system fonts for better performance
 3. Use `display: "optional"` for non-critical fonts
 
@@ -521,3 +538,8 @@ Google Fonts are supported by all modern browsers. The theme includes fallback f
 1. Check that fallback fonts are properly configured
 2. Verify CSS specificity isn't overriding font declarations
 3. Test with different browsers to ensure compatibility
+
+##### Common Axes Examples
+- **Weight only**: `"wght@400;500;600;700"`
+- **Weight and italic**: `"ital,wght@0,400;0,500;1,400;1,500"`
+- **Weight, italic, and slant**: `"ital,slnt,wght@0,0,400;0,0,500;1,0,400;1,0,500"`
