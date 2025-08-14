@@ -3,8 +3,8 @@
 // Change shortcut key to cmd+k on Mac, iPad or iPhone.
 document.addEventListener("DOMContentLoaded", function () {
   if (/iPad|iPhone|Macintosh/.test(navigator.userAgent)) {
-    // select the kbd element under the .search-wrapper class
-    const keys = document.querySelectorAll(".search-wrapper kbd");
+    // select the kbd element under the .hextra-search-wrapper class
+    const keys = document.querySelectorAll(".hextra-search-wrapper kbd");
     keys.forEach(key => {
       key.innerHTML = '<span class="hx:text-xs">⌘</span>K';
     });
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
 (function () {
   const searchDataURL = '{{ $searchData.RelPermalink }}';
 
-  const inputElements = document.querySelectorAll('.search-input');
+  const inputElements = document.querySelectorAll('.hextra-search-input');
   for (const el of inputElements) {
     el.addEventListener('focus', init);
     el.addEventListener('keyup', search);
@@ -30,8 +30,13 @@ document.addEventListener("DOMContentLoaded", function () {
     el.addEventListener('input', handleInputChange);
   }
 
-  const shortcutElements = document.querySelectorAll('.search-wrapper kbd');
+  const shortcutElements = document.querySelectorAll('.hextra-search-wrapper kbd');
 
+  /**
+   * Set the CSS opacity for all shortcut UI elements.
+   *
+   * @param {number|string} opacity - Opacity value to apply (typically a number between 0 and 1 or a string like "0.5" or "0").
+   */
   function setShortcutElementsOpacity(opacity) {
     shortcutElements.forEach(el => {
       el.style.opacity = opacity;
@@ -43,14 +48,25 @@ document.addEventListener("DOMContentLoaded", function () {
     setShortcutElementsOpacity(opacity);
   }
 
-  // Get the search wrapper, input, and results elements.
+  /**
+   * Locate the currently visible search wrapper and return its wrapper, input, and results elements.
+   *
+   * Searches for elements with the `.hextra-search-wrapper` class that are visible (clientHeight > 0).
+   * If exactly one visible wrapper is found, returns an object containing:
+   *  - wrapper: the wrapper element,
+   *  - inputElement: the first descendant matching `.hextra-search-input` (may be null if missing),
+   *  - resultsElement: the first descendant matching `.hextra-search-results` (may be null if missing).
+   *
+   * Returns undefined if there is not exactly one visible `.hextra-search-wrapper`.
+   * @return {{wrapper: Element, inputElement: HTMLElement|null, resultsElement: HTMLElement|null}|undefined}
+   */
   function getActiveSearchElement() {
-    const inputs = Array.from(document.querySelectorAll('.search-wrapper')).filter(el => el.clientHeight > 0);
+    const inputs = Array.from(document.querySelectorAll('.hextra-search-wrapper')).filter(el => el.clientHeight > 0);
     if (inputs.length === 1) {
       return {
         wrapper: inputs[0],
-        inputElement: inputs[0].querySelector('.search-input'),
-        resultsElement: inputs[0].querySelector('.search-results')
+        inputElement: inputs[0].querySelector('.hextra-search-input'),
+        resultsElement: inputs[0].querySelector('.hextra-search-results')
       };
     }
     return undefined;
@@ -98,28 +114,43 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Get the currently active result and its index.
+  /**
+   * Retrieve the currently highlighted search result element and its numeric index.
+   *
+   * @returns {{result: HTMLElement|undefined, index: number}} An object with:
+   *  - `result`: the DOM element with class `hextra-search-active` if present, otherwise `undefined`.
+   *  - `index`: the parsed integer value of the element's `data-index` attribute, or `-1` when no active result exists.
+   */
   function getActiveResult() {
     const { resultsElement } = getActiveSearchElement();
     if (!resultsElement) return { result: undefined, index: -1 };
 
-    const result = resultsElement.querySelector('.active');
+    const result = resultsElement.querySelector('.hextra-search-active');
     if (!result) return { result: undefined, index: -1 };
 
     const index = parseInt(result.dataset.index, 10);
     return { result, index };
   }
 
-  // Set the active result by index.
+  /**
+   * Activate and focus the search result at the given index.
+   *
+   * Removes the active class from the currently active result (if any), adds
+   * the `hextra-search-active` class to the result element whose `data-index`
+   * matches `index`, and calls focus() on that element. If no matching result
+   * exists or the results container is not available, the function is a no-op.
+   *
+   * @param {number} index - The `data-index` value of the result to activate (typically a 0-based integer).
+   */
   function setActiveResult(index) {
     const { resultsElement } = getActiveSearchElement();
     if (!resultsElement) return;
 
     const { result: activeResult } = getActiveResult();
-    activeResult && activeResult.classList.remove('active');
+    activeResult && activeResult.classList.remove('hextra-search-active');
     const result = resultsElement.querySelector(`[data-index="${index}"]`);
     if (result) {
-      result.classList.add('active');
+      result.classList.add('hextra-search-active');
       result.focus();
     }
   }
@@ -374,17 +405,28 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * Displays the search results on the page.
+   * Render search results into the active search results container.
    *
-   * @param {Array} results - The array of search results.
-   * @param {string} query - The search query.
+   * Displays the provided result items (prefix lines, titles, and optional excerpts),
+   * highlights occurrences of the query in titles/excerpts, appends the generated
+   * DOM nodes into the active results element, and wires UI interactions for mouse,
+   * keyboard, and click selection. Updates the results container's dataset.count.
+   *
+   * If no active results container is available the function returns early. If the
+   * results array is empty, a localized "no results" placeholder is inserted.
+   *
+   * @param {Array<Object>} results - Search result items. Each item should contain:
+   *   - route: string — link target for the result.
+   *   - prefix?: string — optional prefix/crumb line rendered before the item.
+   *   - children: { title: string, content?: string } — displayed title and optional excerpt.
+   * @param {string} query - The user's search query used to highlight matching text.
    */
   function displayResults(results, query) {
     const { resultsElement } = getActiveSearchElement();
     if (!resultsElement) return;
 
     if (!results.length) {
-      resultsElement.innerHTML = `<span class="no-result">{{ $noResultsFound | safeHTML }}</span>`;
+      resultsElement.innerHTML = `<span class="hextra-search-no-result">{{ $noResultsFound | safeHTML }}</span>`;
       return;
     }
 
@@ -418,14 +460,14 @@ document.addEventListener("DOMContentLoaded", function () {
       const result = results[i];
       if (result.prefix) {
         fragment.appendChild(createElement(`
-          <div class="prefix">${result.prefix}</div>`));
+          <div class="hextra-search-prefix">${result.prefix}</div>`));
       }
-      let li = createElement(`
+        let li = createElement(`
         <li>
-          <a data-index="${i}" href="${result.route}" class=${i === 0 ? "active" : ""}>
-            <div class="title">`+ highlightMatches(result.children.title, query) + `</div>` +
+          <a data-index="${i}" href="${result.route}" class=${i === 0 ? "hextra-search-active" : ""}>
+            <div class="hextra-search-title">`+ highlightMatches(result.children.title, query) + `</div>` +
         (result.children.content ?
-          `<div class="excerpt">` + highlightMatches(result.children.content, query) + `</div>` : '') + `
+            `<div class="hextra-search-excerpt">` + highlightMatches(result.children.content, query) + `</div>` : '') + `
           </a>
         </li>`);
       li.addEventListener('mousemove', handleMouseMove);
