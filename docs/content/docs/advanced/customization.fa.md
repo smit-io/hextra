@@ -167,18 +167,19 @@ Hextra متغیرهای CSS را برای سفارشی‌سازی عرض صفح�
 
 #### جستجو
 
-- `hextra-search-wrapper` - ظرف wrapper جستجو
+- `hextra-search-trigger` - دکمه فعال‌کننده جستجو
+- `hextra-search-dialog` - عنصر دیالوگ جستجو
 - `hextra-search-input` - عنصر ورودی جستجو
 - `hextra-search-results` - ظرف لیست نتایج جستجو
 
-کلاس‌های تو در تو اختیاری مورد استفاده در رابط کاربری جستجو:
+کلاس‌ها و انتخابگرهای تو در تو اختیاری مورد استفاده در رابط کاربری جستجو:
 
+- `hextra-search-crumb` - برچسب مسیر برای نخستین نتیجه از یک صفحه
 - `hextra-search-title` - عنصر عنوان نتیجه
-- `hextra-search-active` - لنکر نتیجه فعال
-- `hextra-search-no-result` - عنصر حالت خالی
-- `hextra-search-prefix` - برچسب مسیر/پیشوند برای نتایج گروه‌بندی شده
 - `hextra-search-excerpt` - متن خلاصه نتیجه
 - `hextra-search-match` - span پرس و جوی هایلایت شده
+- `hextra-search-empty` - عنصر حالت خالی
+- `a[role="option"][aria-selected="true"]` - لنکر نتیجه انتخاب‌شده
 
 #### فهرست مطالب
 
@@ -248,6 +249,21 @@ layouts/_partials/custom/head-end.html
 می‌توانید از [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) و [سینتکس قالب Hugo](https://gohugo.io/templates/) برای افزودن محتوای خود استفاده کنید.
 
 متغیرهای Hugo موجود در بخش پاورقی عبارتند از: `.switchesVisible` و `.displayCopyright`.
+
+## بخش‌های سفارشی صفحه
+
+می‌توانید با ایجاد هر یک از فایل‌های زیر در سایت خود، بخش‌های سفارشی را پیرامون محتوای هر صفحه اضافه کنید:
+
+```
+layouts/_partials/custom/page-begin.html
+layouts/_partials/custom/content-begin.html
+layouts/_partials/custom/content-end.html
+layouts/_partials/custom/page-end.html
+```
+
+هوک‌های صفحه داخل عنصر `<main>` صفحه رندر می‌شوند. هوک‌های محتوا بلافاصله قبل و بعد از محتوای صفحه رندر می‌شوند.
+
+هر partial صفحه فعلی Hugo را به عنوان context دریافت می‌کند، بنابراین می‌توانید از پارامترهای صفحه، پارامترهای سایت و دیگر قابلیت‌های قالب Hugo استفاده کنید.
 
 ## چیدمان‌های سفارشی
 

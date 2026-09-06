@@ -167,18 +167,19 @@ Tailwind CSS v4をベースにしたHextra v0.10.0以降では、`@layer theme`�
 
 #### 検索
 
-- `hextra-search-wrapper` - 検索ラッパーコンテナ
+- `hextra-search-trigger` - 検索トリガーボタン
+- `hextra-search-dialog` - 検索ダイアログ要素
 - `hextra-search-input` - 検索入力要素
 - `hextra-search-results` - 検索結果リストコンテナ
 
-検索UI内で使用されるオプションのネストされたクラス:
+検索UI内で使用されるオプションのネストされたクラスとセレクター:
 
+- `hextra-search-crumb` - ページの最初の結果に表示されるパンくずリストラベル
 - `hextra-search-title` - 結果タイトル要素
-- `hextra-search-active` - アクティブな結果アンカー
-- `hextra-search-no-result` - 空の状態要素
-- `hextra-search-prefix` - グループ化された結果のパンくずリスト/プレフィックスラベル
 - `hextra-search-excerpt` - 結果スニペットテキスト
 - `hextra-search-match` - ハイライトされたクエリスパン
+- `hextra-search-empty` - 空の状態要素
+- `a[role="option"][aria-selected="true"]` - 選択中の結果アンカー
 
 #### 目次
 
@@ -248,6 +249,21 @@ layouts/_partials/custom/head-end.html
 [HTML](https://developer.mozilla.org/ja/docs/Web/HTML)と[Hugoテンプレート構文](https://gohugo.io/templates/)を使用して独自のコンテンツを追加できます。
 
 フッターセクションで利用可能なHugo変数: `.switchesVisible`と`.displayCopyright`。
+
+## カスタムページセクション
+
+サイト内に以下のファイルを作成すると、各ページのコンテンツ周辺にカスタムセクションを追加できます:
+
+```
+layouts/_partials/custom/page-begin.html
+layouts/_partials/custom/content-begin.html
+layouts/_partials/custom/content-end.html
+layouts/_partials/custom/page-end.html
+```
+
+ページフックはページの`<main>`要素内にレンダリングされます。コンテンツフックはページコンテンツの直前と直後にレンダリングされます。
+
+各パーシャルには現在のHugoページがコンテキストとして渡されるため、ページパラメータ、サイトパラメータ、その他のHugoテンプレート機能を使用できます。
 
 ## カスタムレイアウト
 

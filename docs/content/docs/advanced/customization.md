@@ -166,18 +166,19 @@ The following classes can be used to customize various parts of the theme.
 
 #### Search
 
-- `hextra-search-wrapper` - The search wrapper container
+- `hextra-search-trigger` - The search trigger button
+- `hextra-search-dialog` - The search dialog element
 - `hextra-search-input` - The search input element
 - `hextra-search-results` - The search results list container
 
-Optional nested classes used within the search UI:
+Optional nested classes and selectors used within the search UI:
 
+- `hextra-search-crumb` - The breadcrumb label for the first result from a page
 - `hextra-search-title` - The result title element
-- `hextra-search-active` - The active result anchor
-- `hextra-search-no-result` - The empty state element
-- `hextra-search-prefix` - The breadcrumb/prefix label for grouped results
 - `hextra-search-excerpt` - The result snippet text
 - `hextra-search-match` - The highlighted query span
+- `hextra-search-empty` - The empty state element
+- `a[role="option"][aria-selected="true"]` - The selected result anchor
 
 #### Table of Contents
 
@@ -247,6 +248,21 @@ The added section will be added before the copyright section in the footer.
 You can use [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) and [Hugo template syntax](https://gohugo.io/templates/) to add your own content.
 
 Hugo variables available in the footer section are: `.switchesVisible` and `.displayCopyright`.
+
+## Custom Page Sections
+
+You can add custom sections around each page's content by creating any of these files in your site:
+
+```
+layouts/_partials/custom/page-begin.html
+layouts/_partials/custom/content-begin.html
+layouts/_partials/custom/content-end.html
+layouts/_partials/custom/page-end.html
+```
+
+The page hooks are rendered inside the page's `<main>` element. The content hooks are rendered immediately before and after the page content.
+
+Each partial receives the current Hugo page as context, so you can use page parameters, site parameters, and other Hugo template features.
 
 ## Custom Layouts
 

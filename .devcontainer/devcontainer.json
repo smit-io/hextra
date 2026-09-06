@@ -3,7 +3,7 @@
   "features": {
     "ghcr.io/devcontainers/features/hugo:1": {
       "extended": true,
-      "version": "0.147.7"
+      "version": "0.161.1"
     },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "22"
@@ -26,7 +26,5 @@
     }
   },
   "postCreateCommand": "npm install",
-  "forwardPorts": [
-    1313
-  ]
+  "forwardPorts": [1313]
 }
