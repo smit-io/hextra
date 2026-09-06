@@ -1,5 +1,8 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/go:1",
+  "name": "Hextra - theme development",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspaces/hextra",
   "features": {
     "ghcr.io/devcontainers/features/hugo:1": {
       "extended": true,
@@ -25,6 +28,11 @@
       ]
     }
   },
+  // docs/public is gitignored and will not exist on a fresh clone. Create it on
+  // the host first, otherwise Docker creates it as root and the build cannot
+  // write there.
+  "initializeCommand": "mkdir -p docs/public",
   "postCreateCommand": "npm install",
-  "forwardPorts": [1313]
+  // 1313 is the Hugo dev server, preview:8043 is the goStatic service.
+  "forwardPorts": [1313, "preview:8043"]
 }
