@@ -16,6 +16,10 @@ services:
     image: mcr.microsoft.com/devcontainers/go:1
     volumes:
       - ..:/workspaces/hextra:cached
+      # Named volume masks node_modules so the container keeps its own
+      # Linux-native binaries (lightningcss etc.) instead of sharing the
+      # host's Darwin ones through the bind mount.
+      - node_modules:/workspaces/hextra/node_modules
     # Keep the container alive; the dev container attaches to it.
     command: sleep infinity
 
@@ -32,3 +36,7 @@ services:
       # a stale page instead of the one you just built.
       - "-append-header"
       - "Cache-Control:no-store"
+
+volumes:
+  # Per-container node_modules; the host keeps its own copy on disk.
+  node_modules:
