@@ -30,9 +30,6 @@ languages:
     weight: 2
     title: هگزترا
     params:
-      banner:
-        message: |
-          هگزترا **v0.12** منتشر شد! 🎉 [تازه‌ها را ببینید]({{% relref "blog/v0.12" %}})
       page:
         contextMenu:
           links:
@@ -45,9 +42,6 @@ languages:
     weight: 3
     title: Hextra
     params:
-      banner:
-        message: |
-          Hextra **v0.12** がリリースされました！🎉 [新着情報はこちら]({{% relref "blog/v0.12" %}})
       page:
         contextMenu:
           links:
@@ -60,9 +54,6 @@ languages:
     weight: 4
     title: Hextra
     params:
-      banner:
-        message: |
-          Hextra **v0.12** 发布啦！🎉 查看[更新内容]({{% relref "blog/v0.12" %}})
       page:
         contextMenu:
           links:
@@ -201,11 +192,6 @@ params:
       body: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       code: "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace"
   externalLinkDecoration: true
-
-  banner:
-    key: 'announcement-v0.12'
-    message: |
-      Hextra **v0.12** is here! 🎉 Discover [what's new]({{% relref "blog/v0.12" %}})
 
   navbar:
     displayTitle: true
