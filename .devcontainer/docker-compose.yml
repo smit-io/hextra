@@ -1,0 +1,34 @@
+# Dev environment for the Hextra theme.
+#
+#   dev      the workspace container the editor attaches to
+#   preview  a ~258 kB static file server that serves the production build
+#
+# `preview` starts with the dev container and stays up. It serves whatever is
+# in docs/public, so re-running `make build` updates the served site with no
+# container restart.
+
+# Compose project name. Without it the project is named after this file's
+# directory, giving containers like `devcontainer-dev-1`.
+name: hextra
+
+services:
+  dev:
+    image: mcr.microsoft.com/devcontainers/go:1
+    volumes:
+      - ..:/workspaces/hextra:cached
+    # Keep the container alive; the dev container attaches to it.
+    command: sleep infinity
+
+  preview:
+    image: pierrezemb/gostatic
+    restart: unless-stopped
+    volumes:
+      # goStatic serves /srv/http by default. Read-only: this container should
+      # never write to the build output.
+      - ../docs/public:/srv/http:ro
+    command:
+      - "-enable-logging"
+      # Without this the browser caches aggressively and you end up debugging
+      # a stale page instead of the one you just built.
+      - "-append-header"
+      - "Cache-Control:no-store"

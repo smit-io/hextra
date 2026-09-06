@@ -16,8 +16,10 @@ SHELL := /bin/bash
 # ---------------------------------------------------------------- configuration
 
 PORT        ?= 1313
-PREVIEW_PORT?= 8080
-BASE_URL    ?= http://localhost:$(PREVIEW_PORT)/
+# The preview service (goStatic) declared in .devcontainer/docker-compose.yml.
+# Production output is built with an absolute baseURL, so this must match the
+# forwarded port or every link on the previewed site breaks.
+PREVIEW_URL ?= http://localhost:8043/
 SITE        := docs
 STATS       := $(SITE)/hugo_stats.json
 CSS_OUT     := assets/css/compiled/main.css
@@ -49,7 +51,8 @@ help: ## Show this help
 		/^# --- / { next } \
 		/^[a-zA-Z0-9_-]+:.*?## / { printf "  $(GREEN)%-16s$(RESET) %s\n", $$1, $$2 } \
 		/^##@/ { printf "\n$(BOLD)%s$(RESET)\n", substr($$0, 5) }' $(MAKEFILE_LIST)
-	@printf "\n$(DIM)Ports: dev=$(PORT) preview=$(PREVIEW_PORT). Override like: make dev PORT=1314$(RESET)\n\n"
+	@printf "\n$(DIM)Dev server: port $(PORT).  Preview: $(PREVIEW_URL) (always-on container).$(RESET)\n"
+	@printf "$(DIM)Override like: make dev PORT=1314$(RESET)\n\n"
 
 ##@ Setup
 
@@ -158,15 +161,12 @@ build: css ## Production build into docs/public
 	@$(OK) "built to $(SITE)/public"
 
 .PHONY: preview
-preview: css ## Build with a local baseURL and serve exactly what production renders
-	@$(SAY) "Building $(SITE) with baseURL $(BASE_URL)"
-	@hugo --gc --minify --themesDir=../.. --source=$(SITE) --baseURL $(BASE_URL)
-	@$(SAY) "Serving $(SITE)/public on $(BASE_URL)"
-	@$(WARN) "Static server sends no cache headers - keep DevTools cache disabled."
-	@cd $(SITE)/public && \
-		if command -v python3 >/dev/null; then python3 -m http.server $(PREVIEW_PORT); \
-		elif command -v python  >/dev/null; then python  -m http.server $(PREVIEW_PORT); \
-		else npx --yes serve -l $(PREVIEW_PORT) .; fi
+preview: css ## Build production output for the always-on preview service
+	@$(SAY) "Building $(SITE) with baseURL $(PREVIEW_URL)"
+	@hugo --gc --minify --themesDir=../.. --source=$(SITE) --baseURL $(PREVIEW_URL)
+	@$(OK) "built - open $(PREVIEW_URL)"
+	@$(WARN) "Served by the 'preview' container, which is already running."
+	@$(WARN) "Re-run this target to update it; no restart needed."
 
 ##@ Test
 
@@ -242,7 +242,9 @@ sync-status: ## Show how far this fork has drifted from upstream
 		"layouts/_partials/google-fonts.html  (fork-only)" \
 		"assets/css/components/*.css  accent theming" \
 		"layouts/_partials/*.html     accent theming" \
-		"static/icons/                favicon reorg"
+		"static/icons/                favicon reorg" \
+		".devcontainer/               compose setup, upstream uses a plain image" \
+		"Makefile                     fork-only"
 	@echo
 	@$(WARN) "Sync one upstream release tag at a time, not all at once."
 	@$(WARN) "Regenerate rather than merge: $(CSS_OUT) and $(STATS)."
