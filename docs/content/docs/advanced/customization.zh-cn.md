@@ -167,18 +167,19 @@ Hextra 提供了 CSS 变量来自定义页面、导航栏和页脚的宽度：
 
 #### 搜索
 
-- `hextra-search-wrapper` - 搜索包装容器
+- `hextra-search-trigger` - 搜索触发按钮
+- `hextra-search-dialog` - 搜索对话框元素
 - `hextra-search-input` - 搜索输入元素
 - `hextra-search-results` - 搜索结果列表容器
 
-搜索 UI 中使用的可选嵌套类：
+搜索 UI 中使用的可选嵌套类和选择器：
 
+- `hextra-search-crumb` - 页面首个结果的面包屑标签
 - `hextra-search-title` - 结果标题元素
-- `hextra-search-active` - 活动结果锚点
-- `hextra-search-no-result` - 空状态元素
-- `hextra-search-prefix` - 分组结果的面包屑/前缀标签
 - `hextra-search-excerpt` - 结果片段文本
 - `hextra-search-match` - 高亮查询范围
+- `hextra-search-empty` - 空状态元素
+- `a[role="option"][aria-selected="true"]` - 选中的结果锚点
 
 #### 目录
 
@@ -248,6 +249,21 @@ layouts/_partials/custom/head-end.html
 您可以使用 [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) 和 [Hugo 模板语法](https://gohugo.io/templates/) 添加自己的内容。
 
 页脚部分可用的 Hugo 变量有：`.switchesVisible` 和 `.displayCopyright`。
+
+## 自定义页面部分
+
+您可以在站点中创建以下任一文件，在每个页面内容周围添加自定义部分：
+
+```
+layouts/_partials/custom/page-begin.html
+layouts/_partials/custom/content-begin.html
+layouts/_partials/custom/content-end.html
+layouts/_partials/custom/page-end.html
+```
+
+页面钩子会渲染在页面的 `<main>` 元素内。内容钩子会渲染在页面内容的前后。
+
+每个 partial 都会接收当前 Hugo 页面作为上下文，因此可以使用页面参数、站点参数以及其他 Hugo 模板功能。
 
 ## 自定义布局
 
