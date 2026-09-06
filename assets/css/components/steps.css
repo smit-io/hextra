@@ -1,7 +1,7 @@
 .hextra-steps {
   :where(h2, h3, h4, h5, h6):not(.no-step-marker) {
     counter-increment: step;
-    @apply hx:bg-hextra-light-100 hx:dark:bg-dark;
+    @apply hx:bg-hextra-light-100 hx:dark:bg-hextra-dark-600;
     @apply hx:ltr:before:ml-[-41px] hx:rtl:before:mr-[-44px];
     /* https://github.com/tailwindlabs/tailwindcss/issues/15597#issuecomment-2582673546 */
     @apply hx:before:bg-gray-200 hx:dark:before:bg-neutral-800;
