@@ -19,6 +19,7 @@ Run `make help` for the full annotated list. The important targets:
 | `make css` | Compile production CSS — regenerates stats first, so it's always correct |
 | `make css-watch` | Recompile CSS on change; run alongside `make dev` |
 | `make build` | Full production build into `docs/public` (compiles CSS first) |
+| `make preview` | Production build served by the always-on preview container at [localhost:8043](http://localhost:8043) |
 | `make test` / `test-mobile` / `test-build` | Playwright suites |
 | `make fmt` | Prettier over templates, CSS, and JS |
 | `make doctor` | Diagnose toolchain problems (Hugo/Node versions, stale binaries) |
@@ -35,12 +36,41 @@ There is also an `npm run watch:css` script (fork-only) mirroring `make css-watc
 
 Upstream uses a plain devcontainer image. The fork runs the devcontainer under **Docker Compose** (`.devcontainer/docker-compose.yml`) with two services:
 
-- **`dev`** — the Go devcontainer image your editor attaches to, with the repo mounted at `/workspaces/hextra`.
-- **`preview`** — a tiny (~258 kB) static file server (`pierrezemb/gostatic`) that serves `docs/public` read-only, with `Cache-Control: no-store` so you never debug a stale page. It starts with the dev container and stays up: re-running `make build` updates the served site with no container restart.
+- **`dev`** — the Go devcontainer image your editor attaches to, with the repo mounted at `/workspaces/hextra`. Devcontainer features install Hugo Extended (pinned version) and Node 22; `postCreateCommand` runs `npm install` so the container is build-ready on first open. A curated set of VS Code extensions (Tailwind, Hugo, Prettier, Git Graph, …) comes preconfigured.
+- **`preview`** — a tiny (~258 kB) static file server (`pierrezemb/gostatic`) that serves `docs/public` read-only, with `Cache-Control: no-store` so you never debug a stale page. It starts with the dev container and stays up: re-running `make build` (or `make preview`) updates the served site with no container restart.
 
 `devcontainer-lock.json` is tracked for reproducible tool versions.
 
 A named volume masks `node_modules` inside the container, so the container keeps its own Linux-native npm binaries (e.g. `lightningcss`) while the host keeps macOS ones — running `npm install` on one side no longer breaks the other.
+
+### Ports
+
+Both ports are auto-forwarded to the host (`forwardPorts` in `devcontainer.json`):
+
+| Port | Service | What you get |
+|---|---|---|
+| `1313` | Hugo dev server (`make dev` / `make serve`) | Live-reloading development build |
+| `8043` | Always-on `preview` container | The last **production** build from `docs/public` |
+
+The split matters: `1313` shows drafts with fast rebuilds, while `8043` shows exactly what ships — minified, garbage-collected, tree-shaken CSS. Check `8043` before releasing.
+
+### Typical workflow
+
+{{% steps %}}
+
+### Open in container
+
+VS Code → "Reopen in Container". First open installs Hugo, Node, and npm dependencies automatically.
+
+### Develop
+
+`make dev` and iterate at [localhost:1313](http://localhost:1313). Run `make css-watch` alongside when editing styles.
+
+### Verify the production build
+
+`make preview` builds for production and the result is immediately live at [localhost:8043](http://localhost:8043) — no server restart, the preview container just serves the refreshed files.
+
+{{% /steps %}}
 
 ## Syncing with upstream
 
