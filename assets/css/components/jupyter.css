@@ -25,7 +25,7 @@
 }
 
 .hextra-jupyter-isolated-output {
-  @apply hx:h-64 hx:w-full hx:rounded-md hx:border hx:border-gray-200 hx:bg-white hx:dark:border-neutral-800;
+  @apply hx:h-64 hx:w-full hx:rounded-md hx:border hx:border-gray-200 hx:bg-hextra-light-100 hx:dark:border-neutral-800;
 }
 
 .hextra-jupyter-notebook {
@@ -34,7 +34,7 @@
   }
 
   :where(h2):not(:where([class~=not-prose],[class~=not-prose] *)) {
-    @apply hx:border-b hx:pb-1 hx:border-neutral-200/70 hx:contrast-more:border-neutral-400 hx:dark:border-primary-100/10 hx:contrast-more:dark:border-neutral-400;
+    @apply hx:border-b hx:pb-1 hx:border-neutral-200/70 hx:contrast-more:border-neutral-400 hx:dark:border-hextra-accent-100/10 hx:contrast-more:dark:border-neutral-400;
   }
 
   :where(hr):not(:where([class~=not-prose],[class~=not-prose] *)) {
@@ -70,7 +70,7 @@
     }
 
     tbody tr:hover {
-      @apply hx:bg-primary-50 hx:dark:bg-primary-900/20;
+      @apply hx:bg-hextra-accent-50 hx:dark:bg-hextra-accent-900/20;
     }
   }
 }
