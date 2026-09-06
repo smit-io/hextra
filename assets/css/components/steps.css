@@ -1,4 +1,4 @@
-.steps {
+.hextra-steps {
   :where(h2, h3, h4, h5, h6):not(.no-step-marker) {
     counter-increment: step;
     @apply hx:bg-hextra-light-100 hx:dark:bg-dark;
@@ -17,7 +17,7 @@
   }
 }
 
-:lang(fa) .steps {
+:lang(fa) .hextra-steps {
   :where(h2, h3, h4, h5, h6):not(.no-step-marker) {
     &:before {
       content: counter(step, persian);
