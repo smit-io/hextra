@@ -18,6 +18,7 @@ This fork of [Hextra](https://github.com/imfing/hextra) adds a set of features o
 | Code blocks | Borderless, `rounded-xl`, faint highlight | [Bordered blocks](code-blocks), `rounded-sm`, accent line highlighting |
 | Favicons | Flat files in `static/` | Organized under `static/icons/` with [dark-mode favicon](favicons) support |
 | Dev workflow | npm scripts only | [Makefile, devcontainer, and upstream-sync helpers](dev-tooling) |
+| Authoring | Read the docs to recall every parameter | [49 VS Code snippets](vscode-snippets) for shortcodes, front matter, and code fences |
 
 {{< cards >}}
   {{< card link="google-fonts" title="Google Fonts" icon="sparkles" subtitle="Configurable heading, body, and code fonts with variable-font axes" >}}
@@ -26,6 +27,7 @@ This fork of [Hextra](https://github.com/imfing/hextra) adds a set of features o
   {{< card link="code-blocks" title="Code Blocks" icon="code" subtitle="Borders, tighter radii, and accent line highlighting" >}}
   {{< card link="favicons" title="Favicons" icon="photograph" subtitle="Organized icon directory and automatic dark-mode favicon" >}}
   {{< card link="dev-tooling" title="Dev Tooling" icon="terminal" subtitle="Makefile, devcontainer, and upstream sync workflow" >}}
+  {{< card link="vscode-snippets" title="VS Code Snippets" icon="cursor-click" subtitle="Tab-completion for every shortcode, front matter key, and code fence attribute" >}}
 {{< /cards >}}
 
 {{< callout type="info" >}}
