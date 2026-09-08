@@ -58,11 +58,18 @@ jobs:
         env:
           HUGO_ENVIRONMENT: production
           HUGO_ENV: production
+          # configure-pages reports http:// whenever https_enforced is false,
+          # which it always is here: the domain resolves to Cloudflare, so
+          # GitHub never provisions a certificate. Cloudflare serves https.
+          PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
         run: |
+          BASE_URL="${PAGES_BASE_URL:?configure-pages produced no base URL}"
+          BASE_URL="${BASE_URL/http:/https:}"
+          echo "Building with base URL: $BASE_URL"
           hugo \
             --minify \
             --themesDir=../.. --source=docs \
-            --baseURL "https://smitchoksi.com/hextra/" \
+            --baseURL "$BASE_URL/" \
             --destination=../public
 
       - name: Upload artifact
