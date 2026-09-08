@@ -114,7 +114,7 @@ menu:
         type: search
     - name: GitHub
       weight: 7
-      url: "https://github.com/imfing/hextra"
+      url: "https://github.com/smit-io/hextra"
       params:
         icon: github
     - identifier: development
@@ -187,7 +187,7 @@ menu:
         type: link
         icon: user-circle
     - name: GitHub
-      url: "https://github.com/imfing/hextra"
+      url: "https://github.com/smit-io/hextra"
       weight: 10
       params:
         icon: github
@@ -286,7 +286,7 @@ params:
 
   editURL:
     enable: true
-    base: "https://github.com/imfing/hextra/edit/main/docs/content"
+    base: "https://github.com/smit-io/hextra/edit/main/docs/content"
 
   blog:
     list:
@@ -385,10 +385,14 @@ params:
 
     # https://giscus.app/
     giscus:
-      repo: imfing/hextra
-      repoId: R_kgDOJ9fJag
+      repo: smit-io/hextra
+      # repoId and categoryId are GitHub node IDs, not derivable from the repo
+      # name. The previous values belonged to imfing/hextra, so comments would
+      # have posted to the upstream repo. Regenerate both at https://giscus.app
+      # for smit-io/hextra before setting comments.enable to true.
+      repoId: ""
       category: General
-      categoryId: DIC_kwDOJ9fJas4CY7gW
+      categoryId: ""
       # mapping: pathname
       # strict: 0
       # reactionsEnabled: 1
