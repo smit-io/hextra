@@ -319,6 +319,21 @@ params:
           - name: Bluesky
             icon: bluesky
             url: "https://bsky.app/intent/compose?text={title}%20{url}"
+          - name: Facebook
+            icon: facebook
+            url: "https://www.facebook.com/sharer/sharer.php?u={url}"
+          # Mastodon is federated and has no central share endpoint, so this
+          # points at one instance's /share route. Swap the host for your own.
+          - name: Mastodon
+            icon: mastodon
+            url: "https://mastodon.social/share?text={title}%20{url}"
+          - name: Telegram
+            icon: telegram
+            url: "https://t.me/share/url?url={url}&text={title}"
+          # No url: `type: copy` copies the post's permalink to the clipboard.
+          - name: Copy link
+            icon: link
+            type: copy
       related:
         count: 3
 
