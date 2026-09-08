@@ -12,7 +12,7 @@
 }
 
 .hextra-alert[data-alert="important"] {
-  @apply hx:border-indigo-400 hx:bg-indigo-50 hx:text-indigo-700 hx:dark:border-indigo-500/70 hx:dark:bg-indigo-950/60 hx:dark:text-indigo-400;
+  @apply hx:border-purple-400 hx:bg-purple-50 hx:text-purple-700 hx:dark:border-purple-500/70 hx:dark:bg-purple-950/60 hx:dark:text-purple-400;
 }
 
 .hextra-alert[data-alert="warning"] {
