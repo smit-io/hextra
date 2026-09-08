@@ -11,6 +11,8 @@ authors:
   - name: Goudarz Jafari
     link: https://github.com/Goudarz
     image: https://github.com/Goudarz.png
+cover: /images/hextra-markdown.webp
+pinned: true
 tags:
   - Markdown
   - مثال

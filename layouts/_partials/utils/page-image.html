@@ -1,0 +1,66 @@
+{{- /*
+  Resolve a page's cover image and return its URL and dimensions.
+
+  Resolution order:
+  1. the explicit `image` parameter, if given
+  2. front matter `cover`, then `featured_image`
+  3. a page bundle image resource matching `*cover*`, then `*featured*`
+  (the same convention `layouts/list.rss.xml` uses)
+
+  A named image is looked up in the page's own resources first, then in global
+  assets, then treated as a path under /static. Remote URLs and SVGs are passed
+  through unprocessed.
+
+  @param {page} page The page to resolve the image for.
+  @param {string} [image] An explicit image path, overriding front matter.
+  @param {string} [process] Image processing spec. Default "Resize 800x webp q80".
+  @returns {dict} `url`, `width`, `height` — empty dict when there is no image.
+
+  @example {{ $cover := partial "utils/page-image.html" (dict "page" . "process" "Resize 1600x webp q80")
+}}
+*/ -}}
+{{- $page := .page -}}
+{{- $process := .process | default "Resize 800x webp q80" -}}
+{{- $image := .image -}}
+{{- $url := "" -}}
+{{- $width := 0 -}}
+{{- $height := 0 -}}
+
+{{- with $page -}}
+  {{- if not $image -}}
+    {{- $image = or .Params.cover .Params.featured_image -}}
+  {{- end -}}
+
+  {{- $resource := false -}}
+  {{- if $image -}}
+    {{- if (urls.Parse $image).Scheme -}}
+      {{- $url = $image -}}
+    {{- else -}}
+      {{- $resource = or (.Resources.Get $image) (resources.Get $image) -}}
+      {{- if not $resource -}}
+        {{- $url = cond (hasPrefix $image "/") (relURL (strings.TrimPrefix "/" $image)) $image -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- with .Resources.ByType "image" -}}
+      {{- $resource = or (.GetMatch "*cover*") (.GetMatch "*featured*") -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- with $resource -}}
+    {{- if eq .MediaType.SubType "svg" -}}
+      {{- $url = .RelPermalink -}}
+    {{- else -}}
+      {{- $processed := .Process $process -}}
+      {{- $url = $processed.RelPermalink -}}
+      {{- $width = $processed.Width -}}
+      {{- $height = $processed.Height -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $result := dict -}}
+{{- with $url -}}
+  {{- $result = dict "url" . "width" $width "height" $height -}}
+{{- end -}}
+{{- return $result -}}

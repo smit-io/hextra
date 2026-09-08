@@ -148,6 +148,55 @@ menu:
       parent: more
       weight: 3
 
+  # Left identity rail on blog pages. Entries with a label become navigation
+  # rows; entries with only params.icon become the social links row.
+  blog:
+    - identifier: home
+      name: Home
+      pageRef: /
+      weight: 1
+      params:
+        type: link
+        icon: home
+    - identifier: blog
+      name: Blog
+      pageRef: /blog
+      weight: 2
+      params:
+        type: link
+        icon: newspaper
+    - identifier: documentation
+      name: Documentation
+      pageRef: /docs
+      weight: 3
+      params:
+        type: link
+        icon: book-open
+    - identifier: archives
+      name: Archives
+      pageRef: /archives
+      weight: 4
+      params:
+        type: link
+        icon: clock
+    - identifier: about
+      name: About
+      pageRef: /about
+      weight: 5
+      params:
+        type: link
+        icon: user-circle
+    - name: GitHub
+      url: "https://github.com/imfing/hextra"
+      weight: 10
+      params:
+        icon: github
+    - name: RSS
+      url: /blog/index.xml
+      weight: 11
+      params:
+        icon: rss
+
   sidebar:
     - identifier: more
       name: More
@@ -247,9 +296,55 @@ params:
       sortOrder: desc # or "asc"
       # Pagination
       pagerSize: 20
+      # Post cards with a cover image, reading time and excerpt.
+      # Remove this block to fall back to the plain list.
+      card:
+        enable: true
+        cover: true
+        readingTime: true
 
     article:
       displayPagination: true
+      cover: true
+      readingTime: true
+      tags: true
+      share:
+        links:
+          - name: X
+            icon: x-twitter
+            url: "https://x.com/intent/tweet?url={url}&text={title}"
+          - name: LinkedIn
+            icon: linkedin
+            url: "https://www.linkedin.com/sharing/share-offsite/?url={url}"
+          - name: Bluesky
+            icon: bluesky
+            url: "https://bsky.app/intent/compose?text={title}%20{url}"
+      related:
+        count: 3
+
+    # Left identity rail. Links come from the `blog` menu above; every element
+    # below renders only when its key is present.
+    rail:
+      onArticle: false
+      profile:
+        avatar: images/space.jpg
+        name: Hextra
+        tagline: Notes, release announcements and guides from the Hextra project.
+      sponsor:
+        title: Support Hextra
+        text: Hextra is built in the open, with no ads and no trackers.
+        url: "https://github.com/sponsors/imfing"
+        label: Become a sponsor →
+        icon: heart
+
+    # Right rail sections, rendered in this order.
+    widgets:
+      recent:
+        count: 5
+      pinned:
+        count: 3
+      tags:
+        count: 12
 
   archives:
     # Source section used for the archives page.

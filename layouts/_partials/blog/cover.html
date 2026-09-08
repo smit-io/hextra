@@ -1,0 +1,28 @@
+{{- /*
+  Cover image for a post card or a post hero.
+
+  Renders nothing when the page has no cover, so there is no placeholder and
+  no layout shift. The image is decorative — the post title always sits next
+  to it — so `alt` is intentionally empty.
+
+  @param {page} page The post.
+  @param {string} [variant] "card" (default) or "hero".
+
+  @example {{ partial "blog/cover.html" (dict "page" . "variant" "hero")
+}}
+*/ -}}
+{{- $hero := eq (.variant | default "card") "hero" -}}
+{{- $process := cond $hero "Resize 1600x webp q80" "Resize 800x webp q80" -}}
+{{- $cover := partial "utils/page-image.html" (dict "page" .page "process" $process) -}}
+{{- with $cover.url -}}
+  {{- $lazyLoading := site.Params.enableImageLazyLoading | default true -}}
+  <img
+    class="{{ cond $hero "hextra-blog-hero" "hextra-blog-card-image" }}"
+    src="{{ . | safeURL }}"
+    alt=""
+    {{ with $cover.width }}width="{{ . }}"{{ end }}
+    {{ with $cover.height }}height="{{ . }}"{{ end }}
+    decoding="async"
+    {{ if $lazyLoading }}loading="lazy"{{ end }}
+  />
+{{- end -}}
