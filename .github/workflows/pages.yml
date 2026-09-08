@@ -62,7 +62,7 @@ jobs:
           hugo \
             --minify \
             --themesDir=../.. --source=docs \
-            --baseURL "${{ steps.pages.outputs.base_url }}/" \
+            --baseURL "https://smitchoksi.com/hextra/" \
             --destination=../public
 
       - name: Upload artifact
