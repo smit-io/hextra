@@ -346,9 +346,9 @@ params:
         name: Hextra
         tagline: Notes, release announcements and guides from the Hextra project.
       sponsor:
-        title: Support Hextra
+        title: Sponsor
         text: Hextra is built in the open, with no ads and no trackers.
-        url: "https://github.com/sponsors/imfing"
+        url: /about
         label: Become a sponsor →
         icon: heart
 
