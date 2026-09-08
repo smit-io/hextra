@@ -19,3 +19,11 @@
     @apply hx:rotate-90;
   }
 }
+
+/* Separator entries ("More"): a rule above a small-caps section label,
+   matching the right side's widget headings and divider rhythm. The rule
+   and its spacing drop away when the separator opens the list. */
+.hextra-sidebar-separator {
+  @apply hx:mt-3.5 hx:mb-2 hx:border-t hx:border-gray-200 hx:px-2 hx:pt-3.5 hx:text-xs hx:font-semibold hx:tracking-wider hx:uppercase hx:text-gray-500 hx:first:mt-0 hx:first:border-t-0 hx:first:pt-0 hx:dark:border-neutral-800 hx:dark:text-gray-400 hx:contrast-more:border-neutral-400;
+  word-break: break-word;
+}
