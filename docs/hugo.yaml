@@ -325,7 +325,7 @@ params:
     # Left identity rail. Links come from the `blog` menu above; every element
     # below renders only when its key is present.
     rail:
-      onArticle: false
+      onArticle: true
       profile:
         avatar: images/space.jpg
         name: Hextra
