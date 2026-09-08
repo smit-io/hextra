@@ -9,14 +9,15 @@ The fork restyles code blocks for a crisper, more "editor-like" look: visible bo
 
 ## What changed vs upstream
 
-| Aspect | Upstream | This fork |
-|---|---|---|
-| Border | None | 1px border: `hextra-light-900` (light), `neutral-700` (dark) |
-| Corner radius | `rounded-xl` | `rounded-sm` |
-| Background | Translucent primary tint (`primary-700/5`) | Solid palette: `hextra-light-50` / `hextra-dark-50` |
-| Filename header | Primary-tinted, `rounded-t-xl` | Palette background (`hextra-light-200` / `hextra-dark-700`) with border, `rounded-t-sm` |
-| Line highlight | Faint `primary-800/10` wash | Accent background + 2px accent left border, tuned per mode |
-| Copy button | Broken contrast in light mode | Fixed, accent-styled |
+| Aspect          | Upstream                                   | This fork                                                                               |
+| --------------- | ------------------------------------------ | --------------------------------------------------------------------------------------- |
+| Border          | None                                       | 1px border: `hextra-light-900` (light), `neutral-700` (dark)                            |
+| Corner radius   | `rounded-xl`                               | `rounded-sm`                                                                            |
+| Background      | Translucent primary tint (`primary-700/5`) | Solid palette: `hextra-light-50` / `hextra-dark-50`                                     |
+| Filename header | Primary-tinted, `rounded-t-xl`             | Palette background (`hextra-light-200` / `hextra-dark-700`) with border, `rounded-t-sm` |
+| Line highlight  | Faint `primary-800/10` wash                | Accent background + 2px accent left border, tuned per mode                              |
+| Copy button     | Broken contrast in light mode              | Fixed, neutral surface that fits both modes                                             |
+| File-type icons | None                                       | Monochrome icon resolved from the filename extension                                    |
 
 ## Line highlighting
 
@@ -89,6 +90,33 @@ params:
 ```
 
 The filename bar sits flush on top of the block with its own border and palette background (`hextra-light-200` light / `hextra-dark-700` dark), visually reading as an editor tab.
+
+## File-type icons
+
+When a filename is set, the bar shows a monochrome icon matching the file extension (falling back to the code fence language). Icons inherit the bar's text color, so they adapt to light and dark mode automatically:
+
+````markdown {filename="Markdown"}
+```js {filename="app.js"}
+console.log("Hello!");
+```
+````
+
+will be rendered as:
+
+```js {filename="app.js"}
+console.log("Hello!");
+```
+
+The defaults use [Simple Icons](https://simpleicons.org) for languages and tools, vendored into the theme so builds work offline. Override the resolved icon per block with the `icon` attribute, extend the extension/language mappings by creating your own `data/codeblock-icons.yaml`, or disable the feature entirely:
+
+```yaml {filename="hugo.yaml"}
+params:
+  highlight:
+    filenameIcon:
+      enable: false
+```
+
+See [Syntax Highlighting](../guide/syntax-highlighting#file-type-icon) for the full reference.
 
 ## All together
 

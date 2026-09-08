@@ -15,9 +15,9 @@ All palettes live in `assets/css/styles.css` and are exposed as Tailwind v4 colo
 
 A tight greyscale ramp from near-white down to mid-grey:
 
-| Token | Value | Hex |
-|---|---|---|
-| `hextra-light-50` | `oklch(98.8% 0 0)` | `#fcfcfc` |
+| Token              | Value              | Hex       |
+| ------------------ | ------------------ | --------- |
+| `hextra-light-50`  | `oklch(98.8% 0 0)` | `#fcfcfc` |
 | `hextra-light-100` | `oklch(97.3% 0 0)` | `#f8f8f8` |
 | `hextra-light-200` | `oklch(93.7% 0 0)` | `#efefef` |
 | `hextra-light-300` | `oklch(90.6% 0 0)` | `#e7e7e7` |
@@ -33,11 +33,11 @@ A tight greyscale ramp from near-white down to mid-grey:
 
 A ramp of dark greys from near-black up:
 
-| Token | Value | Hex |
-|---|---|---|
-| `hextra-dark-50` | `oklch(3.1% 0 0)` | `#080808` |
-| `hextra-dark-100` | `oklch(6.7% 0 0)` | `#111111` |
-| `hextra-dark-200` | `oklch(9.0% 0 0)` | `#171717` |
+| Token             | Value              | Hex       |
+| ----------------- | ------------------ | --------- |
+| `hextra-dark-50`  | `oklch(3.1% 0 0)`  | `#080808` |
+| `hextra-dark-100` | `oklch(6.7% 0 0)`  | `#111111` |
+| `hextra-dark-200` | `oklch(9.0% 0 0)`  | `#171717` |
 | `hextra-dark-300` | `oklch(11.0% 0 0)` | `#1c1c1c` |
 | `hextra-dark-400` | `oklch(13.3% 0 0)` | `#222222` |
 | `hextra-dark-500` | `oklch(15.7% 0 0)` | `#282828` |
@@ -53,10 +53,11 @@ Two additional full-range greyscale ramps (`#ffffff` → `#292929` and `#f6f6f6`
 
 ## Where they are used
 
-- **Page background** — `body` uses `hextra-light-100` in light mode and `hextra-dark-600` in dark mode (instead of upstream's pure white / `#111`). Dark mode is intentionally *not* pure black: content surfaces (code blocks at `hextra-dark-50`, headers at `hextra-dark-700`) sit visibly above or below the page background.
+- **Page background** — `body` uses `hextra-light-100` in light mode and `hextra-dark-600` in dark mode (instead of upstream's pure white / `#111`). Dark mode is intentionally _not_ pure black: content surfaces (code blocks at `hextra-dark-50`, headers at `hextra-dark-700`) sit visibly above or below the page background.
 - **Code blocks** — backgrounds, borders, and filename headers; see [Code Blocks](code-blocks).
 - **Section borders** — e.g. `h2` underline borders use `hextra-dark-900` in dark mode.
 - **Component chrome** — search, sidebar, steps, alerts, gallery, navbar, and jupyter components were all migrated from `primary`-tinted greys to the palette tokens.
+- **Callouts and badges** — callouts and GitHub-style alerts use a saturated, GitHub-inspired palette per type (info, warning, error, ...), and badges use a higher-contrast variant of the same idea. Both are tuned separately for light and dark mode instead of reusing one tint at different opacities.
 
 ## Customizing
 
@@ -75,7 +76,7 @@ The palette variables follow the same pattern as the accent color — override t
 You only need to override the shades you want to change; the rest keep their defaults.
 
 {{< callout type="warning" >}}
-Keep the *ordering* of the ramp intact (each shade darker/lighter than its neighbor as in the defaults). Components assume the ramp is monotonic — inverting shades will produce invisible borders or low-contrast text.
+Keep the _ordering_ of the ramp intact (each shade darker/lighter than its neighbor as in the defaults). Components assume the ramp is monotonic — inverting shades will produce invisible borders or low-contrast text.
 {{< /callout >}}
 
 ## Why `oklch`?
