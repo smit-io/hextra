@@ -9,7 +9,9 @@ The fork ships a development workflow on top of upstream's npm scripts: a self-d
 
 ## Makefile
 
-Run `make help` for the full annotated list. The important targets:
+Run `make help` for the full annotated list. The important targets, by workflow:
+
+### Developing
 
 | Target | What it does |
 |---|---|
@@ -18,9 +20,36 @@ Run `make help` for the full annotated list. The important targets:
 | `make stats` | Regenerate `docs/hugo_stats.json` (the class inventory Tailwind tree-shakes against) |
 | `make css` | Compile production CSS — regenerates stats first, so it's always correct |
 | `make css-watch` | Recompile CSS on change; run alongside `make dev` |
-| `make build` | Full production build into `docs/public` (compiles CSS first) |
-| `make preview` | Production build served by the always-on preview container at [localhost:8043](http://localhost:8043) |
-| `make test` / `test-mobile` / `test-build` | Playwright suites |
+
+### Writing content
+
+| Target | What it does |
+|---|---|
+| `make new-blog NAME=my-post` | Scaffold a blog post (`docs/content/blog/my-post.md`) as a draft, with tags, excerpt marker, and commented author/cover/pinned fields |
+| `make new-doc NAME=guide/my-page` | Scaffold a docs page with title and tags; `weight` left commented for manual placement |
+| `make new-doc-auto NAME=guide/my-page` | Like `new-doc`, but `weight` is set automatically to one past the section's last page |
+| `make new-page NAME=showcase/thing` | Scaffold any page under `docs/content/` via the default archetype |
+
+### Building & previewing
+
+| Target | What it does |
+|---|---|
+| `make build` | Full production build into `docs/public` (compiles CSS first), drafts excluded — what ships |
+| `make preview` | Production build **including drafts**, served by the always-on preview container at [localhost:8043](http://localhost:8043) |
+
+### Testing
+
+| Target | What it does |
+|---|---|
+| `make test` | Full Playwright suite against a fresh draft-free production build |
+| `make test-a11y` | Accessibility tests only (WCAG 2.2 AA) |
+| `make test-mobile` / `test-build` | Mobile menu and build-output suites |
+| `make test-preview` | Rebuild the preview (drafts included), then run the suite against the live preview container — what you tested is what 8043 keeps serving |
+
+### Housekeeping
+
+| Target | What it does |
+|---|---|
 | `make fmt` | Prettier over templates, CSS, and JS |
 | `make doctor` | Diagnose toolchain problems (Hugo/Node versions, stale binaries) |
 | `make reset` | Wipe and reinstall `node_modules` — fixes host/devcontainer binary clashes |
@@ -31,6 +60,16 @@ The dependency chaining is the point: `make css` depends on `stats`, `make build
 {{< /callout >}}
 
 There is also an `npm run watch:css` script (fork-only) mirroring `make css-watch` for those who prefer npm.
+
+## Content scaffolding
+
+The `new-*` targets wrap `hugo new`, so front matter comes from the archetypes in `docs/archetypes/` (`blog.md`, `docs.md`, `docs-weighted.md`, `default.md`) and an existing file is refused rather than overwritten. `NAME` works with or without the `.md` extension, and nested paths are fine (`NAME=guide/deep/page`).
+
+Details worth knowing:
+
+- **Blog posts start as drafts** (`draft: true`): visible on `1313` and `8043`, excluded from `make build` until the flag is removed.
+- **`new-doc-auto` computes `weight`** by scanning the target folder's existing pages at creation time and adding one past the highest. Draft siblings are not counted, and spaced weight conventions (10, 20, 30…) yield 31, not 40.
+- **English only** — translated variants (`.fa.md`, `.ja.md`, `.zh-cn.md`) are copied manually alongside, matching the existing content layout.
 
 ## Devcontainer
 
@@ -52,7 +91,11 @@ Both ports are auto-forwarded to the host (`forwardPorts` in `devcontainer.json`
 | `1313` | Hugo dev server (`make dev` / `make serve`) | Live-reloading development build |
 | `8043` | Always-on `preview` container | The last **production** build from `docs/public` |
 
-The split matters: `1313` shows drafts with fast rebuilds, while `8043` shows exactly what ships — minified, garbage-collected, tree-shaken CSS. Check `8043` before releasing.
+The split matters: `1313` gives fast live rebuilds, while `8043` shows the production build — minified, garbage-collected, tree-shaken CSS. Both include drafts (`make preview` passes `-D` so unpublished posts can be checked in production form); only `make build` output is draft-free. Check `8043` before releasing.
+
+{{< callout type="warning" >}}
+`make test` and `make build` bake the config's `baseURL` into `docs/public`, so after either, the preview at `8043` serves a build whose absolute URLs point elsewhere. Re-run `make preview` to restore it — or use `make test-preview`, which tests the preview build itself and leaves `8043` correct. Inside the devcontainer, `test-preview` reaches the container as `http://preview:8043` (the compose service name); on a host checkout, override with `PREVIEW_TEST_URL=http://localhost:8043`.
+{{< /callout >}}
 
 ### Typical workflow
 
