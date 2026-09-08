@@ -40,6 +40,41 @@ def say_hello():
     print("Hello!")
 ```
 
+### File Type Icon
+
+When a filename is set, an icon matching its extension (or the code fence language as fallback) is shown automatically:
+
+````markdown {filename="Markdown"}
+```js {filename="app.js"}
+console.log("Hello!")
+```
+````
+
+```js {filename="app.js"}
+console.log("Hello!")
+```
+
+Override the resolved icon with the `icon` attribute — any icon from `data/icons.yaml` or a remote provider such as [Iconify](https://icon-sets.iconify.design) (`iconify:<set>/<icon>`):
+
+````markdown {filename="Markdown"}
+```text {filename="config" icon="iconify:vscode-icons/file-type-config"}
+key = value
+```
+````
+
+```text {filename="config" icon="iconify:vscode-icons/file-type-config"}
+key = value
+```
+
+The built-in mappings live in the theme's `data/codeblock-icons.yaml` and can be extended or overridden by creating the same file in your site. To disable icons entirely:
+
+```yaml {filename="hugo.yaml"}
+params:
+  highlight:
+    filenameIcon:
+      enable: false
+```
+
 ### Link to File
 
 {{< new-feature version="v0.9.2" >}}

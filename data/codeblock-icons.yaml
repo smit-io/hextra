@@ -1,0 +1,93 @@
+# Maps code block filenames and languages to icons shown in the filename bar.
+#
+# Resolution order: explicit `icon` attribute on the code fence, then the
+# filename extension (`extensions`), then the fence language (`languages`).
+# Values are icon names resolved by the `utils/icon` partial, so they can
+# reference icons bundled in `data/icons.yaml` or any remote provider
+# (e.g. `iconify:<set>/<icon>` for any set on https://icon-sets.iconify.design).
+#
+# Sites can extend or override these maps by creating their own
+# `data/codeblock-icons.yaml`.
+
+extensions:
+  js: iconify:vscode-icons/file-type-js-official
+  mjs: iconify:vscode-icons/file-type-js-official
+  cjs: iconify:vscode-icons/file-type-js-official
+  ts: iconify:vscode-icons/file-type-typescript-official
+  jsx: iconify:vscode-icons/file-type-reactjs
+  tsx: iconify:vscode-icons/file-type-reactts
+  py: iconify:vscode-icons/file-type-python
+  go: iconify:vscode-icons/file-type-go
+  rs: iconify:vscode-icons/file-type-rust
+  swift: iconify:vscode-icons/file-type-swift
+  java: iconify:vscode-icons/file-type-java
+  kt: iconify:vscode-icons/file-type-kotlin
+  c: iconify:vscode-icons/file-type-c
+  h: iconify:vscode-icons/file-type-c
+  cpp: iconify:vscode-icons/file-type-cpp
+  hpp: iconify:vscode-icons/file-type-cpp
+  cs: iconify:vscode-icons/file-type-csharp
+  php: iconify:vscode-icons/file-type-php
+  rb: iconify:vscode-icons/file-type-ruby
+  sh: iconify:vscode-icons/file-type-shell
+  bash: iconify:vscode-icons/file-type-shell
+  zsh: iconify:vscode-icons/file-type-shell
+  html: iconify:vscode-icons/file-type-html
+  css: iconify:vscode-icons/file-type-css
+  scss: iconify:vscode-icons/file-type-scss
+  json: iconify:vscode-icons/file-type-json
+  yaml: iconify:vscode-icons/file-type-yaml
+  yml: iconify:vscode-icons/file-type-yaml
+  toml: iconify:vscode-icons/file-type-toml
+  xml: iconify:vscode-icons/file-type-xml
+  md: iconify:vscode-icons/file-type-markdown
+  mdx: iconify:vscode-icons/file-type-mdx
+  sql: iconify:vscode-icons/file-type-sql
+  graphql: iconify:vscode-icons/file-type-graphql
+  vue: iconify:vscode-icons/file-type-vue
+  svelte: iconify:vscode-icons/file-type-svelte
+  dockerfile: iconify:vscode-icons/file-type-docker
+  tf: iconify:vscode-icons/file-type-terraform
+  txt: iconify:vscode-icons/file-type-text
+
+languages:
+  javascript: iconify:vscode-icons/file-type-js-official
+  js: iconify:vscode-icons/file-type-js-official
+  typescript: iconify:vscode-icons/file-type-typescript-official
+  ts: iconify:vscode-icons/file-type-typescript-official
+  jsx: iconify:vscode-icons/file-type-reactjs
+  tsx: iconify:vscode-icons/file-type-reactts
+  python: iconify:vscode-icons/file-type-python
+  py: iconify:vscode-icons/file-type-python
+  go: iconify:vscode-icons/file-type-go
+  rust: iconify:vscode-icons/file-type-rust
+  swift: iconify:vscode-icons/file-type-swift
+  java: iconify:vscode-icons/file-type-java
+  kotlin: iconify:vscode-icons/file-type-kotlin
+  c: iconify:vscode-icons/file-type-c
+  cpp: iconify:vscode-icons/file-type-cpp
+  csharp: iconify:vscode-icons/file-type-csharp
+  php: iconify:vscode-icons/file-type-php
+  ruby: iconify:vscode-icons/file-type-ruby
+  bash: iconify:vscode-icons/file-type-shell
+  sh: iconify:vscode-icons/file-type-shell
+  shell: iconify:vscode-icons/file-type-shell
+  zsh: iconify:vscode-icons/file-type-shell
+  html: iconify:vscode-icons/file-type-html
+  css: iconify:vscode-icons/file-type-css
+  scss: iconify:vscode-icons/file-type-scss
+  json: iconify:vscode-icons/file-type-json
+  yaml: iconify:vscode-icons/file-type-yaml
+  yml: iconify:vscode-icons/file-type-yaml
+  toml: iconify:vscode-icons/file-type-toml
+  xml: iconify:vscode-icons/file-type-xml
+  markdown: iconify:vscode-icons/file-type-markdown
+  md: iconify:vscode-icons/file-type-markdown
+  mdx: iconify:vscode-icons/file-type-mdx
+  sql: iconify:vscode-icons/file-type-sql
+  graphql: iconify:vscode-icons/file-type-graphql
+  vue: iconify:vscode-icons/file-type-vue
+  svelte: iconify:vscode-icons/file-type-svelte
+  docker: iconify:vscode-icons/file-type-docker
+  dockerfile: iconify:vscode-icons/file-type-docker
+  terraform: iconify:vscode-icons/file-type-terraform
