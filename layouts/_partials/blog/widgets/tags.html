@@ -13,11 +13,11 @@
     {{- $title := (T "trendingTags") | default "Trending tags" -}}
     <section class="hextra-blog-widget">
       {{- partial "blog/widget-heading.html" (dict "title" $title "icon" "hashtag") -}}
-      <div class="hextra-blog-tag-cloud">
+      <div class="hextra-tag-cloud">
         {{- range . -}}
-          <a class="hextra-blog-tag-chip" href="{{ .Page.RelPermalink }}">
+          <a class="hextra-tag-chip" href="{{ .Page.RelPermalink }}">
             <span>#{{ .Page.LinkTitle }}</span>
-            <span class="hextra-blog-tag-count">{{ .Count }}</span>
+            <span class="hextra-tag-count">{{ .Count }}</span>
           </a>
         {{- end -}}
       </div>
