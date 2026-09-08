@@ -252,6 +252,12 @@ ci-preflight:
 	@command -v act >/dev/null 2>&1 || { $(WARN) "act is not installed - brew install act (https://nektosact.com)"; exit 1; }
 	@docker info >/dev/null 2>&1 || { $(WARN) "Docker is not running - start it and retry"; exit 1; }
 
+.PHONY: ci-dry
+ci-dry: ci-preflight ## Validate all workflows without running them (act dry run)
+	@$(SAY) "Dry-running all workflows (no containers started)"
+	@act pull_request -n
+	@act push -n
+
 .PHONY: ci
 ci: ci-preflight ## Run all pull-request workflows locally (a11y, build, mobile)
 	@$(SAY) "Running pull_request workflows under act"
