@@ -14,8 +14,6 @@ Upstream Hextra derives its whole primary color from three HSL variables — one
 
 <!--more-->
 
-![Accent color applied across sidebar, links and table of contents in light mode](/images/blog/accent-docs-light.png)
-
 ## Why a palette instead of a hue?
 
 Deriving 10 shades from a single hue/saturation pair produces muddy mid-tones and poor contrast at the extremes. A hand-picked (or generator-picked) palette lets each shade be tuned independently — and `oklch` keeps perceived lightness consistent across hues, so an orange accent and a blue accent at shade `500` *look* equally bright.

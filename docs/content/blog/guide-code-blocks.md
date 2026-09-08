@@ -4,7 +4,7 @@ date: 2026-09-08
 authors:
   - name: smit-io
     link: https://github.com/smit-io
-cover: /images/blog/code-all-light.png
+cover: /images/blog/code-linenos-light.png
 tags:
   - Guide
   - Fork Features
@@ -113,6 +113,13 @@ package main
 func main() {}
 ```
 ````
+
+will be rendered as:
+
+```go {linenos=table,hl_lines=[2]}
+package main
+func main() {}
+```
 
 Highlighted lines inside the code cell also drop their left accent border — it would otherwise appear mid-block, between the numbers and the code.
 

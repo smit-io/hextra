@@ -14,8 +14,6 @@ The fork replaces upstream's single-column blog with a configurable three-column
 
 <!--more-->
 
-![The three-column blog layout: identity rail, post cards, widgets](/images/blog/blog-list-light.png)
-
 ## The three columns
 
 | Column     | Content                                                                 | Config key                                |

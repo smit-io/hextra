@@ -14,8 +14,6 @@ Typography is the fastest way to make a documentation site feel like *yours*. Th
 
 <!--more-->
 
-![The Google Fonts docs page rendered with Sora headings, Mozilla Text body and Google Sans Code](/images/blog/google-fonts-page.png)
-
 ## What you get
 
 Three independently configurable font groups:
