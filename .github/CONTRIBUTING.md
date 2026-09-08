@@ -100,11 +100,11 @@ It will compile the Tailwind CSS styles and generate the `assets/css/compiled/ma
 
 [fork and pull]: https://docs.github.com/en/get-started/quickstart/contributing-to-projects
 [conventional commits]: https://www.conventionalcommits.org
-[issues]: https://github.com/imfing/hextra/issues
-[discussions]: https://github.com/imfing/hextra/discussions
+[issues]: https://github.com/smit-io/hextra/issues
+[discussions]: https://github.com/smit-io/hextra/discussions
 [nodejs]: https://nodejs.org/en/
 [hugo]: https://gohugo.io/
 [go]: https://golang.org/doc/install
 [devcontainer]: https://code.visualstudio.com/docs/devcontainers/containers
-[open in codespaces]: https://codespaces.new/imfing/hextra
+[open in codespaces]: https://codespaces.new/smit-io/hextra
 [netlify deploy preview]: https://docs.netlify.com/site-deploys/deploy-previews/

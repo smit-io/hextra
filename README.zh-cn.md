@@ -12,7 +12,7 @@
 </picture>
 
 <div align="right">
-<a href="https://github.com/imfing/hextra/actions/workflows/pages.yml"><img alt="GitHub Actions Status" src="https://github.com/imfing/hextra/actions/workflows/pages.yml/badge.svg"></a> <a href="https://app.netlify.com/sites/hugo-hextra/deploys"><img alt="Netlify Status" src="https://api.netlify.com/api/v1/badges/61d6e55a-2447-487e-b59f-c9537e5df175/deploy-status"></a>
+<a href="https://github.com/smit-io/hextra/actions/workflows/pages.yml"><img alt="GitHub Actions Status" src="https://github.com/smit-io/hextra/actions/workflows/pages.yml/badge.svg"></a>
 </div>
 
 ## 特性
