@@ -1,6 +1,9 @@
 import { defineConfig } from "@playwright/test";
 
-const baseURL = process.env.BASE_URL || "http://localhost:1313";
+// 127.0.0.1, not localhost. In the devcontainer /etc/hosts maps localhost to
+// both 127.0.0.1 and ::1; Node resolves verbatim and binds `serve` to ::1 only,
+// which Chromium reaches but Node's fetch (accessibility.spec.ts) does not.
+const baseURL = process.env.BASE_URL || "http://127.0.0.1:1313";
 
 export default defineConfig({
   testDir: "./tests",
@@ -13,7 +16,7 @@ export default defineConfig({
   webServer: process.env.BASE_URL
     ? undefined
     : {
-        command: "npx serve docs/public -l tcp://localhost:1313 --no-clipboard",
+        command: "npx serve docs/public -l tcp://127.0.0.1:1313 --no-clipboard",
         url: baseURL,
         reuseExistingServer: !process.env.CI,
         timeout: 30_000,
