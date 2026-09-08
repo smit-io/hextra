@@ -201,6 +201,27 @@
   @apply hx:mt-3 hx:mb-0 hx:leading-7 hx:text-gray-600 hx:dark:text-gray-300;
 }
 
+/* Horizontal card variant (tag pages): cover on the inline-start edge, text
+   filling the rest. Without a cover the body simply spans the full width. */
+.hextra-blog-card-h {
+  @apply hx:flex hx:items-stretch;
+}
+
+.hextra-blog-card-h-cover {
+  @apply hx:w-44 hx:shrink-0 hx:overflow-hidden hx:bg-gray-100 hx:max-sm:hidden hx:dark:bg-neutral-800;
+}
+
+/* The shared card image is letterboxed to 2.4:1 for the vertical card; in the
+   horizontal card it fills the cover column's full height instead. */
+.hextra-blog-card-h .hextra-blog-card-image {
+  @apply hx:h-full;
+  aspect-ratio: auto;
+}
+
+.hextra-blog-card-h .hextra-blog-card-body {
+  @apply hx:min-w-0 hx:flex-1;
+}
+
 .hextra-blog-meta {
   @apply hx:mt-2 hx:flex hx:flex-wrap hx:items-center hx:gap-x-2 hx:gap-y-1 hx:text-sm hx:tabular-nums hx:text-gray-500 hx:dark:text-gray-400;
 }

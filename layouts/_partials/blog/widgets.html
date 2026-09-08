@@ -8,6 +8,9 @@
   @param {page} context The page being rendered.
   @param {dict} config The dict returned by `blog/config.html`.
   @param {string} layout "rail" (default) or "inline".
+  @param {string} [section] Section to draw pages from. Defaults to the
+    context page's own section; pages outside the blog (the tag pages) pass
+    "blog" explicitly.
 
   @example {{ partial "blog/widgets.html" (dict "context" . "config" $cfg "layout" "rail")
 }}
@@ -18,7 +21,7 @@
   {{- $inline := eq (.layout | default "rail") "inline" -}}
   {{- $blogWidgets := (T "blogWidgets") | default "More from the blog" -}}
 
-  {{- $section := $context.Section -}}
+  {{- $section := .section | default $context.Section -}}
   {{- $pages := where site.RegularPages "Section" $section -}}
   {{- if eq $context.Kind "page" -}}
     {{- $pages = where $pages "Permalink" "!=" $context.Permalink -}}
