@@ -171,7 +171,14 @@
 }
 
 .hextra-blog-card {
-  @apply hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:bg-hextra-light-50 hx:transition-colors hx:hover:border-hextra-accent-400 hx:dark:border-neutral-800 hx:dark:bg-hextra-dark-500;
+  @apply hx:relative hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:bg-hextra-light-50 hx:transition-colors hx:hover:border-hextra-accent-400 hx:dark:border-neutral-800 hx:dark:bg-hextra-dark-500;
+}
+
+/* Stretch the title link over the whole card so anywhere on it opens the post,
+   while keeping a single link with the title as its accessible name. */
+.hextra-blog-card-link::after {
+  @apply hx:absolute hx:inset-0;
+  content: "";
 }
 
 .hextra-blog-card-cover {
@@ -203,11 +210,6 @@
   @apply hx:mt-3 hx:mb-0 hx:leading-7 hx:text-gray-600 hx:dark:text-gray-300;
 }
 
-.hextra-blog-card-more {
-  @apply hx:mt-3 hx:inline-block hx:text-hextra-accent-500 hx:underline hx:underline-offset-2 hx:hextra-focus-visible;
-  text-decoration-thickness: from-font;
-}
-
 .hextra-blog-meta {
   @apply hx:mt-2 hx:flex hx:flex-wrap hx:items-center hx:gap-x-2 hx:gap-y-1 hx:text-sm hx:tabular-nums hx:text-gray-500 hx:dark:text-gray-400;
 }
@@ -216,8 +218,9 @@
   @apply hx:opacity-50;
 }
 
+/* Raised above the card's stretched link so individual tags stay clickable. */
 .hextra-blog-meta-tags {
-  @apply hx:inline-flex hx:flex-wrap hx:gap-x-1;
+  @apply hx:relative hx:z-1 hx:inline-flex hx:flex-wrap hx:gap-x-1;
 }
 
 /* ------------------------------------------------------------ post page */
