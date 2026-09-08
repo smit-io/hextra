@@ -817,7 +817,7 @@
       "hx:to-gray-600",
       "hx:top-0",
       "hx:top-1/2",
-      "hx:top-8",
+      "hx:top-10",
       "hx:top-[40%]",
       "hx:top-[var(--hextra-navbar-height)]",
       "hx:top-full",
