@@ -20,6 +20,11 @@ PORT        ?= 1313
 # Production output is built with an absolute baseURL, so this must match the
 # forwarded port or every link on the previewed site breaks.
 PREVIEW_URL ?= http://localhost:8043/
+# The preview container as reached from where tests run: inside the
+# devcontainer that's the compose service name (localhost:8043 only exists on
+# the host, via forwardPorts). On a host checkout, override:
+#   make test-preview PREVIEW_TEST_URL=http://localhost:8043
+PREVIEW_TEST_URL ?= http://preview:8043
 SITE        := docs
 STATS       := $(SITE)/hugo_stats.json
 CSS_OUT     := assets/css/compiled/main.css
@@ -152,6 +157,37 @@ css-watch: deps ## Recompile CSS on change (run alongside `make dev`)
 	@$(SAY) "Watching CSS"
 	@npm run watch:css
 
+##@ Content
+
+# All three wrap `hugo new`, so front matter comes from docs/archetypes/ and
+# an existing file is refused rather than overwritten. `.md` on NAME is
+# optional - it is stripped and re-added so both spellings work. English only;
+# translations are copied manually alongside (`.fa.md`, `.ja.md`, ...).
+
+.PHONY: new-blog
+new-blog: ## Create a blog post: make new-blog NAME=my-post
+	@if [ -z "$(NAME)" ]; then $(WARN) "NAME required, e.g. make new-blog NAME=my-post"; exit 1; fi
+	@hugo new --source=$(SITE) --themesDir=../.. "content/blog/$(patsubst %.md,%,$(NAME)).md"
+	@$(OK) "created $(SITE)/content/blog/$(patsubst %.md,%,$(NAME)).md (draft)"
+
+.PHONY: new-doc
+new-doc: ## Create a docs page: make new-doc NAME=guide/my-page
+	@if [ -z "$(NAME)" ]; then $(WARN) "NAME required, e.g. make new-doc NAME=guide/my-page"; exit 1; fi
+	@hugo new --source=$(SITE) --themesDir=../.. "content/docs/$(patsubst %.md,%,$(NAME)).md"
+	@$(OK) "created $(SITE)/content/docs/$(patsubst %.md,%,$(NAME)).md"
+
+.PHONY: new-doc-auto
+new-doc-auto: ## Like new-doc, but weight is auto-set after the section's last page
+	@if [ -z "$(NAME)" ]; then $(WARN) "NAME required, e.g. make new-doc-auto NAME=guide/my-page"; exit 1; fi
+	@hugo new --source=$(SITE) --themesDir=../.. --kind docs-weighted "content/docs/$(patsubst %.md,%,$(NAME)).md"
+	@$(OK) "created $(SITE)/content/docs/$(patsubst %.md,%,$(NAME)).md"
+
+.PHONY: new-page
+new-page: ## Create any page under docs/content: make new-page NAME=showcase/thing
+	@if [ -z "$(NAME)" ]; then $(WARN) "NAME required, e.g. make new-page NAME=showcase/thing"; exit 1; fi
+	@hugo new --source=$(SITE) --themesDir=../.. "content/$(patsubst %.md,%,$(NAME)).md"
+	@$(OK) "created $(SITE)/content/$(patsubst %.md,%,$(NAME)).md"
+
 ##@ Build
 
 .PHONY: build
@@ -161,9 +197,9 @@ build: css ## Production build into docs/public
 	@$(OK) "built to $(SITE)/public"
 
 .PHONY: preview
-preview: css ## Build production output for the always-on preview service
+preview: css ## Build production output for the always-on preview service (includes drafts)
 	@$(SAY) "Building $(SITE) with baseURL $(PREVIEW_URL)"
-	@hugo --gc --minify --themesDir=../.. --source=$(SITE) --baseURL $(PREVIEW_URL)
+	@hugo --gc --minify --themesDir=../.. --source=$(SITE) --baseURL $(PREVIEW_URL) -D
 	@$(OK) "built - open $(PREVIEW_URL)"
 	@$(WARN) "Served by the 'preview' container, which is already running."
 	@$(WARN) "Re-run this target to update it; no restart needed."
@@ -182,6 +218,14 @@ preview: css ## Build production output for the always-on preview service
 .PHONY: test
 test: build ## Build, then run the full Playwright suite
 	@npm test
+
+# Runs against the always-on preview container instead of Playwright's own
+# `npx serve`, so what you tested is exactly what port 8043 keeps serving
+# afterwards. Drafts are included - preview builds with -D - so a failing
+# half-written draft fails here, not in `make test`.
+.PHONY: test-preview
+test-preview: preview ## Rebuild the preview (with drafts), then run the suite against it
+	@BASE_URL=$(PREVIEW_TEST_URL) npm test
 
 .PHONY: test-a11y
 test-a11y: build ## Build, then run accessibility tests (WCAG 2.2 AA)
