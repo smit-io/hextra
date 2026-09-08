@@ -50,9 +50,7 @@
   @apply hx:flex hx:items-center hx:gap-2 hx:-mx-2 hx:rounded-md hx:px-2 hx:py-1.5 hx:text-sm hx:font-medium hx:text-gray-600 hx:transition-colors hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-50 hx:hextra-focus-visible;
 }
 
-.hextra-blog-nav-link[aria-current="page"] {
-  @apply hx:bg-hextra-accent-50 hx:font-semibold hx:text-hextra-accent-600 hx:dark:bg-neutral-800 hx:dark:text-hextra-accent-400;
-}
+/* Active state lives in components/nav-active.css, shared with the sidebar. */
 
 .hextra-blog-nav-icon {
   @apply hx:shrink-0 hx:opacity-70;
