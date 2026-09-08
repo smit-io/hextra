@@ -23,3 +23,27 @@
 .hextra-tag-chip:focus-visible .hextra-tag-count {
   @apply hx:text-hextra-accent-600 hx:dark:text-hextra-accent-400;
 }
+
+/* Full-page tag cloud on the taxonomy page (/tags/): same chips as the
+   trending tags widget, slightly larger for a whole-page context. */
+.hextra-tag-browse {
+  @apply hx:mt-2 hx:flex hx:flex-wrap hx:gap-2;
+}
+
+.hextra-tag-browse .hextra-tag-chip {
+  @apply hx:px-3 hx:py-1 hx:text-sm;
+}
+
+/* Heading line shared by /tags/ and the per-tag pages:
+   tag icon, term title, then a muted "· N" page count. */
+.hextra-tag-page-title {
+  @apply hx:mt-2 hx:mb-6 hx:flex hx:items-center hx:gap-2 hx:text-3xl hx:font-bold hx:tracking-tight hx:text-slate-900 hx:dark:text-slate-100;
+}
+
+.hextra-tag-page-icon {
+  @apply hx:shrink-0 hx:opacity-70;
+}
+
+.hextra-tag-page-count {
+  @apply hx:font-normal hx:tabular-nums hx:text-gray-500 hx:dark:text-gray-400;
+}
