@@ -10,7 +10,15 @@
     },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "22"
-    }
+    },
+    // Docker CLI against the host daemon (socket mounted in docker-compose.yml)
+    // so `make ci*` can run act inside the container.
+    // moby: false — the moby packages don't exist on Debian trixie (this
+    // image's base); Docker's official CLI packages do.
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": false
+    },
+    "ghcr.io/devcontainers-extra/features/act:1": {}
   },
   "customizations": {
     "vscode": {

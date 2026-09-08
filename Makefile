@@ -240,6 +240,40 @@ test-mobile: build ## Build, then run mobile menu tests
 test-build: build ## Build, then run build-output tests (asciidoc, render-link, search data)
 	@npm run test:build
 
+##@ Local CI (act)
+
+# Run the GitHub Actions workflows locally in Docker via nektos/act, with the
+# defaults pinned in .actrc. The first run pulls the runner image (~2 GB) and
+# downloads Hugo and Playwright inside the container; --reuse keeps the job
+# containers so later runs skip all of that.
+
+.PHONY: ci-preflight
+ci-preflight:
+	@command -v act >/dev/null 2>&1 || { $(WARN) "act is not installed - brew install act (https://nektosact.com)"; exit 1; }
+	@docker info >/dev/null 2>&1 || { $(WARN) "Docker is not running - start it and retry"; exit 1; }
+
+.PHONY: ci
+ci: ci-preflight ## Run all pull-request workflows locally (a11y, build, mobile)
+	@$(SAY) "Running pull_request workflows under act"
+	@act pull_request
+
+.PHONY: ci-a11y
+ci-a11y: ci-preflight ## Run the accessibility workflow locally
+	@act pull_request -W .github/workflows/test-accessibility.yml
+
+.PHONY: ci-build
+ci-build: ci-preflight ## Run the build-output workflow locally
+	@act pull_request -W .github/workflows/test-build.yml
+
+.PHONY: ci-mobile
+ci-mobile: ci-preflight ## Run the mobile menu workflow locally
+	@act pull_request -W .github/workflows/test-mobile-menu.yml
+
+.PHONY: ci-pages
+ci-pages: ci-preflight ## Run the Pages build job locally (deploy is GitHub-only)
+	@$(SAY) "Running the pages build job (the deploy job needs GitHub's OIDC token and is skipped)"
+	@act push -W .github/workflows/pages.yml -j build
+
 ##@ Housekeeping
 
 .PHONY: clean
