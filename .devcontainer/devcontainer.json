@@ -36,7 +36,12 @@
   // root-owned, because nothing exists at that path in the image for Docker to
   // seed ownership from. Claim it for the container user before installing,
   // otherwise npm fails with EACCES on the first mkdir.
-  "postCreateCommand": "sudo chown -R \"$(id -u):$(id -g)\" node_modules && npm install",
+  //
+  // Playwright browsers are not in the image and not in node_modules; they go
+  // to ~/.cache/ms-playwright. Run unprivileged so that cache is owned by the
+  // container user; --with-deps elevates on its own for the apt step only.
+  // Chromium only: playwright.config.ts declares no projects.
+  "postCreateCommand": "sudo chown -R \"$(id -u):$(id -g)\" node_modules && npm install && npx playwright install --with-deps chromium",
   // 1313 is the Hugo dev server, preview:8043 is the goStatic service.
   "forwardPorts": [1313, "preview:8043"]
 }
