@@ -16,10 +16,28 @@
 }}
 */ -}}
 {{- if .config.rail.enable -}}
+  {{- $context := .context -}}
   {{- $blogNavigation := (T "blogNavigation") | default "Blog navigation" -}}
+  {{- $displayThemeToggle := (site.Params.theme.displayToggle | default true) -}}
   <aside class="hextra-blog-rail hx:print:hidden" aria-label="{{ $blogNavigation }}">
     <div class="hextra-scrollbar hextra-blog-rail-inner">
-      {{- partial "blog/identity.html" (dict "context" .context "config" .config "layout" "rail") -}}
+      {{- partial "blog/identity.html" (dict "context" $context "config" .config "layout" "rail") -}}
     </div>
+    {{- /* Same sticky language/theme switch panel as the docs sidebar; when it
+    renders, the footer copy (enabled by sidebar.html for sidebar-less pages)
+    is suppressed. Mobile keeps the switches in the navbar drawer. */ -}}
+    {{- if or hugo.IsMultilingual $displayThemeToggle -}}
+      {{- $context.Store.Set "enableFooterSwitches" false -}}
+      <div class="hextra-blog-rail-switches{{ if hugo.IsMultilingual }} hx:justify-end{{ end }}" data-toggle-animation="show">
+        {{- with hugo.IsMultilingual -}}
+          {{- partial "language-switch" (dict "context" $context "grow" true) -}}
+          {{- with $displayThemeToggle }}{{ partial "theme-toggle" (dict "hideLabel" true "location" "bottom-right") }}{{ end -}}
+        {{- else -}}
+          {{- with $displayThemeToggle -}}
+            <div class="hx:flex hx:grow hx:flex-col">{{ partial "theme-toggle" }}</div>
+          {{- end -}}
+        {{- end -}}
+      </div>
+    {{- end -}}
   </aside>
 {{- end -}}
