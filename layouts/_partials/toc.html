@@ -14,7 +14,7 @@
   {{- if $toc }}
     <div class="hextra-scrollbar hx:sticky hx:top-[var(--hextra-navbar-height)] hx:overflow-y-auto hx:pr-4 hx:pt-6 hx:text-sm [hyphens:auto] hx:max-h-[calc(100vh-var(--hextra-navbar-height)-env(safe-area-inset-bottom))] hx:ltr:-mr-4 hx:rtl:-ml-4">
       {{- with $headings -}}
-        <p class="hx:mb-4 hx:font-semibold hx:tracking-tight">{{ $onThisPage }}</p>
+        {{ partial "blog/widget-heading.html" (dict "title" $onThisPage "icon" "menu") }}
         {{- range . -}}
           <ul>
             {{- with .Headings -}}{{ template "toc-subheading" (dict "headings" . "level" 0) }}{{- end -}}
@@ -32,9 +32,9 @@
       <div class="{{ $borderClass }} hx:sticky hx:bottom-0 hx:flex hx:flex-col hx:items-start hx:gap-2 hx:pb-8 hx:border-gray-200 hx:dark:border-neutral-800 hx:contrast-more:border-t hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:border-neutral-400">
         {{- if and site.Params.toc.displayTags .Params.tags -}}
           <div class="hx:w-full">
-            {{/* Titled section, like "On this page" above and the rail's own
-            widgets: heading on its own line with the chips beneath it. */}}
-            <p class="hx:mb-3 hx:font-semibold hx:tracking-tight">{{ $tags }}</p>
+            {{/* Same heading treatment as the blog rail widgets and "On this
+            page" above. */}}
+            {{ partial "blog/widget-heading.html" (dict "title" $tags "icon" "hashtag") }}
             <div class="hextra-tag-cloud">
               {{ partial "tags.html" (dict "context" . "variant" "chip") }}
             </div>
