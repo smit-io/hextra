@@ -1,0 +1,144 @@
+---
+title: 博客布局
+weight: 8
+---
+
+本 fork 将上游的单栏博客替换为可配置的三栏布局：左侧是身份栏，中间是文章列表或正文，右侧是一列小部件。一切都由站点配置中的 `params.blog` 驱动——没有 `params.blog` 配置块的站点会原样渲染上游的原始标记。
+
+<!--more-->
+
+## 布局一览
+
+| 栏位     | 内容                                                                   | 配置键                                    |
+| -------- | ---------------------------------------------------------------------- | ----------------------------------------- |
+| 左侧栏   | 头像、名称、标语、导航链接、赞助卡片、语言/主题切换                    | `params.blog.rail`                        |
+| 中间     | 文章卡片（列表页）或文章正文                                           | `params.blog.list`, `params.blog.article` |
+| 右侧栏   | 最近更新、置顶文章、热门标签                                           | `params.blog.widgets`                     |
+
+每个功能都是可选启用的：定义一个配置块即开启，显式设置 `enable: false` 则将其关闭。侧栏在 `md` 断点以下会被隐藏，此时身份区块改为在内容栏顶部以横幅形式呈现。
+
+## 身份栏
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    rail:
+      onArticle: true # also show the rail on individual posts
+      profile:
+        avatar: images/space.jpg
+        name: Hextra
+        tagline: Notes, release announcements and guides.
+      sponsor:
+        title: Support Hextra
+        text: Hextra is built in the open, with no ads and no trackers.
+        url: "https://github.com/sponsors/imfing"
+        label: Become a sponsor →
+        icon: heart
+```
+
+- 导航链接来自 `blog` 菜单（配置中的 `menus.blog`）——带有标签的条目会成为侧栏导航。
+- 每个元素仅在对应的键存在时才渲染：省略 `sponsor` 就不会出现赞助卡片。
+- 侧栏底部固定着与文档侧边栏相同的粘性语言和主题切换面板，无需滚动回顶部即可切换。
+- 单个页面可以在 front matter 中通过 `blog: { rail: false }` 选择不显示侧栏。
+
+## 文章卡片
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    list:
+      displayTags: true
+      sortBy: date # date | lastmod | publishDate | title | weight
+      sortOrder: desc
+      pagerSize: 20
+      card:
+        enable: true
+        cover: true
+        readingTime: true
+```
+
+启用 `card.enable` 后，列表页会将每篇文章渲染为带封面图、阅读时长和摘要的卡片——并且整张卡片都可点击，而不仅仅是标题。卡片模式下列表页标题会被隐藏，因为侧栏已经标识了页面身份。移除 `card` 配置块即可回退到普通列表。
+
+## 文章页
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    article:
+      displayPagination: true
+      cover: true
+      readingTime: true
+      tags: true
+      related:
+        count: 3
+```
+
+`related.count` 会在文章末尾根据共同标签渲染一个“相关文章”区块。
+
+### 分享按钮
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    article:
+      share:
+        links:
+          - name: X
+            icon: x-twitter
+            url: "https://x.com/intent/tweet?url={url}&text={title}"
+          - name: Mastodon
+            icon: mastodon
+            # Mastodon is federated: this targets one instance's /share
+            # route. Swap the host for your own.
+            url: "https://mastodon.social/share?text={title}%20{url}"
+          - name: Copy link
+            icon: link
+            type: copy
+```
+
+`{url}` 和 `{title}` 会被替换为文章的永久链接和标题。设置了 `type: copy`（且没有 `url`）的条目会将永久链接复制到剪贴板，而不是跳转外链。X、LinkedIn、Bluesky、Facebook、Mastodon 和 Telegram 均可使用其标准分享端点——完整配置参见 `docs/hugo.yaml`。
+
+## 小部件
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    widgets:
+      recent:
+        count: 5
+      pinned:
+        count: 3
+      tags:
+        count: 12
+```
+
+在右侧栏按以下顺序渲染：
+
+- **最近更新** —— 按日期排列的最新文章。
+- **置顶** —— front matter 中带有 `pinned: true` 的文章。
+- **热门标签** —— 使用最多的标签，链接到各自的标签页。
+
+每个小部件仅在其配置块存在时才显示；`count` 会覆盖默认值（5 / 3 / 10）。
+
+## 标签与归档
+
+标签列表页和单个标签页共用同一套博客外壳——包括侧栏、卡片和小部件——因此按标签浏览的体验与浏览博客本身一致。
+
+归档页按年份对文章分组：
+
+```yaml {filename="hugo.yaml"}
+params:
+  archives:
+    section: blog # source section
+    dateFormat: "Jan 02"
+```
+
+## 目录中的标签
+
+在文档页和文章页上，页面标签可以以小圆片的形式渲染在目录标题下方：
+
+```yaml {filename="hugo.yaml"}
+params:
+  toc:
+    displayTags: true
+```
