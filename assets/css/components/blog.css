@@ -182,9 +182,12 @@
   @apply hx:block hx:overflow-hidden hx:bg-gray-100 hx:dark:bg-neutral-800;
 }
 
+/* Dynamic height: the image keeps its natural aspect ratio at full card
+   width, capped at 20rem — roughly the old fixed 2.4:1 box. Taller images
+   crop from the top edge down (not center), so UI screenshots keep their
+   header/start visible */
 .hextra-blog-card-image {
-  @apply hx:h-full hx:w-full hx:object-cover hx:select-none;
-  aspect-ratio: 2.4 / 1;
+  @apply hx:h-auto hx:max-h-80 hx:w-full hx:object-cover hx:object-top hx:select-none;
 }
 
 .hextra-blog-card-body {
@@ -217,11 +220,10 @@
   @apply hx:w-44 hx:shrink-0 hx:overflow-hidden hx:bg-gray-100 hx:max-sm:hidden hx:dark:bg-neutral-800;
 }
 
-/* The shared card image is letterboxed to 2.4:1 for the vertical card; in the
-   horizontal card it fills the cover column's full height instead. */
+/* In the horizontal card the image fills the cover column's full height
+   instead of sizing dynamically. */
 .hextra-blog-card-h .hextra-blog-card-image {
-  @apply hx:h-full;
-  aspect-ratio: auto;
+  @apply hx:h-full hx:max-h-none;
 }
 
 .hextra-blog-card-h .hextra-blog-card-body {
