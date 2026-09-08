@@ -152,17 +152,8 @@
   @apply hx:mt-0.5 hx:block hx:text-xs hx:tabular-nums hx:text-gray-500 hx:dark:text-gray-400;
 }
 
-.hextra-blog-tag-cloud {
-  @apply hx:flex hx:flex-wrap hx:gap-1.5;
-}
-
-.hextra-blog-tag-chip {
-  @apply hx:inline-flex hx:items-baseline hx:gap-1 hx:rounded-full hx:border hx:border-gray-200 hx:px-2 hx:py-0.5 hx:text-gray-700 hx:transition-colors hx:hover:border-hextra-accent-400 hx:hover:text-hextra-accent-600 hx:dark:border-neutral-800 hx:dark:text-gray-300 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
-}
-
-.hextra-blog-tag-count {
-  @apply hx:text-xs hx:tabular-nums hx:text-gray-500 hx:dark:text-gray-400;
-}
+/* Tag chips live in components/tags.css: the table of contents uses them too,
+   and that renders outside the blog. */
 
 /* ----------------------------------------------------------- post cards */
 
