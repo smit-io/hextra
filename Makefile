@@ -170,21 +170,30 @@ preview: css ## Build production output for the always-on preview service
 
 ##@ Test
 
+# Every test target builds first. Playwright serves docs/public, so without a
+# build it grades whatever happens to be on disk: last week's output, a
+# `make preview` build carrying a different baseURL, or nothing at all. The
+# specs also assert on production artefacts - search-data checks the index is
+# fingerprinted, which only happens under `hugo --minify` - so this must be
+# `build` and not `preview`.
+#
+# Each build rewrites docs/hugo_stats.json. `make clean-stats` drops the churn.
+
 .PHONY: test
-test: deps ## Run the full Playwright suite
+test: build ## Build, then run the full Playwright suite
 	@npm test
 
 .PHONY: test-a11y
-test-a11y: deps ## Run accessibility tests (WCAG 2.2 AA)
+test-a11y: build ## Build, then run accessibility tests (WCAG 2.2 AA)
 	@$(WARN) "Accent colours change contrast ratios - failures here mean tune the shade, not revert."
 	@npm run test:a11y
 
 .PHONY: test-mobile
-test-mobile: deps ## Run mobile menu tests
+test-mobile: build ## Build, then run mobile menu tests
 	@npm run test:mobile-menu
 
 .PHONY: test-build
-test-build: deps ## Run build-output tests (asciidoc, render-link, search data)
+test-build: build ## Build, then run build-output tests (asciidoc, render-link, search data)
 	@npm run test:build
 
 ##@ Housekeeping
