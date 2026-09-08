@@ -73,6 +73,15 @@
     /* @apply hx:block hx:w-full hx:bg-primary-800/10; */
     @apply hx:block hx:w-full hx:dark:bg-hextra-accent-950/60 hx:dark:border-l-2 hx:dark:border-hextra-accent-500 hx:bg-hextra-accent-200/60 hx:border-l-2 hx:border-hextra-accent-500;
   }
+  /* In inline (non-table) blocks the pre has px-4, so bleed the highlight
+     into that padding to span the full block width; pad back 1rem minus the
+     2px accent border so highlighted text stays aligned with other lines */
+  code > .line.hl {
+    @apply hx:-mx-4 hx:w-[calc(100%+2rem)] hx:pl-[calc(1rem-2px)] hx:pr-4;
+  }
+  .lntable code > .line.hl {
+    @apply hx:mx-0 hx:w-full hx:pl-0 hx:pr-0;
+  }
   .lntd:last-child pre code .hl {
   border-left: none !important;
   /* Or with Tailwind, apply 'border-l-0' if using utilities:
