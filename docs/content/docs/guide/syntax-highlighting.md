@@ -46,23 +46,23 @@ When a filename is set, an icon matching its extension (or the code fence langua
 
 ````markdown {filename="Markdown"}
 ```js {filename="app.js"}
-console.log("Hello!")
+console.log("Hello!");
 ```
 ````
 
 ```js {filename="app.js"}
-console.log("Hello!")
+console.log("Hello!");
 ```
 
 Override the resolved icon with the `icon` attribute — any icon from `data/icons.yaml` or a remote provider such as [Iconify](https://icon-sets.iconify.design) (`iconify:<set>/<icon>`):
 
 ````markdown {filename="Markdown"}
-```text {filename="config" icon="iconify:vscode-icons/file-type-config"}
+```text {filename="config" icon="iconify:mdi/cog-outline"}
 key = value
 ```
 ````
 
-```text {filename="config" icon="iconify:vscode-icons/file-type-config"}
+```text {filename="config" icon="iconify:mdi/cog-outline"}
 key = value
 ```
 

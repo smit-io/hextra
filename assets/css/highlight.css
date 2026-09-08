@@ -8,9 +8,8 @@
   pre {
     /* @apply hx:text-[.9em] hx:bg-hextra-light-50 hx:overflow-x-auto hx:font-medium hx:subpixel-antialiased hx:dark:bg-hextra-dark-50 hx:contrast-more:border hx:contrast-more:border-primary-900/20 hx:contrast-more:contrast-150 hx:contrast-more:dark:border-primary-100/40; */
     @apply hx:text-[.9em] hx:bg-hextra-light-50 hx:border hx:border-hextra-light-900 hx:overflow-x-auto hx:font-medium hx:subpixel-antialiased hx:dark:border hx:dark:border-neutral-700 hx:dark:bg-hextra-dark-50 hx:contrast-more:border hx:contrast-more:border-primary-900/20 hx:contrast-more:contrast-150 hx:contrast-more:dark:border-primary-100/40;
-
   }
-  
+
   /* .code-border {
     @apply hx:border-2 hx:dark:border hx:border-hextra-light-950 hx:dark:border-neutral-700 hx:rounded-xl hx:dark:rounded-xl;
   } */
@@ -20,7 +19,10 @@
   }
 
   .hextra-code-filename svg {
-    @apply hx:shrink-0;
+    /* Icons fill the bar's content height, keep aspect ratio, and inherit the
+       bar text color so they adapt to light/dark mode */
+    @apply hx:h-4 hx:w-auto hx:shrink-0;
+    fill: currentColor;
   }
 
   .hextra-code-filename + pre:not(.lntable pre) {
@@ -56,7 +58,7 @@
   }
   .lntd {
     @apply hx:p-0 hx:align-top;
-    
+
     /* pre {
       @apply hx:rounded-sm;
     } */
@@ -66,8 +68,8 @@
     /* border-right: none; */
   }
   .lntd:last-child pre {
-      @apply hx:rounded-tr-sm hx:rounded-br-sm hx:border-r hx:border-y hx:border-l-0;
-      /* border-left: none; */
+    @apply hx:rounded-tr-sm hx:rounded-br-sm hx:border-r hx:border-y hx:border-l-0;
+    /* border-left: none; */
   }
   .lntd:last-of-type {
     @apply hx:w-full;
@@ -87,10 +89,9 @@
     @apply hx:mx-0 hx:w-full hx:pl-0 hx:pr-0;
   }
   .lntd:last-child pre code .hl {
-  border-left: none !important;
-  /* Or with Tailwind, apply 'border-l-0' if using utilities:
+    border-left: none !important;
+    /* Or with Tailwind, apply 'border-l-0' if using utilities:
   @apply border-l-0;
   */
-}
-
+  }
 }
