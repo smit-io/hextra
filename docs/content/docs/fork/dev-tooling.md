@@ -121,6 +121,7 @@ The repository's GitHub Actions workflows can run locally in Docker via [act](ht
 
 | Target | What it does |
 |---|---|
+| `make ci-dry` | Dry run of every workflow (`act -n`): walks the job graph and prints each step without starting containers — validates workflow syntax and wiring in seconds, no image pull |
 | `make ci` | Runs every workflow that triggers on `pull_request` — accessibility, build output, and mobile menu — exactly as a PR would, one job container each |
 | `make ci-a11y` | The accessibility workflow (`test-accessibility.yml`): production build, then axe-core WCAG 2.2 AA checks over every English page |
 | `make ci-build` | The build-output workflow (`test-build.yml`): production build, then the asciidoc, render-link, and search-data assertions |
@@ -132,6 +133,8 @@ Every target checks that act is installed (`brew install act`) and Docker is run
 {{< callout type="info" >}}
 The first run is slow: act pulls a ~2 GB runner image, and the workflows download Hugo and Playwright browsers inside the job container. `.actrc` sets `--reuse`, which keeps the job containers between runs — repeat runs skip all of that. Remove the `act-*` containers to start fresh.
 {{< /callout >}}
+
+Workflow steps that upload test reports (`actions/upload-artifact`) talk to a local artifact server act starts itself (`--artifact-server-path` in `.actrc`); uploaded artifacts land under `/tmp/act-artifacts`.
 
 Inside the devcontainer, the act CLI and the Docker CLI are preinstalled (devcontainer features) and the host's Docker socket is mounted. Note that act's job containers then run as **siblings** on the host daemon, not nested — bind mounts must resolve on the host, so running `make ci` from a host checkout is the reliable path; treat in-container act as best-effort.
 

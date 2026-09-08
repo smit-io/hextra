@@ -12,3 +12,7 @@
 # Keep job containers between runs so Hugo/Playwright downloads survive and
 # repeat runs are fast. Drop state with `docker rm` of the act-* containers.
 --reuse
+
+# Local stand-in for GitHub's artifact API, so actions/upload-artifact steps
+# (test report uploads) succeed instead of failing on ACTIONS_RUNTIME_TOKEN.
+--artifact-server-path /tmp/act-artifacts
