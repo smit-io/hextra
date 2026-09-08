@@ -52,9 +52,14 @@
     }
   }
   .ln,
-  .lnt:not(.hl > .lnt),
-  .hl:not(.line) {
+  .lnt:not(.hl > .lnt) {
     @apply hx:pl-4 hx:pr-4 hx:min-w-[2.6rem] hx:text-neutral-600 hx:dark:text-neutral-300;
+  }
+  /* Highlighted rows in the numbers cell carry the 2px accent left border,
+     so take those 2px out of the padding to keep the numbers aligned with
+     unhighlighted rows */
+  .hl:not(.line) {
+    @apply hx:pl-[calc(1rem-2px)] hx:pr-4 hx:min-w-[2.6rem] hx:text-neutral-600 hx:dark:text-neutral-300;
   }
   .lntd {
     @apply hx:p-0 hx:align-top;

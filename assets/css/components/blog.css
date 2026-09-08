@@ -243,9 +243,11 @@
 
 /* ------------------------------------------------------------ post page */
 
+/* Sits between the breadcrumb and the title. No max-height/object-cover
+   crop: covers are often UI screenshots, which must render whole —
+   cropping clips their top and bottom edges */
 .hextra-blog-hero {
-  @apply hx:mt-6 hx:w-full hx:rounded-lg hx:border hx:border-gray-200 hx:object-cover hx:dark:border-neutral-800;
-  max-height: 24rem;
+  @apply hx:mt-4 hx:mb-4 hx:w-full hx:rounded-lg hx:border hx:border-gray-200 hx:dark:border-neutral-800;
 }
 
 /* Every post-footer section uses one rhythm: a top rule with equal padding
