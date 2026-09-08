@@ -125,13 +125,20 @@
 }
 
 .hextra-blog-widgets-inner {
-  @apply hx:sticky hx:flex hx:flex-col hx:gap-7 hx:overflow-y-auto hx:pt-6 hx:pb-8 hx:text-sm;
+  @apply hx:sticky hx:flex hx:flex-col hx:gap-3.5 hx:overflow-y-auto hx:pt-6 hx:pb-8 hx:text-sm;
   top: var(--hextra-navbar-height);
   max-height: calc(100vh - var(--hextra-navbar-height) - env(safe-area-inset-bottom));
 }
 
 .hextra-blog-widgets-inline {
   @apply hx:mt-12 hx:grid hx:gap-8 hx:border-t hx:border-gray-200 hx:pt-8 hx:text-sm hx:sm:grid-cols-2 hx:xl:hidden hx:dark:border-neutral-800;
+}
+
+/* Rail only: rule between adjacent widgets (recently updated | pinned |
+   trending tags). The inner flex gap provides the space above the rule and
+   the matching padding the space below it. */
+.hextra-blog-widgets-inner .hextra-blog-widget + .hextra-blog-widget {
+  @apply hx:border-t hx:border-gray-200 hx:pt-3.5 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400;
 }
 
 .hextra-blog-widget-title {
