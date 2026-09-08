@@ -230,11 +230,20 @@
   max-height: 24rem;
 }
 
-/* pb-6 mirrors pt-6 so the icon row sits evenly between its own top border
-   and whatever draws the next one. Padding, not margin: a bottom margin
-   collapses with the related list's mt-10 and the gap jumps back to 40px. */
+/* Every post-footer section uses one rhythm: a top rule with equal padding
+   above and below its content. Each divider then sits midway between two
+   sections and the last section clears the pager's own rule. Padding rather
+   than margin, because margins between siblings collapse and the gaps stop
+   matching once a section is disabled. */
+.hextra-blog-share,
+.hextra-blog-related {
+  @apply hx:border-t hx:border-gray-200 hx:pt-6 hx:pb-6 hx:sm:pt-8 hx:sm:pb-8 hx:dark:border-neutral-800;
+}
+
+/* mt-8 matches the last-updated line's mb-8, so the first rule keeps its
+   distance from the article body even when that line is hidden. */
 .hextra-blog-share {
-  @apply hx:mt-10 hx:flex hx:flex-wrap hx:items-center hx:gap-3 hx:border-t hx:border-gray-200 hx:pt-6 hx:pb-6 hx:dark:border-neutral-800 hx:print:hidden;
+  @apply hx:mt-8 hx:flex hx:flex-wrap hx:items-center hx:gap-3 hx:print:hidden;
 }
 
 .hextra-blog-share-label {
@@ -245,12 +254,14 @@
   @apply hx:flex hx:flex-wrap hx:gap-1.5 hx:m-0 hx:p-0 hx:list-none;
 }
 
+/* Shared by the share anchors and the copy-link button; the transparent
+   background and pointer cursor are what a <button> needs to match an <a>. */
 .hextra-blog-share-link {
-  @apply hx:flex hx:h-9 hx:w-9 hx:items-center hx:justify-center hx:rounded-md hx:border hx:border-gray-200 hx:text-gray-500 hx:transition-colors hx:hover:border-hextra-accent-400 hx:hover:text-hextra-accent-600 hx:dark:border-neutral-800 hx:dark:text-gray-400 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
+  @apply hx:flex hx:h-9 hx:w-9 hx:cursor-pointer hx:items-center hx:justify-center hx:rounded-md hx:border hx:border-gray-200 hx:bg-transparent hx:text-gray-500 hx:transition-colors hx:hover:border-hextra-accent-400 hx:hover:text-hextra-accent-600 hx:dark:border-neutral-800 hx:dark:text-gray-400 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
 }
 
-.hextra-blog-related {
-  @apply hx:mt-10;
+.hextra-blog-share-copy.copied {
+  @apply hx:border-hextra-accent-400 hx:text-hextra-accent-600 hx:dark:text-hextra-accent-400;
 }
 
 .hextra-blog-related-title {
