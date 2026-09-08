@@ -16,7 +16,6 @@
 {{- $banner := eq (.layout | default "rail") "banner" -}}
 {{- $menu := partial "blog/menu.html" (dict "context" $context) -}}
 {{- $socialLinksLabel := (T "socialLinks") | default "Social links" -}}
-{{- $lazyLoading := site.Params.enableImageLazyLoading | default true -}}
 
 
 <div class="{{ cond $banner "hextra-blog-banner" "hextra-blog-profile" }}">
@@ -31,7 +30,10 @@
             {{- if hasPrefix $avatar "/" -}}{{- $avatar = relURL (strings.TrimPrefix "/" $avatar) -}}{{- end -}}
           {{- end -}}
         {{- end -}}
-        <img class="hextra-blog-avatar" src="{{ $avatar | safeURL }}" alt="" aria-hidden="true" width="80" height="80" decoding="async" {{ if $lazyLoading }}loading="lazy"{{ end }} />
+        {{- /* Above the fold on every page: eager load with high priority, so
+        the cached avatar paints with the text instead of popping in a frame
+        later on each navigation. */ -}}
+        <img class="hextra-blog-avatar" src="{{ $avatar | safeURL }}" alt="" aria-hidden="true" width="80" height="80" fetchpriority="high" />
       {{- end -}}
       {{- if or .name .tagline -}}
         <div class="hextra-blog-profile-text">
