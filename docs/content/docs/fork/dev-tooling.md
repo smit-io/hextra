@@ -115,6 +115,26 @@ VS Code → "Reopen in Container". First open installs Hugo, Node, and npm depen
 
 {{% /steps %}}
 
+## Local CI with act
+
+The repository's GitHub Actions workflows can run locally in Docker via [act](https://nektosact.com), so a PR's checks can be exercised before pushing. Defaults live in `.actrc` (runner image, amd64 architecture for Apple Silicon, container reuse); the Makefile wraps the invocations:
+
+| Target | What it does |
+|---|---|
+| `make ci` | Runs every workflow that triggers on `pull_request` — accessibility, build output, and mobile menu — exactly as a PR would, one job container each |
+| `make ci-a11y` | The accessibility workflow (`test-accessibility.yml`): production build, then axe-core WCAG 2.2 AA checks over every English page |
+| `make ci-build` | The build-output workflow (`test-build.yml`): production build, then the asciidoc, render-link, and search-data assertions |
+| `make ci-mobile` | The mobile menu workflow (`test-mobile-menu.yml`): production build, then the Playwright mobile navigation suite |
+| `make ci-pages` | The **build** job of the Pages deployment (`pages.yml`) — verifies the site builds the way GitHub Pages builds it. The deploy job is excluded: it needs GitHub's OIDC token and cannot run locally |
+
+Every target checks that act is installed (`brew install act`) and Docker is running before starting.
+
+{{< callout type="info" >}}
+The first run is slow: act pulls a ~2 GB runner image, and the workflows download Hugo and Playwright browsers inside the job container. `.actrc` sets `--reuse`, which keeps the job containers between runs — repeat runs skip all of that. Remove the `act-*` containers to start fresh.
+{{< /callout >}}
+
+Inside the devcontainer, the act CLI and the Docker CLI are preinstalled (devcontainer features) and the host's Docker socket is mounted. Note that act's job containers then run as **siblings** on the host daemon, not nested — bind mounts must resolve on the host, so running `make ci` from a host checkout is the reliable path; treat in-container act as best-effort.
+
 ## Syncing with upstream
 
 The fork adds two Makefile targets for tracking [imfing/hextra](https://github.com/imfing/hextra):
