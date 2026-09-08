@@ -253,6 +253,130 @@ copyright: "© 2024 YOUR TEXT HERE"
 
 For your reference, an example [`i18n/en.yaml`](https://github.com/imfing/hextra/blob/main/i18n/en.yaml) file can be found in the GitHub repository. Additionally, you could use Markdown format in the copyright text.
 
+## Blog
+
+### Post List
+
+The blog list page reads its ordering and page size from `params.blog.list`:
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    list:
+      # date | lastmod | publishDate | title | weight
+      sortBy: date
+      sortOrder: desc # or "asc"
+      pagerSize: 20
+```
+
+### Post Cards
+
+Posts are listed as plain entries by default. Adding a `card` block turns each entry into a card with a cover image, reading time and excerpt:
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    list:
+      card:
+        enable: true
+        cover: true # default when card.enable is set
+        readingTime: true # default when card.enable is set
+```
+
+A post's cover image comes from the `cover` (or `featured_image`) front matter key, and otherwise from a page bundle resource whose name contains `cover` or `featured`. The value may be a path in `assets/`, a path under `static/`, or an absolute URL:
+
+```yaml {filename="content/blog/my-post.md"}
+---
+title: My Post
+cover: images/my-post.jpg
+pinned: true
+---
+```
+
+Posts with `pinned: true` are listed in the Pinned section of the blog sidebar.
+
+### Blog Sidebar
+
+Defining a `blog` menu adds an identity rail to the left of the blog list. Entries with a label become navigation rows; entries with only `params.icon` become the social links row — the same convention the navbar uses:
+
+```yaml {filename="hugo.yaml"}
+menu:
+  blog:
+    - identifier: home
+      name: Home
+      pageRef: /
+      weight: 1
+      params:
+        type: link
+        icon: home
+    - name: GitHub
+      url: "https://github.com/imfing/hextra"
+      weight: 10
+      params:
+        icon: github
+```
+
+The profile block and the sponsor card above and below the menu are configured under `params.blog.rail`. Each element renders only when its key is present, so you can supply as much or as little as you like:
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    rail:
+      onArticle: false # also show the rail on individual posts
+      profile:
+        avatar: images/avatar.png
+        name: Hextra
+        tagline: Notes and release announcements.
+      sponsor:
+        title: Support Hextra
+        text: Hextra is built in the open.
+        url: "https://github.com/sponsors/imfing"
+        label: Become a sponsor →
+        icon: heart
+```
+
+The rail is hidden below the `md` breakpoint, where the profile, links and socials appear as a banner above the post list instead. To hide it on a single page, set `blog.rail: false` in that page's front matter.
+
+### Blog Widgets
+
+A `widgets` block adds a second sidebar to the right of the blog list with recently updated posts, pinned posts and the site's most used tags. Remove a section to hide it:
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    widgets:
+      recent:
+        count: 5
+      pinned:
+        count: 3
+      tags:
+        count: 12
+```
+
+"Recently updated" orders posts by `lastmod`, which falls back to the post date unless the site sets [`enableGitInfo`](https://gohugo.io/methods/page/gitinfo/) or posts define `lastmod` themselves.
+
+### Post Page
+
+Individual posts can show a cover image, reading time, tags, share links and related posts. All of these are off by default:
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    article:
+      cover: true
+      readingTime: true
+      tags: true # note: also shown in the right sidebar when toc.displayTags is true
+      share:
+        links:
+          - name: X
+            icon: x-twitter
+            url: "https://x.com/intent/tweet?url={url}&text={title}"
+      related:
+        count: 3
+```
+
+Share link URLs support the `{url}` and `{title}` placeholders. Related posts are chosen by how many tags they share with the current post.
+
 ## Others
 
 ### Favicon

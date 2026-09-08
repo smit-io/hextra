@@ -208,4 +208,5 @@ body {
 @import "./components/toc.css";
 @import "./components/archives.css";
 @import "./components/gallery.css";
+@import "./components/blog.css";
 @import "./fonts.css";

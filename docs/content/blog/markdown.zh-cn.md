@@ -8,6 +8,8 @@ authors:
   - name: Octocat
     link: https://github.com/octocat
     image: https://github.com/octocat.png
+cover: /images/hextra-markdown.webp
+pinned: true
 tags:
   - Markdown
   - 示例

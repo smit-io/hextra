@@ -1,0 +1,37 @@
+{{- /*
+  Share links for a post.
+
+  Link URLs are templates using the same `{placeholder}` convention as
+  `params.page.contextMenu.links`; `{url}` and `{title}` are substituted and
+  URL-encoded by `utils/template-url`.
+
+  @param {page} context The post.
+  @param {dict} config The dict returned by `blog/config.html`.
+
+  @example {{ partial "blog/share.html" (dict "context" . "config" $cfg)
+}}
+*/ -}}
+{{- $share := .config.article.share -}}
+{{- if $share.enable -}}
+  {{- $context := .context -}}
+  {{- $values := dict "url" $context.Permalink "title" $context.Title -}}
+  {{- $label := (T "sharePost") | default "Share this post" -}}
+  <div class="hextra-blog-share">
+    <span class="hextra-blog-share-label">{{ $label }}</span>
+    <ul class="hextra-blog-share-links">
+      {{- range $share.links -}}
+        {{- $url := partial "utils/template-url" (dict "template" .url "values" $values) -}}
+        {{- $hasIcon := and .icon (partial "utils/icon-exists.html" (dict "name" .icon)) -}}
+        {{- if and .icon (not $hasIcon) -}}{{- warnf "hextra: blog share icon %q not found in data/icons.yaml; skipping" .icon -}}{{- end -}}
+        <li>
+          <a class="hextra-blog-share-link" href="{{ $url }}" target="_blank" rel="noreferrer" title="{{ .name }}">
+            {{- if $hasIcon -}}
+              {{- partial "utils/icon.html" (dict "name" .icon "attributes" `height="18" width="18"`) -}}
+            {{- end -}}
+            <span class="hx:sr-only">{{ .name }}</span>
+          </a>
+        </li>
+      {{- end -}}
+    </ul>
+  </div>
+{{- end -}}

@@ -1,0 +1,268 @@
+/*
+  Blog layout: left identity rail, post cards, right widget rail.
+
+  Utilities are applied here rather than inline in the templates so that the
+  stylesheet compiles regardless of what the docs site happens to render into
+  docs/hugo_stats.json.
+*/
+
+/* ------------------------------------------------------------------ rail */
+
+.hextra-blog-rail {
+  @apply hx:hidden hx:md:flex hx:flex-col hx:w-64 hx:shrink-0 hx:self-start hx:sticky;
+  top: var(--hextra-navbar-height);
+  max-height: calc(100vh - var(--hextra-navbar-height));
+}
+
+.hextra-blog-rail-inner {
+  @apply hx:flex hx:flex-col hx:grow hx:gap-6 hx:overflow-y-auto hx:overflow-x-hidden hx:px-4 hx:pt-6 hx:pb-8;
+}
+
+.hextra-blog-profile {
+  @apply hx:flex hx:flex-col hx:grow hx:gap-6;
+}
+
+.hextra-blog-profile-head {
+  @apply hx:flex hx:flex-col hx:gap-3;
+}
+
+.hextra-blog-profile-text > p {
+  @apply hx:m-0;
+}
+
+.hextra-blog-avatar {
+  @apply hx:h-20 hx:w-20 hx:rounded-full hx:object-cover hx:select-none;
+}
+
+.hextra-blog-name {
+  @apply hx:m-0 hx:text-lg hx:font-bold hx:tracking-tight hx:text-gray-900 hx:dark:text-gray-100;
+}
+
+.hextra-blog-tagline {
+  @apply hx:mt-1 hx:text-sm hx:leading-relaxed hx:text-gray-500 hx:dark:text-gray-400;
+}
+
+.hextra-blog-nav {
+  @apply hx:flex hx:flex-col hx:gap-0.5 hx:m-0 hx:p-0 hx:list-none;
+}
+
+.hextra-blog-nav-link {
+  @apply hx:flex hx:items-center hx:gap-2 hx:-mx-2 hx:rounded-md hx:px-2 hx:py-1.5 hx:text-sm hx:font-medium hx:text-gray-600 hx:transition-colors hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-50 hx:hextra-focus-visible;
+}
+
+.hextra-blog-nav-link[aria-current="page"] {
+  @apply hx:bg-hextra-accent-50 hx:font-semibold hx:text-hextra-accent-600 hx:dark:bg-neutral-800 hx:dark:text-hextra-accent-400;
+}
+
+.hextra-blog-nav-icon {
+  @apply hx:shrink-0 hx:opacity-70;
+}
+
+.hextra-blog-socials {
+  @apply hx:flex hx:flex-wrap hx:gap-1.5 hx:m-0 hx:p-0 hx:list-none;
+}
+
+.hextra-blog-social {
+  @apply hx:flex hx:h-9 hx:w-9 hx:items-center hx:justify-center hx:rounded-md hx:border hx:border-gray-200 hx:text-gray-500 hx:transition-colors hx:hover:border-hextra-accent-400 hx:hover:text-hextra-accent-600 hx:dark:border-neutral-800 hx:dark:text-gray-400 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
+}
+
+.hextra-blog-sponsor {
+  @apply hx:mt-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-hextra-light-50 hx:p-3 hx:text-sm hx:leading-relaxed hx:text-gray-500 hx:dark:border-neutral-800 hx:dark:bg-hextra-dark-500 hx:dark:text-gray-400;
+}
+
+.hextra-blog-sponsor > p {
+  @apply hx:m-0;
+}
+
+.hextra-blog-sponsor-title {
+  @apply hx:font-semibold hx:text-gray-900 hx:dark:text-gray-100;
+}
+
+.hextra-blog-sponsor-link {
+  @apply hx:mt-2 hx:inline-flex hx:items-center hx:gap-1 hx:font-semibold hx:text-hextra-accent-600 hx:hover:underline hx:dark:text-hextra-accent-400 hx:hextra-focus-visible;
+}
+
+/* -------------------------------------------------------- mobile banner */
+
+.hextra-blog-banner {
+  @apply hx:mb-8 hx:flex hx:flex-col hx:gap-4 hx:border-b hx:border-gray-200 hx:pb-6 hx:md:hidden hx:dark:border-neutral-800;
+}
+
+.hextra-blog-banner .hextra-blog-profile-head {
+  @apply hx:flex-row hx:items-center hx:gap-3;
+}
+
+.hextra-blog-banner .hextra-blog-avatar {
+  @apply hx:h-12 hx:w-12;
+}
+
+.hextra-blog-banner .hextra-blog-tagline {
+  @apply hx:hidden;
+}
+
+.hextra-blog-chips {
+  @apply hx:flex hx:gap-2 hx:overflow-x-auto hx:m-0 hx:p-0 hx:pb-1 hx:list-none;
+}
+
+.hextra-blog-chip {
+  @apply hx:inline-flex hx:items-center hx:gap-1.5 hx:whitespace-nowrap hx:rounded-full hx:border hx:border-gray-200 hx:px-3 hx:py-1 hx:text-sm hx:text-gray-600 hx:dark:border-neutral-800 hx:dark:text-gray-300 hx:hextra-focus-visible;
+}
+
+.hextra-blog-chip[aria-current="page"] {
+  @apply hx:border-hextra-accent-500 hx:font-semibold hx:text-hextra-accent-600 hx:dark:text-hextra-accent-400;
+}
+
+/* --------------------------------------------------------------- widgets */
+
+.hextra-blog-widgets {
+  @apply hx:hidden hx:xl:block hx:w-64 hx:shrink-0 hx:px-4;
+}
+
+.hextra-blog-widgets-inner {
+  @apply hx:sticky hx:flex hx:flex-col hx:gap-7 hx:overflow-y-auto hx:pt-6 hx:pb-8 hx:text-sm;
+  top: var(--hextra-navbar-height);
+  max-height: calc(100vh - var(--hextra-navbar-height) - env(safe-area-inset-bottom));
+}
+
+.hextra-blog-widgets-inline {
+  @apply hx:mt-12 hx:grid hx:gap-8 hx:border-t hx:border-gray-200 hx:pt-8 hx:text-sm hx:sm:grid-cols-2 hx:xl:hidden hx:dark:border-neutral-800;
+}
+
+.hextra-blog-widget-title {
+  @apply hx:mb-3 hx:flex hx:items-center hx:gap-1.5 hx:text-xs hx:font-semibold hx:tracking-wider hx:uppercase hx:text-gray-500 hx:dark:text-gray-400;
+}
+
+.hextra-blog-widget-icon {
+  @apply hx:shrink-0 hx:opacity-70;
+}
+
+.hextra-blog-widget-list {
+  @apply hx:flex hx:flex-col hx:gap-3 hx:m-0 hx:p-0 hx:list-none;
+}
+
+.hextra-blog-widget-link {
+  @apply hx:block hx:text-gray-700 hx:transition-colors hx:hover:text-hextra-accent-600 hx:dark:text-gray-300 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
+}
+
+.hextra-blog-widget-label {
+  @apply hx:block hx:font-medium hx:leading-snug;
+}
+
+.hextra-blog-widget-meta {
+  @apply hx:mt-0.5 hx:block hx:text-xs hx:tabular-nums hx:text-gray-500 hx:dark:text-gray-400;
+}
+
+.hextra-blog-tag-cloud {
+  @apply hx:flex hx:flex-wrap hx:gap-1.5;
+}
+
+.hextra-blog-tag-chip {
+  @apply hx:inline-flex hx:items-baseline hx:gap-1 hx:rounded-full hx:border hx:border-gray-200 hx:px-2 hx:py-0.5 hx:text-gray-700 hx:transition-colors hx:hover:border-hextra-accent-400 hx:hover:text-hextra-accent-600 hx:dark:border-neutral-800 hx:dark:text-gray-300 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
+}
+
+.hextra-blog-tag-count {
+  @apply hx:text-xs hx:tabular-nums hx:text-gray-500 hx:dark:text-gray-400;
+}
+
+/* ----------------------------------------------------------- post cards */
+
+.hextra-blog-list {
+  @apply hx:flex hx:flex-col hx:gap-6 hx:m-0 hx:p-0 hx:list-none;
+}
+
+.hextra-blog-card {
+  @apply hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:bg-hextra-light-50 hx:transition-colors hx:hover:border-hextra-accent-400 hx:dark:border-neutral-800 hx:dark:bg-hextra-dark-500;
+}
+
+.hextra-blog-card-cover {
+  @apply hx:block hx:overflow-hidden hx:bg-gray-100 hx:dark:bg-neutral-800;
+}
+
+.hextra-blog-card-image {
+  @apply hx:h-full hx:w-full hx:object-cover hx:select-none;
+  aspect-ratio: 2.4 / 1;
+}
+
+.hextra-blog-card-body {
+  @apply hx:p-5 hx:sm:p-6;
+}
+
+.hextra-blog-card-title {
+  @apply hx:m-0 hx:text-xl hx:font-semibold hx:leading-snug hx:tracking-tight hx:text-gray-900 hx:dark:text-gray-100;
+}
+
+.hextra-blog-card-title a {
+  @apply hx:transition-colors hx:hextra-focus-visible;
+}
+
+.hextra-blog-card:hover .hextra-blog-card-title a {
+  @apply hx:text-hextra-accent-600 hx:dark:text-hextra-accent-400;
+}
+
+.hextra-blog-card-excerpt {
+  @apply hx:mt-3 hx:mb-0 hx:leading-7 hx:text-gray-600 hx:dark:text-gray-300;
+}
+
+.hextra-blog-card-more {
+  @apply hx:mt-3 hx:inline-block hx:text-hextra-accent-500 hx:underline hx:underline-offset-2 hx:hextra-focus-visible;
+  text-decoration-thickness: from-font;
+}
+
+.hextra-blog-meta {
+  @apply hx:mt-2 hx:flex hx:flex-wrap hx:items-center hx:gap-x-2 hx:gap-y-1 hx:text-sm hx:tabular-nums hx:text-gray-500 hx:dark:text-gray-400;
+}
+
+.hextra-blog-meta-sep {
+  @apply hx:opacity-50;
+}
+
+.hextra-blog-meta-tags {
+  @apply hx:inline-flex hx:flex-wrap hx:gap-x-1;
+}
+
+/* ------------------------------------------------------------ post page */
+
+.hextra-blog-hero {
+  @apply hx:mt-6 hx:w-full hx:rounded-lg hx:border hx:border-gray-200 hx:object-cover hx:dark:border-neutral-800;
+  max-height: 24rem;
+}
+
+.hextra-blog-share {
+  @apply hx:mt-10 hx:flex hx:flex-wrap hx:items-center hx:gap-3 hx:border-t hx:border-gray-200 hx:pt-6 hx:dark:border-neutral-800 hx:print:hidden;
+}
+
+.hextra-blog-share-label {
+  @apply hx:text-sm hx:font-medium hx:text-gray-500 hx:dark:text-gray-400;
+}
+
+.hextra-blog-share-links {
+  @apply hx:flex hx:flex-wrap hx:gap-1.5 hx:m-0 hx:p-0 hx:list-none;
+}
+
+.hextra-blog-share-link {
+  @apply hx:flex hx:h-9 hx:w-9 hx:items-center hx:justify-center hx:rounded-md hx:border hx:border-gray-200 hx:text-gray-500 hx:transition-colors hx:hover:border-hextra-accent-400 hx:hover:text-hextra-accent-600 hx:dark:border-neutral-800 hx:dark:text-gray-400 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
+}
+
+.hextra-blog-related {
+  @apply hx:mt-10;
+}
+
+.hextra-blog-related-title {
+  @apply hx:mb-4 hx:text-xs hx:font-semibold hx:tracking-wider hx:uppercase hx:text-gray-500 hx:dark:text-gray-400;
+}
+
+.hextra-blog-related-list {
+  @apply hx:grid hx:gap-3 hx:m-0 hx:p-0 hx:list-none hx:sm:grid-cols-3;
+}
+
+.hextra-blog-related-link {
+  @apply hx:block hx:rounded-lg hx:border hx:border-gray-200 hx:p-3 hx:transition-colors hx:hover:border-hextra-accent-400 hx:dark:border-neutral-800 hx:hextra-focus-visible;
+}
+
+.hextra-blog-related-label {
+  @apply hx:block hx:font-medium hx:leading-snug hx:text-gray-800 hx:dark:text-gray-200;
+}
+
+.hextra-blog-related-meta {
+  @apply hx:mt-1 hx:block hx:text-xs hx:tabular-nums hx:text-gray-500 hx:dark:text-gray-400;
+}
