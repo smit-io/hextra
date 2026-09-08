@@ -20,6 +20,10 @@ services:
       # Linux-native binaries (lightningcss etc.) instead of sharing the
       # host's Darwin ones through the bind mount.
       - node_modules:/workspaces/hextra/node_modules
+      # Host Docker socket so act (`make ci*`) can start job containers.
+      # Those run as SIBLINGS of this container on the host daemon, not
+      # inside it - paths act mounts must exist on the host.
+      - /var/run/docker.sock:/var/run/docker.sock
     # Keep the container alive; the dev container attaches to it.
     command: sleep infinity
 
