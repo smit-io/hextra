@@ -230,8 +230,11 @@
   max-height: 24rem;
 }
 
+/* pb-6 mirrors pt-6 so the icon row sits evenly between its own top border
+   and whatever draws the next one. Padding, not margin: a bottom margin
+   collapses with the related list's mt-10 and the gap jumps back to 40px. */
 .hextra-blog-share {
-  @apply hx:mt-10 hx:flex hx:flex-wrap hx:items-center hx:gap-3 hx:border-t hx:border-gray-200 hx:pt-6 hx:dark:border-neutral-800 hx:print:hidden;
+  @apply hx:mt-10 hx:flex hx:flex-wrap hx:items-center hx:gap-3 hx:border-t hx:border-gray-200 hx:pt-6 hx:pb-6 hx:dark:border-neutral-800 hx:print:hidden;
 }
 
 .hextra-blog-share-label {
