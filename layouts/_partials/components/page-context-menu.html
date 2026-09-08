@@ -5,7 +5,13 @@
 
 {{- if $enable -}}
   {{- with .OutputFormats.Get "markdown" -}}
-    {{- $markdownURL := .Permalink -}}
+    {{- /* Relative, so the copy/view fetch is same-origin wherever the build
+    is served — an absolute permalink breaks both when baseURL doesn't match
+    the serving host (e.g. a `make build` output on the preview container).
+    Custom links go to external services, so their `{markdown_url}` stays
+    absolute. */ -}}
+    {{- $markdownURL := .RelPermalink -}}
+    {{- $markdownPermalink := .Permalink -}}
     {{- $pageURL := $.Permalink -}}
     {{- $pageTitle := $.Title -}}
     <div class="hextra-page-context-menu hx:relative hx:inline-flex hx:shrink-0">
@@ -65,7 +71,7 @@
         {{- if $customLinks -}}
         <li class="hx:my-1 hx:h-px hx:bg-gray-200 hx:dark:bg-neutral-700" role="separator"></li>
         {{- range $customLinks -}}
-          {{- $linkURL := partial "utils/template-url.html" (dict "template" .url "values" (dict "url" $pageURL "title" $pageTitle "markdown_url" $markdownURL)) -}}
+          {{- $linkURL := partial "utils/template-url.html" (dict "template" .url "values" (dict "url" $pageURL "title" $pageTitle "markdown_url" $markdownPermalink)) -}}
           <li role="none">
             <a
               href="{{ $linkURL }}"
