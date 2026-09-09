@@ -51,7 +51,9 @@
   @apply hx:text-gray-500 hx:dark:text-gray-400;
 }
 
-.hextra-series__list {
+/* Qualified with `ol` to outweigh `:lang(fa) ol` in typography.css, which is
+   also unlayered and one specificity point higher than a bare class. */
+ol.hextra-series__list {
   /* Part numbers are rendered into the text, so the marker would double up. */
   @apply hx:list-none hx:m-0 hx:pt-2 hx:pb-3 hx:pe-4 hx:ps-5;
 }
