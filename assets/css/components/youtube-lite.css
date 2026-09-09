@@ -9,12 +9,12 @@
 }
 
 /*
-  YouTube's hqdefault poster is 4:3 with letterbox bars baked in. Scaling it
-  past the frame and cropping shows the 16:9 image without the bars.
+  YouTube's hqdefault poster is 4:3 with letterbox bars baked in, 12.5% of the
+  height at each end. The container is 16:9, so object-cover already crops
+  exactly those bars and nothing else - no extra scaling.
 */
 .hextra-youtube-lite__poster {
   @apply hx:absolute hx:inset-0 hx:size-full hx:object-cover;
-  scale: 1.34;
 }
 
 .hextra-youtube-lite__play {

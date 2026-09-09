@@ -23,15 +23,54 @@
     };
 
     const run = async (el) => {
-      const strings = (el.dataset.typeitStrings || "").split("\n").filter(Boolean);
+      // Boolean() would drop a line whose only content is "0".
+      const strings = (el.dataset.typeitStrings || "").split("\n").filter((s) => s !== "");
       if (!strings.length) return;
 
-      const speed = parseInt(el.dataset.typeitSpeed, 10) || 100;
-      const startDelay = parseInt(el.dataset.typeitStartDelay, 10) || 0;
+      // `||` would substitute the fallback for a deliberate 0.
+      const num = (value, fallback) => {
+        const parsed = parseInt(value, 10);
+        return Number.isFinite(parsed) ? parsed : fallback;
+      };
+
+      const speed = num(el.dataset.typeitSpeed, 100);
+      const startDelay = num(el.dataset.typeitStartDelay, 0);
       const lifeLike = el.dataset.typeitLifelike === "true";
       const breakLines = el.dataset.typeitBreakLines === "true";
       const loop = el.dataset.typeitLoop === "true";
       const initial = el.dataset.typeitInitial || "";
+
+      // A looping animation never stops on its own, so WCAG 2.2.2 asks for a
+      // way to pause it. Every wait passes through the gate below, so pausing
+      // takes effect within one character rather than at the end of a string.
+      let paused = false;
+      let waiting = [];
+      const gate = () => (paused ? new Promise((resolve) => waiting.push(resolve)) : Promise.resolve());
+      const setPaused = (value) => {
+        paused = value;
+        if (!paused) {
+          const pending = waiting;
+          waiting = [];
+          pending.forEach((resolve) => resolve());
+        }
+      };
+
+      if (loop) {
+        const pauseLabel = el.dataset.typeitPauseLabel || "Pause animation";
+        const resumeLabel = el.dataset.typeitResumeLabel || "Resume animation";
+
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "hextra-typeit__toggle hx:hextra-focus-visible";
+        toggle.setAttribute("aria-pressed", "false");
+        toggle.textContent = pauseLabel;
+        toggle.addEventListener("click", () => {
+          setPaused(!paused);
+          toggle.setAttribute("aria-pressed", String(paused));
+          toggle.textContent = paused ? resumeLabel : pauseLabel;
+        });
+        el.after(toggle);
+      }
 
       const caret = document.createElement("span");
       caret.className = "hextra-typeit__caret";
@@ -47,14 +86,22 @@
 
       const type = async (value) => {
         for (const char of value) {
+          await gate();
           text.append(char);
           await sleep(pace(speed, lifeLike, char));
         }
       };
 
+      // Held in a local rather than read back from the node each character:
+      // textContent on an element walks its subtree to build the string, so
+      // reading it once per deleted character made erasing quadratic in the
+      // length of the string.
       const erase = async () => {
-        while (text.textContent.length) {
-          text.textContent = text.textContent.slice(0, -1);
+        let value = text.textContent;
+        while (value.length) {
+          await gate();
+          value = value.slice(0, -1);
+          text.textContent = value;
           await sleep(speed / 3);
         }
       };

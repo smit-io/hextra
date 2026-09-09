@@ -18,15 +18,21 @@ A single collapsible section within the `accordion` shortcode.
 
 {{- /*
   In collapse mode every section in the group shares a name, which is what
-  makes the browser close the others when one opens. The parent's ordinal
-  keeps two accordions on the same page from interfering with each other.
+  makes the browser close the others when one opens.
+
+  The name is scoped to the whole document, so it has to be unique per
+  accordion. The parent's ordinal is not: it restarts inside every container,
+  so an accordion nested in a tab took the same number as the first top-level
+  one and the two ended up in a single exclusive group - opening a section
+  inside the tab collapsed an unrelated section outside it. The parent's
+  source position is unique per accordion, so hash that instead.
 */ -}}
 {{- $mode := "multiple" -}}
 {{- $group := "" -}}
 {{- with .Parent -}}
   {{- $mode = .Get "mode" | default "multiple" -}}
   {{- if eq $mode "collapse" -}}
-    {{- $group = printf "hextra-accordion-%d" .Ordinal -}}
+    {{- $group = printf "hextra-accordion-%s" (substr (md5 (printf "%v" .Position)) 0 10) -}}
   {{- end -}}
 {{- end -}}
 
