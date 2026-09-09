@@ -23,11 +23,18 @@
     };
 
     const run = async (el) => {
-      const strings = (el.dataset.typeitStrings || "").split("\n").filter(Boolean);
+      // Boolean() would drop a line whose only content is "0".
+      const strings = (el.dataset.typeitStrings || "").split("\n").filter((s) => s !== "");
       if (!strings.length) return;
 
-      const speed = parseInt(el.dataset.typeitSpeed, 10) || 100;
-      const startDelay = parseInt(el.dataset.typeitStartDelay, 10) || 0;
+      // `||` would substitute the fallback for a deliberate 0.
+      const num = (value, fallback) => {
+        const parsed = parseInt(value, 10);
+        return Number.isFinite(parsed) ? parsed : fallback;
+      };
+
+      const speed = num(el.dataset.typeitSpeed, 100);
+      const startDelay = num(el.dataset.typeitStartDelay, 0);
       const lifeLike = el.dataset.typeitLifelike === "true";
       const breakLines = el.dataset.typeitBreakLines === "true";
       const loop = el.dataset.typeitLoop === "true";

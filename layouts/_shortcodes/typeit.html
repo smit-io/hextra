@@ -37,8 +37,15 @@ Second line
 
 {{- $classList := .Get "classList" | default "" -}}
 {{- $initialString := .Get "initialString" | default "" -}}
-{{- $speed := .Get "speed" | default 100 -}}
-{{- $startDelay := .Get "startDelay" | default 250 -}}
+{{- /*
+  Compared against nil rather than piped through `default`, which treats 0 as
+  empty: speed=0 and startDelay=0 are meaningful - type instantly, start
+  immediately - and were silently replaced by the defaults.
+*/ -}}
+{{- $speed := .Get "speed" -}}
+{{- if eq $speed nil -}}{{- $speed = 100 -}}{{- end -}}
+{{- $startDelay := .Get "startDelay" -}}
+{{- if eq $startDelay nil -}}{{- $startDelay = 250 -}}{{- end -}}
 
 {{- /*
   Booleans are compared through printf so an explicit `false` is honoured:
