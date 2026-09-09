@@ -1,22 +1,55 @@
 {{- /*
-https://github.com/gohugoio/gohugoioTheme/blob/master/layouts/shortcodes/include.html
+Include content from another page in this site, or from a remote Markdown file.
 
-Renders the page using the RenderShortcode method on the Page object.
+Local includes render the target page with RenderShortcodes, so shortcodes in
+the included page still work. Remote files are fetched at build time and
+rendered with RenderString: Markdown, render hooks and syntax highlighting all
+apply, but shortcodes in the remote file are not expanded.
 
-You must call this shortcode using the {{% %}} notation.
+The remote form replaces Blowfish's separate `mdimporter` shortcode
+(MIT, Nuno Coração).
+
+You must call this shortcode using the percent notation.
 
 @param {string} (positional parameter 0) The path to the page, relative to the content directory.
+@param {string} url URL of a remote Markdown file. Must be http or https.
 @returns template.HTML
 
 @example {{% include "functions/_common/glob-patterns" %}}
+@example {{% include url="https://example.com/README.md" %}}
 */}}
 
-{{- with .Get 0 }}
-  {{- with site.GetPage . }}
+{{- $url := .Get "url" -}}
+{{- $path := .Get 0 -}}
+
+{{- if and $url $path }}
+  {{- errorf "The %q shortcode takes either a path or a url, not both. See %s" .Name .Position }}
+{{- end }}
+
+{{- if $url }}
+
+  {{- $scheme := (urls.Parse $url).Scheme }}
+  {{- if not (in (slice "http" "https") $scheme) }}
+    {{- errorf "The %q shortcode only fetches http and https URLs, got %q. See %s" .Name $url .Position }}
+  {{- end }}
+
+  {{- /* A failed fetch is a warning so a build without network access still succeeds. */}}
+  {{- with try (resources.GetRemote $url) }}
+    {{- with .Err }}
+      {{- warnf "include: unable to fetch %q: %s" $url . }}
+    {{- else with .Value }}
+      {{- $.Page.RenderString (dict "display" "block") .Content }}
+    {{- else }}
+      {{- warnf "include: %q returned no content" $url }}
+    {{- end }}
+  {{- end }}
+
+{{- else if $path }}
+  {{- with site.GetPage $path }}
     {{- .RenderShortcodes }}
   {{- else }}
-    {{- errorf "The %q shortcode was unable to find %q. See %s" $.Name . $.Position }}
+    {{- errorf "The %q shortcode was unable to find %q. See %s" $.Name $path $.Position }}
   {{- end }}
 {{- else }}
-  {{- errorf "The %q shortcode requires a positional parameter indicating the path of the file to include. See %s" .Name .Position }}
+  {{- errorf "The %q shortcode requires either a positional parameter indicating the path of the file to include, or a 'url' parameter. See %s" .Name .Position }}
 {{- end }}
