@@ -211,4 +211,5 @@ body {
 @import "./components/blog.css";
 @import "./components/nav-active.css";
 @import "./components/tags.css";
+@import "./components/lead.css";
 @import "./fonts.css";

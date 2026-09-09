@@ -18,6 +18,7 @@ Hextra provides a collection of beautiful shortcodes to enhance your content.
   {{< card link="icon" title="Icon" icon="badge-check" >}}
   {{< card link="steps" title="Steps" icon="one" >}}
   {{< card link="tabs" title="Tabs" icon="collection" >}}
+  {{< card link="lead" title="Lead" icon="speakerphone" >}}
 {{< /cards >}}
 
 <div style="padding-top:4rem"></div>
