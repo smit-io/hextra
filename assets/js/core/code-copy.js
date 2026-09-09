@@ -26,12 +26,29 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Make scrollable code blocks focusable for keyboard users.
+  //
+  // In a line-numbered block the scroll container is the .lntable, not the
+  // <pre>: each <pre> is sized by the table cell around it and never overflows
+  // itself, so testing the <pre> there found nothing scrollable and left the
+  // only scrollable element unreachable by keyboard.
   const updateScrollableCodeBlocks = () => {
-    document.querySelectorAll('.hextra-code-block pre, .highlight pre').forEach(function (pre) {
-      if (pre.scrollWidth > pre.clientWidth) {
-        pre.setAttribute('tabindex', '0');
+    const selector = [
+      '.hextra-code-block pre',
+      '.highlight pre',
+      '.hextra-code-block .lntable',
+      '.highlight .lntable'
+    ].join(', ');
+
+    document.querySelectorAll(selector).forEach(function (el) {
+      // Leave the inner <pre>s of a line-number table alone; the table scrolls
+      // for them. Chroma ships some of them with tabindex="0" already, so this
+      // clears that rather than leaving two focus stops for one scroll box.
+      const isInnerPre = el.tagName === 'PRE' && el.closest('.lntable');
+
+      if (!isInnerPre && el.scrollWidth > el.clientWidth) {
+        el.setAttribute('tabindex', '0');
       } else {
-        pre.removeAttribute('tabindex');
+        el.removeAttribute('tabindex');
       }
     });
   };
