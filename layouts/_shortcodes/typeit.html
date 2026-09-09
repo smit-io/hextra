@@ -80,7 +80,18 @@ Second line
   {{- $class = printf "%s %s" $class . -}}
 {{- end -}}
 
-{{- $body := delimit $strings (cond $breakLines "\n" " ") -}}
+{{- /*
+  The server-rendered body is what readers who prefer reduced motion and
+  readers with no JavaScript actually get, so it has to look like the finished
+  animation. Joining with a newline did not: HTML collapses it to a space, so
+  those readers saw every line run together while the script path emits <br>.
+  Each string is escaped individually and the separator added afterwards.
+*/ -}}
+{{- $escaped := slice -}}
+{{- range $strings -}}
+  {{- $escaped = $escaped | append (htmlEscape .) -}}
+{{- end -}}
+{{- $body := delimit $escaped (cond $breakLines "<br>" " ") -}}
 
 {{- printf `<%s class="%s" data-typeit data-typeit-strings="%s" data-typeit-initial="%s" data-typeit-speed="%v" data-typeit-start-delay="%v" data-typeit-lifelike="%v" data-typeit-break-lines="%v" data-typeit-wait-visible="%v" data-typeit-loop="%v">%s</%s>`
   $tag
@@ -93,7 +104,7 @@ Second line
   $breakLines
   $waitUntilVisible
   $loop
-  (htmlEscape $body)
+  $body
   $tag
   | safeHTML
 -}}
