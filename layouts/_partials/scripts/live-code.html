@@ -288,10 +288,16 @@
       // its own, which is the markup Chroma emits with lineNumbersInTable off.
       const inlineNo = (i) => (shape.mode === "inline" ? number(i, "ln") : "");
 
+      // Chroma ends every line with a newline except the last, which is why a
+      // Chroma block copies without a trailing blank line. Appending one to
+      // every line meant a refreshed block copied with an extra newline that
+      // the block it replaced did not have.
+      const nl = (i) => (i < lines.length - 1 ? "\n" : "");
+
       const codeBody = lines
         .map(
           (l, i) =>
-            `<span class="line${hl.has(i) ? " hl" : ""}">${inlineNo(i)}<span class="cl">${l}\n</span></span>`
+            `<span class="line${hl.has(i) ? " hl" : ""}">${inlineNo(i)}<span class="cl">${l}${nl(i)}</span></span>`
         )
         .join("");
 
@@ -309,7 +315,7 @@
 
       const nums = lines
         .map((_, i) => {
-          const cell = number(i, "lnt", "\n");
+          const cell = number(i, "lnt", nl(i));
           return hl.has(i) ? `<span class="hl">${cell}</span>` : cell;
         })
         .join("");
