@@ -16,8 +16,14 @@
 .hextra-borderless-table {
   @apply hx:my-6 hx:overflow-x-auto;
 
+  /* `border-collapse` is set explicitly rather than inherited from
+     typography.css: those rules are nested under `.content`, and
+     layouts/hextra-home.html renders `.Content` without that wrapper. In the
+     separated model CSS 2.1 17.6.1 makes user agents ignore borders on rows
+     and row groups - which is every border this component has - so the table
+     would arrive on a home page with no rules at all. */
   table {
-    @apply hx:my-0 hx:table hx:w-full hx:text-sm;
+    @apply hx:my-0 hx:table hx:w-full hx:border-collapse hx:text-sm;
   }
 
   /* A single underline under the header carries the column structure. Below
