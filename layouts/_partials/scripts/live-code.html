@@ -266,10 +266,20 @@
 
       // One number, marked up the way Chroma marked up the block being
       // replaced: id and link when anchorLineNos is on, bare text otherwise.
+      /*
+        Chroma right-aligns the gutter by padding every number with spaces to
+        the width of the widest one, and `.lnt` is an inline span, so those
+        spaces are the only thing aligning the column. Without them lines 1-9
+        jumped a glyph left the first time a block refreshed and the whole code
+        column shifted with them.
+      */
+      const width = String(shape.start + lines.length - 1).length;
+
       const number = (i, cls, tail = "") => {
         const n = shape.start + i;
         const anchor = `${shape.anchorPrefix}${n}`;
-        const body = shape.anchors ? `<a class="lnlinks" href="#${anchor}">${n}</a>` : `${n}`;
+        const label = String(n).padStart(width, " ");
+        const body = shape.anchors ? `<a class="lnlinks" href="#${anchor}">${label}</a>` : label;
         const id = shape.anchors ? ` id="${anchor}"` : "";
         return `<span class="${cls}"${id}>${body}${tail}</span>`;
       };
