@@ -12,6 +12,10 @@ renders nothing when scripting is off.
 @param {string} id Required. The gist id.
 @param {string} user The gist owner. Accepted for compatibility; the API does not need it.
 @param {string} file Render only this file from the gist.
+@param {string} hl_lines Lines to highlight, e.g. "34-38 43". A gist carries no
+  highlighting metadata of its own, so this is given at the call site.
+@param {bool} lineNos Show line numbers.
+@param {int} lineNoStart First line number. Default 1.
 
 or
 
@@ -53,6 +57,18 @@ or
 
 {{- $copyEnabled := or (eq site.Params.highlight.copy.enable nil) site.Params.highlight.copy.enable -}}
 
+{{- /* Chroma options. A gist has no highlighting metadata, so it comes from here. */ -}}
+{{- $options := dict -}}
+{{- with .Get "hl_lines" -}}
+  {{- $options = merge $options (dict "hl_lines" .) -}}
+{{- end -}}
+{{- if eq (printf "%v" (.Get "lineNos")) "true" -}}
+  {{- $options = merge $options (dict "lineNos" true) -}}
+{{- end -}}
+{{- with .Get "lineNoStart" -}}
+  {{- $options = merge $options (dict "lineNoStart" (int .)) -}}
+{{- end -}}
+
 {{- with $gist -}}
   {{- $htmlURL := .html_url | default (printf "https://gist.github.com/%s" $id) -}}
 
@@ -66,7 +82,12 @@ or
             "base_url" ""
             "lang" $lang
             "content" ($meta.content | default "")
-            "options" (dict)
+            "options" $options
+            "action" (dict
+              "url" $htmlURL
+              "icon" "github"
+              "label" ((T "viewOnGitHub") | default "View on GitHub")
+            )
             )
           -}}
           {{- if $copyEnabled -}}
@@ -79,12 +100,6 @@ or
       {{- end -}}
     {{- end -}}
 
-    <div class="hextra-gist__footer">
-      <a href="{{ $htmlURL }}" target="_blank" rel="noreferrer">
-        {{- partial "utils/icon" (dict "name" "github" "attributes" `height=14 aria-hidden="true"`) -}}
-        <span>{{ (T "viewOnGitHub") | default "View on GitHub" }}</span>
-      </a>
-    </div>
   </div>
 {{- else -}}
   {{- /* No network, or the gist is gone: leave a link rather than nothing. */ -}}
