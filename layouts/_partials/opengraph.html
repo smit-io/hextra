@@ -78,9 +78,14 @@
 {{- /* If it is part of a series, link to related articles. Resolved through
 `utils/series-pages` rather than `.Site.Taxonomies.series`, which is empty
 unless the site declares a `series` taxonomy - so these tags never emitted for
-most sites using the `series` front matter. */}}
+most sites using the `series` front matter.
+
+Gated on the same `blog/config.html` switch as the visible module: a site that
+turned series off should not still be publishing its series graph to crawlers
+and social scrapers. */}}
 {{- $permalink := .Permalink }}
-{{ with .Params.series }}
+{{- $seriesEnabled := (partial "blog/config.html" .).article.series.enable }}
+{{ with (and $seriesEnabled .Params.series) }}
 {{- $names := . }}
 {{- if not (reflect.IsSlice $names) }}{{ $names = slice $names }}{{ end }}
 {{- range $name := $names }}
