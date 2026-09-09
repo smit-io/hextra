@@ -1,0 +1,77 @@
+.hextra-repo-card {
+  @apply hx:flex hx:flex-col hx:my-4 hx:no-underline hx:overflow-hidden;
+  @apply hx:rounded-lg hx:border;
+  @apply hx:border-gray-200 hx:bg-hextra-light-50;
+  @apply hx:dark:border-neutral-800 hx:dark:bg-hextra-dark-700;
+  @apply hx:transition-colors hx:ease-in hx:duration-200;
+
+  &:hover {
+    @apply hx:no-underline hx:border-gray-300 hx:bg-hextra-light-100;
+    @apply hx:dark:border-neutral-700 hx:dark:bg-hextra-dark-800;
+  }
+}
+
+/*
+  Stacked on narrow screens, beside the body from `sm` up. A 2:1 preview
+  spanning the full content column would be several hundred pixels tall, and
+  capping its height instead crops the image.
+*/
+.hextra-repo-card__thumbnail {
+  @apply hx:block hx:w-full hx:shrink-0 hx:sm:w-2/5;
+
+  img {
+    @apply hx:block hx:size-full;
+    aspect-ratio: 2 / 1;
+  }
+}
+
+@media (width >= 40rem) {
+  .hextra-repo-card:has(.hextra-repo-card__thumbnail) {
+    @apply hx:flex-row hx:items-stretch;
+  }
+
+  .hextra-repo-card__thumbnail img {
+    aspect-ratio: auto;
+  }
+}
+
+.hextra-repo-card__thumbnail--cover img {
+  @apply hx:object-cover;
+}
+
+/* The avatar fallback is square: letterbox it rather than cropping the logo. */
+.hextra-repo-card__thumbnail--contain {
+  @apply hx:bg-hextra-light-200 hx:dark:bg-hextra-dark-800;
+
+  img {
+    @apply hx:object-contain hx:p-4;
+  }
+}
+
+.hextra-repo-card__body {
+  @apply hx:flex hx:flex-col hx:gap-2 hx:p-4;
+}
+
+.hextra-repo-card__title {
+  @apply hx:flex hx:items-center hx:gap-2 hx:font-semibold;
+  @apply hx:text-gray-900 hx:dark:text-gray-100;
+}
+
+.hextra-repo-card__description {
+  @apply hx:text-sm hx:leading-relaxed;
+  @apply hx:text-gray-600 hx:dark:text-gray-300;
+}
+
+.hextra-repo-card__meta {
+  @apply hx:flex hx:flex-wrap hx:items-center hx:gap-x-4 hx:gap-y-1 hx:text-xs;
+  @apply hx:text-gray-600 hx:dark:text-gray-400;
+
+  > span {
+    @apply hx:inline-flex hx:items-center hx:gap-1;
+  }
+}
+
+.hextra-repo-card__dot {
+  @apply hx:inline-block hx:size-2.5 hx:rounded-full hx:me-1;
+  @apply hx:bg-hextra-accent-500;
+}
