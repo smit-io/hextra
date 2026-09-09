@@ -1,0 +1,73 @@
+{{- /*
+An obfuscated mailto link.
+
+The address is emitted as hexadecimal HTML character references rather than
+plain text, so it survives a browser but not a naive address harvester. No
+JavaScript is involved: the encoding happens at build time and the link works
+with scripting disabled.
+
+Ported from the Blowfish theme (MIT, Nuno Coração), which does not obfuscate.
+
+@param {string} email The address, with or without a "mailto:" prefix.
+@param {string} text Link text. Defaults to the address itself, also obfuscated.
+@param {string} subject Optional subject line.
+@param {string} body Optional message body.
+@param {string} cc Optional carbon copy address.
+@param {string} bcc Optional blind carbon copy address.
+
+@example {{< email email="hello@example.com" >}}
+@example {{< email email="hello@example.com" text="Get in touch" subject="Hello" >}}
+*/ -}}
+
+{{- $address := .Get "email" | default (.Get 0) | strings.TrimSpace -}}
+{{- $address = strings.TrimPrefix "mailto:" $address -}}
+
+{{- if not $address -}}
+  {{- errorf "The %q shortcode requires an 'email' parameter. See %s" .Name .Position -}}
+{{- end -}}
+
+{{- if not (findRE `^[^@\s]+@[^@\s.]+\.[^@\s]+$` $address) -}}
+  {{- errorf "The %q shortcode was given %q, which is not an email address. See %s" .Name $address .Position -}}
+{{- end -}}
+
+{{- /* Optional mailto query parameters, percent-encoded by querify. */ -}}
+{{- $query := slice -}}
+{{- with .Get "subject" -}}{{- $query = $query | append "subject" . -}}{{- end -}}
+{{- with .Get "body" -}}{{- $query = $query | append "body" . -}}{{- end -}}
+{{- with .Get "cc" -}}{{- $query = $query | append "cc" . -}}{{- end -}}
+{{- with .Get "bcc" -}}{{- $query = $query | append "bcc" . -}}{{- end -}}
+
+{{- $url := printf "mailto:%s" $address -}}
+{{- with $query -}}
+  {{- $url = printf "%s?%s" $url (querify .) -}}
+{{- end -}}
+
+{{- $text := .Get "text" -}}
+
+{{- $href := partial "inline/obfuscate-ascii.html" $url -}}
+{{- $label := "" -}}
+{{- if $text -}}
+  {{- $label = $text | markdownify -}}
+{{- else -}}
+  {{- $label = partial "inline/obfuscate-ascii.html" $address | safeHTML -}}
+{{- end -}}
+
+<a {{ printf `href="%s"` $href | safeHTMLAttr }} class="hextra-email">{{ $label }}</a>
+
+{{- /*
+  Encode an ASCII string as hexadecimal character references. printf "%x" gives
+  the hex of each byte, which findRE splits back into pairs. The encoding is
+  byte-wise, so anything outside printable ASCII is returned unchanged rather
+  than being split mid-rune.
+*/ -}}
+{{- define "_partials/inline/obfuscate-ascii.html" -}}
+  {{- $out := "" -}}
+  {{- if findRE `^[\x20-\x7E]*$` . -}}
+    {{- range findRE `[0-9a-f]{2}` (printf "%x" .) -}}
+      {{- $out = printf "%s&#x%s;" $out . -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $out = . -}}
+  {{- end -}}
+  {{- return $out -}}
+{{- end -}}
