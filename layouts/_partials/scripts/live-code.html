@@ -1,15 +1,16 @@
 {{- /*
-  Refresh `codeimporter live=true` blocks from their source URL.
+  Refresh `live=true` code blocks from their source URL.
 
   Loaded only on pages that use the parameter, gated on the "hasLiveCode" store
   flag in scripts.html - the same pattern as chart, typeit and youtube-lite.
+  Shared by the codeimporter and gist shortcodes; either emits one
+  .hextra-code-block[data-live-url] per file and this drives all of them.
 
   The build-time render is what ships and what a crawler sees. This only
   replaces it when the remote file has actually changed, which the FNV-1a hash
   emitted by the shortcode makes cheap to decide: on the common path the fetch
   completes, the hashes match, and nothing touches the DOM.
-  */
--}}
+*/ -}}
 
 {{- $asset := site.Params.liveCode.js | default "js/vendor/highlight.min.js" -}}
 {{- with resources.Get $asset -}}
@@ -19,13 +20,12 @@
   {{- errorf "highlight.js asset not found at %q. Run `npm run vendor:js` or set params.liveCode.js." $asset -}}
 {{- end -}}
 
-
 <script>
   (() => {
     const TIMEOUT_MS = 10000;
 
     // Chroma lexer names do not all exist in highlight.js. Only the ones a
-    // codeimporter is likely to hit are mapped; anything unknown falls through
+    // code import is likely to hit are mapped; anything unknown falls through
     // to highlightAuto.
     const LANG_ALIASES = {
       "go-html-template": "xml",
@@ -41,7 +41,7 @@
       jsx: "javascript",
       tsx: "typescript",
       text: "plaintext",
-      "": "plaintext",
+      "": "plaintext"
     };
 
     // Must match Hugo's hash.FNV32a, which hashes UTF-8 bytes - hence
@@ -56,9 +56,9 @@
       return h >>> 0;
     };
 
-    // The same arithmetic as layouts/_shortcodes/codeimporter.html. Kept in
-    // step deliberately: if the two ever diverge, an unchanged file would hash
-    // differently and the block would churn on every load.
+    // The same arithmetic as the shortcodes. Kept in step deliberately: if the
+    // two ever diverge, an unchanged file would hash differently and the block
+    // would churn on every load.
     const slice = (text, startAttr, endAttr) => {
       if (!startAttr && !endAttr) return text;
 
@@ -72,40 +72,135 @@
 
       if (start < 1) start = 1;
       if (end > count) end = count;
-      if (start > end) return text; // matches the template's warnf-and-ignore
+      if (start > end) return text; // matches the shortcode's warnf-and-ignore
 
       return lines.slice(start - 1, end).join("\n");
     };
 
-    const render = (text, lang) => {
-      const code = document.createElement("code");
-      // Deliberately no data-lang: code-copy.js keys on it to collapse "\n\n",
-      // a workaround for Chroma's per-line spans. highlight.js has no such
-      // quirk, so that collapse would eat real blank lines from the copy.
-      code.className = `language-${lang.replace(/[^\w.-]/g, "")} hljs`;
+    /*
+      highlight.js returns one flat token stream, but Chroma marks up every line
+      separately - which is what the `.line`, `.hl` and line-number styles hang
+      off. So the stream has to be cut into lines, and a span that crosses a
+      newline (a block comment, a raw string) has to be closed at the end of one
+      line and reopened at the start of the next, or the markup falls apart.
+    */
+    const splitLines = (html) => {
+      const lines = [];
+      const stack = [];
+      let cur = "";
+      const reopen = () => stack.join("");
+      const close = () => "</span>".repeat(stack.length);
 
-      let done = false;
+      const re = /<\/span>|<span[^>]*>|<[^>]+>|[^<]+/g;
+      let m;
+      while ((m = re.exec(html)) !== null) {
+        const tok = m[0];
+        if (tok === "</span>") {
+          stack.pop();
+          cur += tok;
+        } else if (tok.startsWith("<span")) {
+          stack.push(tok);
+          cur += tok;
+        } else if (tok[0] === "<") {
+          cur += tok;
+        } else {
+          const parts = tok.split("\n");
+          for (let i = 0; i < parts.length; i++) {
+            if (i > 0) {
+              lines.push(cur + close());
+              cur = reopen();
+            }
+            cur += parts[i];
+          }
+        }
+      }
+      lines.push(cur + close());
+
+      // A file ending in a newline yields a trailing empty line that Chroma
+      // does not emit either.
+      if (lines.length > 1 && !lines[lines.length - 1].replace(/<[^>]*>/g, "")) {
+        lines.pop();
+      }
+      return lines;
+    };
+
+    const highlightToLines = (text, lang) => {
       if (typeof hljs !== "undefined") {
         const name = LANG_ALIASES[lang] ?? lang;
         try {
-          const out = hljs.getLanguage(name) ? hljs.highlight(text, { language: name, ignoreIllegals: true }) : hljs.highlightAuto(text);
-          code.innerHTML = out.value;
-          done = true;
+          const out = hljs.getLanguage(name)
+            ? hljs.highlight(text, { language: name, ignoreIllegals: true })
+            : hljs.highlightAuto(text);
+          return splitLines(out.value);
         } catch (err) {
           console.debug("live-code: highlighting failed, falling back to plain text", err);
         }
       }
-      if (!done) code.textContent = text;
+      const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      return text.replace(/\n$/, "").split("\n").map(esc);
+    };
 
-      const pre = document.createElement("pre");
-      pre.className = "chroma";
-      pre.appendChild(code);
+    /*
+      Read the shape of the block Chroma produced, rather than re-deriving it
+      from hl_lines. Chroma has already resolved which lines are highlighted -
+      including how hl_lines interacts with lineNoStart - so reusing its answer
+      keeps the refreshed block identical in every case, with no second
+      interpretation of the option to drift out of step.
+    */
+    const readShape = (container) => {
+      const table = container.querySelector("table.lntable");
+      const codes = container.querySelectorAll("code");
+      const codeEl = codes[codes.length - 1];
+      const shape = { table: !!table, hl: [], start: 1 };
+      if (!codeEl) return shape;
 
-      // The .highlight wrapper is what the Chroma and hljs palettes are scoped
-      // to, so the refreshed block inherits the same colours.
+      const lineEls = codeEl.querySelectorAll(":scope > .line");
+      lineEls.forEach((el, i) => {
+        if (el.classList.contains("hl")) shape.hl.push(i);
+      });
+
+      const firstNo = container.querySelector(".lnt");
+      if (firstNo) {
+        const n = parseInt(firstNo.textContent.trim(), 10);
+        if (Number.isFinite(n)) shape.start = n;
+      }
+      return shape;
+    };
+
+    const render = (text, lang, shape) => {
+      const safeLang = lang.replace(/[^\w.-]/g, "");
+      const lines = highlightToLines(text, lang);
+      const hl = new Set(shape.hl);
+
+      const codeBody = lines
+        .map((l, i) => `<span class="line${hl.has(i) ? " hl" : ""}"><span class="cl">${l}\n</span></span>`)
+        .join("");
+
+      // data-lang is set deliberately: the markup now matches Chroma's, so
+      // code-copy.js must apply the same "\n\n" collapse it applies there.
+      const codeOpen = `<code class="language-${safeLang} hljs" data-lang="${safeLang}">`;
+
       const wrap = document.createElement("div");
       wrap.className = "highlight";
-      wrap.appendChild(pre);
+
+      if (!shape.table) {
+        wrap.innerHTML = `<pre class="chroma">${codeOpen}${codeBody}</code></pre>`;
+        return wrap;
+      }
+
+      const nums = lines
+        .map((_, i) => {
+          const n = shape.start + i;
+          const cell = `<span class="lnt">${n}\n</span>`;
+          return hl.has(i) ? `<span class="hl">${cell}</span>` : cell;
+        })
+        .join("");
+
+      wrap.innerHTML =
+        `<div class="chroma"><table class="lntable"><tr>` +
+        `<td class="lntd"><pre class="chroma"><code>${nums}</code></pre></td>` +
+        `<td class="lntd"><pre class="chroma">${codeOpen}${codeBody}</code></pre></td>` +
+        `</tr></table></div>`;
       return wrap;
     };
 
@@ -114,7 +209,12 @@
     // at click time via button.parentElement.previousElementSibling, so
     // replacing the div itself would break copying.
     const codeContainer = (block) =>
-      [...block.children].find((el) => el.tagName === "DIV" && !el.classList.contains("hextra-code-filename") && !el.classList.contains("hextra-code-copy-btn-container"));
+      [...block.children].find(
+        (el) =>
+          el.tagName === "DIV" &&
+          !el.classList.contains("hextra-code-filename") &&
+          !el.classList.contains("hextra-code-copy-btn-container")
+      );
 
     const refresh = async (block) => {
       const url = block.dataset.liveUrl;
@@ -143,7 +243,8 @@
       const container = codeContainer(block);
       if (!container) return;
 
-      container.replaceChildren(render(body, block.dataset.liveLang || ""));
+      const shape = readShape(container);
+      container.replaceChildren(render(body, block.dataset.liveLang || "", shape));
       block.dataset.liveRefreshed = "1";
       window.hextraCodeBlocks?.refreshScrollable?.();
     };
@@ -152,6 +253,8 @@
       const blocks = document.querySelectorAll(".hextra-code-block[data-live-url]");
       if (!blocks.length) return;
 
+      // Probe on approach rather than on load: a long page should not contact
+      // every host it mentions before the reader has scrolled to any of them.
       const observer =
         "IntersectionObserver" in window
           ? new IntersectionObserver(

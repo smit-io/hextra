@@ -24,7 +24,7 @@ With `live=true`, this block was rendered at build time like the others, then
 checked against the source when you loaded the page. Edit the gist and reload
 and the code above changes without rebuilding the site:
 
-{{< codeimporter url="https://gist.githubusercontent.com/smit-io/bfa237434f4a709c07c027e69fe57d6e/raw/ratelimit.go" type="go" filename="ratelimit.go" live=true >}}
+{{< codeimporter url="https://gist.githubusercontent.com/smit-io/bfa237434f4a709c07c027e69fe57d6e/raw/ratelimit.go" type="go" filename="ratelimit.go" lineNos=true hl_lines="34-38 43" live=true >}}
 
 Note the URL has no revision hash in it. The GitHub API hands out a raw URL
 pinned to a specific revision, which would never change; the shorter
@@ -57,12 +57,10 @@ pinned to a specific revision, which would never change; the shorter
 after a `startLine`/`endLine` slice, line 1 is the first line kept. Pass
 `lineNoStart` to restore the original numbering.
 
-They are also mutually exclusive with `live`. Line highlighting is pinned to
-line numbers, and the whole point of `live` is that the file underneath can
-change — line 34 today need not be line 34 tomorrow. Combining them logs a
-warning naming the call site and ignores `hl_lines`, `lineNos` and
-`lineNoStart`, so the block looks the same whether or not a refresh has
-happened.
+They work the same with or without `live` — a refreshed block keeps its line
+numbers and its highlighted lines. Note that highlighting is pinned to line
+*positions*, not to the code on them: if the source changes, line 34 stays
+highlighted even when what is on line 34 has moved.
 
 The block is rendered through the same partial as a fenced code block, so it
 gets the copy button, filename header and syntax highlighting you would expect.

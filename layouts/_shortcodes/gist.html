@@ -79,17 +79,6 @@ or
 */ -}}
 {{- $live := eq (printf "%v" (.Get "live")) "true" -}}
 
-{{- /*
-  Same rule as codeimporter: the client re-highlights with highlight.js, which
-  emits neither the per-line spans nor the line-number table Chroma builds, so
-  these would vanish the moment the gist drifted. Drop them at build time too
-  and the block looks the same either way. Pinning highlights to line numbers
-  is dubious against content that can change underneath them regardless.
-*/ -}}
-{{- if and $live $options -}}
-  {{- warnf "gist: hl_lines, lineNos and lineNoStart have no effect with live=true, ignoring them. See %s" .Position -}}
-  {{- $options = dict -}}
-{{- end -}}
 
 {{- with $gist -}}
   {{- $htmlURL := .html_url | default (printf "https://gist.github.com/%s" $id) -}}

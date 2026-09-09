@@ -88,12 +88,13 @@ resolve on the next build.
 A file the API truncated is a useful side effect: the raw URL returns it whole,
 so a live block replaces the partial content with the full file on first view.
 
-`live` is mutually exclusive with `hl_lines`, `lineNos` and `lineNoStart` —
-line highlighting is pinned to line numbers, and the point of `live` is that
-the file can change underneath them. Combining them logs a warning and ignores
-the three, so the block looks the same whether or not a refresh has happened.
+`hl_lines`, `lineNos` and `lineNoStart` work the same with or without `live` —
+a refreshed block keeps its line numbers and its highlighted lines. Highlighting
+is pinned to line *positions* rather than to the code on them, so if the gist
+changes, line 34 stays highlighted even when what is on line 34 has moved.
+
 Anonymous gists have no owner to build the raw URL from, so `live` is ignored
-there too, also with a warning.
+there, with a warning.
 
 {{< callout type="warning" >}}
   With `live=true` the **reader's** browser contacts
