@@ -46,6 +46,16 @@ The body is normal Markdown, so `code`, links and emphasis inside the cells
 all work. Nothing else on the page changes: Markdown tables outside the
 shortcode keep the default bordered styling.
 
+## Do not nest block shortcodes in a cell
+
+Hugo renders a nested shortcode before this one sees the body, and block
+shortcodes such as `badge` and `icon` render across several lines. A Markdown
+table needs one row per line, so those newlines end the table and everything
+after them comes out as a paragraph of literal pipe characters. The build
+fails with a message rather than publishing that, but the fix is to keep
+cells to inline Markdown, or to use a plain Markdown table when a cell really
+needs a block.
+
 ## Put the identifying column first
 
 Below the `lg` breakpoint the header row is dropped and each cell becomes its
