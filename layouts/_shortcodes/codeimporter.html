@@ -98,23 +98,6 @@ server generally does not, and the refresh then quietly does nothing.
 {{- end -}}
 
 {{- /*
-  These do not survive a live refresh. Chroma marks up every line individually
-  and builds a two-cell table for the numbers; highlight.js, which does the
-  re-highlighting in the browser, produces a flat token stream with neither.
-
-  So drop them at build time as well, rather than letting them vanish the
-  moment the source drifts - otherwise the block looks different depending on
-  whether a reader happened to load it before or after the file changed.
-
-  Pinning highlights to fixed line numbers is dubious on content that changes
-  underneath them in any case: line 34 today need not be line 34 tomorrow.
-*/ -}}
-{{- if and $live $options -}}
-  {{- warnf "codeimporter: hl_lines, lineNos and lineNoStart have no effect with live=true, ignoring them. See %s" .Position -}}
-  {{- $options = dict -}}
-{{- end -}}
-
-{{- /*
   The slice runs outside the content guard so `live` can still emit the block
   when the build-time fetch failed. With an empty body it is a no-op.
 
