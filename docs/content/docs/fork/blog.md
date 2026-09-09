@@ -130,6 +130,8 @@ A post that declares `series` renders the module without any configuration; the 
 
 On a post in a series, the series previous/next replaces the date-ordered pager, so the foot of the article carries one set of navigation controls rather than two in conflicting orders. A series of one renders nothing and keeps the normal pager.
 
+The pager's own switches still win, because they are explicit where membership of a series is not: `displayPagination: false` suppresses both, and a post that sets its own `prev`/`next` in front matter — including `prev: false` — keeps the pager it configured. Series order does supersede `reversePagination`, which orders the same posts by date.
+
 Posts written for the Blowfish theme work unchanged: `series_order` is accepted as an alias for `seriesOrder`.
 
 ## Widgets
