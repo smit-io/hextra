@@ -1,0 +1,96 @@
+{{- /*
+Embed a GitHub gist.
+
+The gist is fetched from the GitHub API at build time and rendered with the
+theme's own code block, so it gets Chroma highlighting, the filename header and
+the copy button, and the page loads no third-party script.
+
+Ported from the Blowfish theme (MIT, Nuno Coração), which embeds GitHub's
+gist.js. That script uses document.write, ships GitHub's own stylesheet, and
+renders nothing when scripting is off.
+
+@param {string} id Required. The gist id.
+@param {string} user The gist owner. Accepted for compatibility; the API does not need it.
+@param {string} file Render only this file from the gist.
+
+or
+
+@param {string} 0 The gist owner.
+@param {string} 1 The gist id.
+@param {string} 2 Optional filename.
+
+@example {{< gist id="6cad326836d38bd3a7ae" >}}
+@example {{< gist "octocat" "6cad326836d38bd3a7ae" "hello_world.rb" >}}
+*/ -}}
+
+{{- $id := .Get "id" -}}
+{{- $file := .Get "file" -}}
+{{- if not $id -}}
+  {{- $id = .Get 1 -}}
+  {{- $file = .Get 2 -}}
+{{- end -}}
+
+{{- if not $id -}}
+  {{- errorf "The %q shortcode requires a gist id. See %s" .Name .Position -}}
+{{- end -}}
+
+{{- if not (findRE `^[0-9a-f]+$` $id) -}}
+  {{- errorf "The %q shortcode was given %q, which is not a gist id. See %s" .Name $id .Position -}}
+{{- end -}}
+
+{{- $api := printf "https://api.github.com/gists/%s" $id -}}
+{{- $gist := false -}}
+
+{{- with try (resources.GetRemote $api (dict "headers" (dict "Accept" "application/vnd.github+json"))) -}}
+  {{- with .Err -}}
+    {{- warnf "gist: unable to fetch %q: %s" $api . -}}
+  {{- else with .Value -}}
+    {{- $gist = . | transform.Unmarshal -}}
+  {{- else -}}
+    {{- warnf "gist: %q returned no content" $api -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $copyEnabled := or (eq site.Params.highlight.copy.enable nil) site.Params.highlight.copy.enable -}}
+
+{{- with $gist -}}
+  {{- $htmlURL := .html_url | default (printf "https://gist.github.com/%s" $id) -}}
+
+  <div class="hextra-gist">
+    {{- range $name, $meta := .files -}}
+      {{- if or (not $file) (eq $name $file) -}}
+        {{- $lang := lower ($meta.language | default "") -}}
+        <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+          {{- partial "components/codeblock" (dict
+            "filename" $name
+            "base_url" ""
+            "lang" $lang
+            "content" ($meta.content | default "")
+            "options" (dict)
+            )
+          -}}
+          {{- if $copyEnabled -}}
+            {{- partial "components/codeblock-copy-button" (dict "filename" $name) -}}
+          {{- end -}}
+        </div>
+        {{- if $meta.truncated -}}
+          {{- warnf "gist: %q is truncated by the GitHub API and is shown in part only" $name -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+
+    <div class="hextra-gist__footer">
+      <a href="{{ $htmlURL }}" target="_blank" rel="noreferrer">
+        {{- partial "utils/icon" (dict "name" "github" "attributes" `height=14 aria-hidden="true"`) -}}
+        <span>{{ (T "viewOnGitHub") | default "View on GitHub" }}</span>
+      </a>
+    </div>
+  </div>
+{{- else -}}
+  {{- /* No network, or the gist is gone: leave a link rather than nothing. */ -}}
+  <p>
+    <a href="https://gist.github.com/{{ $id }}" target="_blank" rel="noreferrer">
+      {{- (T "viewOnGitHub") | default "View on GitHub" -}}
+    </a>
+  </p>
+{{- end -}}
