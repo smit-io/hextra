@@ -389,7 +389,10 @@
       window.hextraCodeBlocks?.refreshScrollable?.();
 
       if (hadFocus) {
-        const target = container.querySelector('[tabindex="0"]') || container.querySelector("pre");
+        // The rescan that adds tabindex runs on the next frame, so pick the
+        // scroll container directly: the table when the block has line
+        // numbers, the <pre> otherwise.
+        const target = container.querySelector(".lntable") || container.querySelector("pre");
         if (target) {
           if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
           target.focus({ preventScroll: true });

@@ -55,19 +55,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
   updateScrollableCodeBlocks();
 
+  // One scan per frame however many times it is asked for. Each call measures
+  // every code block on the page, and both callers can fire in bursts: a
+  // resize, or several live blocks refreshing as the reader scrolls past them.
+  let scanRaf;
+  const scheduleScrollableScan = () => {
+    if (scanRaf) {
+      cancelAnimationFrame(scanRaf);
+    }
+    scanRaf = requestAnimationFrame(updateScrollableCodeBlocks);
+  };
+
   // Exposed so scripts that replace a code block's contents after load can
-  // restore keyboard scrolling on the new <pre>; see
+  // restore keyboard scrolling on the new markup; see
   // layouts/_partials/scripts/live-code.html. Without it a swapped-in block
   // stays unfocusable until the next window resize.
-  window.hextraCodeBlocks = { refreshScrollable: updateScrollableCodeBlocks };
+  window.hextraCodeBlocks = { refreshScrollable: scheduleScrollableScan };
 
-  let resizeRaf;
-  window.addEventListener('resize', () => {
-    if (resizeRaf) {
-      cancelAnimationFrame(resizeRaf);
-    }
-    resizeRaf = requestAnimationFrame(updateScrollableCodeBlocks);
-  });
+  window.addEventListener('resize', scheduleScrollableScan);
 
   document.querySelectorAll('.hextra-code-copy-btn').forEach(function (button) {
     // Add copy and success icons
