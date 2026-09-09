@@ -137,17 +137,22 @@ server generally does not, and the refresh then quietly does nothing.
 
     hash.FNV32a is cheap and, unlike SHA-256 through crypto.subtle, needs no
     secure context, so the comparison still works on a site served over plain
-    http. Values are author-supplied and %q-quoted; $url is already validated
-    as http(s) above.
+    http.
+
+    Every value goes through htmlEscape. The string is marked safeHTMLAttr,
+    which switches off Hugo's own escaping, so nothing else would escape it:
+    Go's %q quoting is not HTML quoting, and a `"` in an author-supplied value
+    would otherwise close the attribute and let the rest of it be parsed as
+    markup.
   */ -}}
   {{- $liveAttrs := "" -}}
   {{- if $live -}}
-    {{- $liveAttrs = printf " data-live-url=%q data-live-lang=%q data-live-hash=%q" $url $lang (string (hash.FNV32a $body)) -}}
+    {{- $liveAttrs = printf ` data-live-url="%s" data-live-lang="%s" data-live-hash="%s"` (htmlEscape $url) (htmlEscape $lang) (string (hash.FNV32a $body)) -}}
     {{- with $startLine -}}
-      {{- $liveAttrs = printf "%s data-live-start=%q" $liveAttrs (string .) -}}
+      {{- $liveAttrs = printf `%s data-live-start="%s"` $liveAttrs (htmlEscape (string .)) -}}
     {{- end -}}
     {{- with $endLine -}}
-      {{- $liveAttrs = printf "%s data-live-end=%q" $liveAttrs (string .) -}}
+      {{- $liveAttrs = printf `%s data-live-end="%s"` $liveAttrs (htmlEscape (string .)) -}}
     {{- end -}}
   {{- end -}}
   <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"{{ $liveAttrs | safeHTMLAttr }}>

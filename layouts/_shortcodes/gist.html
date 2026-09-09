@@ -109,11 +109,15 @@ or
         {{- /*
           Assembled into one string so a non-live gist's markup is unchanged and
           the tag stays balanced, which prettier-plugin-go-template requires.
+
+          The values are htmlEscaped because safeHTMLAttr below switches off
+          Hugo's escaping: a gist filename or language is third-party data, and
+          a `"` in one would otherwise close the attribute early.
         */ -}}
         {{- $liveAttrs := "" -}}
         {{- if $live -}}
           {{- $rawURL := urls.JoinPath "https://gist.githubusercontent.com" $owner $id "raw" $name -}}
-          {{- $liveAttrs = printf " data-live-url=%q data-live-lang=%q data-live-hash=%q" $rawURL $lang (string (hash.FNV32a ($meta.content | default ""))) -}}
+          {{- $liveAttrs = printf ` data-live-url="%s" data-live-lang="%s" data-live-hash="%s"` (htmlEscape $rawURL) (htmlEscape $lang) (string (hash.FNV32a ($meta.content | default ""))) -}}
         {{- end -}}
         <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"{{ $liveAttrs | safeHTMLAttr }}>
           {{- partial "components/codeblock" (dict
