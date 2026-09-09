@@ -28,6 +28,7 @@ Hextra provides a collection of beautiful shortcodes to enhance your content.
   {{< card link="email" title="Email" icon="mail" >}}
   {{< card link="article" title="Article" icon="newspaper" >}}
   {{< card link="list" title="List" icon="view-list" >}}
+  {{< card link="codeimporter" title="Code Importer" icon="cloud-download" >}}
 {{< /cards >}}
 
 <div style="padding-top:4rem"></div>
