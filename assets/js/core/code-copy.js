@@ -38,6 +38,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   updateScrollableCodeBlocks();
 
+  // Exposed so scripts that replace a code block's contents after load can
+  // restore keyboard scrolling on the new <pre>; see
+  // layouts/_partials/scripts/live-code.html. Without it a swapped-in block
+  // stays unfocusable until the next window resize.
+  window.hextraCodeBlocks = { refreshScrollable: updateScrollableCodeBlocks };
+
   let resizeRaf;
   window.addEventListener('resize', () => {
     if (resizeRaf) {

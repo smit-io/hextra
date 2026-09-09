@@ -26,6 +26,16 @@ const packages = [
     out: "chart.umd.min.js",
     license: "MIT",
   },
+  {
+    // The `common` bundle: ~40 languages, no plugins. Used by `codeimporter
+    // live=true`, which fetches source in the browser and so cannot reach
+    // Chroma. Only loaded on pages that carry such a block.
+    name: "highlight.js",
+    version: "11.12.0",
+    url: "https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets@11.12.0/highlight.min.js",
+    out: "highlight.min.js",
+    license: "BSD-3-Clause",
+  },
 ];
 
 // Deliberately not vendored: TypeIt (typeitjs.com) is GPL-3.0 and requires a

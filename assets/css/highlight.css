@@ -1,6 +1,8 @@
 /* Code syntax highlight */
 @import "./chroma/light.css";
 @import "./chroma/dark.css";
+/* Same palette, for blocks highlighted client-side by `codeimporter live=true`. */
+@import "./chroma/hljs.css";
 
 .hextra-code-block {
   @apply hx:text-[.9em] hx:leading-5;
