@@ -9,7 +9,8 @@
     "test:a11y": "npx playwright test tests/accessibility.spec.ts",
     "test:mobile-menu": "npx playwright test tests/mobile-menu.spec.ts",
     "test:build": "npx playwright test tests/asciidoc.spec.ts tests/render-link.spec.ts tests/search-data.spec.ts tests/search-fragments.spec.ts",
-    "vendor:icons": "node scripts/vendor-codeblock-icons.mjs"
+    "vendor:icons": "node scripts/vendor-codeblock-icons.mjs",
+    "vendor:js": "node scripts/vendor-js.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.3",

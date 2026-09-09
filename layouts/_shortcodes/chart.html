@@ -1,0 +1,42 @@
+{{- /*
+Draw a chart with Chart.js from a configuration written inside the shortcode.
+
+The body is a Chart.js configuration object without the surrounding braces,
+exactly as in the Chart.js documentation. Refer to
+https://www.chartjs.org/docs/latest/ for the available types and options.
+
+Ported from the Blowfish theme (MIT, Nuno Coração).
+
+@param {string} title Accessible description of what the chart shows.
+
+@example {{< chart title="Votes per fruit" >}}
+type: 'bar',
+data: { labels: ['Tomato'], datasets: [{ label: '# of votes', data: [12] }] }
+{{< /chart >}}
+*/ -}}
+
+{{- $id := printf "hextra-chart-%d-%d" .Page.File.UniqueID .Ordinal -}}
+{{- $title := .Get "title" -}}
+
+{{- .Page.Store.Set "hasChart" true -}}
+
+<div class="hextra-chart not-prose">
+  {{- /*
+    A canvas is opaque to assistive technology, so the title is the only
+    description of the data a screen reader gets. Chart.js also renders a
+    fallback for the canvas body, which we use for the same purpose.
+  */ -}}
+  <canvas
+    id="{{ $id }}"
+    class="hextra-chart__canvas"
+    {{ with $title }}role="img" aria-label="{{ . }}"{{ else }}role="img" aria-label="{{ (T "chart") | default "Chart" }}"{{ end }}
+  >{{ with $title }}{{ . }}{{ end }}</canvas>
+</div>
+
+<script>
+  window.hextraCharts = window.hextraCharts || [];
+  window.hextraCharts.push({
+    id: {{ $id | jsonify | safeJS }},
+    config: { {{ .InnerDeindent | safeJS }} },
+  });
+</script>
