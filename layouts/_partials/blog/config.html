@@ -92,7 +92,8 @@
     -}}
   {{- end -}}
   {{/* `series: false` is the shape an author reaches for first, so it opts out
-  rather than being read as an empty block that opts in. */}}
+    rather than being read as an empty block that opts in.
+  */}}
   {{- $series := dict "enable" false "opened" false -}}
   {{- with index . "series" -}}
     {{- if reflect.IsMap . -}}

@@ -128,8 +128,7 @@ for (const commit of commits) {
   });
 }
 
-const link = (entry) =>
-  repo ? `([\`${entry.short}\`](https://github.com/${repo}/commit/${entry.sha}))` : `(\`${entry.short}\`)`;
+const link = (entry) => (repo ? `([\`${entry.short}\`](https://github.com/${repo}/commit/${entry.sha}))` : `(\`${entry.short}\`)`);
 
 const lines = [];
 
