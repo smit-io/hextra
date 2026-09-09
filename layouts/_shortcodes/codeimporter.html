@@ -57,15 +57,22 @@ server generally does not, and the refresh then quietly does nothing.
   {{- $lang = strings.TrimPrefix "." (path.Ext (urls.Parse $url).Path) -}}
 {{- end -}}
 
+{{- $remoteFetch := partial "utils/remote-fetch-enabled.html" . -}}
+
 {{- $content := "" -}}
-{{- with try (resources.GetRemote $url) -}}
-  {{- with .Err -}}
-    {{- warnf "codeimporter: unable to fetch %q: %s" $url . -}}
-  {{- else with .Value -}}
-    {{- $content = .Content -}}
-  {{- else -}}
-    {{- warnf "codeimporter: %q returned no content" $url -}}
+{{- if $remoteFetch -}}
+  {{- with try (resources.GetRemote $url) -}}
+    {{- with .Err -}}
+      {{- warnf "codeimporter: unable to fetch %q: %s" $url . -}}
+    {{- else with .Value -}}
+      {{- $content = .Content -}}
+    {{- else -}}
+      {{- warnf "codeimporter: %q returned no content" $url -}}
+    {{- end -}}
   {{- end -}}
+{{- else -}}
+  {{- /* The block has no offline fallback, so say why it is missing. */ -}}
+  {{- warnf "codeimporter: remote fetching is disabled, skipping %q. See %s" $url .Position -}}
 {{- end -}}
 
 {{- /*
@@ -73,6 +80,14 @@ server generally does not, and the refresh then quietly does nothing.
   `default` treats false as empty and would restore the default instead.
 */ -}}
 {{- $live := eq (printf "%v" (.Get "live")) "true" -}}
+
+{{- /*
+  A build that must not reach the network must not hand the job to the
+  reader's browser either, so the same switch turns the live refresh off.
+*/ -}}
+{{- if and $live (not $remoteFetch) -}}
+  {{- $live = false -}}
+{{- end -}}
 
 {{- /*
   Line numbers are validated as plain decimal digits and parsed base 10, to
