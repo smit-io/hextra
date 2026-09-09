@@ -343,7 +343,12 @@
 
       let text;
       try {
-        const res = await fetch(url, { credentials: "omit", signal: controller.signal });
+        // Both hosts this is aimed at send `cache-control: max-age=300`, so
+        // without this the refresh was served from the HTTP cache and could be
+        // five minutes stale - which is the one thing the block promises not
+        // to be. `no-cache` still revalidates rather than re-downloading, so
+        // the unchanged case stays a conditional request.
+        const res = await fetch(url, { credentials: "omit", cache: "no-cache", signal: controller.signal });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         // res.text() drops a UTF-8 BOM already; the shortcodes strip theirs to
         // match, and this keeps the two in step if that ever changes.
