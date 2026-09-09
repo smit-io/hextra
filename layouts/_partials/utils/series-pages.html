@@ -18,13 +18,22 @@
   The series name is matched verbatim: `series: ["Fork Guides"]` is looked up
   as `Fork Guides`, not as a urlized taxonomy key.
 
+  `type` scopes the lookup to one content type, and callers should always pass
+  it. Only the blog layouts render the series module, so a docs page that
+  happens to carry a `series` key would otherwise be numbered into the blog
+  series and become a dead end: "next" walks the reader out of the blog into a
+  layout with no series navigation to get back with. Callers must include it
+  in the `partialCached` key.
+
   @param {string} name The series name.
+  @param {string} type Optional content type to scope the lookup to.
   @returns {slice} The pages in the series, in reading order.
 
-  @example {{ partialCached "utils/series-pages.html" (dict "name" $name) $name site.Language.Lang
+  @example {{ partialCached "utils/series-pages.html" (dict "name" $name "type" .Type) $name .Type site.Language.Lang
 }}
 */ -}}
 {{- $name := .name -}}
+{{- $type := .type -}}
 {{- $ordered := slice -}}
 {{- $weighted := slice -}}
 {{- $dated := slice -}}
@@ -33,6 +42,9 @@
   {{- $target := . -}}
   {{- range site.RegularPages -}}
     {{- $page := . -}}
+    {{- if and $type (ne .Type $type) -}}
+      {{- continue -}}
+    {{- end -}}
     {{- with .Params.series -}}
       {{- $names := . -}}
       {{- if not (reflect.IsSlice $names) -}}

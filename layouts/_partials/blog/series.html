@@ -53,7 +53,7 @@
       {{- $nextLabel := "" -}}
       {{- range $names -}}
         {{- if not (and $prev $next) -}}
-          {{- $pages := partialCached "utils/series-pages.html" (dict "name" .) . site.Language.Lang -}}
+          {{- $pages := partialCached "utils/series-pages.html" (dict "name" . "type" $context.Type) . $context.Type site.Language.Lang -}}
           {{- range $i, $page := $pages -}}
             {{- if eq $page.RelPermalink $context.RelPermalink -}}
               {{- if and (not $prev) (gt $i 0) -}}
@@ -121,7 +121,7 @@
       {{- end -}}
       {{- range $names -}}
         {{- $name := . -}}
-        {{- $pages := partialCached "utils/series-pages.html" (dict "name" $name) $name site.Language.Lang -}}
+        {{- $pages := partialCached "utils/series-pages.html" (dict "name" $name "type" $context.Type) $name $context.Type site.Language.Lang -}}
         {{- /* A series of one is just an article; the module would say nothing. */ -}}
         {{- if gt (len $pages) 1 -}}
           <details class="hextra-series" {{ if $opened }}open{{ end }}>
