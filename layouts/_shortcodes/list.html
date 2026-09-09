@@ -35,6 +35,14 @@ is the number of entries actually shown.
   {{- $pages = where $pages . $value -}}
 {{- end -}}
 {{- $pages = where $pages "RelPermalink" "!=" $self -}}
+
+{{- /*
+  Sort explicitly. Hugo's default collation is by weight and only then by
+  date, and a page with no weight sorts last, so any weighted page in the site
+  outranks every recent one - which is the opposite of what this shortcode
+  claims to show.
+*/ -}}
+{{- $pages = $pages.ByDate.Reverse -}}
 {{- $pages = first (int $limit) $pages -}}
 
 {{- if not $pages -}}
