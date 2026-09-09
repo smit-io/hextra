@@ -14,7 +14,10 @@
   The "nav" variant renders previous/next within the first series the post
   belongs to instead of the full list. It replaces the date-ordered
   `components/pager.html` at the foot of the post, because two prev/next
-  controls in different orders next to each other are not navigable.
+  controls in different orders next to each other are not navigable. The
+  caller decides that: `blog/single.html` only asks for the nav when the
+  pager's own switches (`displayPagination`, front-matter `prev`/`next`)
+  have not already claimed the foot of the article.
 
   @param {page} context The post.
   @param {dict} config The dict returned by `blog/config.html`.
