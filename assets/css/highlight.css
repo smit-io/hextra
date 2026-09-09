@@ -97,7 +97,10 @@
     see the .hextra-lineno-divider rule at the end of this file.
   */
   .lntd:first-child {
-    @apply hx:sticky hx:left-0;
+    /* inset-inline-start, not left: on an RTL page the numbers cell lays out
+       on the visual right, and pinning it to the left of the scroll box
+       detached it from its rows and parked it on top of the code. */
+    @apply hx:sticky hx:start-0;
   }
   /* Borders and rounding now live on .lntable, which is what scrolls. */
   .lntd:first-child pre,
@@ -152,5 +155,5 @@
   and the code cell's, which is the theme's original look.
 */
 .hextra-lineno-divider .chroma .lntd:first-child {
-  @apply hx:border-r hx:border-hextra-light-900 hx:dark:border-neutral-700;
+  @apply hx:border-e hx:border-hextra-light-900 hx:dark:border-neutral-700;
 }
