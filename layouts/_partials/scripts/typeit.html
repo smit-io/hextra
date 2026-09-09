@@ -40,6 +40,38 @@
       const loop = el.dataset.typeitLoop === "true";
       const initial = el.dataset.typeitInitial || "";
 
+      // A looping animation never stops on its own, so WCAG 2.2.2 asks for a
+      // way to pause it. Every wait passes through the gate below, so pausing
+      // takes effect within one character rather than at the end of a string.
+      let paused = false;
+      let waiting = [];
+      const gate = () => (paused ? new Promise((resolve) => waiting.push(resolve)) : Promise.resolve());
+      const setPaused = (value) => {
+        paused = value;
+        if (!paused) {
+          const pending = waiting;
+          waiting = [];
+          pending.forEach((resolve) => resolve());
+        }
+      };
+
+      if (loop) {
+        const pauseLabel = el.dataset.typeitPauseLabel || "Pause animation";
+        const resumeLabel = el.dataset.typeitResumeLabel || "Resume animation";
+
+        const toggle = document.createElement("button");
+        toggle.type = "button";
+        toggle.className = "hextra-typeit__toggle hx:hextra-focus-visible";
+        toggle.setAttribute("aria-pressed", "false");
+        toggle.textContent = pauseLabel;
+        toggle.addEventListener("click", () => {
+          setPaused(!paused);
+          toggle.setAttribute("aria-pressed", String(paused));
+          toggle.textContent = paused ? resumeLabel : pauseLabel;
+        });
+        el.after(toggle);
+      }
+
       const caret = document.createElement("span");
       caret.className = "hextra-typeit__caret";
       caret.setAttribute("aria-hidden", "true");
@@ -54,6 +86,7 @@
 
       const type = async (value) => {
         for (const char of value) {
+          await gate();
           text.append(char);
           await sleep(pace(speed, lifeLike, char));
         }
@@ -61,6 +94,7 @@
 
       const erase = async () => {
         while (text.textContent.length) {
+          await gate();
           text.textContent = text.textContent.slice(0, -1);
           await sleep(speed / 3);
         }

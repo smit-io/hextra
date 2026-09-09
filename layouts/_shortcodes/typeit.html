@@ -93,7 +93,15 @@ Second line
 {{- end -}}
 {{- $body := delimit $escaped (cond $breakLines "<br>" " ") -}}
 
-{{- printf `<%s class="%s" data-typeit data-typeit-strings="%s" data-typeit-initial="%s" data-typeit-speed="%v" data-typeit-start-delay="%v" data-typeit-lifelike="%v" data-typeit-break-lines="%v" data-typeit-wait-visible="%v" data-typeit-loop="%v">%s</%s>`
+{{- /*
+  A looping animation never stops on its own, so WCAG 2.2.2 requires a way to
+  pause it. The control is built by the script, which needs its labels from
+  here to keep them translatable.
+*/ -}}
+{{- $pauseLabel := (T "pauseAnimation") | default "Pause animation" -}}
+{{- $resumeLabel := (T "resumeAnimation") | default "Resume animation" -}}
+
+{{- printf `<%s class="%s" data-typeit data-typeit-strings="%s" data-typeit-initial="%s" data-typeit-speed="%v" data-typeit-start-delay="%v" data-typeit-lifelike="%v" data-typeit-break-lines="%v" data-typeit-wait-visible="%v" data-typeit-loop="%v" data-typeit-pause-label="%s" data-typeit-resume-label="%s">%s</%s>`
   $tag
   (htmlEscape $class)
   (htmlEscape (delimit $strings "\n"))
@@ -104,6 +112,8 @@ Second line
   $breakLines
   $waitUntilVisible
   $loop
+  (htmlEscape $pauseLabel)
+  (htmlEscape $resumeLabel)
   $body
   $tag
   | safeHTML
