@@ -84,12 +84,13 @@ Gated on the same `blog/config.html` switch as the visible module: a site that
 turned series off should not still be publishing its series graph to crawlers
 and social scrapers. */}}
 {{- $permalink := .Permalink }}
+{{- $type := .Type }}
 {{- $seriesEnabled := (partial "blog/config.html" .).article.series.enable }}
 {{ with (and $seriesEnabled .Params.series) }}
 {{- $names := . }}
 {{- if not (reflect.IsSlice $names) }}{{ $names = slice $names }}{{ end }}
 {{- range $name := $names }}
-{{- range $page := first 6 (partialCached "utils/series-pages.html" (dict "name" $name) $name site.Language.Lang) }}
+{{- range $page := first 6 (partialCached "utils/series-pages.html" (dict "name" $name "type" $type) $name $type site.Language.Lang) }}
 {{- if ne $page.Permalink $permalink }}
 <meta property="og:see_also" content="{{ $page.Permalink }}">
 {{ end }}
