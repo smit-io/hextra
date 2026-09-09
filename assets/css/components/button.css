@@ -19,9 +19,13 @@
   }
 }
 
+/*
+  The label is 14px, so WCAG AA asks for 4.5:1. Against white text the default
+  accent gives 2.71:1 at 500 and 4.02:1 at 600 - both fail. 700 is 5.85:1 and
+  800 is darker still, so one pair serves light and dark mode alike.
+*/
 .hextra-button--primary {
-  @apply hx:text-white hx:bg-hextra-accent-500 hx:hover:bg-hextra-accent-600;
-  @apply hx:dark:bg-hextra-accent-700 hx:dark:hover:bg-hextra-accent-600;
+  @apply hx:text-white hx:bg-hextra-accent-700 hx:hover:bg-hextra-accent-800;
 }
 
 .hextra-button--outline {
