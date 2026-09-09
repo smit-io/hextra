@@ -52,7 +52,8 @@
           {{- end -}}
         </div>
         {{- /* Between the metadata and the cover image: the reader knows what
-        the post is before being told where it sits in the series. */ -}}
+          the post is before being told where it sits in the series. */
+        -}}
         {{- partial "blog/series.html" (dict "context" . "config" $cfg) -}}
         {{ if $cfg.article.cover }}{{ partial "blog/cover.html" (dict "page" . "variant" "hero") }}{{ end }}
         <div class="content">
@@ -64,15 +65,16 @@
         {{- partial "blog/share.html" (dict "context" . "config" $cfg) -}}
         {{- partial "blog/related.html" (dict "context" . "config" $cfg) -}}
         {{- /* Within a series, the series order is the useful order: it replaces
-        the date-ordered pager rather than sitting next to it. The nav renders
-        nothing for a series of one, in which case the pager still applies.
+          the date-ordered pager rather than sitting next to it. The nav renders
+          nothing for a series of one, in which case the pager still applies.
 
-        The pager's own switches still come first, because they are explicit
-        where membership of a series is not: `displayPagination: false`
-        suppresses both, and a post that names its own `prev`/`next` - including
-        `prev: false` as a kill switch - keeps the pager it configured. Series
-        order supersedes `reversePagination`, which orders the same posts by
-        date; the store is still set so the pager sees it on the fall-through. */ -}}
+          The pager's own switches still come first, because they are explicit
+          where membership of a series is not: `displayPagination: false`
+          suppresses both, and a post that names its own `prev`/`next` - including
+          `prev: false` as a kill switch - keeps the pager it configured. Series
+          order supersedes `reversePagination`, which orders the same posts by
+          date; the store is still set so the pager sees it on the fall-through. */
+        -}}
         {{- if (site.Params.blog.article.displayPagination | default true) -}}
           {{- .Store.Set "reversePagination" (.Params.reversePagination | default true) -}}
           {{- $seriesNav := "" -}}
