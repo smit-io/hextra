@@ -13,8 +13,17 @@
    into an anonymous table box that shrinks to fit its content, so `w-full`
    stretches the block and leaves the table narrow inside it. Scrolling the
    wrapper instead lets the table stay a table and actually fill the column. */
+/* The 3px inline padding is room for a focus ring, not a gutter. The theme's
+   focus indicator is `ring-2` plus `ring-offset-1` - box-shadow with
+   `outline-style: none` - and box-shadow is clipped by any ancestor whose
+   overflow is not visible. The cells are flush to the edge, so a link in the
+   first or last column would have its ring clipped at the scrollport edge,
+   unreachable in LTR because you cannot scroll to negative x. The matching
+   negative margin pulls the border box back out, so the table still lines up
+   with the surrounding body text. */
 .hextra-borderless-table {
   @apply hx:my-6 hx:overflow-x-auto;
+  @apply hx:px-[3px] hx:-mx-[3px];
 
   /* `border-collapse` is set explicitly rather than inherited from
      typography.css: those rules are nested under `.content`, and
