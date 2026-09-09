@@ -3,7 +3,7 @@ title: VS Code スニペット
 weight: 7
 ---
 
-このフォークには `.vscode/hextra.code-snippets` が同梱されています。Hextra のすべてのショートコード、レイアウトが読み取るページのフロントマターキー、レンダーフックが解釈するコードフェンス属性をカバーする、手書きの 87 個の VS Code スニペットです。リポジトリを VS Code で開けばすぐに使えます。拡張機能も設定も不要です。
+このフォークには `.vscode/hextra.code-snippets` が同梱されています。Hextra のすべてのショートコード、レイアウトが読み取るページのフロントマターキー、レンダーフックが解釈するコードフェンス属性をカバーする、手書きの 88 個の VS Code スニペットです。リポジトリを VS Code で開けばすぐに使えます。拡張機能も設定も不要です。
 
 <!--more-->
 
@@ -142,6 +142,7 @@ Content
 | `hxfm-docs`    | ドキュメントページ — `title`、`weight`、`toc`、`breadcrumbs`、`math`、`excludeSearch` |
 | `hxfm-section` | セクションの `_index.md` — `prev`/`next`、`sidebar.open`、`cascade.type`          |
 | `hxfm-blog`    | ブログ記事 — `date`、`authors`、`tags`                                      |
+| `hxfm-series`  | シリーズのブロック — `series`、`seriesOrder`、`seriesOpened`                 |
 | `hxfm-home`    | ホームページ — `layout: hextra-home`                                        |
 | `hxfm-sidebar` | `sidebar:` ブロック — `open`、`exclude`、`hide`                              |
 | `hxfm-width`   | ページ幅の上書き — `normal` 80rem、`wide` 90rem、`full` 100%                  |
