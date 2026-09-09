@@ -48,6 +48,15 @@
 
 {{- if transform.CanHighlight $lang -}}
   <div>{{- highlight $content $lang $options -}}</div>
+{{- else if $options -}}
+  {{- /*
+    Chroma has no lexer for this language - `env`, or any imported URL with no
+    file extension - but the caller still asked for line numbers or highlighted
+    lines. Rendering as plain text keeps those options working; the plain
+    <pre> below silently dropped them, so codeimporter's documented lineNos,
+    hl_lines and lineNoStart did nothing at all for such a file.
+  */ -}}
+  <div>{{- highlight $content "text" $options -}}</div>
 {{- else -}}
   <div>
     <pre><code>{{ $content }}</code></pre>
