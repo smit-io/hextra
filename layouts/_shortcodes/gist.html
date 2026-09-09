@@ -49,13 +49,18 @@ or
 {{- $api := printf "https://api.github.com/gists/%s" $id -}}
 {{- $gist := false -}}
 
-{{- with try (resources.GetRemote $api (dict "headers" (dict "Accept" "application/vnd.github+json"))) -}}
-  {{- with .Err -}}
-    {{- warnf "gist: unable to fetch %q: %s" $api . -}}
-  {{- else with .Value -}}
-    {{- $gist = . | transform.Unmarshal -}}
-  {{- else -}}
-    {{- warnf "gist: %q returned no content" $api -}}
+{{- $remoteFetch := partial "utils/remote-fetch-enabled.html" . -}}
+
+{{- /* Skipped entirely for a build that must not reach the network. */ -}}
+{{- if $remoteFetch -}}
+  {{- with try (resources.GetRemote $api (dict "headers" (dict "Accept" "application/vnd.github+json"))) -}}
+    {{- with .Err -}}
+      {{- warnf "gist: unable to fetch %q: %s" $api . -}}
+    {{- else with .Value -}}
+      {{- $gist = . | transform.Unmarshal -}}
+    {{- else -}}
+      {{- warnf "gist: %q returned no content" $api -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
 
@@ -78,6 +83,14 @@ or
   `default` treats false as empty and would restore the default instead.
 */ -}}
 {{- $live := eq (printf "%v" (.Get "live")) "true" -}}
+
+{{- /*
+  A build that must not reach the network must not hand the job to the
+  reader's browser either, so the same switch turns the live refresh off.
+*/ -}}
+{{- if and $live (not $remoteFetch) -}}
+  {{- $live = false -}}
+{{- end -}}
 
 
 {{- with $gist -}}
