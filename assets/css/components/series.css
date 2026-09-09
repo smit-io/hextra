@@ -94,10 +94,15 @@ ol.hextra-series__list {
 }
 
 /* A collapsed <details> prints as its summary alone, which would drop the
-   series from a printed article entirely. */
+   series from a printed article entirely. The closed state is enforced by the
+   browser, not by a rule on the list: current Blink and Gecko hide it with
+   `content-visibility: hidden` on `::details-content`, so that is what has to
+   be reverted. Older engines slot the children into a `display: none` shadow
+   slot, which no author rule can reach - they print the summary alone. */
 @media print {
-  .hextra-series__list {
-    display: block;
+  .hextra-series::details-content {
+    content-visibility: visible;
+    block-size: auto;
   }
 }
 
