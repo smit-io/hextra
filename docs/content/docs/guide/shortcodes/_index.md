@@ -41,6 +41,7 @@ Hextra provides a collection of beautiful shortcodes to enhance your content.
   {{< card link="codeberg" title="Codeberg" icon="codeberg" >}}
   {{< card link="forgejo" title="Forgejo" icon="forgejo" >}}
   {{< card link="huggingface" title="Hugging Face" icon="huggingface" >}}
+  {{< card link="ansible" title="Ansible Galaxy" icon="ansible" >}}
 {{< /cards >}}
 
 <div style="padding-top:4rem"></div>
