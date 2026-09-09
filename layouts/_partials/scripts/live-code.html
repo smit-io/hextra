@@ -399,6 +399,15 @@
       announce(block.querySelector(".hextra-code-filename")?.textContent.trim());
     };
 
+    // The try/catch inside refresh() covers the fetch only, so anything thrown
+    // while reading the shape or rebuilding the markup escaped as an unhandled
+    // rejection instead of degrading quietly to the build-time render, which is
+    // what the rest of this file is careful to do.
+    const start = (block) =>
+      refresh(block).catch((err) => {
+        console.debug("live-code: refresh failed", err);
+      });
+
     const init = () => {
       const blocks = document.querySelectorAll(".hextra-code-block[data-live-url]");
       if (!blocks.length) return;
@@ -412,7 +421,7 @@
                 for (const entry of entries) {
                   if (!entry.isIntersecting) continue;
                   obs.unobserve(entry.target);
-                  refresh(entry.target);
+                  start(entry.target);
                 }
               },
               { rootMargin: "200px" }
@@ -423,7 +432,7 @@
         if (block.dataset.liveInited === "1") return;
         block.dataset.liveInited = "1";
         if (observer) observer.observe(block);
-        else refresh(block);
+        else start(block);
       });
     };
 
