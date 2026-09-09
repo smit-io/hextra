@@ -50,6 +50,14 @@ jobs:
           fi
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+          # A version with a semver prerelease suffix must not be published as
+          # the latest release: GitHub picks "Latest" as the newest release
+          # that is neither draft nor prerelease.
+          if [[ "$VERSION" == *-* ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
 
       # Re-running the workflow, or landing an unrelated edit to VERSION, must
       # not try to move a tag that is already published.
@@ -87,10 +95,16 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.version.outputs.tag }}
+          PRERELEASE: ${{ steps.version.outputs.prerelease }}
         run: |
+          FLAGS=()
+          if [[ "$PRERELEASE" == "true" ]]; then
+            FLAGS+=(--prerelease)
+          fi
           # gh creates the tag at --target, so there is no separate tag push.
           gh release create "$TAG" \
             --target "${{ github.sha }}" \
             --title "$TAG" \
             --notes-file release-notes.md \
+            "${FLAGS[@]}" \
             "hextra-${TAG}-source.zip"
