@@ -19,6 +19,11 @@
   {{- partial "scripts/gallery.html" . -}}
 {{- end -}}
 
+{{/* TypeIt */}}
+{{- if (.Store.Get "hasTypeIt") -}}
+  {{- partial "scripts/typeit.html" . -}}
+{{- end -}}
+
 {{/* Chart.js */}}
 {{- if (.Store.Get "hasChart") -}}
   {{- partial "scripts/chart.html" . -}}

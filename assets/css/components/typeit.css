@@ -1,0 +1,21 @@
+.hextra-typeit {
+  /* Reserve the line so the surrounding content does not jump as text grows. */
+  min-height: 1lh;
+}
+
+.hextra-typeit__caret {
+  @apply hx:inline-block hx:w-px hx:align-text-bottom;
+  @apply hx:bg-current;
+  height: 1em;
+  animation: hextra-typeit-blink 1s step-end infinite;
+}
+
+@keyframes hextra-typeit-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}

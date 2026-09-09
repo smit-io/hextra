@@ -34,6 +34,7 @@ Hextra provides a collection of beautiful shortcodes to enhance your content.
   {{< card link="youtube-lite" title="YouTube Lite" icon="youtube" >}}
   {{< card link="gist" title="Gist" icon="github" >}}
   {{< card link="chart" title="Chart" icon="chart-pie" >}}
+  {{< card link="typeit" title="TypeIt" icon="cursor-click" >}}
 {{< /cards >}}
 
 <div style="padding-top:4rem"></div>
