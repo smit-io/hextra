@@ -61,11 +61,11 @@
           {{- $raw = index $page.Params "series_order" -}}
         {{- end -}}
         {{- if $hasOrder -}}
-          {{- /* A hand-typed `seriesOrder: two` must not take the site down.
+          {{/* A hand-typed `seriesOrder: two` must not take the site down.
             The cast is attempted, and a value that will not convert falls back to
             the dated bucket with a warning naming the page that holds it - the
-            build error names whichever page happened to miss the cache first. */
-          -}}
+            build error names whichever page happened to miss the cache first.
+          */}}
           {{- $cast := try (int $raw) -}}
           {{- with $cast.Err -}}
             {{- warnf "series-pages: ignoring non-numeric seriesOrder %q on %s, ordering that post by date instead" $raw $page.RelPermalink -}}

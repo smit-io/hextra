@@ -36,10 +36,10 @@
     {{- if not (reflect.IsSlice $names) -}}
       {{- $names = slice $names -}}
     {{- end -}}
-    {{- /* Hugo does not dedupe list params, and a repeated name would render
+    {{/* Hugo does not dedupe list params, and a repeated name would render
       the whole disclosure twice: two elements claiming aria-current="page" and
-      a duplicated set of og:see_also tags. */
-    -}}
+      a duplicated set of og:see_also tags.
+    */}}
     {{- $names = uniq $names -}}
 
     {{- $partFormat := (T "seriesPart") | default "Part %d: %s" -}}
@@ -47,12 +47,12 @@
 
     {{- if eq $variant "nav" -}}
 
-      {{- /* Previous/next across every series the post belongs to. The two
+      {{/* Previous/next across every series the post belongs to. The two
         directions are resolved independently - the first series to supply each
         side wins - so a post that closes one series and opens another gets a
         previous link from the first and a next link from the second, instead of
-        stopping at whichever series happened to be named first. */
-      -}}
+        stopping at whichever series happened to be named first.
+      */}}
       {{- $prev := false -}}
       {{- $next := false -}}
       {{- $prevLabel := "" -}}
@@ -77,12 +77,12 @@
         {{- end -}}
       {{- end -}}
 
-      {{- /* At a series boundary only one side is populated: part 1 has no
+      {{/* At a series boundary only one side is populated: part 1 has no
         previous, the last part has no next. Because this nav replaces the pager
         wholesale, that would leave the reader with no way back into the blog
         from the foot of the first or last article. Fill the missing side with
-        the date-ordered neighbour the pager would have used. */
-      -}}
+        the date-ordered neighbour the pager would have used.
+      */}}
       {{- if or $prev $next -}}
         {{- $reverse := $context.Params.reversePagination | default true -}}
         {{- if not $prev -}}
