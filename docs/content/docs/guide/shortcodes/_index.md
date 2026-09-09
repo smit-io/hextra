@@ -13,6 +13,7 @@ Hextra provides a collection of beautiful shortcodes to enhance your content.
   {{< card link="callout" title="Callout" icon="warning" >}}
   {{< card link="cards" title="Cards" icon="card" >}}
   {{< card link="details" title="Details" icon="chevron-right" >}}
+  {{< card link="accordion" title="Accordion" icon="menu-alt-2" >}}
   {{< card link="filetree" title="FileTree" icon="folder-tree" >}}
   {{< card link="term" title="Term" icon="question-mark-circle" >}}
   {{< card link="icon" title="Icon" icon="badge-check" >}}
