@@ -204,6 +204,30 @@ server generally does not, and the refresh then quietly does nothing.
     {{- with $endLine -}}
       {{- $liveAttrs = printf `%s data-live-end="%s"` $liveAttrs (htmlEscape (string .)) -}}
     {{- end -}}
+    {{- /*
+      With no body there is no Chroma output for the client to read the block's
+      shape back from, so the options are recorded here instead. Without them a
+      block recovered from a failed build-time fetch came back with nothing
+      highlighted and numbered from 1, unlike the same page built online.
+
+      Only emitted in that case: when the block did render, its own markup is
+      the better answer, since Chroma has already resolved how the options
+      interact.
+    */ -}}
+    {{- if not $body -}}
+      {{- if $options.lineNos -}}
+        {{- /* Chroma's default layout; the inline one is a site-wide setting
+               the client cannot see, and it re-reads the real shape as soon as
+               a build renders the block. */ -}}
+        {{- $liveAttrs = printf `%s data-live-linenos="table"` $liveAttrs -}}
+      {{- end -}}
+      {{- with $options.lineNoStart -}}
+        {{- $liveAttrs = printf `%s data-live-lineno-start="%s"` $liveAttrs (htmlEscape (string .)) -}}
+      {{- end -}}
+      {{- with $options.hl_lines -}}
+        {{- $liveAttrs = printf `%s data-live-hl="%s"` $liveAttrs (htmlEscape (string .)) -}}
+      {{- end -}}
+    {{- end -}}
   {{- end -}}
   <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"{{ $liveAttrs | safeHTMLAttr }}>
     {{- partial "components/codeblock" (dict
