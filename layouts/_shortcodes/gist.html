@@ -116,7 +116,17 @@ or
         */ -}}
         {{- $liveAttrs := "" -}}
         {{- if $live -}}
-          {{- $rawURL := urls.JoinPath "https://gist.githubusercontent.com" $owner $id "raw" $name -}}
+          {{- /*
+            A bare `%` in a gist filename makes urls.JoinPath fail the build
+            outright - Go tries to unescape the joined path and reports
+            `invalid URL escape` - and a filename that already looks escaped,
+            such as `a%20b.go`, is passed through as-is and fetches the wrong
+            file. Percent-encoding the `%` first leaves JoinPath a valid escape
+            to carry through, and it still handles spaces, `#`, `?` and
+            non-ASCII itself. Gist filenames are third-party data, so this is
+            not something the site author can avoid.
+          */ -}}
+          {{- $rawURL := urls.JoinPath "https://gist.githubusercontent.com" $owner $id "raw" (replace $name "%" "%25") -}}
           {{- $liveAttrs = printf ` data-live-url="%s" data-live-lang="%s" data-live-hash="%s"` (htmlEscape $rawURL) (htmlEscape $lang) (string (hash.FNV32a ($meta.content | default ""))) -}}
         {{- end -}}
         <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"{{ $liveAttrs | safeHTMLAttr }}>
