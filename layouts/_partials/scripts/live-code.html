@@ -59,16 +59,21 @@
     // The same arithmetic as the shortcodes. Kept in step deliberately: if the
     // two ever diverge, an unchanged file would hash differently and the block
     // would churn on every load.
+    // Only plain decimal digits count as a line number, which is also what the
+    // shortcode accepts; anything else is ignored on both sides rather than
+    // being read as octal by Hugo and as decimal here.
+    const lineNumber = (attr) => (/^[0-9]+$/.test(attr ?? "") ? parseInt(attr, 10) : null);
+
     const slice = (text, startAttr, endAttr) => {
-      if (!startAttr && !endAttr) return text;
+      const startNo = lineNumber(startAttr);
+      const endNo = lineNumber(endAttr);
+      if (startNo === null && endNo === null) return text;
 
       const lines = text.replace(/\n$/, "").split("\n");
       const count = lines.length;
 
-      let start = startAttr ? parseInt(startAttr, 10) : 1;
-      let end = endAttr ? parseInt(endAttr, 10) : count;
-      if (!Number.isFinite(start)) start = 1;
-      if (!Number.isFinite(end)) end = count;
+      let start = startNo === null ? 1 : startNo;
+      let end = endNo === null ? count : endNo;
 
       if (start < 1) start = 1;
       if (end > count) end = count;
