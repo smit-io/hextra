@@ -2,10 +2,16 @@
    reference block rather than a ruled grid.
 
    The table inside is ordinary Markdown, so it arrives already carrying the
-   default table styling from typography.css. Those rules are written as
-   `:where(table):not(...)`, which has zero specificity, so a single class here
-   outranks them without `!important` and without `not-prose` - the latter
-   would also strip the `code` styling the cells depend on. */
+   default table styling from typography.css. `not-prose` is not an option
+   for shedding it: that would also strip the `code` styling the cells depend
+   on. The `:where()` in those selectors zeroes only the table part of them,
+   and they are nested under `.content`, so the compiled descendant rules are
+   `.content :where(table):not(...) thead|th|tr|td` at (0,1,1) - exactly
+   tying the (0,1,1) of `.hextra-borderless-table thead|th|tr|td`. Only the
+   `table` and `tbody tr` rules below genuinely outrank their counterparts.
+   The rest win on source order alone, which is why this file must stay after
+   `@import "./typography.css"` in styles.css. Reordering that import list
+   silently restores the header fill and the cell borders, with no error. */
 
 /* The scroll container is this wrapper, not the table. The default table
    styling in typography.css makes the table itself `display: block` with
