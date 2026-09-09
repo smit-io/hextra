@@ -12,6 +12,8 @@
   @param {string} language Primary language.
   @param {int} stars Star count.
   @param {int} forks Fork count.
+  @param {slice} metrics Alternative to stars/forks for providers that count
+    something else, as dicts of `icon`, `label` and `value`.
   @param {string} icon Provider icon name.
   @param {string} thumbnail Optional image URL shown above the card body.
   @param {string} thumbnailFit How the thumbnail fills its box: cover (default) or contain.
@@ -28,6 +30,20 @@
 {{- $forks := .forks -}}
 {{- $icon := .icon -}}
 {{- $thumbnail := .thumbnail -}}
+
+{{- /*
+  Stars and forks are the common case, so they stay first-class parameters;
+  providers that count something else (likes, downloads) pass `metrics`.
+*/ -}}
+{{- $metrics := .metrics | default slice -}}
+{{- if not $metrics -}}
+  {{- with $stars -}}
+    {{- $metrics = $metrics | append (dict "icon" "star" "label" ((T "stars") | default "stars") "value" .) -}}
+  {{- end -}}
+  {{- with $forks -}}
+    {{- $metrics = $metrics | append (dict "icon" "share" "label" ((T "forks") | default "forks") "value" .) -}}
+  {{- end -}}
+{{- end -}}
 
 <a class="hextra-repo-card not-prose" href="{{ $url }}" target="_blank" rel="noreferrer">
   {{- with $thumbnail -}}
@@ -48,23 +64,17 @@
       <span class="hextra-repo-card__description">{{ . }}</span>
     {{- end -}}
 
-    {{- if or $language $stars $forks -}}
+    {{- if or $language $metrics -}}
       <span class="hextra-repo-card__meta">
         {{- with $language -}}
           <span class="hextra-repo-card__language">
             <span class="hextra-repo-card__dot" aria-hidden="true"></span>{{ . }}
           </span>
         {{- end -}}
-        {{- with $stars -}}
+        {{- range $metrics -}}
           <span>
-            {{- partial "utils/icon" (dict "name" "star" "attributes" `height=14 aria-hidden="true"`) -}}
-            {{- partial "inline/compact-number.html" . }} <span class="hx:sr-only">{{ (T "stars") | default "stars" }}</span>
-          </span>
-        {{- end -}}
-        {{- with $forks -}}
-          <span>
-            {{- partial "utils/icon" (dict "name" "share" "attributes" `height=14 aria-hidden="true"`) -}}
-            {{- partial "inline/compact-number.html" . }} <span class="hx:sr-only">{{ (T "forks") | default "forks" }}</span>
+            {{- partial "utils/icon" (dict "name" .icon "attributes" `height=16 aria-hidden="true"`) -}}
+            {{- partial "inline/compact-number.html" .value }} <span class="hx:sr-only">{{ .label }}</span>
           </span>
         {{- end -}}
       </span>
