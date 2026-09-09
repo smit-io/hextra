@@ -40,16 +40,30 @@ if (!version) {
   process.exit(1);
 }
 
-// Only tags reachable from the target: this repository carries tags inherited
-// from upstream that are not ancestors of its own history, and diffing against
-// one of those would replay years of unrelated commits.
+// The nearest tag in the target's own ancestry, which is what "the previous
+// release" means. `git tag --sort=-v:refname` answered a different question -
+// the highest version string among reachable tags - and got it wrong twice
+// over: a merged upstream tag with a higher number outranks the release this
+// history actually follows, and without `versionsort.suffix` set git ranks
+// v1.0.0-rc1 above v1.0.0, so the first patch after a prereleased version
+// replays the whole final release. `git describe` walks the ancestry instead,
+// which also subsumes the `--merged` filter: unreachable upstream tags are
+// never candidates.
+function describe(ref) {
+  try {
+    return git("describe", "--tags", "--abbrev=0", "--match", "v*", ref);
+  } catch {
+    return "";
+  }
+}
+
 function previousTag() {
   if (args.from) return args.from;
-  const tags = git("tag", "--merged", to, "--list", "v*", "--sort=-v:refname")
-    .split("\n")
-    .filter(Boolean)
-    .filter((tag) => tag !== `v${version}`);
-  return tags[0] || "";
+  const nearest = describe(to);
+  // Regenerating notes for a version that is already tagged: the range wanted
+  // is the one that produced it, not an empty diff against itself.
+  if (nearest && nearest === `v${version}`) return describe(`${nearest}^`);
+  return nearest;
 }
 
 const from = previousTag();
