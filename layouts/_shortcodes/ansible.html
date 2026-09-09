@@ -92,6 +92,13 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           {{- warnf "ansible: %q was not found on Galaxy, rendering a plain card" $id -}}
         {{- end -}}
       {{- end -}}
+    {{- else -}}
+      {{- /*
+        resources.GetRemote reports an HTTP 404 as a nil resource and no error.
+        The warning above sits inside the unmarshal block and so only covers an
+        empty result set, not a response that never arrived.
+      */ -}}
+      {{- warnf "ansible: %q was not found, rendering a plain card" $api -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

@@ -79,6 +79,13 @@ namespace path in addition to the numeric project id.
           {{- end -}}
         {{- end -}}
       {{- end -}}
+    {{- else -}}
+      {{- /*
+        resources.GetRemote reports an HTTP 404 as a nil resource and no error,
+        so without this branch a missing or private project degrades to a bare
+        card with nothing written to the build log.
+      */ -}}
+      {{- warnf "gitlab: %q was not found, rendering a plain card" $api -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

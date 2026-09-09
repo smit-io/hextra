@@ -75,6 +75,15 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           {{- end -}}
         {{- end -}}
       {{- end -}}
+    {{- else -}}
+      {{- /*
+        resources.GetRemote reports an HTTP 404 as a nil resource and no error,
+        so without this branch a missing or gated repository degrades to a bare
+        card with nothing written to the build log. Hugging Face happens to
+        answer 401 for gated repositories, which does surface as an error, but
+        a plain typo does not.
+      */ -}}
+      {{- warnf "huggingface: %q was not found, rendering a plain card" $api -}}
     {{- end -}}
   {{- end -}}
 

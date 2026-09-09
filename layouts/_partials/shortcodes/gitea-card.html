@@ -87,6 +87,13 @@
           {{- end -}}
         {{- end -}}
       {{- end -}}
+    {{- else -}}
+      {{- /*
+        resources.GetRemote reports an HTTP 404 as a nil resource and no error,
+        so without this branch a missing or private repository degrades to a
+        bare card with nothing written to the build log.
+      */ -}}
+      {{- warnf "%s: %q was not found, rendering a plain card" $provider $api -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
