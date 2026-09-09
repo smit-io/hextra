@@ -33,10 +33,22 @@ data: { labels: ['Tomato'], datasets: [{ label: '# of votes', data: [12] }] }
   >{{ with $title }}{{ . }}{{ end }}</canvas>
 </div>
 
+{{- /*
+  The body is a JavaScript object literal, not JSON, so it cannot go through
+  jsonify and has to be written into the script element as-is. safeJS marks it
+  trusted without touching it, which means a literal "</script>" anywhere in
+  the configuration - a label on a page about HTML, say - would end the element
+  early, spill the rest of the config onto the page as text and leave the push
+  call unterminated. Since every chart shares one array and one draw pass, that
+  blanks every chart on the page. Neutralise the sequence; "<\/" is identical
+  to "</" inside a JavaScript string.
+*/ -}}
+{{- $config := replace .InnerDeindent "</" "<\\/" -}}
+
 <script>
   window.hextraCharts = window.hextraCharts || [];
   window.hextraCharts.push({
     id: {{ $id | jsonify | safeJS }},
-    config: { {{ .InnerDeindent | safeJS }} },
+    config: { {{ $config | safeJS }} },
   });
 </script>
