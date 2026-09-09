@@ -1,0 +1,130 @@
+{{- /*
+  Chart.js loader and initialiser.
+
+  Loaded only on pages that use the shortcode, gated on the "hasChart" store
+  flag in scripts.html.
+
+  The library is vendored under assets/js/vendor (see scripts/vendor-js.mjs) so
+  neither the build nor the page depends on a CDN. Point params.chart.js at
+  another asset to override it.
+*/ -}}
+
+{{- $asset := site.Params.chart.js | default "js/vendor/chart.umd.min.js" -}}
+{{- with resources.Get $asset -}}
+  {{- $js := . | fingerprint -}}
+  <script defer src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+{{- else -}}
+  {{- errorf "Chart.js asset not found at %q. Run `npm run vendor:js` or set params.chart.js." $asset -}}
+{{- end -}}
+
+<script>
+  (() => {
+    // Charts are drawn onto a canvas, so they cannot inherit colours from CSS.
+    // Read the palette off the document instead, and redraw when it changes.
+    const palette = () => {
+      const dark = document.documentElement.classList.contains("dark");
+      return {
+        text: dark ? "#d4d4d4" : "#404040",
+        grid: dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+      };
+    };
+
+    // Chart.js ships an auto-colour plugin, but it opts out as soon as
+    // Chart.defaults.borderColor is customised - which the theme code above
+    // does - leaving every dataset the near-transparent built-in default. So
+    // assign a palette explicitly. Readable on both backgrounds, and ordered
+    // so the first few series stay distinguishable when desaturated.
+    const series = ["#38bdf8", "#f472b6", "#a78bfa", "#34d399", "#fbbf24", "#fb7185", "#22d3ee", "#c084fc"];
+
+    // Types that colour each data point rather than each dataset.
+    const perPoint = new Set(["pie", "doughnut", "polarArea"]);
+
+    const applyColors = (config) => {
+      const datasets = (config.data && config.data.datasets) || [];
+      datasets.forEach((ds, i) => {
+        const type = ds.type || config.type;
+        const color = series[i % series.length];
+
+        if (perPoint.has(type)) {
+          if (!ds.backgroundColor) {
+            const count = (ds.data || []).length;
+            ds.backgroundColor = Array.from({ length: count }, (_, j) => series[j % series.length]);
+          }
+          return;
+        }
+
+        if (!ds.borderColor) ds.borderColor = color;
+        if (!ds.backgroundColor) {
+          // Filled marks read better solid; line areas need to stay see-through.
+          ds.backgroundColor = type === "line" || type === "radar" ? `${color}33` : color;
+        }
+      });
+    };
+
+    // Chart.js only shows a tooltip when the cursor is over a point itself, so
+    // hovering a line between two points does nothing. Index mode picks the
+    // nearest position on the x axis and reports every series at once, which is
+    // what a reader expects from a line or bar chart. Authors can still set
+    // options.interaction to get the stricter behaviour back.
+    const applyInteraction = (config) => {
+      const type = config.type;
+      if (perPoint.has(type)) return;
+
+      config.options = config.options || {};
+      if (!config.options.interaction) {
+        config.options.interaction = { mode: "index", intersect: false };
+      }
+    };
+
+    const instances = new Map();
+
+    const draw = () => {
+      if (typeof Chart === "undefined") return;
+      const colors = palette();
+      Chart.defaults.color = colors.text;
+      Chart.defaults.borderColor = colors.grid;
+
+      for (const entry of window.hextraCharts || []) {
+        const canvas = document.getElementById(entry.id);
+        if (!canvas) continue;
+
+        applyColors(entry.config);
+        applyInteraction(entry.config);
+
+        // Chart.js cannot restyle in place; destroy and rebuild on theme change.
+        const existing = instances.get(entry.id);
+        if (existing) existing.destroy();
+
+        instances.set(entry.id, new Chart(canvas, entry.config));
+      }
+    };
+
+    const isDark = () => document.documentElement.classList.contains("dark");
+
+    const start = () => {
+      draw();
+      let timeout;
+      let wasDark = isDark();
+      new MutationObserver(() => {
+        // Any class change on <html> lands here, including the one that
+        // dismissing the announcement banner makes. Redrawing on those
+        // destroyed and rebuilt every chart on the page and replayed all their
+        // entrance animations, so only act on an actual theme change.
+        if (isDark() === wasDark) return;
+        wasDark = isDark();
+        clearTimeout(timeout);
+        timeout = setTimeout(draw, 150);
+      }).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+    };
+
+    // The library is deferred, so wait for it rather than racing it.
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", start);
+    } else {
+      start();
+    }
+  })();
+</script>
