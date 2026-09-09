@@ -176,7 +176,21 @@
       keeps the refreshed block identical in every case, with no second
       interpretation of the option to drift out of step.
     */
-    const readShape = (container) => {
+    // "34-38 43" -> the 0-based line indexes it names. Chroma numbers hl_lines
+    // from the first line of the excerpt, independently of lineNoStart.
+    const parseHlLines = (spec) => {
+      const out = [];
+      for (const part of spec.split(/[\s,]+/)) {
+        const m = part.match(/^([0-9]+)(?:-([0-9]+))?$/);
+        if (!m) continue;
+        const from = parseInt(m[1], 10);
+        const to = m[2] ? parseInt(m[2], 10) : from;
+        for (let n = from; n <= to && n - from < 10000; n++) out.push(n - 1);
+      }
+      return out;
+    };
+
+    const readShape = (container, block) => {
       const codes = container.querySelectorAll("code");
       const codeEl = codes[codes.length - 1];
 
@@ -193,9 +207,23 @@
           ? "inline"
           : "none";
       const shape = { mode, hl: [], start: 1 };
-      if (!codeEl) return shape;
 
-      const lineEls = codeEl.querySelectorAll(":scope > .line");
+      const lineEls = codeEl ? codeEl.querySelectorAll(":scope > .line") : [];
+      if (!lineEls.length) {
+        /*
+          Nothing rendered at build time: the fetch failed and `live` shipped
+          an empty block for the browser to fill in. There is no Chroma output
+          to read the shape back from, so fall back to the options the
+          shortcode recorded on the block.
+        */
+        const data = block?.dataset ?? {};
+        if (data.liveLinenos) shape.mode = data.liveLinenos;
+        const start = lineNumber(data.liveLinenoStart);
+        if (start !== null) shape.start = start;
+        if (data.liveHl) shape.hl = parseHlLines(data.liveHl);
+        return shape;
+      }
+
       lineEls.forEach((el, i) => {
         if (el.classList.contains("hl")) shape.hl.push(i);
       });
@@ -293,7 +321,7 @@
       const container = codeContainer(block);
       if (!container) return;
 
-      const shape = readShape(container);
+      const shape = readShape(container, block);
 
       // replaceChildren destroys whatever the reader was focused on. A
       // scrollable <pre> carries tabindex="0", so a keyboard user reading this
