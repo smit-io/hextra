@@ -177,10 +177,22 @@
       interpretation of the option to drift out of step.
     */
     const readShape = (container) => {
-      const table = container.querySelector("table.lntable");
       const codes = container.querySelectorAll("code");
       const codeEl = codes[codes.length - 1];
-      const shape = { table: !!table, hl: [], start: 1 };
+
+      /*
+        Chroma has two line-number layouts, and which one is in use is a site
+        setting: a table by default, and numbers inline in each line when
+        markup.highlight.lineNumbersInTable is false. Probing only for the
+        table used to leave an inline block looking unnumbered, so a refresh
+        rebuilt it with no gutter at all.
+      */
+      const mode = container.querySelector("table.lntable")
+        ? "table"
+        : container.querySelector(".ln")
+          ? "inline"
+          : "none";
+      const shape = { mode, hl: [], start: 1 };
       if (!codeEl) return shape;
 
       const lineEls = codeEl.querySelectorAll(":scope > .line");
@@ -188,7 +200,7 @@
         if (el.classList.contains("hl")) shape.hl.push(i);
       });
 
-      const firstNo = container.querySelector(".lnt");
+      const firstNo = container.querySelector(".lnt, .ln");
       if (firstNo) {
         const n = parseInt(firstNo.textContent.trim(), 10);
         if (Number.isFinite(n)) shape.start = n;
@@ -201,8 +213,15 @@
       const lines = highlightToLines(text, lang);
       const hl = new Set(shape.hl);
 
+      // In inline mode the number is part of the line rather than a column of
+      // its own, which is the markup Chroma emits with lineNumbersInTable off.
+      const inlineNo = (i) => (shape.mode === "inline" ? `<span class="ln">${shape.start + i}</span>` : "");
+
       const codeBody = lines
-        .map((l, i) => `<span class="line${hl.has(i) ? " hl" : ""}"><span class="cl">${l}\n</span></span>`)
+        .map(
+          (l, i) =>
+            `<span class="line${hl.has(i) ? " hl" : ""}">${inlineNo(i)}<span class="cl">${l}\n</span></span>`
+        )
         .join("");
 
       // data-lang is set deliberately: the markup now matches Chroma's, so
@@ -212,7 +231,7 @@
       const wrap = document.createElement("div");
       wrap.className = "highlight";
 
-      if (!shape.table) {
+      if (shape.mode !== "table") {
         wrap.innerHTML = `<pre class="chroma">${codeOpen}${codeBody}</code></pre>`;
         return wrap;
       }
