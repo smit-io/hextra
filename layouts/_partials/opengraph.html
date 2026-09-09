@@ -89,6 +89,7 @@ and social scrapers. */}}
 {{ with (and $seriesEnabled .Params.series) }}
 {{- $names := . }}
 {{- if not (reflect.IsSlice $names) }}{{ $names = slice $names }}{{ end }}
+{{- $names = uniq $names }}
 {{- range $name := $names }}
 {{- range $page := first 6 (partialCached "utils/series-pages.html" (dict "name" $name "type" $type) $name $type site.Language.Lang) }}
 {{- if ne $page.Permalink $permalink }}
