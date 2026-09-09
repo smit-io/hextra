@@ -68,16 +68,13 @@
 {{- end -}}
 
 {{/* ------------------------------------------------------------- article */}}
-{{/* Unlike the rest of this file, series defaults to enabled: a post that
-declares `series` in front matter has already opted in, so the block below is
-only needed to suppress the module or change its default open state. */}}
 {{- $article := dict
   "cover" false
   "readingTime" false
   "tags" false
   "share" (dict "enable" false "links" slice)
   "related" (dict "enable" false "count" 3)
-  "series" (dict "enable" true "opened" false)
+  "series" (dict "enable" false "opened" false)
 -}}
 {{- with $blog.article -}}
   {{- $share := dict "enable" false "links" slice -}}
@@ -94,12 +91,18 @@ only needed to suppress the module or change its default open state. */}}
       "count" (int ((index . "count") | default 3))
     -}}
   {{- end -}}
-  {{- $series := dict "enable" true "opened" false -}}
+  {{/* `series: false` is the shape an author reaches for first, so it opts out
+  rather than being read as an empty block that opts in. */}}
+  {{- $series := dict "enable" false "opened" false -}}
   {{- with index . "series" -}}
-    {{- $series = dict
-      "enable" (not (eq (index . "enable") false))
-      "opened" (eq (index . "opened") true)
-    -}}
+    {{- if reflect.IsMap . -}}
+      {{- $series = dict
+        "enable" (not (eq (index . "enable") false))
+        "opened" (eq (index . "opened") true)
+      -}}
+    {{- else -}}
+      {{- $series = dict "enable" (eq . true) "opened" false -}}
+    {{- end -}}
   {{- end -}}
   {{- $article = dict
     "cover" (eq (index . "cover") true)

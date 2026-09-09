@@ -122,11 +122,11 @@ params:
   blog:
     article:
       series:
-        enable: true # set false to suppress the module site-wide
+        enable: true # the block turns the module on; false suppresses it
         opened: false # start the list expanded
 ```
 
-A post that declares `series` renders the module without any configuration; the block above only suppresses it or changes the default state, which individual posts override with `seriesOpened: true`.
+Like every other blog feature, the module is opt-in: the block above turns it on, and a site with no `params.blog.article.series` renders its posts exactly as before, `series` front matter or not. `series: false` is accepted as shorthand for `enable: false`. Individual posts override the open state with `seriesOpened: true`.
 
 On a post in a series, the series previous/next replaces the date-ordered pager, so the foot of the article carries one set of navigation controls rather than two in conflicting orders. A series of one renders nothing and keeps the normal pager.
 

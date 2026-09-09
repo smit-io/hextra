@@ -2,10 +2,10 @@
   "This article is part of a series" module.
 
   Renders one disclosure per series named in the post's front matter, listing
-  every post in that series in reading order. Unlike the site chrome in
-  `blog/config.html`, this is content-driven: a post that declares `series`
-  has already opted in, the same way `math` or `pinned` work, so the config
-  block is only needed to suppress the module or change its default state.
+  every post in that series in reading order. Like every other blog feature it
+  is opt-in through `blog/config.html`: `series` front matter alone renders
+  nothing, so a site that upgrades into this theme with the key already in its
+  posts - it is a common key in other themes - keeps the markup it had.
 
   Part numbers are positional, not the `seriesOrder` value. An unpublished
   draft or a half-renumbered series would otherwise print visible gaps
