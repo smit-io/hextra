@@ -3,7 +3,7 @@ title: VS Code Snippets
 weight: 7
 ---
 
-The fork ships `.vscode/hextra.code-snippets` — 87 hand-written VS Code snippets covering every Hextra shortcode, the page front matter keys the layouts read, and the code-fence attributes the render hooks understand. Open the repo in VS Code and they are available immediately; no extension, no configuration.
+The fork ships `.vscode/hextra.code-snippets` — 88 hand-written VS Code snippets covering every Hextra shortcode, the page front matter keys the layouts read, and the code-fence attributes the render hooks understand. Open the repo in VS Code and they are available immediately; no extension, no configuration.
 
 <!--more-->
 
@@ -142,6 +142,7 @@ Three shortcodes use percent delimiters so their inner content is rendered as Ma
 | `hxfm-docs`    | Docs page — `title`, `weight`, `toc`, `breadcrumbs`, `math`, `excludeSearch` |
 | `hxfm-section` | Section `_index.md` — `prev`/`next`, `sidebar.open`, `cascade.type`          |
 | `hxfm-blog`    | Blog post — `date`, `authors`, `tags`                                        |
+| `hxfm-series`  | Series block — `series`, `seriesOrder`, `seriesOpened`                       |
 | `hxfm-home`    | Home page — `layout: hextra-home`                                            |
 | `hxfm-sidebar` | `sidebar:` block — `open`, `exclude`, `hide`                                 |
 | `hxfm-width`   | Page width override — `normal` 80rem, `wide` 90rem, `full` 100%              |

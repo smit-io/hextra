@@ -3,7 +3,7 @@ title: اسنیپت‌های VS Code
 weight: 7
 ---
 
-این فورک فایل `.vscode/hextra.code-snippets` را ارائه می‌کند — ۸۷ اسنیپت دست‌نوشته VS Code که همه Shortcodeهای Hextra، کلیدهای Front matter صفحه که چیدمان‌ها می‌خوانند و ویژگی‌های بلوک کد که هوک‌های رندر می‌فهمند را پوشش می‌دهند. مخزن را در VS Code باز کنید و بلافاصله در دسترس‌اند؛ نه افزونه‌ای لازم است، نه پیکربندی.
+این فورک فایل `.vscode/hextra.code-snippets` را ارائه می‌کند — ۸۸ اسنیپت دست‌نوشته VS Code که همه Shortcodeهای Hextra، کلیدهای Front matter صفحه که چیدمان‌ها می‌خوانند و ویژگی‌های بلوک کد که هوک‌های رندر می‌فهمند را پوشش می‌دهند. مخزن را در VS Code باز کنید و بلافاصله در دسترس‌اند؛ نه افزونه‌ای لازم است، نه پیکربندی.
 
 <!--more-->
 
@@ -142,6 +142,7 @@ Content
 | `hxfm-docs`    | صفحه مستندات — `title`، `weight`، `toc`، `breadcrumbs`، `math`، `excludeSearch` |
 | `hxfm-section` | فایل `_index.md` بخش — `prev`/`next`، `sidebar.open`، `cascade.type`          |
 | `hxfm-blog`    | نوشته وبلاگ — `date`، `authors`، `tags`                                          |
+| `hxfm-series`  | بلوک مجموعه — `series`، `seriesOrder`، `seriesOpened`                          |
 | `hxfm-home`    | صفحه اصلی — `layout: hextra-home`                                              |
 | `hxfm-sidebar` | بلوک `sidebar:` — ‏`open`، `exclude`، `hide`                                  |
 | `hxfm-width`   | جایگزینی عرض صفحه — `normal` 80rem، ‏`wide` 90rem، ‏`full` 100%              |
