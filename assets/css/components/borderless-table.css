@@ -30,7 +30,7 @@
      `lg` the header is dropped entirely and the cells stack, so the labels
      would be stranded at the top of the page away from their values. */
   thead {
-    @apply hx:bg-transparent hx:text-left hx:max-lg:hidden;
+    @apply hx:bg-transparent hx:text-start hx:max-lg:hidden;
     @apply hx:border-b hx:border-gray-200 hx:dark:border-neutral-800;
   }
 
