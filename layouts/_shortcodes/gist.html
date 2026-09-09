@@ -127,8 +127,20 @@ or
           Hugo's escaping: a gist filename or language is third-party data, and
           a `"` in one would otherwise close the attribute early.
         */ -}}
+        {{- /*
+          A file the API truncated is never refreshed. The raw URL serves it
+          whole, so its hash could never match the partial content hashed here,
+          and the block would re-fetch the whole file, re-hash it and re-run
+          the highlighter over it on every page view, for every reader,
+          permanently. That is the churn `live` exists to avoid, and it is
+          worst on exactly the largest files.
+        */ -}}
+        {{- $fileLive := $live -}}
+        {{- if and $fileLive $meta.truncated -}}
+          {{- $fileLive = false -}}
+        {{- end -}}
         {{- $liveAttrs := "" -}}
-        {{- if $live -}}
+        {{- if $fileLive -}}
           {{- /*
             A bare `%` in a gist filename makes urls.JoinPath fail the build
             outright - Go tries to unescape the joined path and reports
@@ -161,7 +173,11 @@ or
           {{- end -}}
         </div>
         {{- if $meta.truncated -}}
-          {{- warnf "gist: %q is truncated by the GitHub API and is shown in part only" $name -}}
+          {{- if $live -}}
+            {{- warnf "gist: %q is truncated by the GitHub API and is shown in part only; live refresh is skipped for it" $name -}}
+          {{- else -}}
+            {{- warnf "gist: %q is truncated by the GitHub API and is shown in part only" $name -}}
+          {{- end -}}
         {{- end -}}
       {{- end -}}
     {{- end -}}

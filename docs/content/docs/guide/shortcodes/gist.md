@@ -85,8 +85,11 @@ afterwards has no block to appear in, and one deleted afterwards keeps showing
 its build-time content, since a failed fetch leaves the block alone. Both
 resolve on the next build.
 
-A file the API truncated is a useful side effect: the raw URL returns it whole,
-so a live block replaces the partial content with the full file on first view.
+A file the API truncated is not refreshed, and the build logs that it was
+skipped. The raw URL serves the file whole, so its hash could never match the
+partial content the build hashed, and the block would re-fetch, re-hash and
+re-highlight the whole file on every page view for every reader rather than
+once.
 
 `hl_lines`, `lineNos` and `lineNoStart` work the same with or without `live` —
 a refreshed block keeps its line numbers and its highlighted lines. Highlighting
