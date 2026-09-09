@@ -1,0 +1,90 @@
+{{- /*
+Import a code file from an external source and render it as a code block.
+
+The file is fetched at build time. A failed fetch is a warning, not an error,
+so a build without network access still succeeds - the block is simply
+omitted.
+
+Ported from the Blowfish theme (MIT, Nuno Coração), rendered through Hextra's
+own codeblock partial so it gets the copy button, filename header and
+syntax highlighting of a normal fenced block.
+
+@param {string} url Required. URL of the file. Must be http or https.
+@param {string} type Language for syntax highlighting. Defaults to the file extension.
+@param {int} startLine First line to include, 1-based and inclusive.
+@param {int} endLine Last line to include, inclusive.
+@param {string} filename Optional filename header. Pass "auto" to use the URL's last segment.
+
+@example {{< codeimporter url="https://example.com/main.go" type="go" >}}
+@example {{< codeimporter url="https://example.com/main.go" startLine="10" endLine="20" >}}
+*/ -}}
+
+{{- $url := .Get "url" -}}
+
+{{- if not $url -}}
+  {{- errorf "The %q shortcode requires a 'url' parameter. See %s" .Name .Position -}}
+{{- end -}}
+
+{{- $scheme := (urls.Parse $url).Scheme -}}
+{{- if not (in (slice "http" "https") $scheme) -}}
+  {{- errorf "The %q shortcode only fetches http and https URLs, got %q. See %s" .Name $url .Position -}}
+{{- end -}}
+
+{{- $filename := .Get "filename" -}}
+{{- if eq $filename "auto" -}}
+  {{- $filename = path.Base (urls.Parse $url).Path -}}
+{{- end -}}
+
+{{- $lang := .Get "type" | default (.Get "lang") -}}
+{{- if not $lang -}}
+  {{- $lang = strings.TrimPrefix "." (path.Ext (urls.Parse $url).Path) -}}
+{{- end -}}
+
+{{- $content := "" -}}
+{{- with try (resources.GetRemote $url) -}}
+  {{- with .Err -}}
+    {{- warnf "codeimporter: unable to fetch %q: %s" $url . -}}
+  {{- else with .Value -}}
+    {{- $content = .Content -}}
+  {{- else -}}
+    {{- warnf "codeimporter: %q returned no content" $url -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with $content -}}
+  {{- $body := . -}}
+
+  {{- $startLine := $.Get "startLine" -}}
+  {{- $endLine := $.Get "endLine" -}}
+
+  {{- if or $startLine $endLine -}}
+    {{- $lines := split (strings.TrimSuffix "\n" $body) "\n" -}}
+    {{- $count := len $lines -}}
+
+    {{- $start := cond (not $startLine) 1 (int (printf "%v" $startLine)) -}}
+    {{- $end := cond (not $endLine) $count (int (printf "%v" $endLine)) -}}
+
+    {{- if lt $start 1 -}}{{- $start = 1 -}}{{- end -}}
+    {{- if gt $end $count -}}{{- $end = $count -}}{{- end -}}
+
+    {{- if gt $start $end -}}
+      {{- warnf "codeimporter: startLine %d is after endLine %d for %q, ignoring the range" $start $end $url -}}
+    {{- else -}}
+      {{- $body = delimit (first (add (sub $end $start) 1) (after (sub $start 1) $lines)) "\n" -}}
+    {{- end -}}
+  {{- end -}}
+
+  <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+    {{- partial "components/codeblock" (dict
+      "filename" $filename
+      "base_url" ""
+      "lang" $lang
+      "content" $body
+      "options" (dict)
+      )
+    -}}
+    {{- if or (eq site.Params.highlight.copy.enable nil) site.Params.highlight.copy.enable -}}
+      {{- partial "components/codeblock-copy-button" (dict "filename" $filename) -}}
+    {{- end -}}
+  </div>
+{{- end -}}
