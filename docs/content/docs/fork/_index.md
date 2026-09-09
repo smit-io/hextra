@@ -19,7 +19,7 @@ This fork of [Hextra](https://github.com/imfing/hextra) adds a set of features o
 | Blog           | Single-column list                                              | [Three-column layout](blog) with identity rail, post cards, share buttons, and widgets  |
 | Favicons       | Flat files in `static/`                                         | Organized under `static/icons/` with [dark-mode favicon](favicons) support              |
 | Dev workflow   | npm scripts only                                                | [Makefile, devcontainer, and upstream-sync helpers](dev-tooling)                        |
-| Authoring      | Read the docs to recall every parameter                         | [49 VS Code snippets](vscode-snippets) for shortcodes, front matter, and code fences    |
+| Authoring      | Read the docs to recall every parameter                         | [89 VS Code snippets](vscode-snippets) for shortcodes, front matter, and code fences    |
 
 {{< cards >}}
 {{< card link="google-fonts" title="Google Fonts" icon="sparkles" subtitle="Configurable heading, body, and code fonts with variable-font axes" >}}
