@@ -215,4 +215,5 @@ body {
 @import "./components/keyword.css";
 @import "./components/stats.css";
 @import "./components/timeline.css";
+@import "./components/swatches.css";
 @import "./fonts.css";
