@@ -219,4 +219,5 @@ body {
 @import "./components/direction.css";
 @import "./components/button.css";
 @import "./components/article-card.css";
+@import "./components/list.css";
 @import "./fonts.css";

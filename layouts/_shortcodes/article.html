@@ -4,11 +4,6 @@ Embed a link to another page as a card, with its cover, meta and summary.
 Ported from the Blowfish theme (MIT, Nuno Coração). As in the original, a card
 pointing at its own page renders nothing.
 
-This shortcode runs while Hugo is already rendering page content (search-data
-.json renders every page), so it avoids touching another page's .Content and
-resolves meta inline rather than through partials that expect a live page
-context.
-
 @param {string} link Required. Path or permalink of the page, e.g. "/blog/my-post".
 @param {bool} showSummary Show the page summary. Default true.
 @param {bool} compactSummary Clamp the summary to a single line. Default false.
@@ -23,14 +18,6 @@ context.
 {{- if not $link -}}
   {{- errorf "The %q shortcode requires a 'link' parameter. See %s" .Name .Position -}}
 {{- end -}}
-
-{{- /*
-  Booleans are compared through printf so an explicit `false` is honoured:
-  `default` treats false as empty and would silently restore the default.
-*/ -}}
-{{- $showSummary := ne (printf "%v" (.Get "showSummary")) "false" -}}
-{{- $compactSummary := eq (printf "%v" (.Get "compactSummary")) "true" -}}
-{{- $showCover := ne (printf "%v" (.Get "cover")) "false" -}}
 
 {{- $self := "" -}}
 {{- with .Page -}}
@@ -49,59 +36,14 @@ context.
 {{- with $target -}}
   {{- if eq .RelPermalink $self -}}
     {{- warnf "The 'article' shortcode links to its own page, skipping." -}}
-  {{- else -}}
-
-    {{- $cover := dict -}}
-    {{- if $showCover -}}
-      {{- $cover = partial "utils/page-image.html" (dict "page" . "process" "Resize 400x webp q80") -}}
-    {{- end -}}
-
-    {{- $date := "" -}}
-    {{- if not .Date.IsZero -}}
-      {{- $date = .Date | time.Format (site.Params.dateFormat | default ":date_long") -}}
-    {{- end -}}
-
-    {{- $readingTime := "" -}}
-    {{- if gt .ReadingTime 0 -}}
-      {{- $readingTime = printf ((T "readingTime") | default "%d min read") .ReadingTime -}}
-    {{- end -}}
-
-    {{- $summary := "" -}}
-    {{- if $showSummary -}}
-      {{- $summary = .Description | plainify | htmlUnescape -}}
-      {{- if not $summary -}}
-        {{- $summary = .Summary | plainify | htmlUnescape | chomp -}}
-      {{- end -}}
-    {{- end -}}
-
-    <a class="hextra-article-card not-prose" href="{{ .RelPermalink }}">
-      {{- with $cover.url -}}
-        <span class="hextra-article-card__cover">
-          <img
-            src="{{ . }}"
-            alt=""
-            loading="lazy"
-            decoding="async"
-            {{ with $cover.width }}width="{{ . }}"{{ end }}
-            {{ with $cover.height }}height="{{ . }}"{{ end }}
-          />
-        </span>
-      {{- end -}}
-      <span class="hextra-article-card__body">
-        <span class="hextra-article-card__title">{{ .Title }}</span>
-        {{- if or $date $readingTime -}}
-          <span class="hextra-article-card__meta">
-            {{- with $date -}}<span>{{ . }}</span>{{- end -}}
-            {{- with $readingTime -}}<span>{{ . }}</span>{{- end -}}
-          </span>
-        {{- end -}}
-        {{- with $summary -}}
-          <span class="hextra-article-card__summary{{ if $compactSummary }} hextra-article-card__summary--compact{{ end }}">
-            {{- . -}}
-          </span>
-        {{- end -}}
-      </span>
-    </a>
-
   {{- end -}}
 {{- end -}}
+
+{{- partial "shortcodes/article-card.html" (dict
+  "page" $target
+  "self" $self
+  "showSummary" (.Get "showSummary")
+  "compactSummary" (.Get "compactSummary")
+  "cover" (.Get "cover")
+  )
+-}}

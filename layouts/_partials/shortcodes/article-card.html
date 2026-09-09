@@ -1,0 +1,82 @@
+{{- /*
+  Shared card used by the `article` and `list` shortcodes.
+
+  Both run while Hugo is already rendering page content (search-data.json
+  renders every page), so this partial never touches the target page's
+  .Content and resolves date, reading time and summary inline rather than
+  through partials that expect a live page context.
+
+  A card pointing at the page it sits on renders nothing.
+
+  @param {page} page The page to render.
+  @param {string} self RelPermalink of the page the card sits on.
+  @param {bool} showSummary Show the page summary. Default true.
+  @param {bool} compactSummary Clamp the summary to a single line. Default false.
+  @param {bool} cover Show the page's cover image when it has one. Default true.
+
+  @example {{ partial "shortcodes/article-card.html" (dict "page" $p "self" $self)
+}}
+*/ -}}
+
+{{- $showSummary := ne (printf "%v" .showSummary) "false" -}}
+{{- $compactSummary := eq (printf "%v" .compactSummary) "true" -}}
+{{- $showCover := ne (printf "%v" .cover) "false" -}}
+{{- $self := .self -}}
+
+{{- with .page -}}
+  {{- if ne .RelPermalink $self -}}
+
+    {{- $cover := dict -}}
+    {{- if $showCover -}}
+      {{- $cover = partial "utils/page-image.html" (dict "page" . "process" "Resize 400x webp q80") -}}
+    {{- end -}}
+
+    {{- $date := "" -}}
+    {{- if not .Date.IsZero -}}
+      {{- $date = .Date | time.Format (site.Params.dateFormat | default ":date_long") -}}
+    {{- end -}}
+
+    {{- $readingTime := "" -}}
+    {{- if gt .ReadingTime 0 -}}
+      {{- $readingTime = printf ((T "readingTime") | default "%d min read") .ReadingTime -}}
+    {{- end -}}
+
+    {{- $summary := "" -}}
+    {{- if $showSummary -}}
+      {{- $summary = .Description | plainify | htmlUnescape -}}
+      {{- if not $summary -}}
+        {{- $summary = .Summary | plainify | htmlUnescape | chomp -}}
+      {{- end -}}
+    {{- end -}}
+
+    <a class="hextra-article-card not-prose" href="{{ .RelPermalink }}">
+      {{- with $cover.url -}}
+        <span class="hextra-article-card__cover">
+          <img
+            src="{{ . }}"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            {{ with $cover.width }}width="{{ . }}"{{ end }}
+            {{ with $cover.height }}height="{{ . }}"{{ end }}
+          />
+        </span>
+      {{- end -}}
+      <span class="hextra-article-card__body">
+        <span class="hextra-article-card__title">{{ .Title }}</span>
+        {{- if or $date $readingTime -}}
+          <span class="hextra-article-card__meta">
+            {{- with $date -}}<span>{{ . }}</span>{{- end -}}
+            {{- with $readingTime -}}<span>{{ . }}</span>{{- end -}}
+          </span>
+        {{- end -}}
+        {{- with $summary -}}
+          <span class="hextra-article-card__summary{{ if $compactSummary }} hextra-article-card__summary--compact{{ end }}">
+            {{- . -}}
+          </span>
+        {{- end -}}
+      </span>
+    </a>
+
+  {{- end -}}
+{{- end -}}
