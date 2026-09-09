@@ -30,6 +30,12 @@ STATS       := $(SITE)/hugo_stats.json
 CSS_OUT     := assets/css/compiled/main.css
 UPSTREAM    ?= upstream-main
 
+# `stats` runs Hugo with --quiet so a routine rebuild does not scroll the
+# terminal. The cost is that a render error is swallowed and the target just
+# exits non-zero. Set V=1 on any target to get Hugo's full output back:
+#   make preview V=1
+QUIET := $(if $(V),,--quiet)
+
 # Colours, but only when stdout is a TTY (keeps CI logs clean).
 ifneq (,$(findstring xterm,$(TERM)))
   BOLD  := $(shell tput bold)
@@ -57,7 +63,8 @@ help: ## Show this help
 		/^[a-zA-Z0-9_-]+:.*?## / { printf "  $(GREEN)%-16s$(RESET) %s\n", $$1, $$2 } \
 		/^##@/ { printf "\n$(BOLD)%s$(RESET)\n", substr($$0, 5) }' $(MAKEFILE_LIST)
 	@printf "\n$(DIM)Dev server: port $(PORT).  Preview: $(PREVIEW_URL) (always-on container).$(RESET)\n"
-	@printf "$(DIM)Override like: make dev PORT=1314$(RESET)\n\n"
+	@printf "$(DIM)Override like: make dev PORT=1314$(RESET)\n"
+	@printf "$(DIM)Add V=1 for full Hugo output when a build fails: make preview V=1$(RESET)\n\n"
 
 ##@ Setup
 
@@ -140,7 +147,8 @@ serve: deps ## Start the dev server without the theme pipeline (faster, no stats
 .PHONY: stats
 stats: deps ## Regenerate docs/hugo_stats.json (what Tailwind tree-shakes from)
 	@$(SAY) "Regenerating $(STATS)"
-	@hugo --quiet --config=hugo.yaml,../dev.toml --themesDir=../.. --source=$(SITE)
+	@hugo $(QUIET) --config=hugo.yaml,../dev.toml --themesDir=../.. --source=$(SITE) \
+		|| { $(WARN) "hugo failed - re-run with V=1 to see the error: make $(MAKECMDGOALS) V=1"; exit 1; }
 	@$(OK) "$(STATS) is current"
 
 .PHONY: css
