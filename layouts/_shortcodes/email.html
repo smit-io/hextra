@@ -46,7 +46,14 @@ Ported from the Blowfish theme (MIT, Nuno Coração), which does not obfuscate.
 
 {{- $url := printf "mailto:%s" $address -}}
 {{- with $query -}}
-  {{- $url = printf "%s?%s" $url (querify .) -}}
+  {{- /*
+    querify encodes a space as "+", which is right for a form submission and
+    wrong for mailto: mail clients take the plus literally, so subject="Hello
+    there" opened a compose window titled "Hello+there". Any literal plus in
+    the input is already encoded as %2B by this point, so every remaining "+"
+    is a space.
+  */ -}}
+  {{- $url = printf "%s?%s" $url (replace (querify .) "+" "%20") -}}
 {{- end -}}
 
 {{- $text := .Get "text" -}}
