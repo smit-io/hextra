@@ -118,9 +118,6 @@ server generally does not, and the refresh then quietly does nothing.
     {{- warnf "codeimporter: endLine %q is not a whole number for %q, ignoring it. See %s" . $url $.Position -}}
     {{- $endLine = "" -}}
   {{- end -}}
-{{- else -}}
-  {{- /* The block has no offline fallback, so say why it is missing. */ -}}
-  {{- warnf "codeimporter: remote fetching is disabled, skipping %q. See %s" $url .Position -}}
 {{- end -}}
 
 {{- /*
