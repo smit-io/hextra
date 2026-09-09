@@ -34,6 +34,11 @@
   {{- partial "scripts/youtube-lite.html" . -}}
 {{- end -}}
 
+{{/* Live code (codeimporter live=true) */}}
+{{- if (.Store.Get "hasLiveCode") -}}
+  {{- partial "scripts/live-code.html" . -}}
+{{- end -}}
+
 {{/* Medium Zoom */}}
 {{- if (.Store.Get "hasImageZoom") -}}
   {{- partial "scripts/medium-zoom.html" . -}}

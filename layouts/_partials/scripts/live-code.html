@@ -1,0 +1,183 @@
+{{- /*
+  Refresh `codeimporter live=true` blocks from their source URL.
+
+  Loaded only on pages that use the parameter, gated on the "hasLiveCode" store
+  flag in scripts.html - the same pattern as chart, typeit and youtube-lite.
+
+  The build-time render is what ships and what a crawler sees. This only
+  replaces it when the remote file has actually changed, which the FNV-1a hash
+  emitted by the shortcode makes cheap to decide: on the common path the fetch
+  completes, the hashes match, and nothing touches the DOM.
+  */
+-}}
+
+{{- $asset := site.Params.liveCode.js | default "js/vendor/highlight.min.js" -}}
+{{- with resources.Get $asset -}}
+  {{- $js := . | fingerprint -}}
+  <script defer src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+{{- else -}}
+  {{- errorf "highlight.js asset not found at %q. Run `npm run vendor:js` or set params.liveCode.js." $asset -}}
+{{- end -}}
+
+
+<script>
+  (() => {
+    const TIMEOUT_MS = 10000;
+
+    // Chroma lexer names do not all exist in highlight.js. Only the ones a
+    // codeimporter is likely to hit are mapped; anything unknown falls through
+    // to highlightAuto.
+    const LANG_ALIASES = {
+      "go-html-template": "xml",
+      gotmpl: "xml",
+      gohtml: "xml",
+      html: "xml",
+      yml: "yaml",
+      sh: "bash",
+      zsh: "bash",
+      console: "shell",
+      jsonc: "json",
+      json5: "json",
+      jsx: "javascript",
+      tsx: "typescript",
+      text: "plaintext",
+      "": "plaintext",
+    };
+
+    // Must match Hugo's hash.FNV32a, which hashes UTF-8 bytes - hence
+    // TextEncoder rather than iterating UTF-16 code units.
+    const fnv1a = (str) => {
+      const bytes = new TextEncoder().encode(str);
+      let h = 2166136261;
+      for (let i = 0; i < bytes.length; i++) {
+        h ^= bytes[i];
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    };
+
+    // The same arithmetic as layouts/_shortcodes/codeimporter.html. Kept in
+    // step deliberately: if the two ever diverge, an unchanged file would hash
+    // differently and the block would churn on every load.
+    const slice = (text, startAttr, endAttr) => {
+      if (!startAttr && !endAttr) return text;
+
+      const lines = text.replace(/\n$/, "").split("\n");
+      const count = lines.length;
+
+      let start = startAttr ? parseInt(startAttr, 10) : 1;
+      let end = endAttr ? parseInt(endAttr, 10) : count;
+      if (!Number.isFinite(start)) start = 1;
+      if (!Number.isFinite(end)) end = count;
+
+      if (start < 1) start = 1;
+      if (end > count) end = count;
+      if (start > end) return text; // matches the template's warnf-and-ignore
+
+      return lines.slice(start - 1, end).join("\n");
+    };
+
+    const render = (text, lang) => {
+      const code = document.createElement("code");
+      // Deliberately no data-lang: code-copy.js keys on it to collapse "\n\n",
+      // a workaround for Chroma's per-line spans. highlight.js has no such
+      // quirk, so that collapse would eat real blank lines from the copy.
+      code.className = `language-${lang.replace(/[^\w.-]/g, "")} hljs`;
+
+      let done = false;
+      if (typeof hljs !== "undefined") {
+        const name = LANG_ALIASES[lang] ?? lang;
+        try {
+          const out = hljs.getLanguage(name) ? hljs.highlight(text, { language: name, ignoreIllegals: true }) : hljs.highlightAuto(text);
+          code.innerHTML = out.value;
+          done = true;
+        } catch (err) {
+          console.debug("live-code: highlighting failed, falling back to plain text", err);
+        }
+      }
+      if (!done) code.textContent = text;
+
+      const pre = document.createElement("pre");
+      pre.className = "chroma";
+      pre.appendChild(code);
+
+      // The .highlight wrapper is what the Chroma and hljs palettes are scoped
+      // to, so the refreshed block inherits the same colours.
+      const wrap = document.createElement("div");
+      wrap.className = "highlight";
+      wrap.appendChild(pre);
+      return wrap;
+    };
+
+    // The div holding the code, i.e. neither the filename bar nor the copy
+    // button. Its identity must be preserved: code-copy.js resolves its target
+    // at click time via button.parentElement.previousElementSibling, so
+    // replacing the div itself would break copying.
+    const codeContainer = (block) =>
+      [...block.children].find((el) => el.tagName === "DIV" && !el.classList.contains("hextra-code-filename") && !el.classList.contains("hextra-code-copy-btn-container"));
+
+    const refresh = async (block) => {
+      const url = block.dataset.liveUrl;
+      if (!url) return;
+
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+
+      let text;
+      try {
+        const res = await fetch(url, { credentials: "omit", signal: controller.signal });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        text = await res.text();
+      } catch (err) {
+        // A refresh that cannot happen is not an error: the build-time render
+        // is still on screen and still correct as of the last build.
+        console.debug(`live-code: could not refresh ${url}`, err);
+        return;
+      } finally {
+        clearTimeout(timer);
+      }
+
+      const body = slice(text, block.dataset.liveStart, block.dataset.liveEnd);
+      if (String(fnv1a(body)) === block.dataset.liveHash) return;
+
+      const container = codeContainer(block);
+      if (!container) return;
+
+      container.replaceChildren(render(body, block.dataset.liveLang || ""));
+      block.dataset.liveRefreshed = "1";
+      window.hextraCodeBlocks?.refreshScrollable?.();
+    };
+
+    const init = () => {
+      const blocks = document.querySelectorAll(".hextra-code-block[data-live-url]");
+      if (!blocks.length) return;
+
+      const observer =
+        "IntersectionObserver" in window
+          ? new IntersectionObserver(
+              (entries, obs) => {
+                for (const entry of entries) {
+                  if (!entry.isIntersecting) continue;
+                  obs.unobserve(entry.target);
+                  refresh(entry.target);
+                }
+              },
+              { rootMargin: "200px" }
+            )
+          : null;
+
+      blocks.forEach((block) => {
+        if (block.dataset.liveInited === "1") return;
+        block.dataset.liveInited = "1";
+        if (observer) observer.observe(block);
+        else refresh(block);
+      });
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+  })();
+</script>
