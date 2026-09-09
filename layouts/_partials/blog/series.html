@@ -36,6 +36,10 @@
     {{- if not (reflect.IsSlice $names) -}}
       {{- $names = slice $names -}}
     {{- end -}}
+    {{- /* Hugo does not dedupe list params, and a repeated name would render
+    the whole disclosure twice: two elements claiming aria-current="page" and
+    a duplicated set of og:see_also tags. */ -}}
+    {{- $names = uniq $names -}}
 
     {{- $partFormat := (T "seriesPart") | default "Part %d: %s" -}}
     {{- $intro := (T "seriesIntro") | default "This article is part of a series." -}}
