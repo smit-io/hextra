@@ -39,6 +39,7 @@ Hextra provides a collection of beautiful shortcodes to enhance your content.
   {{< card link="gitlab" title="GitLab" icon="gitlab" >}}
   {{< card link="gitea" title="Gitea" icon="gitea" >}}
   {{< card link="codeberg" title="Codeberg" icon="codeberg" >}}
+  {{< card link="forgejo" title="Forgejo" icon="forgejo" >}}
 {{< /cards >}}
 
 <div style="padding-top:4rem"></div>
