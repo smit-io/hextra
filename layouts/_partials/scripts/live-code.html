@@ -23,6 +23,30 @@
 <script>
   (() => {
     const TIMEOUT_MS = 10000;
+    const UPDATED_TEXT = {{ (T "liveCodeUpdated") | default "Code block updated" | jsonify }};
+
+    /*
+      A refresh swaps out code the reader may already have read, so it is
+      announced rather than changed in silence. One region for the page, added
+      on first use: a live region has to be in the DOM before its text changes
+      for the change to be announced at all.
+    */
+    let statusEl = null;
+    const announce = (label) => {
+      if (!statusEl) {
+        statusEl = document.createElement("div");
+        statusEl.setAttribute("role", "status");
+        statusEl.setAttribute("aria-live", "polite");
+        statusEl.className = "hx:sr-only";
+        document.body.appendChild(statusEl);
+      }
+      const text = label ? `${UPDATED_TEXT}: ${label}` : UPDATED_TEXT;
+      // Cleared first so two refreshes of the same block are both announced.
+      statusEl.textContent = "";
+      requestAnimationFrame(() => {
+        statusEl.textContent = text;
+      });
+    };
 
     // Chroma lexer names do not all exist in highlight.js. Only the ones a
     // code import is likely to hit are mapped; anything unknown falls through
@@ -249,9 +273,25 @@
       if (!container) return;
 
       const shape = readShape(container);
+
+      // replaceChildren destroys whatever the reader was focused on. A
+      // scrollable <pre> carries tabindex="0", so a keyboard user reading this
+      // block would otherwise be dropped back to <body> and have to tab from
+      // the top of the page again.
+      const hadFocus = container.contains(document.activeElement);
+
       container.replaceChildren(render(body, block.dataset.liveLang || "", shape));
-      block.dataset.liveRefreshed = "1";
       window.hextraCodeBlocks?.refreshScrollable?.();
+
+      if (hadFocus) {
+        const target = container.querySelector('[tabindex="0"]') || container.querySelector("pre");
+        if (target) {
+          if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+          target.focus({ preventScroll: true });
+        }
+      }
+
+      announce(block.querySelector(".hextra-code-filename")?.textContent.trim());
     };
 
     const init = () => {
