@@ -80,14 +80,14 @@
       return h >>> 0;
     };
 
-    // The same arithmetic as the shortcodes. Kept in step deliberately: if the
-    // two ever diverge, an unchanged file would hash differently and the block
-    // would churn on every load.
     // Only plain decimal digits count as a line number, which is also what the
     // shortcode accepts; anything else is ignored on both sides rather than
     // being read as octal by Hugo and as decimal here.
     const lineNumber = (attr) => (/^[0-9]+$/.test(attr ?? "") ? parseInt(attr, 10) : null);
 
+    // The same arithmetic as the shortcodes. Kept in step deliberately: if the
+    // two ever diverge, an unchanged file would hash differently and the block
+    // would churn on every load.
     const slice = (text, startAttr, endAttr) => {
       const startNo = lineNumber(startAttr);
       const endNo = lineNumber(endAttr);
@@ -256,7 +256,9 @@
       try {
         const res = await fetch(url, { credentials: "omit", signal: controller.signal });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        text = await res.text();
+        // res.text() drops a UTF-8 BOM already; the shortcodes strip theirs to
+        // match, and this keeps the two in step if that ever changes.
+        text = (await res.text()).replace(/^\uFEFF/, "");
       } catch (err) {
         // A refresh that cannot happen is not an error: the build-time render
         // is still on screen and still correct as of the last build.

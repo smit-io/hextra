@@ -65,7 +65,13 @@ server generally does not, and the refresh then quietly does nothing.
     {{- with .Err -}}
       {{- warnf "codeimporter: unable to fetch %q: %s" $url . -}}
     {{- else with .Value -}}
-      {{- $content = .Content -}}
+      {{- /*
+        The byte-order mark is stripped here because the browser's res.text()
+        strips it too. Keeping it would put it inside the hash on this side
+        only, so a Windows-authored file could never match itself and every
+        reader would re-fetch and re-highlight the block on every page view.
+      */ -}}
+      {{- $content = strings.TrimPrefix "\ufeff" .Content -}}
     {{- else -}}
       {{- warnf "codeimporter: %q returned no content" $url -}}
     {{- end -}}
