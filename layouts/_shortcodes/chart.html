@@ -15,7 +15,18 @@ data: { labels: ['Tomato'], datasets: [{ label: '# of votes', data: [12] }] }
 {{< /chart >}}
 */ -}}
 
-{{- $id := printf "hextra-chart-%d-%d" .Page.File.UniqueID .Ordinal -}}
+{{- /*
+  A per-page counter, rather than .Page.File.UniqueID and .Ordinal. UniqueID is
+  a hex string and was formatted with %d, so every chart shipped
+  id="hextra-chart-%!d(string=...)-0" - unusable as a selector or a fragment,
+  and invalid HTML. .Page.File is also nil for pages with no backing file, such
+  as those built by a content adapter, where reading it fails the build.
+  .Ordinal alone would not do either: it is relative to the shortcode's parent
+  and restarts inside a tab or an accordion.
+*/ -}}
+{{- $n := add (.Page.Store.Get "hextraChartCount" | default 0 | int) 1 -}}
+{{- .Page.Store.Set "hextraChartCount" $n -}}
+{{- $id := printf "hextra-chart-%d" $n -}}
 {{- $title := .Get "title" -}}
 
 {{- .Page.Store.Set "hasChart" true -}}
