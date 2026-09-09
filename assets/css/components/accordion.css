@@ -1,10 +1,13 @@
+/* Surface, border and hover colours match the `details` shortcode, so the two
+   collapsibles read as the same component family in a page that uses both. */
 .hextra-accordion {
   @apply hx:my-6 hx:overflow-hidden hx:rounded-lg hx:border;
-  @apply hx:border-gray-200 hx:dark:border-neutral-800;
+  @apply hx:border-hextra-light-600 hx:bg-hextra-light-200;
+  @apply hx:dark:border-neutral-700 hx:dark:bg-hextra-dark-700;
 }
 
 .hextra-accordion__item {
-  @apply hx:border-b hx:border-gray-200 hx:dark:border-neutral-800;
+  @apply hx:border-b hx:border-hextra-light-600 hx:dark:border-neutral-700;
 
   &:last-child {
     @apply hx:border-b-0;
@@ -23,7 +26,7 @@
   }
 
   &:hover {
-    @apply hx:bg-hextra-light-200 hx:dark:bg-hextra-dark-800;
+    @apply hx:bg-hextra-light-400 hx:dark:bg-hextra-dark-900;
   }
 }
 

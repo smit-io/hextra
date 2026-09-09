@@ -7,6 +7,9 @@ authors:
 tags:
   - Guide
   - Fork Features
+series:
+  - Fork Guides
+seriesOrder: 4
 ---
 
 A favicon that disappears against a dark browser toolbar is a small thing that reads as neglect. This fork reorganizes favicon assets into a dedicated `static/icons/` directory and adds an **automatic dark-mode favicon** that follows the visitor's OS color scheme — live, with no page reload. This guide covers generating the icon set, wiring the dark variant, and the one gotcha when migrating from upstream.

@@ -1,0 +1,66 @@
+{{- /*
+  Every post in a series, in reading order.
+
+  Resolved against `site.RegularPages` rather than a `series` taxonomy, so the
+  feature needs no `[taxonomies]` block in the site configuration - adding one
+  would force the site to re-declare `tag` and `category` or silently lose
+  them. `site.RegularPages` is already scoped to the current language, so a
+  series never mixes translations.
+
+  Order comes from three buckets, concatenated in this order: posts with an
+  explicit `seriesOrder` (ascending), then posts with a non-zero `weight`,
+  then everything else by date, oldest first. `series_order` is accepted as an
+  alias for `seriesOrder` so posts written for the Blowfish theme sort the
+  same way, mirroring how `utils/page-image` accepts `featured_image`
+  alongside `cover`.
+
+  The series name is matched verbatim: `series: ["Fork Guides"]` is looked up
+  as `Fork Guides`, not as a urlized taxonomy key.
+
+  @param {string} name The series name.
+  @returns {slice} The pages in the series, in reading order.
+
+  @example {{ partialCached "utils/series-pages.html" (dict "name" $name) $name site.Language.Lang
+}}
+*/ -}}
+{{- $name := .name -}}
+{{- $ordered := slice -}}
+{{- $weighted := slice -}}
+{{- $dated := slice -}}
+
+{{- with $name -}}
+  {{- $target := . -}}
+  {{- range site.RegularPages -}}
+    {{- $page := . -}}
+    {{- with .Params.series -}}
+      {{- $names := . -}}
+      {{- if not (reflect.IsSlice $names) -}}
+        {{- $names = slice $names -}}
+      {{- end -}}
+      {{- if in $names $target -}}
+        {{- if isset $page.Params "seriesorder" -}}
+          {{- $ordered = $ordered | append (dict "page" $page "key" (int $page.Params.seriesOrder)) -}}
+        {{- else if isset $page.Params "series_order" -}}
+          {{- $ordered = $ordered | append (dict "page" $page "key" (int (index $page.Params "series_order"))) -}}
+        {{- else if $page.Weight -}}
+          {{- $weighted = $weighted | append (dict "page" $page "key" $page.Weight) -}}
+        {{- else -}}
+          {{- $dated = $dated | append (dict "page" $page "key" $page.Date.Unix) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $pages := slice -}}
+{{- with $ordered -}}
+  {{- range sort . "key" -}}{{- $pages = $pages | append .page -}}{{- end -}}
+{{- end -}}
+{{- with $weighted -}}
+  {{- range sort . "key" -}}{{- $pages = $pages | append .page -}}{{- end -}}
+{{- end -}}
+{{- with $dated -}}
+  {{- range sort . "key" -}}{{- $pages = $pages | append .page -}}{{- end -}}
+{{- end -}}
+
+{{- return $pages -}}

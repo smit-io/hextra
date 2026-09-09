@@ -1,0 +1,125 @@
+{{- /*
+  "This article is part of a series" module.
+
+  Renders one disclosure per series named in the post's front matter, listing
+  every post in that series in reading order. Unlike the site chrome in
+  `blog/config.html`, this is content-driven: a post that declares `series`
+  has already opted in, the same way `math` or `pinned` work, so the config
+  block is only needed to suppress the module or change its default state.
+
+  Part numbers are positional, not the `seriesOrder` value. An unpublished
+  draft or a half-renumbered series would otherwise print visible gaps
+  ("Part 1, Part 2, Part 4") or two posts both labelled "Part 4".
+
+  The "nav" variant renders previous/next within the first series the post
+  belongs to instead of the full list. It replaces the date-ordered
+  `components/pager.html` at the foot of the post, because two prev/next
+  controls in different orders next to each other are not navigable.
+
+  @param {page} context The post.
+  @param {dict} config The dict returned by `blog/config.html`.
+  @param {string} variant "full" (default) or "nav".
+
+  @example {{ partial "blog/series.html" (dict "context" . "config" $cfg)
+}}
+*/ -}}
+{{- $context := .context -}}
+{{- $series := .config.article.series -}}
+{{- $variant := .variant | default "full" -}}
+
+{{- if $series.enable -}}
+  {{- with $context.Params.series -}}
+    {{- $names := . -}}
+    {{- if not (reflect.IsSlice $names) -}}
+      {{- $names = slice $names -}}
+    {{- end -}}
+
+    {{- $partFormat := (T "seriesPart") | default "Part %d: %s" -}}
+    {{- $intro := (T "seriesIntro") | default "This article is part of a series." -}}
+
+    {{- if eq $variant "nav" -}}
+
+      {{- /* Previous/next within the first series that has neighbours. */ -}}
+      {{- $prev := false -}}
+      {{- $next := false -}}
+      {{- $prevLabel := "" -}}
+      {{- $nextLabel := "" -}}
+      {{- range $names -}}
+        {{- if not (or $prev $next) -}}
+          {{- $pages := partialCached "utils/series-pages.html" (dict "name" .) . site.Language.Lang -}}
+          {{- range $i, $page := $pages -}}
+            {{- if eq $page.RelPermalink $context.RelPermalink -}}
+              {{- if gt $i 0 -}}
+                {{- $candidate := index $pages (sub $i 1) -}}
+                {{- $prev = $candidate -}}
+                {{- $prevLabel = printf $partFormat $i (partial "utils/title" $candidate) -}}
+              {{- end -}}
+              {{- if lt (add $i 1) (len $pages) -}}
+                {{- $candidate := index $pages (add $i 1) -}}
+                {{- $next = $candidate -}}
+                {{- $nextLabel = printf $partFormat (add $i 2) (partial "utils/title" $candidate) -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+
+      {{- if or $prev $next -}}
+        <nav class="hextra-series-nav" aria-label="{{ $intro }}">
+          {{- with $prev -}}
+            <a class="hextra-series-nav__link hextra-series-nav__link--prev" href="{{ .RelPermalink }}" title="{{ $prevLabel }}">
+              {{- partial "utils/icon.html" (dict "name" "chevron-right" "attributes" "class=\"hextra-series-nav__icon hx:ltr:rotate-180\"") -}}
+              <span>{{ $prevLabel }}</span>
+            </a>
+          {{- end -}}
+          {{- with $next -}}
+            <a class="hextra-series-nav__link hextra-series-nav__link--next" href="{{ .RelPermalink }}" title="{{ $nextLabel }}">
+              <span>{{ $nextLabel }}</span>
+              {{- partial "utils/icon.html" (dict "name" "chevron-right" "attributes" "class=\"hextra-series-nav__icon hx:rtl:-rotate-180\"") -}}
+            </a>
+          {{- end -}}
+        </nav>
+      {{- end -}}
+
+    {{- else -}}
+
+      {{- $opened := $series.opened -}}
+      {{- if isset $context.Params "seriesopened" -}}
+        {{- $opened = eq $context.Params.seriesOpened true -}}
+      {{- end -}}
+      {{- range $names -}}
+        {{- $name := . -}}
+        {{- $pages := partialCached "utils/series-pages.html" (dict "name" $name) $name site.Language.Lang -}}
+        {{- /* A series of one is just an article; the module would say nothing. */ -}}
+        {{- if gt (len $pages) 1 -}}
+          <details class="hextra-series" {{ if $opened }}open{{ end }}>
+            <summary class="hextra-series__summary">
+              <span class="hextra-series__marker" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="16" height="16" focusable="false">
+                  <path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
+                </svg>
+              </span>
+              <span class="hextra-series__heading">
+                <span class="hextra-series__name">{{ $name }}</span>
+                <span class="hextra-series__intro">{{ $intro }}</span>
+              </span>
+            </summary>
+            <ol class="hextra-series__list">
+              {{- range $i, $page := $pages -}}
+                {{- $label := printf $partFormat (add $i 1) (partial "utils/title" $page) -}}
+                <li class="hextra-series__item">
+                  {{- if eq $page.RelPermalink $context.RelPermalink -}}
+                    <span class="hextra-series__current" aria-current="page">{{ $label }}</span>
+                  {{- else -}}
+                    <a class="hextra-series__link" href="{{ $page.RelPermalink }}">{{ $label }}</a>
+                  {{- end -}}
+                </li>
+              {{- end -}}
+            </ol>
+          </details>
+        {{- end -}}
+      {{- end -}}
+
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

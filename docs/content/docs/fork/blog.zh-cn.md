@@ -98,6 +98,40 @@ params:
 
 `{url}` 和 `{title}` 会被替换为文章的永久链接和标题。设置了 `type: copy`（且没有 `url`）的条目会将永久链接复制到剪贴板，而不是跳转外链。X、LinkedIn、Bluesky、Facebook、Mastodon 和 Telegram 均可使用其标准分享端点——完整配置参见 `docs/hugo.yaml`。
 
+## 系列文章
+
+把相关文章归为一个系列后，系列中的每篇文章都会获得一个可折叠的全系列目录，以及按系列顺序排列的上一篇/下一篇导航。
+
+```yaml {filename="content/blog/guide-google-fonts.md"}
+---
+title: "Guide: Adding Google Fonts"
+series:
+  - Fork Guides
+seriesOrder: 2
+---
+```
+
+只有 `series` 是必需的。`seriesOrder` 决定文章在系列中的位置；未设置的文章按 `weight`、再按日期排序，并排在已编号的文章之后。
+
+显示给读者的篇号取决于排序后的位置，而不是 `seriesOrder` 的值。把六篇中的第 3 篇下线后，其余文章会重新编号而不会留下空缺；两篇都写 `seriesOrder: 4` 也不会得到重复的标签。
+
+无需配置 `[taxonomies]`：系列直接从 front matter 解析，并限定在当前语言内，因此不同语言的翻译不会混在一起。站点级选项：
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    article:
+      series:
+        enable: true # 设为 false 可在全站禁用该模块
+        opened: false # 默认展开列表
+```
+
+只要文章声明了 `series`，模块无需任何配置即可渲染；上面的配置块只用于禁用模块或修改默认展开状态，单篇文章可用 `seriesOpened: true` 覆盖。
+
+对于系列中的文章，系列导航会取代按日期排序的分页导航，文章末尾只保留一组导航控件，避免两种顺序互相冲突。只有一篇文章的系列不会渲染任何内容，仍使用普通分页导航。
+
+为 Blowfish 主题撰写的文章无需修改即可使用：`series_order` 会被当作 `seriesOrder` 的别名。
+
 ## 小部件
 
 ```yaml {filename="hugo.yaml"}
