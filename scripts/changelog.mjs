@@ -57,12 +57,22 @@ function describe(ref) {
   }
 }
 
+const rev = (ref) => {
+  try {
+    return git("rev-parse", `${ref}^{commit}`);
+  } catch {
+    return "";
+  }
+};
+
 function previousTag() {
   if (args.from) return args.from;
   const nearest = describe(to);
-  // Regenerating notes for a version that is already tagged: the range wanted
-  // is the one that produced it, not an empty diff against itself.
-  if (nearest && nearest === `v${version}`) return describe(`${nearest}^`);
+  // Only step back when the target *is* that tag - `--to v0.12.3` asks for the
+  // notes that release was cut from, and diffing it against itself is empty.
+  // Previewing the next version from HEAD must not step back: the range wanted
+  // is everything since the last release, not since the one before it.
+  if (nearest && rev(nearest) === rev(to)) return describe(`${nearest}^`);
   return nearest;
 }
 
@@ -138,7 +148,9 @@ if (!lines.length) {
   lines.push("No changes recorded since the previous release.", "");
 }
 
-if (repo && from) {
+// A preview run for a version that is already tagged would otherwise compare a
+// tag against itself.
+if (repo && from && from !== `v${version}`) {
   lines.push(`**Full changelog**: https://github.com/${repo}/compare/${from}...v${version}`, "");
 }
 
