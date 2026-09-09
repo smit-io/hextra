@@ -8,6 +8,9 @@ cover: /images/blog/code-linenos-light.png
 tags:
   - Guide
   - Fork Features
+series:
+  - Fork Guides
+seriesOrder: 3
 ---
 
 Code blocks are where documentation readers spend most of their attention, so this fork restyles them for a crisper, editor-like look: visible borders in both modes, filename bars with file-type icons, accent-colored line highlighting, and a copy button that actually works in light mode. Best part: none of it needs configuration — every fenced code block gets the treatment automatically. This guide tours each feature and the Markdown that drives it.

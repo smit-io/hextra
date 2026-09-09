@@ -3,7 +3,7 @@ title: VS Code 代码片段
 weight: 7
 ---
 
-本 fork 提供 `.vscode/hextra.code-snippets` —— 87 个手写的 VS Code 代码片段，覆盖每一个 Hextra shortcode、布局所读取的页面 front matter 键，以及渲染钩子能识别的代码围栏属性。在 VS Code 中打开仓库即可立即使用；不需要扩展，也不需要配置。
+本 fork 提供 `.vscode/hextra.code-snippets` —— 88 个手写的 VS Code 代码片段，覆盖每一个 Hextra shortcode、布局所读取的页面 front matter 键，以及渲染钩子能识别的代码围栏属性。在 VS Code 中打开仓库即可立即使用；不需要扩展，也不需要配置。
 
 <!--more-->
 
@@ -142,6 +142,7 @@ Content
 | `hxfm-docs`    | 文档页——`title`、`weight`、`toc`、`breadcrumbs`、`math`、`excludeSearch`     |
 | `hxfm-section` | 章节 `_index.md` —— `prev`/`next`、`sidebar.open`、`cascade.type`            |
 | `hxfm-blog`    | 博客文章——`date`、`authors`、`tags`                                          |
+| `hxfm-series`  | 系列配置块——`series`、`seriesOrder`、`seriesOpened`                          |
 | `hxfm-home`    | 首页——`layout: hextra-home`                                                  |
 | `hxfm-sidebar` | `sidebar:` 块——`open`、`exclude`、`hide`                                     |
 | `hxfm-width`   | 页面宽度覆盖——`normal` 80rem、`wide` 90rem、`full` 100%                      |

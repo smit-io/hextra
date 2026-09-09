@@ -8,6 +8,9 @@ cover: /images/blog/accent-docs-light.png
 tags:
   - Guide
   - Fork Features
+series:
+  - Fork Guides
+seriesOrder: 1
 ---
 
 Upstream Hextra derives its whole primary color from three HSL variables — one hue, one saturation, one lightness. This fork replaces that with an **11-shade accent palette** in `oklch`, plus dedicated neutral palettes for light and dark backgrounds. The result: every shade is independently tunable, and rebranding the entire site is a single CSS file you paste once. This guide shows how.

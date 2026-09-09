@@ -98,6 +98,42 @@ params:
 
 `{url}` と `{title}` は記事のパーマリンクとタイトルに置き換えられます。`type: copy` を持つ（そして `url` を持たない）エントリは、外部リンクの代わりにパーマリンクをクリップボードにコピーします。X、LinkedIn、Bluesky、Facebook、Mastodon、Telegram はいずれも標準の共有エンドポイントで動作します。完全な一覧は `docs/hugo.yaml` を参照してください。
 
+## シリーズ
+
+関連する記事をまとめると、そのグループのすべての記事に、シリーズ全体の折りたたみ可能な目次と、シリーズ順の前後ナビゲーションが表示されます。
+
+```yaml {filename="content/blog/guide-google-fonts.md"}
+---
+title: "Guide: Adding Google Fonts"
+series:
+  - Fork Guides
+seriesOrder: 2
+---
+```
+
+必須のキーは `series` だけです。`seriesOrder` は並び順を指定します。指定がない記事は `weight`、次に日付の順で並び、番号付きの記事の後ろに配置されます。
+
+表示される回数は `seriesOrder` の値ではなく、並び順から算出した位置です。6 本中 3 本目を非公開にしても番号が飛ぶことはなく、`seriesOrder: 4` が重複していても別々のラベルになります。
+
+`[taxonomies]` の設定は不要です。シリーズはフロントマターから直接解決され、現在の言語に限定されるため、翻訳が混ざることはありません。サイト全体の設定:
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    article:
+      series:
+        enable: true # このブロックでモジュールを有効化し、false で無効化
+        opened: false # 最初から展開した状態にする
+```
+
+他のブログ機能と同じくオプトインです。上記のブロックを追加するとモジュールが有効になり、`params.blog.article.series` を設定しないサイトでは、記事に `series` があってもこれまでどおりの表示のままです。`enable: false` の省略形として `series: false` も使えます。初期状態は記事ごとに `seriesOpened: true` で上書きできます。
+
+シリーズに属する記事では、シリーズの前後ナビゲーションが日付順のページャーを置き換えます。記事の末尾に順序の異なるナビゲーションが 2 つ並ぶことはありません。記事が 1 本だけのシリーズでは何も表示されず、通常のページャーがそのまま使われます。
+
+ページャー自身の設定が優先されます。シリーズへの所属と違って、こちらは明示的な指定だからです。`displayPagination: false` は両方を非表示にし、フロントマターで `prev`/`next`（`prev: false` を含む）を指定した記事は、その設定どおりのページャーを保ちます。ただし同じ記事群を日付順に並べる `reversePagination` より、シリーズの並び順が優先されます。
+
+Blowfish テーマ向けに書かれた記事もそのまま動作します。`series_order` は `seriesOrder` の別名として受け付けられます。
+
 ## ウィジェット
 
 ```yaml {filename="hugo.yaml"}

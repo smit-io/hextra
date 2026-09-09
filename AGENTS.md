@@ -127,6 +127,25 @@ Tailwind CSS relies on `docs/hugo_stats.json` to know which HTML tags, classes, 
 
 > **Why two steps?** `dev.toml` mounts `docs/hugo_stats.json` into the Hugo asset pipeline (`assets/notwatching/hugo_stats.json`) and configures a cache-buster so that changes to the stats file trigger a CSS recompile during `dev:theme`. When running outside the dev server you need to perform these steps manually in order.
 
+### Releasing
+
+`VERSION` at the repository root is the single source of truth. A push to `main`
+that changes it fires `.github/workflows/release.yml`, which tags `v<VERSION>`,
+generates release notes from the conventional commits since the previous tag,
+attaches a source zip, and publishes the release. An ordinary push to `main`
+only deploys the site — no release is cut.
+
+The workflow skips silently when the tag already exists, so re-running it is
+safe. Preview the notes for the current `VERSION` before bumping:
+
+```bash
+npm run changelog
+```
+
+This repository carries tags inherited from `imfing/hextra`; the changelog only
+considers tags reachable from `HEAD`, so unrelated upstream tags never widen the
+range.
+
 ### Customization Points
 
 - Custom partials: `layouts/_partials/custom/`

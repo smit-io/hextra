@@ -1,0 +1,97 @@
+{{- /*
+  Every post in a series, in reading order.
+
+  Resolved against `site.RegularPages` rather than a `series` taxonomy, so the
+  feature needs no `[taxonomies]` block in the site configuration - adding one
+  would force the site to re-declare `tag` and `category` or silently lose
+  them. `site.RegularPages` is already scoped to the current language, so a
+  series never mixes translations.
+
+  Order comes from three buckets, concatenated in this order: posts with an
+  explicit `seriesOrder` (ascending), then posts with a non-zero `weight`,
+  then everything else by date, oldest first. `series_order` is accepted as an
+  alias for `seriesOrder` so posts written for the Blowfish theme sort the
+  same way, mirroring how `utils/page-image` accepts `featured_image`
+  alongside `cover`. A `seriesOrder` that is not a number is warned about and
+  ordered by date rather than failing the build.
+
+  The series name is matched verbatim: `series: ["Fork Guides"]` is looked up
+  as `Fork Guides`, not as a urlized taxonomy key.
+
+  `type` scopes the lookup to one content type, and callers should always pass
+  it. Only the blog layouts render the series module, so a docs page that
+  happens to carry a `series` key would otherwise be numbered into the blog
+  series and become a dead end: "next" walks the reader out of the blog into a
+  layout with no series navigation to get back with. Callers must include it
+  in the `partialCached` key.
+
+  @param {string} name The series name.
+  @param {string} type Optional content type to scope the lookup to.
+  @returns {slice} The pages in the series, in reading order.
+
+  @example {{ partialCached "utils/series-pages.html" (dict "name" $name "type" .Type) $name .Type site.Language.Lang
+}}
+*/ -}}
+{{- $name := .name -}}
+{{- $type := .type -}}
+{{- $ordered := slice -}}
+{{- $weighted := slice -}}
+{{- $dated := slice -}}
+
+{{- with $name -}}
+  {{- $target := . -}}
+  {{- range site.RegularPages -}}
+    {{- $page := . -}}
+    {{- if and $type (ne .Type $type) -}}
+      {{- continue -}}
+    {{- end -}}
+    {{- with .Params.series -}}
+      {{- $names := . -}}
+      {{- if not (reflect.IsSlice $names) -}}
+        {{- $names = slice $names -}}
+      {{- end -}}
+      {{- if in $names $target -}}
+        {{- $hasOrder := false -}}
+        {{- $raw := "" -}}
+        {{- if isset $page.Params "seriesorder" -}}
+          {{- $hasOrder = true -}}
+          {{- $raw = $page.Params.seriesOrder -}}
+        {{- else if isset $page.Params "series_order" -}}
+          {{- $hasOrder = true -}}
+          {{- $raw = index $page.Params "series_order" -}}
+        {{- end -}}
+        {{- if $hasOrder -}}
+          {{/* A hand-typed `seriesOrder: two` must not take the site down.
+            The cast is attempted, and a value that will not convert falls back to
+            the dated bucket with a warning naming the page that holds it - the
+            build error names whichever page happened to miss the cache first.
+          */}}
+          {{- $cast := try (int $raw) -}}
+          {{- with $cast.Err -}}
+            {{- warnf "series-pages: ignoring non-numeric seriesOrder %q on %s, ordering that post by date instead" $raw $page.RelPermalink -}}
+            {{- $dated = $dated | append (dict "page" $page "key" $page.Date.Unix) -}}
+          {{- else -}}
+            {{- $ordered = $ordered | append (dict "page" $page "key" $cast.Value) -}}
+          {{- end -}}
+        {{- else if $page.Weight -}}
+          {{- $weighted = $weighted | append (dict "page" $page "key" $page.Weight) -}}
+        {{- else -}}
+          {{- $dated = $dated | append (dict "page" $page "key" $page.Date.Unix) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $pages := slice -}}
+{{- with $ordered -}}
+  {{- range sort . "key" -}}{{- $pages = $pages | append .page -}}{{- end -}}
+{{- end -}}
+{{- with $weighted -}}
+  {{- range sort . "key" -}}{{- $pages = $pages | append .page -}}{{- end -}}
+{{- end -}}
+{{- with $dated -}}
+  {{- range sort . "key" -}}{{- $pages = $pages | append .page -}}{{- end -}}
+{{- end -}}
+
+{{- return $pages -}}

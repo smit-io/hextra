@@ -74,6 +74,7 @@
   "tags" false
   "share" (dict "enable" false "links" slice)
   "related" (dict "enable" false "count" 3)
+  "series" (dict "enable" false "opened" false)
 -}}
 {{- with $blog.article -}}
   {{- $share := dict "enable" false "links" slice -}}
@@ -90,12 +91,30 @@
       "count" (int ((index . "count") | default 3))
     -}}
   {{- end -}}
+  {{/* Presence is the switch, so the check is `isset` rather than `with`:
+    `series: {}` and a bare `series:` are empty values that `with` would skip,
+    leaving the block an author wrote with no effect. Only an explicit false -
+    either `series: false` or `enable: false` - opts back out.
+  */}}
+  {{- $series := dict "enable" false "opened" false -}}
+  {{- if isset . "series" -}}
+    {{- $value := index . "series" -}}
+    {{- if reflect.IsMap $value -}}
+      {{- $series = dict
+        "enable" (not (eq (index $value "enable") false))
+        "opened" (eq (index $value "opened") true)
+      -}}
+    {{- else -}}
+      {{- $series = dict "enable" (ne $value false) "opened" false -}}
+    {{- end -}}
+  {{- end -}}
   {{- $article = dict
     "cover" (eq (index . "cover") true)
     "readingTime" (eq (index . "readingtime") true)
     "tags" (eq (index . "tags") true)
     "share" $share
     "related" $related
+    "series" $series
   -}}
 {{- end -}}
 

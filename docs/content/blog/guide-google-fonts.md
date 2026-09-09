@@ -8,6 +8,9 @@ cover: /images/blog/google-fonts-page.png
 tags:
   - Guide
   - Fork Features
+series:
+  - Fork Guides
+seriesOrder: 2
 ---
 
 Typography is the fastest way to make a documentation site feel like *yours*. This fork of Hextra ships first-class Google Fonts support: separate fonts for headings, body text, and code, configured entirely from `hugo.yaml` — no template overrides, no custom CSS, no client-side JavaScript. This guide walks through setting it up from scratch, picking the right axes values, and fixing the common pitfalls.

@@ -75,13 +75,28 @@
 
 {{ end }}
 
-{{- /* If it is part of a series, link to related articles */}}
+{{- /* If it is part of a series, link to related articles. Resolved through
+`utils/series-pages` rather than `.Site.Taxonomies.series`, which is empty
+unless the site declares a `series` taxonomy - so these tags never emitted for
+most sites using the `series` front matter.
+
+Gated on the same `blog/config.html` switch as the visible module: a site that
+turned series off should not still be publishing its series graph to crawlers
+and social scrapers. This partial runs in the head of every page of every
+site, so the config partial is only entered when `params.blog` exists at all -
+a site without it has the module disabled by default anyway. */}}
 {{- $permalink := .Permalink }}
-{{- $siteSeries := .Site.Taxonomies.series }}
-{{ with .Params.series }}
-{{- range $name := . }}
-{{- $series := index $siteSeries ($name | urlize) }}
-{{- range $page := first 6 $series.Pages }}
+{{- $type := .Type }}
+{{- $seriesEnabled := false }}
+{{- with site.Params.blog }}
+{{- $seriesEnabled = (partial "blog/config.html" $).article.series.enable }}
+{{- end }}
+{{ with (and $seriesEnabled .Params.series) }}
+{{- $names := . }}
+{{- if not (reflect.IsSlice $names) }}{{ $names = slice $names }}{{ end }}
+{{- $names = uniq $names }}
+{{- range $name := $names }}
+{{- range $page := first 6 (partialCached "utils/series-pages.html" (dict "name" $name "type" $type) $name $type site.Language.Lang) }}
 {{- if ne $page.Permalink $permalink }}
 <meta property="og:see_also" content="{{ $page.Permalink }}">
 {{ end }}

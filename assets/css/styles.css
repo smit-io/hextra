@@ -227,4 +227,5 @@ body {
 @import "./components/typeit.css";
 @import "./components/repo-card.css";
 @import "./components/accordion.css";
+@import "./components/series.css";
 @import "./fonts.css";

@@ -336,6 +336,11 @@ params:
             type: copy
       related:
         count: 3
+      # "This article is part of a series" module, on every post with `series`
+      # in front matter. Remove this block to turn it off.
+      series:
+        enable: true
+        opened: false
 
     # Left identity rail. Links come from the `blog` menu above; every element
     # below renders only when its key is present.

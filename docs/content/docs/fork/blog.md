@@ -98,6 +98,42 @@ params:
 
 `{url}` and `{title}` are replaced with the post's permalink and title. An entry with `type: copy` (and no `url`) copies the permalink to the clipboard instead of linking out. X, LinkedIn, Bluesky, Facebook, Mastodon, and Telegram all work with their standard share endpoints — see `docs/hugo.yaml` for the full set.
 
+## Series
+
+Group related posts and every post in the group gains a collapsible index of the whole set, plus previous/next navigation in series order.
+
+```yaml {filename="content/blog/guide-google-fonts.md"}
+---
+title: "Guide: Adding Google Fonts"
+series:
+  - Fork Guides
+seriesOrder: 2
+---
+```
+
+`series` is the only key you need. `seriesOrder` sets the position; posts without it fall back to their `weight`, then their date, and sort after the numbered ones.
+
+Part numbers are positional, not the `seriesOrder` value. Unpublishing part 3 of six renumbers the rest instead of printing a gap, and two posts that both claim `seriesOrder: 4` still get distinct labels.
+
+No `[taxonomies]` block is required — series resolve straight from front matter and are scoped to the current language, so translations never mix. Site-wide options:
+
+```yaml {filename="hugo.yaml"}
+params:
+  blog:
+    article:
+      series:
+        enable: true # the block turns the module on; false suppresses it
+        opened: false # start the list expanded
+```
+
+Like every other blog feature, the module is opt-in: the block above turns it on, and a site with no `params.blog.article.series` renders its posts exactly as before, `series` front matter or not. `series: false` is accepted as shorthand for `enable: false`. Individual posts override the open state with `seriesOpened: true`.
+
+On a post in a series, the series previous/next replaces the date-ordered pager, so the foot of the article carries one set of navigation controls rather than two in conflicting orders. A series of one renders nothing and keeps the normal pager.
+
+The pager's own switches still win, because they are explicit where membership of a series is not: `displayPagination: false` suppresses both, and a post that sets its own `prev`/`next` in front matter — including `prev: false` — keeps the pager it configured. Series order does supersede `reversePagination`, which orders the same posts by date.
+
+Posts written for the Blowfish theme work unchanged: `series_order` is accepted as an alias for `seriesOrder`.
+
 ## Widgets
 
 ```yaml {filename="hugo.yaml"}
