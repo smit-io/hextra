@@ -8,6 +8,9 @@ cover: /images/blog/blog-list-light.png
 tags:
   - Guide
   - Fork Features
+series:
+  - Fork Guides
+seriesOrder: 5
 ---
 
 The fork replaces upstream's single-column blog with a configurable three-column layout: an identity rail on the left, post cards in the middle, and widgets on the right. Everything is opt-in and driven by `params.blog` in your site config — a site with no `params.blog` block renders the original upstream markup unchanged, so upgrading is zero-risk. This guide builds the full layout step by step.

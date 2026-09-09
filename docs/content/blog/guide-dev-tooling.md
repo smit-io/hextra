@@ -7,6 +7,9 @@ authors:
 tags:
   - Guide
   - Fork Features
+series:
+  - Fork Guides
+seriesOrder: 6
 ---
 
 Working on a Hugo theme means juggling a two-step CSS pipeline, a dev server, a production preview, and a pile of shortcode syntax you half-remember. The fork attacks all four: a self-documenting **Makefile** that encodes the build ordering, a Docker Compose **devcontainer** with an always-on preview server, **upstream sync helpers**, and **49 VS Code snippets** covering every shortcode and front matter block. This guide is the working tour.

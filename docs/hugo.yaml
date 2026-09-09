@@ -336,6 +336,11 @@ params:
             type: copy
       related:
         count: 3
+      # "This article is part of a series" module. Renders on any post with
+      # `series` in front matter; this block only suppresses it or changes
+      # whether it starts expanded.
+      series:
+        opened: false
 
     # Left identity rail. Links come from the `blog` menu above; every element
     # below renders only when its key is present.

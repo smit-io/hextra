@@ -75,13 +75,16 @@
 
 {{ end }}
 
-{{- /* If it is part of a series, link to related articles */}}
+{{- /* If it is part of a series, link to related articles. Resolved through
+`utils/series-pages` rather than `.Site.Taxonomies.series`, which is empty
+unless the site declares a `series` taxonomy - so these tags never emitted for
+most sites using the `series` front matter. */}}
 {{- $permalink := .Permalink }}
-{{- $siteSeries := .Site.Taxonomies.series }}
 {{ with .Params.series }}
-{{- range $name := . }}
-{{- $series := index $siteSeries ($name | urlize) }}
-{{- range $page := first 6 $series.Pages }}
+{{- $names := . }}
+{{- if not (reflect.IsSlice $names) }}{{ $names = slice $names }}{{ end }}
+{{- range $name := $names }}
+{{- range $page := first 6 (partialCached "utils/series-pages.html" (dict "name" $name) $name site.Language.Lang) }}
 {{- if ne $page.Permalink $permalink }}
 <meta property="og:see_also" content="{{ $page.Permalink }}">
 {{ end }}

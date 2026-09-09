@@ -51,6 +51,9 @@
             <span class="hx:inline-flex hx:flex-wrap hx:gap-x-1">{{ partial "tags.html" (dict "context" .) }}</span>
           {{- end -}}
         </div>
+        {{- /* Between the metadata and the cover image: the reader knows what
+        the post is before being told where it sits in the series. */ -}}
+        {{- partial "blog/series.html" (dict "context" . "config" $cfg) -}}
         {{ if $cfg.article.cover }}{{ partial "blog/cover.html" (dict "page" . "variant" "hero") }}{{ end }}
         <div class="content">
           {{ partial "custom/content-begin.html" . }}
@@ -60,7 +63,13 @@
         {{- partial "components/last-updated.html" . -}}
         {{- partial "blog/share.html" (dict "context" . "config" $cfg) -}}
         {{- partial "blog/related.html" (dict "context" . "config" $cfg) -}}
-        {{- if (site.Params.blog.article.displayPagination | default true) -}}
+        {{- /* Within a series, the series order is the useful order: it replaces
+        the date-ordered pager rather than sitting next to it. The nav renders
+        nothing for a series of one, in which case the pager still applies. */ -}}
+        {{- $seriesNav := partial "blog/series.html" (dict "context" . "config" $cfg "variant" "nav") -}}
+        {{- if trim $seriesNav " \n\t" -}}
+          {{- $seriesNav | safeHTML -}}
+        {{- else if (site.Params.blog.article.displayPagination | default true) -}}
           {{- .Store.Set "reversePagination" (.Params.reversePagination | default true) -}}
           {{- partial "components/pager.html" . -}}
         {{ end }}

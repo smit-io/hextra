@@ -770,6 +770,18 @@
     ],
     "description": "Blog post front matter."
   },
+  "Hextra: front matter series block": {
+    "scope": "markdown",
+    "prefix": "hxfm-series",
+    "body": [
+      "series:",
+      "  - ${1:Series Name}",
+      "seriesOrder: ${2:1}",
+      "seriesOpened: ${3|false,true|}",
+      "$0"
+    ],
+    "description": "Place a post in a series. seriesOrder sets its position; seriesOpened expands the series list on this post."
+  },
   "Hextra: front matter (home page)": {
     "scope": "markdown",
     "prefix": "hxfm-home",
