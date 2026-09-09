@@ -260,7 +260,10 @@
     };
 
     const render = (text, lang, shape) => {
-      const safeLang = lang.replace(/[^\w.-]/g, "");
+      // `+` and `#` are kept: Chroma can highlight c++ and c#, so the build
+      // really does emit `language-c++`, and stripping them renamed the block
+      // to a different language on refresh.
+      const safeLang = lang.replace(/[^\w.+#-]/g, "");
       const lines = highlightToLines(text, lang);
       const hl = new Set(shape.hl);
 
