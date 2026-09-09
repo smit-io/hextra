@@ -99,10 +99,19 @@
       }
     };
 
+    const isDark = () => document.documentElement.classList.contains("dark");
+
     const start = () => {
       draw();
       let timeout;
+      let wasDark = isDark();
       new MutationObserver(() => {
+        // Any class change on <html> lands here, including the one that
+        // dismissing the announcement banner makes. Redrawing on those
+        // destroyed and rebuilt every chart on the page and replayed all their
+        // entrance animations, so only act on an actual theme change.
+        if (isDark() === wasDark) return;
+        wasDark = isDark();
         clearTimeout(timeout);
         timeout = setTimeout(draw, 150);
       }).observe(document.documentElement, {
