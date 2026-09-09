@@ -31,6 +31,15 @@
   @apply hx:my-6 hx:overflow-x-auto;
   @apply hx:px-[3px] hx:-mx-[3px];
 
+  /* Mirrors the `first:mt-0` typography.css puts on tables. The wrapper is
+     what sits first in the flow now, and the inner table's `my-0` cannot
+     undo a margin on its parent. Padding on a container - a tab panel, say -
+     blocks margin collapsing, so without this a borderless table opening a
+     panel is pushed down where a plain Markdown table is not. */
+  &:first-child {
+    @apply hx:mt-0;
+  }
+
   /* `border-collapse` is set explicitly rather than inherited from
      typography.css: those rules are nested under `.content`, and
      layouts/hextra-home.html renders `.Content` without that wrapper. In the
