@@ -11,8 +11,8 @@
   draft or a half-renumbered series would otherwise print visible gaps
   ("Part 1, Part 2, Part 4") or two posts both labelled "Part 4".
 
-  The "nav" variant renders previous/next within the first series the post
-  belongs to instead of the full list. It replaces the date-ordered
+  The "nav" variant renders previous/next in series order instead of the full
+  list, taking each direction from the first series that supplies it. It replaces the date-ordered
   `components/pager.html` at the foot of the post, because two prev/next
   controls in different orders next to each other are not navigable. The
   caller decides that: `blog/single.html` only asks for the nav when the
@@ -42,22 +42,26 @@
 
     {{- if eq $variant "nav" -}}
 
-      {{- /* Previous/next within the first series that has neighbours. */ -}}
+      {{- /* Previous/next across every series the post belongs to. The two
+      directions are resolved independently - the first series to supply each
+      side wins - so a post that closes one series and opens another gets a
+      previous link from the first and a next link from the second, instead of
+      stopping at whichever series happened to be named first. */ -}}
       {{- $prev := false -}}
       {{- $next := false -}}
       {{- $prevLabel := "" -}}
       {{- $nextLabel := "" -}}
       {{- range $names -}}
-        {{- if not (or $prev $next) -}}
+        {{- if not (and $prev $next) -}}
           {{- $pages := partialCached "utils/series-pages.html" (dict "name" .) . site.Language.Lang -}}
           {{- range $i, $page := $pages -}}
             {{- if eq $page.RelPermalink $context.RelPermalink -}}
-              {{- if gt $i 0 -}}
+              {{- if and (not $prev) (gt $i 0) -}}
                 {{- $candidate := index $pages (sub $i 1) -}}
                 {{- $prev = $candidate -}}
                 {{- $prevLabel = printf $partFormat $i (partial "utils/title" $candidate) -}}
               {{- end -}}
-              {{- if lt (add $i 1) (len $pages) -}}
+              {{- if and (not $next) (lt (add $i 1) (len $pages)) -}}
                 {{- $candidate := index $pages (add $i 1) -}}
                 {{- $next = $candidate -}}
                 {{- $nextLabel = printf $partFormat (add $i 2) (partial "utils/title" $candidate) -}}
