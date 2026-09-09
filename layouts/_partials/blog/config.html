@@ -91,18 +91,21 @@
       "count" (int ((index . "count") | default 3))
     -}}
   {{- end -}}
-  {{/* `series: false` is the shape an author reaches for first, so it opts out
-    rather than being read as an empty block that opts in.
+  {{/* Presence is the switch, so the check is `isset` rather than `with`:
+    `series: {}` and a bare `series:` are empty values that `with` would skip,
+    leaving the block an author wrote with no effect. Only an explicit false -
+    either `series: false` or `enable: false` - opts back out.
   */}}
   {{- $series := dict "enable" false "opened" false -}}
-  {{- with index . "series" -}}
-    {{- if reflect.IsMap . -}}
+  {{- if isset . "series" -}}
+    {{- $value := index . "series" -}}
+    {{- if reflect.IsMap $value -}}
       {{- $series = dict
-        "enable" (not (eq (index . "enable") false))
-        "opened" (eq (index . "opened") true)
+        "enable" (not (eq (index $value "enable") false))
+        "opened" (eq (index $value "opened") true)
       -}}
     {{- else -}}
-      {{- $series = dict "enable" (eq . true) "opened" false -}}
+      {{- $series = dict "enable" (ne $value false) "opened" false -}}
     {{- end -}}
   {{- end -}}
   {{- $article = dict
