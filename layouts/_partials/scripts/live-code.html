@@ -219,7 +219,7 @@
         : container.querySelector(".ln")
           ? "inline"
           : "none";
-      const shape = { mode, hl: [], start: 1 };
+      const shape = { mode, hl: [], start: 1, anchors: false, anchorPrefix: "" };
 
       const lineEls = codeEl ? codeEl.querySelectorAll(":scope > .line") : [];
       if (!lineEls.length) {
@@ -246,6 +246,16 @@
         const n = parseInt(firstNo.textContent.trim(), 10);
         if (Number.isFinite(n)) shape.start = n;
       }
+
+      // With markup.highlight.anchorLineNos on, every number is an id and a
+      // link into the block. Rebuilding bare spans broke every existing #N
+      // link on the page, so the anchors are carried over - including the
+      // prefix a `lineAnchors` setting puts in front of the number.
+      const anchored = container.querySelector(".lnt[id], .ln[id]");
+      if (anchored) {
+        shape.anchors = true;
+        shape.anchorPrefix = anchored.id.replace(/[0-9]+$/, "").replace(/[^\w-]/g, "");
+      }
       return shape;
     };
 
@@ -254,9 +264,19 @@
       const lines = highlightToLines(text, lang);
       const hl = new Set(shape.hl);
 
+      // One number, marked up the way Chroma marked up the block being
+      // replaced: id and link when anchorLineNos is on, bare text otherwise.
+      const number = (i, cls, tail = "") => {
+        const n = shape.start + i;
+        const anchor = `${shape.anchorPrefix}${n}`;
+        const body = shape.anchors ? `<a class="lnlinks" href="#${anchor}">${n}</a>` : `${n}`;
+        const id = shape.anchors ? ` id="${anchor}"` : "";
+        return `<span class="${cls}"${id}>${body}${tail}</span>`;
+      };
+
       // In inline mode the number is part of the line rather than a column of
       // its own, which is the markup Chroma emits with lineNumbersInTable off.
-      const inlineNo = (i) => (shape.mode === "inline" ? `<span class="ln">${shape.start + i}</span>` : "");
+      const inlineNo = (i) => (shape.mode === "inline" ? number(i, "ln") : "");
 
       const codeBody = lines
         .map(
@@ -279,8 +299,7 @@
 
       const nums = lines
         .map((_, i) => {
-          const n = shape.start + i;
-          const cell = `<span class="lnt">${n}\n</span>`;
+          const cell = number(i, "lnt", "\n");
           return hl.has(i) ? `<span class="hl">${cell}</span>` : cell;
         })
         .join("");
