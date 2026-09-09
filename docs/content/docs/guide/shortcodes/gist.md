@@ -41,6 +41,7 @@ The positional form Blowfish uses also works:
 | `lineNos` | Show line numbers. Default `false`. |
 | `lineNoStart` | First line number. Default `1`. |
 | `user` | The gist owner. Accepted for compatibility with Blowfish; the API does not need it. |
+| `live` | Re-fetch each file in the reader's browser and refresh it if the gist changed. Default `false`. |
 
 A gist carries no highlighting metadata of its own, so `hl_lines` is given at
 the call site rather than in the gist — unlike a fenced block, where it goes in
@@ -65,3 +66,39 @@ renders nothing when scripting is off. Fetching at build time instead means:
 
 Very large files are truncated by the GitHub API. When that happens the visible
 content is partial and the build logs a warning.
+
+## Keeping a gist current
+
+By default the page shows the gist as it was at the last build. `live=true`
+keeps that build-time render — so crawlers, readers without JavaScript and the
+printed page still see the code — and re-fetches each file when the block
+scrolls into view, replacing it only if the gist has changed:
+
+{{< gist id="94b164ef15167487a559285cee5bce93" live=true >}}
+
+It refreshes from `gist.githubusercontent.com/<owner>/<id>/raw/<file>` rather
+than the API, one request per file. The `raw_url` the API returns pins a
+revision and would never change, so it is deliberately not used.
+
+Only files that existed at build time are refreshed. A file added to the gist
+afterwards has no block to appear in, and one deleted afterwards keeps showing
+its build-time content, since a failed fetch leaves the block alone. Both
+resolve on the next build.
+
+A file the API truncated is a useful side effect: the raw URL returns it whole,
+so a live block replaces the partial content with the full file on first view.
+
+`live` is mutually exclusive with `hl_lines`, `lineNos` and `lineNoStart` —
+line highlighting is pinned to line numbers, and the point of `live` is that
+the file can change underneath them. Combining them logs a warning and ignores
+the three, so the block looks the same whether or not a refresh has happened.
+Anonymous gists have no owner to build the raw URL from, so `live` is ignored
+there too, also with a warning.
+
+{{< callout type="warning" >}}
+  With `live=true` the **reader's** browser contacts
+  `gist.githubusercontent.com`, so the host sees their IP address. Without it,
+  only your build machine ever connects. A restrictive Content Security Policy
+  needs that host in `connect-src`. Pages using it also load about 126 KB of
+  client-side highlighter, since Chroma cannot run in a browser.
+{{< /callout >}}
