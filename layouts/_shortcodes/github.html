@@ -68,6 +68,13 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           {{- $avatar = .avatar_url -}}
         {{- end -}}
       {{- end -}}
+    {{- else -}}
+      {{- /*
+        resources.GetRemote reports an HTTP 404 as a nil resource and no error,
+        so without this branch a typo'd, renamed, deleted or private repository
+        degrades to a bare card with nothing written to the build log.
+      */ -}}
+      {{- warnf "github: %q was not found, rendering a plain card" $repo -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
