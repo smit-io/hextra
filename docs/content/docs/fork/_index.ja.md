@@ -19,7 +19,7 @@ weight: 10
 | ブログ           | 単一カラムのリスト                                              | アイデンティティレール・記事カード・共有ボタン・ウィジェットを備えた[3 カラムレイアウト](blog)  |
 | ファビコン       | `static/` 直下のフラットな配置                                    | `static/icons/` 配下に整理され、[ダークモードファビコン](favicons)に対応              |
 | 開発ワークフロー   | npm スクリプトのみ                                                | [Makefile、devcontainer、アップストリーム同期ヘルパー](dev-tooling)                        |
-| 執筆       | すべてのパラメータを思い出すためにドキュメントを読む必要がある                        | ショートコード・フロントマター・コードフェンス用の [49 個の VS Code スニペット](vscode-snippets)    |
+| 執筆       | すべてのパラメータを思い出すためにドキュメントを読む必要がある                        | ショートコード・フロントマター・コードフェンス用の [89 個の VS Code スニペット](vscode-snippets)    |
 
 {{< cards >}}
 {{< card link="google-fonts" title="Google Fonts" icon="sparkles" subtitle="バリアブルフォントの axes に対応した、見出し・本文・コードごとに設定可能なフォント" >}}

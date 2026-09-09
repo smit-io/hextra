@@ -19,7 +19,7 @@ weight: 10
 | 博客         | 单栏列表                                                        | 带身份栏、文章卡片、分享按钮和小部件的[三栏布局](blog)                                   |
 | Favicon      | 散落在 `static/` 中的文件                                       | 统一整理到 `static/icons/` 下，并支持[深色模式 favicon](favicons)                        |
 | 开发工作流   | 仅有 npm 脚本                                                   | [Makefile、devcontainer 和上游同步辅助工具](dev-tooling)                                 |
-| 内容创作     | 需要翻阅文档才能想起每个参数                                    | 覆盖 shortcode、front matter 和代码围栏的 [49 个 VS Code 代码片段](vscode-snippets)      |
+| 内容创作     | 需要翻阅文档才能想起每个参数                                    | 覆盖 shortcode、front matter 和代码围栏的 [89 个 VS Code 代码片段](vscode-snippets)      |
 
 {{< cards >}}
 {{< card link="google-fonts" title="Google Fonts" icon="sparkles" subtitle="可配置的标题、正文和代码字体，支持可变字体 axes" >}}

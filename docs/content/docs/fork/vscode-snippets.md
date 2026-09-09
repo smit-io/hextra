@@ -3,7 +3,7 @@ title: VS Code Snippets
 weight: 7
 ---
 
-The fork ships `.vscode/hextra.code-snippets` — 88 hand-written VS Code snippets covering every Hextra shortcode, the page front matter keys the layouts read, and the code-fence attributes the render hooks understand. Open the repo in VS Code and they are available immediately; no extension, no configuration.
+The fork ships `.vscode/hextra.code-snippets` — 89 hand-written VS Code snippets covering every Hextra shortcode, the page front matter keys the layouts read, and the code-fence attributes the render hooks understand. Open the repo in VS Code and they are available immediately; no extension, no configuration.
 
 <!--more-->
 
@@ -93,6 +93,7 @@ Three shortcodes use percent delimiters so their inner content is rendered as Ma
 | `hxbutton-page`         | Button linking to an internal page via `pageRef`           |
 | `hxcta`                 | Call-to-action button                                      |
 | `hxlead`                | Lead paragraph                                             |
+| `hxborderless`          | Reference table without cell borders                       |
 | `hxkeywords`            | Keyword pill container with two keywords                   |
 | `hxkeyword`             | One keyword pill                                           |
 | `hxstats`               | Metrics grid with two figures                              |
