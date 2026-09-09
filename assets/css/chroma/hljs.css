@@ -12,9 +12,15 @@
   .highlight` for dark. The Chroma class each rule borrows from is named in a
   comment so the two stay in step when the theme is regenerated.
 
-  Where the dark palette leaves a token uncoloured (`.na`, `.nb`), no rule is
-  written here either - inheriting is what Chroma does, and inventing a colour
-  would make the live block differ from its neighbours.
+  Where a palette leaves a token uncoloured (`.na` and `.nb` in dark, `.py` and
+  the colour half of `.gl` in both), no rule is written here either - inheriting
+  is what Chroma does, and inventing a colour would make the live block differ
+  from its neighbours.
+
+  This file is written by hand while ./light.css and ./dark.css are generated
+  by `hugo gen chromastyles`, so regenerating those two silently leaves this one
+  on the old palette. After a regeneration, diff the colours here against the
+  Chroma class named in each comment.
 */
 
 .highlight {
@@ -78,10 +84,7 @@
   .hljs-selector-id {
     color: #008080;
   }
-  /* py */
-  .hljs-property {
-    color: #008080;
-  }
+  /* py is uncoloured in the light palette, so .hljs-property inherits. */
 
   /* s */
   .hljs-string,
@@ -138,6 +141,7 @@
   }
   /* ge */
   .hljs-emphasis {
+    color: #000000;
     font-style: italic;
   }
   /* gs */
@@ -150,7 +154,6 @@
   }
   /* gl */
   .hljs-link {
-    color: #dd1144;
     text-decoration: underline;
   }
 }
@@ -291,7 +294,6 @@
   }
   /* gl */
   .hljs-link {
-    color: #a5d6ff;
     text-decoration: underline;
   }
 }
