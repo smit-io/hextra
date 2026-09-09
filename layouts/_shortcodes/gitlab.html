@@ -18,8 +18,16 @@ namespace path in addition to the numeric project id.
 @example {{< gitlab project="group/thing" baseURL="https://gitlab.example.com" >}}
 */ -}}
 
-{{- $projectID := .Get "projectID" -}}
-{{- $project := .Get "project" | default (.Get 0) -}}
+{{- /*
+  default "" normalises the missing case. .Get returns nil, not an empty
+  string, for a key that is absent from named parameters, and `ne nil ""` is
+  true - so the fallback card below printf-ed a nil into its own URL and title
+  and rendered href="https://gitlab.com/%!s(<nil>)". A live API response
+  overwrote both, which is why it only showed on the fallback path this code
+  exists for: an offline build, a 404, a rate limit, or repoCards disabled.
+*/ -}}
+{{- $projectID := .Get "projectID" | default "" -}}
+{{- $project := .Get "project" | default (.Get 0) | default "" -}}
 {{- $baseURL := .Get "baseURL" | default "https://gitlab.com" -}}
 {{- $baseURL = strings.TrimSuffix "/" $baseURL -}}
 {{- $showThumbnail := eq (printf "%v" (.Get "showThumbnail")) "true" -}}
