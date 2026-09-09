@@ -20,9 +20,9 @@ With line numbers, and specific lines called out:
 
 {{< codeimporter url="https://raw.githubusercontent.com/smit-io/hextra/main/layouts/_shortcodes/pdf.html" type="go-html-template" filename="pdf.html" lineNos=true hl_lines="3-5" >}}
 
-With `live=true`, this block was rendered at build time like the others, then
-checked against the source when you loaded the page. Edit the gist and reload
-and the code above changes without rebuilding the site:
+With `live=true`, the block below was rendered at build time like the others,
+then checked against the source when you loaded the page. Edit the gist and
+reload and it changes without rebuilding the site:
 
 {{< codeimporter url="https://gist.githubusercontent.com/smit-io/bfa237434f4a709c07c027e69fe57d6e/raw/ratelimit.go" type="go" filename="ratelimit.go" lineNos=true hl_lines="34-38 43" live=true >}}
 
