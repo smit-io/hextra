@@ -87,15 +87,43 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
     {{- end -}}
   {{- end -}}
 
-  {{- /* Self-hosted rather than linked, so the card makes no third-party request. */ -}}
+  {{- /*
+    Self-hosted rather than linked, so the card makes no third-party request.
+
+    The avatar endpoint answers with JSON metadata rather than an image -
+    {"avatarUrl": "https://cdn-avatars.huggingface.co/...png"} - so it has to
+    be unmarshalled and the URL it points at fetched separately. It also
+    covers organizations only: a user-owned repository answers 404, which
+    resources.GetRemote reports as a nil resource with no error.
+  */ -}}
   {{- if and $showThumbnail (in $id "/") -}}
     {{- $owner := index (split $id "/") 0 -}}
-    {{- with try (resources.GetRemote (printf "https://huggingface.co/api/organizations/%s/avatar" $owner)) -}}
+    {{- $lookup := printf "https://huggingface.co/api/organizations/%s/avatar" $owner -}}
+    {{- $avatarURL := "" -}}
+
+    {{- with try (resources.GetRemote $lookup) -}}
       {{- with .Err -}}
-        {{- warnf "huggingface: unable to fetch the avatar for %q: %s" $owner . -}}
+        {{- warnf "huggingface: unable to look up the avatar for %q: %s" $owner . -}}
       {{- else with .Value -}}
-        {{- with resources.Copy (printf "images/huggingface/%s.png" $owner) . -}}
-          {{- $card = merge $card (dict "thumbnail" .RelPermalink "thumbnailFit" "contain") -}}
+        {{- with . | transform.Unmarshal -}}
+          {{- $avatarURL = .avatarUrl -}}
+        {{- end -}}
+      {{- else -}}
+        {{- warnf "huggingface: %q has no organization avatar" $owner -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- with $avatarURL -}}
+      {{- $ext := path.Ext (urls.Parse .).Path | default ".png" -}}
+      {{- with try (resources.GetRemote .) -}}
+        {{- with .Err -}}
+          {{- warnf "huggingface: unable to fetch the avatar for %q: %s" $owner . -}}
+        {{- else with .Value -}}
+          {{- with resources.Copy (printf "images/huggingface/%s%s" $owner $ext) . -}}
+            {{- $card = merge $card (dict "thumbnail" .RelPermalink "thumbnailFit" "contain") -}}
+          {{- end -}}
+        {{- else -}}
+          {{- warnf "huggingface: the avatar for %q returned no content" $owner -}}
         {{- end -}}
       {{- end -}}
     {{- end -}}
