@@ -323,6 +323,7 @@
       "| Name | Type | Default |",
       "| ---- | ---- | ------- |",
       "| `${1:name}` | `${2:type}` | ${3:-} |",
+      "| `${4:name}` | `${5:type}` | ${6:-} |",
       "{{< /borderless-table >}}"
     ],
     "description": "Reference table without cell borders (layouts/_shortcodes/borderless-table.html)."
