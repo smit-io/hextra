@@ -69,10 +69,19 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           )
         -}}
 
-        {{- with .cardData -}}
-          {{- with .description -}}
-            {{- $card = merge $card (dict "description" .) -}}
+        {{- /*
+          Datasets return description at the top level. cardData.description
+          was the only field read before, and the dataset API never returns
+          it, so every dataset card came out with no description at all.
+        */ -}}
+        {{- $description := .description -}}
+        {{- if not $description -}}
+          {{- with .cardData -}}
+            {{- $description = .description -}}
           {{- end -}}
+        {{- end -}}
+        {{- with $description -}}
+          {{- $card = merge $card (dict "description" .) -}}
         {{- end -}}
       {{- end -}}
     {{- else -}}
