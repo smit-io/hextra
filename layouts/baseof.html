@@ -1,7 +1,22 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.Language.Lang }}" dir="{{ partial "utils/hugo-compat/language-direction.html" .Site.Language | default `ltr` }}">
   {{- partial "head.html" . -}}
-  <body>
+  {{- /*
+    Chroma generates the line-number table, so the divider between the numbers
+    and the code cannot be switched on per block - the class goes here instead
+    and the rule in highlight.css is scoped to it. Off unless asked for.
+  */ -}}
+  {{- $bodyClass := "" -}}
+  {{- with site.Params.highlight -}}
+    {{- with .lineNumberDivider -}}
+      {{- /* Compared through printf so only a real `true` switches it on: a
+             quoted "false" from YAML would otherwise be a truthy string. */ -}}
+      {{- if eq (printf "%v" .enable) "true" -}}
+        {{- $bodyClass = "hextra-lineno-divider" -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  <body{{ with $bodyClass }} class="{{ . }}"{{ end }}>
     <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-hextra-accent-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">
       {{- (T "skipToContent") | default "Skip to content" -}}
     </a>

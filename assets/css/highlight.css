@@ -57,8 +57,16 @@
 }
 
 .chroma {
+  /*
+    The border belongs on the element that scrolls. It used to sit on the two
+    inner <pre>s, which are content inside this table, so a block wider than
+    its column scrolled its own left border out of view one way and its right
+    border out the other. The plain (non-line-numbered) block never had the
+    bug because there the <pre> is itself the scroll container.
+  */
   .lntable {
     @apply hx:m-0 hx:block hx:w-auto hx:overflow-auto hx:rounded-sm;
+    @apply hx:border hx:border-hextra-light-900 hx:dark:border-neutral-700;
 
     pre {
       @apply hx:pt-4 hx:pb-4;
@@ -81,13 +89,29 @@
       @apply hx:rounded-sm;
     } */
   }
-  .lntd:first-child pre {
-    @apply hx:rounded-tl-sm hx:rounded-bl-sm hx:border-l hx:border-y hx:border-r-0;
-    /* border-right: none; */
+  /*
+    Keep the numbers beside the code they belong to while the code scrolls
+    under them. No z-index: being positioned is already enough to paint above
+    the code cell, and staying at `auto` leaves the filename bar (z-1) on top
+    where it belongs. The divider between the numbers and the code is opt-in;
+    see the .hextra-lineno-divider rule at the end of this file.
+  */
+  .lntd:first-child {
+    @apply hx:sticky hx:left-0;
   }
+  /* Borders and rounding now live on .lntable, which is what scrolls. */
+  .lntd:first-child pre,
   .lntd:last-child pre {
-    @apply hx:rounded-tr-sm hx:rounded-br-sm hx:border-r hx:border-y hx:border-l-0;
-    /* border-left: none; */
+    @apply hx:border-0 hx:rounded-none;
+  }
+  /*
+    The code cell gets the same horizontal padding a non-table block has, so
+    the first character does not sit flush against the numbers divider. Only
+    the numbers cell was padded before (see .ln/.lnt above), which left the
+    code touching the rule.
+  */
+  .lntd:last-child pre {
+    @apply hx:px-4;
   }
   .lntd:last-of-type {
     @apply hx:w-full;
@@ -103,8 +127,12 @@
   code > .line.hl {
     @apply hx:-mx-4 hx:w-[calc(100%+2rem)] hx:pl-[calc(1rem-2px)] hx:pr-4;
   }
+  /* Same bleed as above now that the table's code cell is padded too, so a
+     highlighted row still reaches the divider instead of starting a notch
+     inside it. No 2px accent compensation here: the accent border is removed
+     on this side (see below), so the padding matches unhighlighted lines. */
   .lntable code > .line.hl {
-    @apply hx:mx-0 hx:w-full hx:pl-0 hx:pr-0;
+    @apply hx:-mx-4 hx:w-[calc(100%+2rem)] hx:pl-4 hx:pr-4;
   }
   .lntd:last-child pre code .hl {
     border-left: none !important;
@@ -112,4 +140,17 @@
   @apply border-l-0;
   */
   }
+}
+
+/*
+  Optional rule between the line numbers and the code, off by default. Set
+  params.highlight.lineNumberDivider.enable to put the class on <body> (see
+  baseof.html) - the line-number table is Chroma's markup, so there is no
+  per-block element to hang it on.
+
+  Without it the two columns are still separated by the numbers cell's padding
+  and the code cell's, which is the theme's original look.
+*/
+.hextra-lineno-divider .chroma .lntd:first-child {
+  @apply hx:border-r hx:border-hextra-light-900 hx:dark:border-neutral-700;
 }
