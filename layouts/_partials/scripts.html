@@ -19,6 +19,11 @@
   {{- partial "scripts/gallery.html" . -}}
 {{- end -}}
 
+{{/* Chart.js */}}
+{{- if (.Store.Get "hasChart") -}}
+  {{- partial "scripts/chart.html" . -}}
+{{- end -}}
+
 {{/* YouTube Lite */}}
 {{- if (.Store.Get "hasYoutubeLite") -}}
   {{- partial "scripts/youtube-lite.html" . -}}
