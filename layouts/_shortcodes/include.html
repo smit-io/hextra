@@ -12,7 +12,8 @@ The remote form replaces Blowfish's separate `mdimporter` shortcode
 You must call this shortcode using the percent notation.
 
 @param {string} (positional parameter 0) The path to the page, relative to the content directory.
-@param {string} url URL of a remote Markdown file. Must be http or https.
+@param {string} url URL of a remote Markdown file. Must be http or https, and
+  must be listed in params.include.allowedHosts when that is set.
 @returns template.HTML
 
 @example {{% include "functions/_common/glob-patterns" %}}
@@ -28,20 +29,36 @@ You must call this shortcode using the percent notation.
 
 {{- if $url }}
 
-  {{- $scheme := (urls.Parse $url).Scheme }}
-  {{- if not (in (slice "http" "https") $scheme) }}
-    {{- errorf "The %q shortcode only fetches http and https URLs, got %q. See %s" .Name $url .Position }}
-  {{- end }}
+  {{- /*
+    errorf logs and carries on, so these checks have to guard the fetch with
+    an else rather than sit above it - otherwise a rejected URL was reported
+    and then fetched anyway.
 
-  {{- /* A failed fetch is a warning so a build without network access still succeeds. */}}
-  {{- with try (resources.GetRemote $url) }}
-    {{- with .Err }}
-      {{- warnf "include: unable to fetch %q: %s" $url . }}
-    {{- else with .Value }}
-      {{- $.Page.RenderString (dict "display" "block") .Content }}
-    {{- else }}
-      {{- warnf "include: %q returned no content" $url }}
+    Remote content is rendered with RenderString, which runs it through the
+    same Markdown pipeline as the site's own pages, render hooks and raw HTML
+    included. Set params.include.allowedHosts to restrict where that content
+    may come from.
+  */}}
+  {{- $parsed := urls.Parse $url }}
+  {{- $allowedHosts := site.Params.include.allowedHosts }}
+
+  {{- if not (in (slice "http" "https") $parsed.Scheme) }}
+    {{- errorf "The %q shortcode only fetches http and https URLs, got %q. See %s" .Name $url .Position }}
+  {{- else if and $allowedHosts (not (in $allowedHosts $parsed.Host)) }}
+    {{- errorf "The %q shortcode may not fetch from %q; add it to params.include.allowedHosts. See %s" .Name $parsed.Host .Position }}
+  {{- else }}
+
+    {{- /* A failed fetch is a warning so a build without network access still succeeds. */}}
+    {{- with try (resources.GetRemote $url) }}
+      {{- with .Err }}
+        {{- warnf "include: unable to fetch %q: %s" $url . }}
+      {{- else with .Value }}
+        {{- $.Page.RenderString (dict "display" "block") .Content }}
+      {{- else }}
+        {{- warnf "include: %q returned no content" $url }}
+      {{- end }}
     {{- end }}
+
   {{- end }}
 
 {{- else if $path }}
