@@ -53,6 +53,9 @@ Two ways out:
   else fails the build outright.
 - Set `params.repoCards.enable = false` to skip every API call. Cards still
   render with their name and link, just without live numbers.
+- Set `params.remoteFetch.enable = false` to skip every build-time request the
+  theme makes, including the ones from `gist`, `codeimporter`, `include` and
+  `youtube-lite`.
 
 A failed request never fails the build: it logs a warning and falls back to a
 plain card.

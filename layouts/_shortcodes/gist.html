@@ -45,13 +45,16 @@ or
 {{- $api := printf "https://api.github.com/gists/%s" $id -}}
 {{- $gist := false -}}
 
-{{- with try (resources.GetRemote $api (dict "headers" (dict "Accept" "application/vnd.github+json"))) -}}
-  {{- with .Err -}}
-    {{- warnf "gist: unable to fetch %q: %s" $api . -}}
-  {{- else with .Value -}}
-    {{- $gist = . | transform.Unmarshal -}}
-  {{- else -}}
-    {{- warnf "gist: %q returned no content" $api -}}
+{{- /* Skipped entirely for a build that must not reach the network. */ -}}
+{{- if partial "utils/remote-fetch-enabled.html" . -}}
+  {{- with try (resources.GetRemote $api (dict "headers" (dict "Accept" "application/vnd.github+json"))) -}}
+    {{- with .Err -}}
+      {{- warnf "gist: unable to fetch %q: %s" $api . -}}
+    {{- else with .Value -}}
+      {{- $gist = . | transform.Unmarshal -}}
+    {{- else -}}
+      {{- warnf "gist: %q returned no content" $api -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
 

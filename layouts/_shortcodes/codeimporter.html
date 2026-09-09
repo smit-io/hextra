@@ -41,14 +41,19 @@ syntax highlighting of a normal fenced block.
 {{- end -}}
 
 {{- $content := "" -}}
-{{- with try (resources.GetRemote $url) -}}
-  {{- with .Err -}}
-    {{- warnf "codeimporter: unable to fetch %q: %s" $url . -}}
-  {{- else with .Value -}}
-    {{- $content = .Content -}}
-  {{- else -}}
-    {{- warnf "codeimporter: %q returned no content" $url -}}
+{{- if partial "utils/remote-fetch-enabled.html" . -}}
+  {{- with try (resources.GetRemote $url) -}}
+    {{- with .Err -}}
+      {{- warnf "codeimporter: unable to fetch %q: %s" $url . -}}
+    {{- else with .Value -}}
+      {{- $content = .Content -}}
+    {{- else -}}
+      {{- warnf "codeimporter: %q returned no content" $url -}}
+    {{- end -}}
   {{- end -}}
+{{- else -}}
+  {{- /* The block has no offline fallback, so say why it is missing. */ -}}
+  {{- warnf "codeimporter: remote fetching is disabled, skipping %q. See %s" $url .Position -}}
 {{- end -}}
 
 {{- with $content -}}
