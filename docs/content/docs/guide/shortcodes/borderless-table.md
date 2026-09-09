@@ -56,13 +56,11 @@ fails with a message rather than publishing that, but the fix is to keep
 cells to inline Markdown, or to use a plain Markdown table when a cell really
 needs a block.
 
-## Put the identifying column first
+## Narrow screens
 
-Below the `lg` breakpoint the header row is dropped and each cell becomes its
-own line, so a four-column reference reads as a stack instead of scrolling
-sideways. The first cell of each row is set in bold and acts as the heading of
-its group, which only works if that column is the one that identifies the row —
-the parameter name, the key, the option.
+The table stays a table at every width, and a viewport too narrow for it
+scrolls sideways. Keep the column count low — four is usually the ceiling for
+a reference table — so that readers on a phone have little to scroll.
 
 ## When not to use it
 

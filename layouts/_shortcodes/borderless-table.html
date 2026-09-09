@@ -12,10 +12,12 @@
   all work, and a table written this way is still a table if the shortcode is
   ever removed. Markdown tables elsewhere on the page are untouched.
 
-  Below the `lg` breakpoint the header row is dropped and each cell becomes its
-  own line, so a four-column reference reads as a stack rather than scrolling
-  sideways. Put the identifying column first: it is what the reader sees at the
-  top of each stacked group.
+  The table stays a table at every width. It once hid the header row and gave
+  each cell its own line below the `lg` breakpoint, which read as a stack of
+  unlabelled values - the column names were gone from the page - and blockified
+  cells stop browsers exposing the table as a table at all, so screen reader
+  table navigation went dead. It also fired at 400% desktop zoom. A narrow
+  viewport scrolls the wrapper instead.
 
   The wrapper is the horizontal scroll container, so it carries `tabindex="0"`
   to keep a table wider than the column reachable without a pointer, matching

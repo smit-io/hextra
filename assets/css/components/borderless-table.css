@@ -50,10 +50,12 @@
     @apply hx:my-0 hx:table hx:w-full hx:border-collapse hx:text-sm;
   }
 
-  /* A single underline under the header carries the column structure. Below
-     `lg` the header is dropped entirely and the cells stack, so the labels
-     would be stranded at the top of the page away from their values. */
-  /* The hairlines are the only structural cue left once the cell grid and the
+  /* A single underline under the header carries the column structure, at
+     every width: the header row is never hidden and the cells are never
+     stacked, so the table stays a table and a narrow viewport scrolls the
+     wrapper instead.
+
+     The hairlines are the only structural cue left once the cell grid and the
      header background are gone, so they are drawn at the same weight as the
      default table's borders rather than lighter: `border-gray-200` was
      1.17:1 on the light body and `dark:border-neutral-800` 1.10:1 on the dark
@@ -97,33 +99,6 @@
 
     &:last-child {
       @apply hx:ltr:pr-0 hx:rtl:pl-0;
-    }
-  }
-
-  /* Stacked layout on narrow screens. Each cell becomes its own line, which
-     is why the identifying column has to come first - it is what the reader
-     lands on at the top of each group.
-
-     Restricted to `screen`. A bare width query carries media type `all`,
-     which matches print, and in print the viewport is the page box - 816px
-     for US Letter, 794px for A4, both under the breakpoint. Printing from
-     any window width would otherwise drop the header row and stack a table
-     that fits the paper. */
-  @media screen and (width < 64rem) {
-    thead {
-      @apply hx:hidden;
-    }
-
-    td {
-      @apply hx:block hx:py-1 hx:ltr:pr-0 hx:rtl:pl-0;
-
-      &:first-child {
-        @apply hx:pt-3 hx:font-semibold;
-      }
-
-      &:last-child {
-        @apply hx:pb-3;
-      }
     }
   }
 }
