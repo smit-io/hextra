@@ -48,7 +48,12 @@
 }
 
 .hextra-series__intro {
-  @apply hx:text-gray-500 hx:dark:text-gray-400;
+  /* gray-500 is the theme's usual muted text, but it is only ever set on the
+     light-50/light-100 surfaces. On this module's light-200 it measures
+     4.02:1, and 3.27:1 against the summary's own hover colour - both under
+     the 4.5:1 AA floor for 14px normal-weight text. gray-600 gives 6.29:1 and
+     is already what the sibling links use. */
+  @apply hx:text-gray-600 hx:dark:text-gray-400;
 }
 
 /* Qualified with `ol` to outweigh `:lang(fa) ol` in typography.css, which is
