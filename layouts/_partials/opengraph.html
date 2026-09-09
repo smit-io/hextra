@@ -82,10 +82,15 @@ most sites using the `series` front matter.
 
 Gated on the same `blog/config.html` switch as the visible module: a site that
 turned series off should not still be publishing its series graph to crawlers
-and social scrapers. */}}
+and social scrapers. This partial runs in the head of every page of every
+site, so the config partial is only entered when `params.blog` exists at all -
+a site without it has the module disabled by default anyway. */}}
 {{- $permalink := .Permalink }}
 {{- $type := .Type }}
-{{- $seriesEnabled := (partial "blog/config.html" .).article.series.enable }}
+{{- $seriesEnabled := false }}
+{{- with site.Params.blog }}
+{{- $seriesEnabled = (partial "blog/config.html" $).article.series.enable }}
+{{- end }}
 {{ with (and $seriesEnabled .Params.series) }}
 {{- $names := . }}
 {{- if not (reflect.IsSlice $names) }}{{ $names = slice $names }}{{ end }}
