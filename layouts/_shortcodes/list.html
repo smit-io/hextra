@@ -1,0 +1,61 @@
+{{- /*
+List recent pages from the site, optionally filtered by a page parameter.
+
+Ported from the Blowfish theme (MIT, Nuno Coração). Unlike the original, the
+page the shortcode sits on is removed before the limit is applied, so `limit`
+is the number of entries actually shown.
+
+@param {int} limit Required. How many pages to show.
+@param {string} title Optional heading above the list.
+@param {bool} cardView Show covers in a grid instead of a compact list. Default false.
+@param {string} where Page field to filter on, e.g. "Type" or "Params.tags".
+@param {string} value Value that `where` must match.
+
+@example {{< list limit=3 >}}
+@example {{< list limit=6 title="From the blog" cardView=true where="Type" value="blog" >}}
+*/ -}}
+
+{{- $limit := .Get "limit" -}}
+{{- if not $limit -}}
+  {{- errorf "The %q shortcode requires a 'limit' parameter. See %s" .Name .Position -}}
+{{- end -}}
+
+{{- $title := .Get "title" -}}
+{{- $cardView := eq (printf "%v" (.Get "cardView")) "true" -}}
+{{- $where := .Get "where" -}}
+{{- $value := .Get "value" -}}
+
+{{- $self := "" -}}
+{{- with .Page -}}
+  {{- $self = .RelPermalink -}}
+{{- end -}}
+
+{{- $pages := site.RegularPages -}}
+{{- with $where -}}
+  {{- $pages = where $pages . $value -}}
+{{- end -}}
+{{- $pages = where $pages "RelPermalink" "!=" $self -}}
+{{- $pages = first (int $limit) $pages -}}
+
+{{- if not $pages -}}
+  {{- warnf "The %q shortcode matched no pages. See %s" .Name .Position -}}
+{{- end -}}
+
+{{- with $pages -}}
+  <div class="hextra-list{{ if $cardView }} hextra-list--cards{{ end }} not-prose">
+    {{- with $title -}}
+      <div class="hextra-list__title">{{ . | markdownify }}</div>
+    {{- end -}}
+    <div class="hextra-list__items">
+      {{- range . -}}
+        {{- partial "shortcodes/article-card.html" (dict
+          "page" .
+          "self" $self
+          "cover" $cardView
+          "compactSummary" (not $cardView)
+          )
+        -}}
+      {{- end -}}
+    </div>
+  </div>
+{{- end -}}
