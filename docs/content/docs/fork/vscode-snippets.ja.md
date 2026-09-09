@@ -3,7 +3,7 @@ title: VS Code スニペット
 weight: 7
 ---
 
-このフォークには `.vscode/hextra.code-snippets` が同梱されています。Hextra のすべてのショートコード、レイアウトが読み取るページのフロントマターキー、レンダーフックが解釈するコードフェンス属性をカバーする、手書きの 49 個の VS Code スニペットです。リポジトリを VS Code で開けばすぐに使えます。拡張機能も設定も不要です。
+このフォークには `.vscode/hextra.code-snippets` が同梱されています。Hextra のすべてのショートコード、レイアウトが読み取るページのフロントマターキー、レンダーフックが解釈するコードフェンス属性をカバーする、手書きの 87 個の VS Code スニペットです。リポジトリを VS Code で開けばすぐに使えます。拡張機能も設定も不要です。
 
 <!--more-->
 
@@ -50,7 +50,7 @@ Content
 
 | 記法        | ショートコード                    |
 | --------------- | ----------------------------- |
-| `{{%/* … */%}}` | `steps`, `details`, `include` |
+| `{{%/* … */%}}` | `steps`, `details`, `include`, `ltr`, `rtl` |
 | `{{</* … */>}}` | それ以外すべて                 |
 
 ## リファレンス
@@ -86,6 +86,44 @@ Content
 | `hxasciinema`           | 再生オプション付きの Asciinema 録画                          |
 | `hxterm`                | 用語集の用語                                               |
 | `hxinclude`             | 別ページのコンテンツをインライン展開                           |
+| `hxaccordion`           | 2 つのセクションを持つアコーディオンコンテナ                    |
+| `hxaccordion-item`      | アコーディオンのセクション 1 つ                               |
+| `hxarticle`             | 別ページのカード — タイトル、要約、カバー画像                   |
+| `hxbutton`              | `href` によるボタン風リンク                                  |
+| `hxbutton-page`         | `pageRef` でサイト内ページへリンクするボタン                    |
+| `hxcta`                 | コールトゥアクションボタン                                    |
+| `hxlead`                | リード段落                                                 |
+| `hxkeywords`            | キーワード 2 つを含むキーワードコンテナ                        |
+| `hxkeyword`             | キーワード 1 つ                                            |
+| `hxstats`               | 指標 2 つを並べたグリッド                                    |
+| `hxstat`                | 指標 1 つ                                                  |
+| `hxtimeline`            | エントリ 1 つを含むタイムラインコンテナ                        |
+| `hxtimeline-item`       | タイムラインのエントリ — `badge`、`badgeColor`、`icon`        |
+| `hxswatches`            | 位置引数の 16 進コードによるカラーパレット                     |
+| `hxlist`                | `where`/`value` で絞り込んだページ一覧                        |
+| `hxchart`               | インライン設定による Chart.js のグラフ                        |
+| `hxtypeit`              | タイプライター効果、1 行につき 1 文字列                        |
+| `hxvideo`               | コントロール付きのセルフホスト動画                             |
+| `hxvideo-autoplay`      | 背景向け動画 — autoplay は muted を含意                      |
+| `hxyoutube`             | クリックで初めてプレーヤーを読み込む YouTube 埋め込み            |
+| `hxemail`               | 難読化された mailto リンク                                   |
+| `hxgithub`              | GitHub リポジトリカード                                     |
+| `hxgitlab`              | 名前空間パスによる GitLab プロジェクトカード                   |
+| `hxgitlab-id`           | 数値 ID による GitLab プロジェクトカード                      |
+| `hxgitea`               | Gitea リポジトリカード                                      |
+| `hxforgejo`             | Forgejo リポジトリカード                                    |
+| `hxcodeberg`            | Codeberg リポジトリカード                                   |
+| `hxhuggingface`         | Hugging Face モデルカード                                   |
+| `hxhuggingface-dataset` | Hugging Face データセットカード                              |
+| `hxansible`             | Ansible Galaxy ロールカード                                 |
+| `hxansible-collection`  | Ansible Galaxy コレクションカード                            |
+| `hxgist`                | テーマのコードブロックとして描画する GitHub gist               |
+| `hxgist-live`           | 読者のブラウザーで更新される gist                             |
+| `hxcodeimporter`        | URL のファイルをコードブロックとして取り込む                    |
+| `hxcodeimporter-lines`  | 行番号とハイライト付きの取り込み抜粋                           |
+| `hxcodeimporter-live`   | 読者のブラウザーで更新される取り込みファイル                    |
+| `hxltr`                 | RTL ページ内で左から右へ強制                                 |
+| `hxrtl`                 | LTR ページ内で右から左へ強制                                 |
 | `hxhero`                | `hextra-home` ページ用の完全なヒーローブロック                 |
 | `hxhero-container`      | サイド画像付きのヒーローコンテナ                              |
 | `hxhero-headline`       | ヒーローの見出し                                            |

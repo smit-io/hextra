@@ -3,7 +3,7 @@ title: اسنیپت‌های VS Code
 weight: 7
 ---
 
-این فورک فایل `.vscode/hextra.code-snippets` را ارائه می‌کند — ۴۹ اسنیپت دست‌نوشته VS Code که همه Shortcodeهای Hextra، کلیدهای Front matter صفحه که چیدمان‌ها می‌خوانند و ویژگی‌های بلوک کد که هوک‌های رندر می‌فهمند را پوشش می‌دهند. مخزن را در VS Code باز کنید و بلافاصله در دسترس‌اند؛ نه افزونه‌ای لازم است، نه پیکربندی.
+این فورک فایل `.vscode/hextra.code-snippets` را ارائه می‌کند — ۸۷ اسنیپت دست‌نوشته VS Code که همه Shortcodeهای Hextra، کلیدهای Front matter صفحه که چیدمان‌ها می‌خوانند و ویژگی‌های بلوک کد که هوک‌های رندر می‌فهمند را پوشش می‌دهند. مخزن را در VS Code باز کنید و بلافاصله در دسترس‌اند؛ نه افزونه‌ای لازم است، نه پیکربندی.
 
 <!--more-->
 
@@ -50,7 +50,7 @@ Content
 
 | نشانه‌گذاری        | Shortcodeها                    |
 | --------------- | ----------------------------- |
-| `{{%/* … */%}}` | `steps`، `details`، `include` |
+| `{{%/* … */%}}` | `steps`، `details`، `include`، `ltr`، `rtl` |
 | `{{</* … */>}}` | بقیه موارد                |
 
 ## مرجع
@@ -86,6 +86,44 @@ Content
 | `hxasciinema`           | ضبط Asciinema با گزینه‌های پخش                  |
 | `hxterm`                | اصطلاح واژه‌نامه                                            |
 | `hxinclude`             | درج درون‌خطی محتوای صفحه‌ای دیگر                          |
+| `hxaccordion`           | ظرف آکاردئون با دو بخش                                     |
+| `hxaccordion-item`      | یک بخش آکاردئون                                            |
+| `hxarticle`             | کارت صفحه‌ای دیگر — عنوان، خلاصه، تصویر جلد                |
+| `hxbutton`              | پیوند با ظاهر دکمه، از طریق `href`                          |
+| `hxbutton-page`         | دکمه‌ای که با `pageRef` به صفحه‌ای درون سایت پیوند می‌دهد     |
+| `hxcta`                 | دکمه فراخوان به اقدام                                      |
+| `hxlead`                | پاراگراف آغازین                                            |
+| `hxkeywords`            | ظرف کلیدواژه با دو کلیدواژه                                |
+| `hxkeyword`             | یک کلیدواژه                                                |
+| `hxstats`               | شبکه آمار با دو عدد                                        |
+| `hxstat`                | یک عدد آماری                                               |
+| `hxtimeline`            | ظرف خط زمانی با یک ورودی                                   |
+| `hxtimeline-item`       | یک ورودی خط زمانی — `badge`، `badgeColor`، `icon`          |
+| `hxswatches`            | پالت رنگ از کدهای هگز موضعی                                |
+| `hxlist`                | فهرست صفحه‌ها، فیلترشده با `where`/`value`                  |
+| `hxchart`               | نمودار Chart.js از پیکربندی درون‌خطی                        |
+| `hxtypeit`              | جلوه ماشین‌تحریر، هر خط یک رشته                             |
+| `hxvideo`               | ویدئوی میزبانی‌شده روی سایت با کنترل‌ها                      |
+| `hxvideo-autoplay`      | ویدئوی پس‌زمینه — autoplay یعنی بی‌صدا                      |
+| `hxyoutube`             | جاسازی یوتیوب که پخش‌کننده را فقط با کلیک بارگذاری می‌کند     |
+| `hxemail`               | پیوند mailto مبهم‌سازی‌شده                                  |
+| `hxgithub`              | کارت مخزن گیت‌هاب                                          |
+| `hxgitlab`              | کارت پروژه گیت‌لب با مسیر فضای‌نام                          |
+| `hxgitlab-id`           | کارت پروژه گیت‌لب با شناسه عددی                             |
+| `hxgitea`               | کارت مخزن Gitea                                            |
+| `hxforgejo`             | کارت مخزن Forgejo                                          |
+| `hxcodeberg`            | کارت مخزن Codeberg                                         |
+| `hxhuggingface`         | کارت مدل Hugging Face                                      |
+| `hxhuggingface-dataset` | کارت مجموعه‌داده Hugging Face                               |
+| `hxansible`             | کارت نقش Ansible Galaxy                                    |
+| `hxansible-collection`  | کارت مجموعه Ansible Galaxy                                 |
+| `hxgist`                | gist گیت‌هاب در قالب بلوک کد پوسته                          |
+| `hxgist-live`           | gist که در مرورگر خواننده تازه‌سازی می‌شود                   |
+| `hxcodeimporter`        | وارد کردن فایلی از یک URL به‌صورت بلوک کد                    |
+| `hxcodeimporter-lines`  | بخش واردشده با شماره خط و خطوط برجسته                       |
+| `hxcodeimporter-live`   | فایل واردشده که در مرورگر خواننده تازه‌سازی می‌شود            |
+| `hxltr`                 | اجبار چپ‌به‌راست درون صفحه راست‌به‌چپ                        |
+| `hxrtl`                 | اجبار راست‌به‌چپ درون صفحه چپ‌به‌راست                        |
 | `hxhero`                | بلوک کامل Hero برای صفحه `hextra-home`               |
 | `hxhero-container`      | ظرف Hero با تصویر کناری                             |
 | `hxhero-headline`       | تیتر Hero                                              |
