@@ -214,4 +214,5 @@ body {
 @import "./components/lead.css";
 @import "./components/keyword.css";
 @import "./components/stats.css";
+@import "./components/timeline.css";
 @import "./fonts.css";
