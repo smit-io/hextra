@@ -9,9 +9,20 @@
   {{- $bodyClass := "" -}}
   {{- with site.Params.highlight -}}
     {{- with .lineNumberDivider -}}
-      {{- /* Compared through printf so only a real `true` switches it on: a
-             quoted "false" from YAML would otherwise be a truthy string. */ -}}
-      {{- if eq (printf "%v" .enable) "true" -}}
+      {{- /*
+        Both shapes are accepted. `lineNumberDivider: true` is the obvious
+        thing to write, and evaluating `.enable` on it used to fail every page
+        of the build with `can't evaluate field enable in type bool`, blaming
+        this template rather than the configuration that caused it.
+
+        Compared through printf so only a real `true` switches it on: a quoted
+        "false" from YAML would otherwise be a truthy string.
+      */ -}}
+      {{- $enabled := printf "%v" . -}}
+      {{- if reflect.IsMap . -}}
+        {{- $enabled = printf "%v" .enable -}}
+      {{- end -}}
+      {{- if eq $enabled "true" -}}
         {{- $bodyClass = "hextra-lineno-divider" -}}
       {{- end -}}
     {{- end -}}
