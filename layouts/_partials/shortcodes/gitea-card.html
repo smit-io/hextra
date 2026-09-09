@@ -1,0 +1,94 @@
+{{- /*
+  Shared implementation for the Gitea-family repository cards.
+
+  Gitea, Forgejo and Codeberg all expose the same /api/v1/repos endpoint, so
+  the shortcodes differ only in their icon and, where there is a canonical
+  instance, a default server.
+
+  @param {string} repo Required. Repository as "owner/name".
+  @param {string} server Required. Instance URL.
+  @param {string} icon Icon shown before the title.
+  @param {bool} showThumbnail Fetch and show the owner's avatar.
+  @param {string} provider Short name, used in warnings and the image path.
+  @param {string} shortcode Name of the calling shortcode, for error messages.
+  @param {string} position Caller position, for error messages.
+
+  @example {{ partial "shortcodes/gitea-card.html" (dict "repo" $repo "server" $server)
+}}
+*/ -}}
+
+{{- $repo := .repo -}}
+{{- $server := .server -}}
+{{- $icon := .icon -}}
+{{- $showThumbnail := eq (printf "%v" .showThumbnail) "true" -}}
+{{- $provider := .provider | default "gitea" -}}
+{{- $name := .shortcode | default $provider -}}
+{{- $position := .position -}}
+
+{{- if not $repo -}}
+  {{- errorf "The %q shortcode requires a 'repo' parameter. See %s" $name $position -}}
+{{- end -}}
+
+{{- if not $server -}}
+  {{- errorf "The %q shortcode requires a 'server' parameter, e.g. \"https://git.example.com\". See %s" $name $position -}}
+{{- end -}}
+
+{{- if not (findRE `^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$` $repo) -}}
+  {{- errorf "The %q shortcode expects a repo as \"owner/name\", got %q. See %s" $name $repo $position -}}
+{{- end -}}
+
+{{- $server = strings.TrimSuffix "/" $server -}}
+{{- if not (in (slice "http" "https") (urls.Parse $server).Scheme) -}}
+  {{- errorf "The %q shortcode expects an http or https server, got %q. See %s" $name $server $position -}}
+{{- end -}}
+
+{{- $card := dict
+  "url" (printf "%s/%s" $server $repo)
+  "title" $repo
+  "icon" $icon
+-}}
+
+{{- $enabled := ne (printf "%v" site.Params.repoCards.enable) "false" -}}
+
+{{- if $enabled -}}
+  {{- $api := printf "%s/api/v1/repos/%s" $server $repo -}}
+  {{- with try (resources.GetRemote $api) -}}
+    {{- with .Err -}}
+      {{- warnf "%s: unable to fetch %q, rendering a plain card: %s" $provider $api . -}}
+    {{- else with .Value -}}
+      {{- with . | transform.Unmarshal -}}
+        {{- $card = merge $card (dict
+          "url" (.html_url | default $card.url)
+          "title" (.full_name | default $card.title)
+          "description" .description
+          "language" .language
+          "stars" .stars_count
+          "forks" .forks_count
+          )
+        -}}
+
+        {{- /* Self-hosted rather than linked, so the card makes no third-party request. */ -}}
+        {{- $avatar := .avatar_url -}}
+        {{- if not $avatar -}}
+          {{- with .owner -}}
+            {{- $avatar = .avatar_url -}}
+          {{- end -}}
+        {{- end -}}
+
+        {{- if and $showThumbnail $avatar -}}
+          {{- with try (resources.GetRemote $avatar) -}}
+            {{- with .Err -}}
+              {{- warnf "%s: unable to fetch the avatar for %q: %s" $provider $repo . -}}
+            {{- else with .Value -}}
+              {{- with resources.Copy (printf "images/%s/%s.png" $provider (replace $repo "/" "-")) . -}}
+                {{- $card = merge $card (dict "thumbnail" .RelPermalink "thumbnailFit" "contain") -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- partial "components/repo-card.html" $card -}}
