@@ -16,6 +16,10 @@ renders nothing when scripting is off.
   highlighting metadata of its own, so this is given at the call site.
 @param {bool} lineNos Show line numbers.
 @param {int} lineNoStart First line number. Default 1.
+@param {bool} live Re-fetch each file in the reader's browser and refresh it if
+  the gist has changed since the build. Default false. Only files that existed
+  at build time are refreshed - a file added to the gist later has no block to
+  appear in, and one deleted later keeps showing its build-time content.
 
 or
 
@@ -69,14 +73,60 @@ or
   {{- $options = merge $options (dict "lineNoStart" (int .)) -}}
 {{- end -}}
 
+{{- /*
+  Booleans are compared through printf so an explicit `false` is honoured:
+  `default` treats false as empty and would restore the default instead.
+*/ -}}
+{{- $live := eq (printf "%v" (.Get "live")) "true" -}}
+
+{{- /*
+  Same rule as codeimporter: the client re-highlights with highlight.js, which
+  emits neither the per-line spans nor the line-number table Chroma builds, so
+  these would vanish the moment the gist drifted. Drop them at build time too
+  and the block looks the same either way. Pinning highlights to line numbers
+  is dubious against content that can change underneath them regardless.
+*/ -}}
+{{- if and $live $options -}}
+  {{- warnf "gist: hl_lines, lineNos and lineNoStart have no effect with live=true, ignoring them. See %s" .Position -}}
+  {{- $options = dict -}}
+{{- end -}}
+
 {{- with $gist -}}
   {{- $htmlURL := .html_url | default (printf "https://gist.github.com/%s" $id) -}}
+
+  {{- /*
+    The API's per-file raw_url pins a revision, so it would never change and is
+    useless for a live refresh. The owner-scoped form without the revision -
+    gist.githubusercontent.com/<owner>/<id>/raw/<file> - always serves the
+    current version and sends Access-Control-Allow-Origin, so the browser may
+    read it. An anonymous gist has no owner to build that URL from.
+  */ -}}
+  {{- $owner := "" -}}
+  {{- with .owner -}}
+    {{- $owner = .login -}}
+  {{- end -}}
+  {{- if and $live (not $owner) -}}
+    {{- warnf "gist: %q is anonymous, so there is no per-file URL to refresh from; ignoring live=true. See %s" $id $.Position -}}
+    {{- $live = false -}}
+  {{- end -}}
+  {{- if $live -}}
+    {{- $.Page.Store.Set "hasLiveCode" true -}}
+  {{- end -}}
 
   <div class="hextra-gist">
     {{- range $name, $meta := .files -}}
       {{- if or (not $file) (eq $name $file) -}}
         {{- $lang := lower ($meta.language | default "") -}}
-        <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code">
+        {{- /*
+          Assembled into one string so a non-live gist's markup is unchanged and
+          the tag stays balanced, which prettier-plugin-go-template requires.
+        */ -}}
+        {{- $liveAttrs := "" -}}
+        {{- if $live -}}
+          {{- $rawURL := urls.JoinPath "https://gist.githubusercontent.com" $owner $id "raw" $name -}}
+          {{- $liveAttrs = printf " data-live-url=%q data-live-lang=%q data-live-hash=%q" $rawURL $lang (string (hash.FNV32a ($meta.content | default ""))) -}}
+        {{- end -}}
+        <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"{{ $liveAttrs | safeHTMLAttr }}>
           {{- partial "components/codeblock" (dict
             "filename" $name
             "base_url" ""
