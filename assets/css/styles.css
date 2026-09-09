@@ -225,4 +225,5 @@ body {
 @import "./components/gist.css";
 @import "./components/chart.css";
 @import "./components/typeit.css";
+@import "./components/repo-card.css";
 @import "./fonts.css";

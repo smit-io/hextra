@@ -1,0 +1,86 @@
+{{- /*
+  Shared card for the repository shortcodes (github, gitlab, gitea, codeberg,
+  forgejo and friends).
+
+  Each provider shortcode fetches its own API, normalises the response into the
+  dict below, and calls this partial. Anything the provider cannot supply is
+  simply omitted.
+
+  @param {string} url Required. Link to the repository.
+  @param {string} title Repository name, e.g. "owner/repo".
+  @param {string} description Short description.
+  @param {string} language Primary language.
+  @param {int} stars Star count.
+  @param {int} forks Fork count.
+  @param {string} icon Provider icon name.
+  @param {string} thumbnail Optional image URL shown above the card body.
+  @param {string} thumbnailFit How the thumbnail fills its box: cover (default) or contain.
+
+  @example {{ partial "components/repo-card.html" (dict "url" $url "title" $name)
+}}
+*/ -}}
+
+{{- $url := .url -}}
+{{- $title := .title | default $url -}}
+{{- $description := .description -}}
+{{- $language := .language -}}
+{{- $stars := .stars -}}
+{{- $forks := .forks -}}
+{{- $icon := .icon -}}
+{{- $thumbnail := .thumbnail -}}
+
+<a class="hextra-repo-card not-prose" href="{{ $url }}" target="_blank" rel="noreferrer">
+  {{- with $thumbnail -}}
+    <span class="hextra-repo-card__thumbnail hextra-repo-card__thumbnail--{{ $.thumbnailFit | default "cover" }}">
+      <img src="{{ . }}" alt="" loading="lazy" decoding="async" />
+    </span>
+  {{- end -}}
+
+  <span class="hextra-repo-card__body">
+    <span class="hextra-repo-card__title">
+      {{- with $icon -}}
+        {{- partial "utils/icon" (dict "name" . "attributes" `height=16 aria-hidden="true"`) -}}
+      {{- end -}}
+      <span>{{ $title }}</span>
+    </span>
+
+    {{- with $description -}}
+      <span class="hextra-repo-card__description">{{ . }}</span>
+    {{- end -}}
+
+    {{- if or $language $stars $forks -}}
+      <span class="hextra-repo-card__meta">
+        {{- with $language -}}
+          <span class="hextra-repo-card__language">
+            <span class="hextra-repo-card__dot" aria-hidden="true"></span>{{ . }}
+          </span>
+        {{- end -}}
+        {{- with $stars -}}
+          <span>
+            {{- partial "utils/icon" (dict "name" "star" "attributes" `height=14 aria-hidden="true"`) -}}
+            {{- partial "inline/compact-number.html" . }} <span class="hx:sr-only">{{ (T "stars") | default "stars" }}</span>
+          </span>
+        {{- end -}}
+        {{- with $forks -}}
+          <span>
+            {{- partial "utils/icon" (dict "name" "share" "attributes" `height=14 aria-hidden="true"`) -}}
+            {{- partial "inline/compact-number.html" . }} <span class="hx:sr-only">{{ (T "forks") | default "forks" }}</span>
+          </span>
+        {{- end -}}
+      </span>
+    {{- end -}}
+  </span>
+</a>
+
+{{- /* 2889 reads better as 2.9k in a card this size. */ -}}
+{{- define "_partials/inline/compact-number.html" -}}
+  {{- $n := . | int -}}
+  {{- $out := printf "%d" $n -}}
+  {{- if ge $n 1000000 -}}
+    {{- $out = printf "%.1fM" (div (float $n) 1000000.0) -}}
+  {{- else if ge $n 1000 -}}
+    {{- $out = printf "%.1fk" (div (float $n) 1000.0) -}}
+  {{- end -}}
+  {{- $out = replaceRE `\.0([kM])$` "$1" $out -}}
+  {{- return $out -}}
+{{- end -}}
