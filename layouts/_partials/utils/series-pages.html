@@ -12,7 +12,8 @@
   then everything else by date, oldest first. `series_order` is accepted as an
   alias for `seriesOrder` so posts written for the Blowfish theme sort the
   same way, mirroring how `utils/page-image` accepts `featured_image`
-  alongside `cover`.
+  alongside `cover`. A `seriesOrder` that is not a number is warned about and
+  ordered by date rather than failing the build.
 
   The series name is matched verbatim: `series: ["Fork Guides"]` is looked up
   as `Fork Guides`, not as a urlized taxonomy key.
@@ -38,10 +39,27 @@
         {{- $names = slice $names -}}
       {{- end -}}
       {{- if in $names $target -}}
+        {{- $hasOrder := false -}}
+        {{- $raw := "" -}}
         {{- if isset $page.Params "seriesorder" -}}
-          {{- $ordered = $ordered | append (dict "page" $page "key" (int $page.Params.seriesOrder)) -}}
+          {{- $hasOrder = true -}}
+          {{- $raw = $page.Params.seriesOrder -}}
         {{- else if isset $page.Params "series_order" -}}
-          {{- $ordered = $ordered | append (dict "page" $page "key" (int (index $page.Params "series_order"))) -}}
+          {{- $hasOrder = true -}}
+          {{- $raw = index $page.Params "series_order" -}}
+        {{- end -}}
+        {{- if $hasOrder -}}
+          {{- /* A hand-typed `seriesOrder: two` must not take the site down.
+          The cast is attempted, and a value that will not convert falls back to
+          the dated bucket with a warning naming the page that holds it - the
+          build error names whichever page happened to miss the cache first. */ -}}
+          {{- $cast := try (int $raw) -}}
+          {{- with $cast.Err -}}
+            {{- warnf "series-pages: ignoring non-numeric seriesOrder %q on %s, ordering that post by date instead" $raw $page.RelPermalink -}}
+            {{- $dated = $dated | append (dict "page" $page "key" $page.Date.Unix) -}}
+          {{- else -}}
+            {{- $ordered = $ordered | append (dict "page" $page "key" $cast.Value) -}}
+          {{- end -}}
         {{- else if $page.Weight -}}
           {{- $weighted = $weighted | append (dict "page" $page "key" $page.Weight) -}}
         {{- else -}}
