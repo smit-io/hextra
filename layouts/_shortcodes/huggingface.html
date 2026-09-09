@@ -54,12 +54,15 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
         {{- $language := .pipeline_tag | default (cond (eq $kind "datasets") "dataset" "model") -}}
 
         {{- /* Hugging Face counts likes and downloads, not stars and forks. */ -}}
+        {{- /* Tested against nil: zero likes is a fact, not a missing value. */ -}}
         {{- $metrics := slice -}}
-        {{- with .likes -}}
-          {{- $metrics = $metrics | append (dict "icon" "heart" "label" ((T "likes") | default "likes") "value" .) -}}
+        {{- $likes := .likes -}}
+        {{- if ne $likes nil -}}
+          {{- $metrics = $metrics | append (dict "icon" "heart" "label" ((T "likes") | default "likes") "value" $likes) -}}
         {{- end -}}
-        {{- with .downloads -}}
-          {{- $metrics = $metrics | append (dict "icon" "download" "label" ((T "downloads") | default "downloads") "value" .) -}}
+        {{- $downloads := .downloads -}}
+        {{- if ne $downloads nil -}}
+          {{- $metrics = $metrics | append (dict "icon" "download" "label" ((T "downloads") | default "downloads") "value" $downloads) -}}
         {{- end -}}
 
         {{- $card = merge $card (dict
