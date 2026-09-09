@@ -76,15 +76,46 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
             {{- $metrics = $metrics | append (dict "icon" "download" "label" ((T "downloads") | default "downloads") "value" .) -}}
           {{- end -}}
 
-          {{- with .description -}}
-            {{- $card = merge $card (dict "description" .) -}}
-          {{- end -}}
+          {{- $description := .description -}}
 
           {{- /* Collections report their newest version; roles do not. */ -}}
+          {{- $version := "" -}}
           {{- with .highest_version -}}
             {{- with .version -}}
-              {{- $card = merge $card (dict "language" (printf "v%s" .)) -}}
+              {{- $version = . -}}
             {{- end -}}
+          {{- end -}}
+
+          {{- with $version -}}
+            {{- $card = merge $card (dict "language" (printf "v%s" .)) -}}
+
+            {{- /*
+              A role's description comes back with the v1 search result, but
+              the v3 collections index returns only name, namespace, download
+              count and the newest version - no description at all, which left
+              every collection card blank. It lives on that version's own
+              endpoint, under metadata.
+            */ -}}
+            {{- if not $description -}}
+              {{- $detail := printf "https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/%s/%s/versions/%s/" $namespace $name . -}}
+              {{- with try (resources.GetRemote $detail) -}}
+                {{- with .Err -}}
+                  {{- warnf "ansible: unable to fetch %q: %s" $detail . -}}
+                {{- else with .Value -}}
+                  {{- with . | transform.Unmarshal -}}
+                    {{- with .metadata -}}
+                      {{- $description = .description -}}
+                    {{- end -}}
+                  {{- end -}}
+                {{- else -}}
+                  {{- warnf "ansible: %q was not found, rendering a card without a description" $detail -}}
+                {{- end -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+
+          {{- with $description -}}
+            {{- $card = merge $card (dict "description" .) -}}
           {{- end -}}
 
           {{- $card = merge $card (dict "metrics" $metrics) -}}
