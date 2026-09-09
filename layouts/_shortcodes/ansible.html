@@ -71,9 +71,11 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
         {{- end -}}
 
         {{- with $data -}}
+          {{- /* Tested against nil: zero downloads is a fact, not a missing value. */ -}}
           {{- $metrics := slice -}}
-          {{- with .download_count -}}
-            {{- $metrics = $metrics | append (dict "icon" "download" "label" ((T "downloads") | default "downloads") "value" .) -}}
+          {{- $downloads := .download_count -}}
+          {{- if ne $downloads nil -}}
+            {{- $metrics = $metrics | append (dict "icon" "download" "label" ((T "downloads") | default "downloads") "value" $downloads) -}}
           {{- end -}}
 
           {{- $description := .description -}}
