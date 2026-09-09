@@ -122,11 +122,11 @@ params:
   blog:
     article:
       series:
-        enable: true # 设为 false 可在全站禁用该模块
+        enable: true # 该配置块用于启用模块，设为 false 则禁用
         opened: false # 默认展开列表
 ```
 
-只要文章声明了 `series`，模块无需任何配置即可渲染；上面的配置块只用于禁用模块或修改默认展开状态，单篇文章可用 `seriesOpened: true` 覆盖。
+与其他博客功能一样，该模块需要显式启用：添加上面的配置块即可开启；未配置 `params.blog.article.series` 的站点，无论文章是否声明 `series`，渲染结果都与之前完全一致。`series: false` 是 `enable: false` 的简写。单篇文章可用 `seriesOpened: true` 覆盖默认展开状态。
 
 对于系列中的文章，系列导航会取代按日期排序的分页导航，文章末尾只保留一组导航控件，避免两种顺序互相冲突。只有一篇文章的系列不会渲染任何内容，仍使用普通分页导航。
 
