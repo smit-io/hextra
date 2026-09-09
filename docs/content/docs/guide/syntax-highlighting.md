@@ -144,6 +144,22 @@ params:
       display: hover
 ```
 
+### Line Number Divider
+
+With `linenos` enabled, the line-number column stays pinned to the left while
+long lines scroll underneath it. A vertical rule between the numbers and the
+code is available but off by default:
+
+```yaml {filename="hugo.yaml"}
+params:
+  highlight:
+    lineNumberDivider:
+      enable: true
+```
+
+Chroma generates the line-number table, so this cannot be set per block — it is
+a site-wide choice, applied through a class on `<body>`.
+
 ## Supported Languages
 
 For a list of supported languages, please see the [Chroma documentation](https://github.com/alecthomas/chroma#supported-languages).

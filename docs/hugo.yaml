@@ -375,6 +375,10 @@ params:
       enable: true
       # hover | always
       display: hover
+    # Vertical rule between the line numbers and the code. Off by default;
+    # flip to true to see it on the syntax highlighting page.
+    lineNumberDivider:
+      enable: false
 
   page:
     # full (100%), wide (90rem), normal (80rem)
