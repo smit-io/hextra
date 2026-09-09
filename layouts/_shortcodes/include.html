@@ -46,7 +46,26 @@ You must call this shortcode using the percent notation.
 
 {{- else if $path }}
   {{- with site.GetPage $path }}
-    {{- .RenderShortcodes }}
+    {{- $rendered := .RenderShortcodes }}
+
+    {{- /*
+      RenderShortcodes runs the included page's shortcodes with .Page bound to
+      the included page, so a shortcode that announces "this page needs script
+      X" sets the flag on the page being included rather than the one being
+      built. The host then renders the widget's markup and never emits the
+      script that drives it, so charts stay blank and video facades do nothing
+      on click. Render hooks are unaffected - their output is re-rendered as
+      part of the host's own Markdown - so only the shortcode flags need
+      carrying across.
+    */}}
+    {{- $included := . }}
+    {{- range slice "hasAsciinema" "hasChart" "hasGallery" "hasMath" "hasTypeIt" "hasYoutubeLite" }}
+      {{- if $included.Store.Get . }}
+        {{- $.Page.Store.Set . true }}
+      {{- end }}
+    {{- end }}
+
+    {{- $rendered }}
   {{- else }}
     {{- errorf "The %q shortcode was unable to find %q. See %s" $.Name $path $.Position }}
   {{- end }}
