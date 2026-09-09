@@ -6,7 +6,13 @@
     and the code cannot be switched on per block - the class goes here instead
     and the rule in highlight.css is scoped to it. Off unless asked for.
   */ -}}
-  {{- $bodyClass := "" -}}
+  {{- /*
+    The attribute is assembled as a whole rather than opened in the tag and
+    closed by an {{ end }}: splitting an attribute across a template action
+    makes prettier-plugin-go-template fail on this file, and AGENTS.md asks
+    for `npx prettier --write .` before committing.
+  */ -}}
+  {{- $bodyAttrs := "" -}}
   {{- with site.Params.highlight -}}
     {{- with .lineNumberDivider -}}
       {{- /*
@@ -23,11 +29,11 @@
         {{- $enabled = printf "%v" .enable -}}
       {{- end -}}
       {{- if eq $enabled "true" -}}
-        {{- $bodyClass = "hextra-lineno-divider" -}}
+        {{- $bodyAttrs = ` class="hextra-lineno-divider"` -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
-  <body{{ with $bodyClass }} class="{{ . }}"{{ end }}>
+  <body{{ $bodyAttrs | safeHTMLAttr }}>
     <a href="#content" class="hx:sr-only hx:focus-visible:not-sr-only hx:focus-visible:fixed hx:focus-visible:z-50 hx:focus-visible:top-2 hx:focus-visible:left-2 hx:focus-visible:bg-hextra-accent-500 hx:focus-visible:text-white hx:focus-visible:px-4 hx:focus-visible:py-2 hx:focus-visible:rounded-md hx:focus-visible:text-sm hx:focus-visible:font-medium">
       {{- (T "skipToContent") | default "Skip to content" -}}
     </a>
