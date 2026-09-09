@@ -220,4 +220,5 @@ body {
 @import "./components/button.css";
 @import "./components/article-card.css";
 @import "./components/list.css";
+@import "./components/video.css";
 @import "./fonts.css";

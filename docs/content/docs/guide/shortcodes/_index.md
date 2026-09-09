@@ -30,6 +30,7 @@ Hextra provides a collection of beautiful shortcodes to enhance your content.
   {{< card link="list" title="List" icon="view-list" >}}
   {{< card link="codeimporter" title="Code Importer" icon="cloud-download" >}}
   {{< card link="include" title="Include" icon="document-duplicate" >}}
+  {{< card link="video" title="Video" icon="film" >}}
 {{< /cards >}}
 
 <div style="padding-top:4rem"></div>
