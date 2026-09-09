@@ -92,10 +92,16 @@
         }
       };
 
+      // Held in a local rather than read back from the node each character:
+      // textContent on an element walks its subtree to build the string, so
+      // reading it once per deleted character made erasing quadratic in the
+      // length of the string.
       const erase = async () => {
-        while (text.textContent.length) {
+        let value = text.textContent;
+        while (value.length) {
           await gate();
-          text.textContent = text.textContent.slice(0, -1);
+          value = value.slice(0, -1);
+          text.textContent = value;
           await sleep(speed / 3);
         }
       };
