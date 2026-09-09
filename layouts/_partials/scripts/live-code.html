@@ -49,8 +49,8 @@
     };
 
     // Chroma lexer names do not all exist in highlight.js. Only the ones a
-    // code import is likely to hit are mapped; anything unknown falls through
-    // to highlightAuto.
+    // code import is likely to hit are mapped; anything unknown is rendered as
+    // plain text rather than guessed at.
     const LANG_ALIASES = {
       "go-html-template": "xml",
       gotmpl: "xml",
@@ -64,6 +64,10 @@
       json5: "json",
       jsx: "javascript",
       tsx: "typescript",
+      "c++": "cpp",
+      "c#": "csharp",
+      "objective-c": "objectivec",
+      md: "markdown",
       text: "plaintext",
       "": "plaintext"
     };
@@ -157,9 +161,18 @@
       if (typeof hljs !== "undefined") {
         const name = LANG_ALIASES[lang] ?? lang;
         try {
+          /*
+            The vendored bundle registers highlight.js's `common` set, which is
+            36 languages against Chroma's 200-odd. An unregistered language -
+            dockerfile, powershell, terraform, elixir - used to go to
+            highlightAuto, which guesses: Dockerfile content came back coloured
+            as SQL while the block still called itself a Dockerfile. Plain text
+            is wrong in a way the reader can see through, rather than one that
+            looks like a different language.
+          */
           const out = hljs.getLanguage(name)
             ? hljs.highlight(text, { language: name, ignoreIllegals: true })
-            : hljs.highlightAuto(text);
+            : hljs.highlight(text, { language: "plaintext", ignoreIllegals: true });
           return splitLines(out.value);
         } catch (err) {
           console.debug("live-code: highlighting failed, falling back to plain text", err);
