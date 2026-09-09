@@ -4,6 +4,9 @@
 {{ $icon := .icon | default "" }}
 {{ $content := .content }}
 {{ $options := .options | default (dict) }}
+{{/* Optional icon link pinned to the inline-end of the filename bar.
+     dict "url" <href> "icon" <icon name> "label" <accessible name> */}}
+{{ $action := .action | default (dict) }}
 
 {{- if $filename -}}
   {{- $iconName := "" -}}
@@ -27,6 +30,18 @@
       </a>
     {{- else -}}
       <span class="hx:truncate">{{- $filename -}}</span>
+    {{- end -}}
+    {{- with $action.url -}}
+      <a
+        class="hextra-code-filename__action"
+        href="{{ . }}"
+        target="_blank"
+        rel="noreferrer"
+        title="{{ $action.label }}"
+        aria-label="{{ $action.label }}"
+      >
+        {{- partial "utils/icon" (dict "name" ($action.icon | default "external-link") "attributes" `aria-hidden="true"`) -}}
+      </a>
     {{- end -}}
   </div>
 {{- end -}}

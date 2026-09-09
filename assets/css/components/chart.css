@@ -1,0 +1,9 @@
+.hextra-chart {
+  @apply hx:my-6 hx:rounded-lg hx:border hx:p-4;
+  @apply hx:border-gray-200 hx:bg-hextra-light-50;
+  @apply hx:dark:border-neutral-800 hx:dark:bg-hextra-dark-700;
+}
+
+.hextra-chart__canvas {
+  @apply hx:w-full;
+}

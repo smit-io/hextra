@@ -18,6 +18,17 @@
     @apply hx:absolute hx:top-0 hx:z-1 hx:w-full hx:flex hx:items-center hx:gap-1.5 hx:rounded-t-sm hx:bg-hextra-light-200 hx:py-3 hx:px-4 hx:text-xs hx:text-gray-700 hx:dark:bg-hextra-dark-700 hx:dark:text-gray-200 hx:border-1  hx:border-hextra-light-900 hx:dark:border-1 hx:dark:border-neutral-700;
   }
 
+  /* Pinned to the inline-end of the bar. The copy button drops to top-10 when a
+     filename is present, so the two never overlap. */
+  .hextra-code-filename__action {
+    @apply hx:ms-auto hx:shrink-0 hx:inline-flex hx:items-center hx:no-underline hx:opacity-70 hx:transition-opacity;
+
+    &:hover,
+    &:focus-visible {
+      @apply hx:opacity-100;
+    }
+  }
+
   .hextra-code-filename svg {
     /* Icons fill the bar's content height, keep aspect ratio, and inherit the
        bar text color so they adapt to light/dark mode */

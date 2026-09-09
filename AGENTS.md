@@ -70,7 +70,18 @@ assets/
 
 ### Content Features
 
-- **Shortcodes**: `callout`, `card`, `cards`, `tabs`, `tab`, `details`, `steps`, `filetree`, `jupyter`, `badge`, `icon`, `pdf`, `include`, `asciinema`, `term`
+- **Shortcodes** (in `layouts/_shortcodes/`, grouped by what they do):
+  - Layout and structure: `cards`, `card`, `tabs`, `tab`, `steps`, `details`,
+    `accordion`, `accordion-item`, `timeline`, `timeline-item`, `filetree/*`,
+    `hextra/*` (home page hero and feature grid)
+  - Text and callouts: `callout`, `badge`, `lead`, `keyword`, `keywords`,
+    `stat`, `stats`, `swatches`, `icon`, `ltr`, `rtl`
+  - Links and actions: `button`, `cta`, `email`, `article`, `list`
+  - Media: `video`, `youtube-lite`, `gallery`, `gallery-item`, `pdf`, `chart`,
+    `typeit`, `asciinema`, `term`, `jupyter`
+  - Code and content import: `gist`, `codeimporter`, `include`
+  - Repository cards: `github`, `gitlab`, `gitea`, `codeberg`, `forgejo`,
+    `huggingface`, `ansible`
 - **Code Features**: Syntax highlighting (Chroma), copy buttons, line numbers via render hooks
 - **SEO**: Open Graph, Twitter Cards, structured data
 - **Performance**: Minimal JavaScript, optimized CSS with Tailwind

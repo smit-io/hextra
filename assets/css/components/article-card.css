@@ -1,0 +1,53 @@
+.hextra-article-card {
+  @apply hx:flex hx:items-stretch hx:my-4 hx:no-underline;
+  @apply hx:rounded-lg hx:border hx:overflow-hidden;
+  @apply hx:border-gray-200 hx:bg-hextra-light-50;
+  @apply hx:dark:border-neutral-800 hx:dark:bg-hextra-dark-700;
+  @apply hx:transition-colors hx:ease-in hx:duration-200;
+
+  &:hover {
+    @apply hx:no-underline hx:border-gray-300 hx:bg-hextra-light-100;
+    @apply hx:dark:border-neutral-700 hx:dark:bg-hextra-dark-800;
+  }
+}
+
+.hextra-article-card__cover {
+  @apply hx:shrink-0 hx:w-48 hx:sm:w-72;
+
+  img {
+    @apply hx:size-full hx:object-cover;
+  }
+}
+
+/*
+  The body carries the padding on all sides, so a card with a cover shows the
+  image flush to the edge and a card without one is still inset. No :has()
+  needed.
+*/
+.hextra-article-card__body {
+  @apply hx:flex hx:flex-col hx:gap-1 hx:min-w-0 hx:p-4;
+}
+
+.hextra-article-card__title {
+  @apply hx:font-semibold hx:leading-snug;
+  @apply hx:text-gray-900 hx:dark:text-gray-100;
+}
+
+.hextra-article-card__meta {
+  @apply hx:flex hx:flex-wrap hx:gap-x-2 hx:text-xs;
+  @apply hx:text-gray-500 hx:dark:text-gray-400;
+
+  > span + span::before {
+    content: "·";
+    @apply hx:me-2;
+  }
+}
+
+.hextra-article-card__summary {
+  @apply hx:mt-1 hx:text-sm hx:leading-relaxed;
+  @apply hx:text-gray-600 hx:dark:text-gray-300;
+}
+
+.hextra-article-card__summary--compact {
+  @apply hx:line-clamp-1;
+}
