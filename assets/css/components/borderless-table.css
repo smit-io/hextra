@@ -38,9 +38,16 @@
   /* A single underline under the header carries the column structure. Below
      `lg` the header is dropped entirely and the cells stack, so the labels
      would be stranded at the top of the page away from their values. */
+  /* The hairlines are the only structural cue left once the cell grid and the
+     header background are gone, so they are drawn at the same weight as the
+     default table's borders rather than lighter: `border-gray-200` was
+     1.17:1 on the light body and `dark:border-neutral-800` 1.10:1 on the dark
+     one, which left a four-column reference reading as a block of text. The
+     `contrast-more` pair matches series.css, sidebar.css and blog.css. */
   thead {
     @apply hx:bg-transparent hx:text-start;
-    @apply hx:border-b hx:border-gray-200 hx:dark:border-neutral-800;
+    @apply hx:border-b hx:border-gray-300 hx:dark:border-neutral-700;
+    @apply hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400;
   }
 
   /* Column gutters are trailing padding, so the last column has none: the
@@ -61,7 +68,8 @@
   }
 
   tbody tr {
-    @apply hx:border-b hx:border-gray-200 hx:dark:border-neutral-800;
+    @apply hx:border-b hx:border-gray-300 hx:dark:border-neutral-700;
+    @apply hx:contrast-more:border-neutral-400 hx:dark:contrast-more:border-neutral-400;
 
     &:last-child {
       @apply hx:border-b-0;
