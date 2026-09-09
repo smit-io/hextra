@@ -35,13 +35,18 @@
   Stars and forks are the common case, so they stay first-class parameters;
   providers that count something else (likes, downloads) pass `metrics`.
 */ -}}
+{{- /*
+  Tested against nil rather than for truthiness: zero stars is a fact about the
+  repository, and `with` treats it as a missing value, so a new repository lost
+  its whole metrics row and looked exactly like a card whose fetch had failed.
+*/ -}}
 {{- $metrics := .metrics | default slice -}}
 {{- if not $metrics -}}
-  {{- with $stars -}}
-    {{- $metrics = $metrics | append (dict "icon" "star" "label" ((T "stars") | default "stars") "value" .) -}}
+  {{- if ne $stars nil -}}
+    {{- $metrics = $metrics | append (dict "icon" "star" "label" ((T "stars") | default "stars") "value" $stars) -}}
   {{- end -}}
-  {{- with $forks -}}
-    {{- $metrics = $metrics | append (dict "icon" "share" "label" ((T "forks") | default "forks") "value" .) -}}
+  {{- if ne $forks nil -}}
+    {{- $metrics = $metrics | append (dict "icon" "share" "label" ((T "forks") | default "forks") "value" $forks) -}}
   {{- end -}}
 {{- end -}}
 

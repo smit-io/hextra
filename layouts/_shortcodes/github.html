@@ -30,11 +30,8 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 {{- $card := dict "url" $url "title" $repo "icon" "github" -}}
 {{- $avatar := "" -}}
 
-{{- /*
-  params.repoCards.enable = false turns every API call off, for builds that
-  must not reach the network.
-*/ -}}
-{{- $enabled := ne (printf "%v" site.Params.repoCards.enable) "false" -}}
+{{- /* Turns every API call off, for builds that must not reach the network. */ -}}
+{{- $enabled := partial "utils/remote-fetch-enabled.html" . -}}
 
 {{- if $enabled -}}
   {{- $headers := dict "Accept" "application/vnd.github+json" -}}
@@ -68,6 +65,13 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           {{- $avatar = .avatar_url -}}
         {{- end -}}
       {{- end -}}
+    {{- else -}}
+      {{- /*
+        resources.GetRemote reports an HTTP 404 as a nil resource and no error,
+        so without this branch a typo'd, renamed, deleted or private repository
+        degrades to a bare card with nothing written to the build log.
+      */ -}}
+      {{- warnf "github: %q was not found, rendering a plain card" $repo -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

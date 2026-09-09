@@ -42,13 +42,16 @@
   {{- errorf "The %q shortcode expects an http or https server, got %q. See %s" $name $server $position -}}
 {{- end -}}
 
+{{- /* Distinguishes two instances hosting the same owner/name. */ -}}
+{{- $serverKey := replaceRE `[^A-Za-z0-9._-]` "-" (urls.Parse $server).Host -}}
+
 {{- $card := dict
   "url" (printf "%s/%s" $server $repo)
   "title" $repo
   "icon" $icon
 -}}
 
-{{- $enabled := ne (printf "%v" site.Params.repoCards.enable) "false" -}}
+{{- $enabled := partial "utils/remote-fetch-enabled.html" . -}}
 
 {{- if $enabled -}}
   {{- $api := printf "%s/api/v1/repos/%s" $server $repo -}}
@@ -80,13 +83,28 @@
             {{- with .Err -}}
               {{- warnf "%s: unable to fetch the avatar for %q: %s" $provider $repo . -}}
             {{- else with .Value -}}
-              {{- with resources.Copy (printf "images/%s/%s.png" $provider (replace $repo "/" "-")) . -}}
+              {{- /*
+                The published path has to include the instance host. The same
+                owner/name exists on more than one Gitea or Forgejo server -
+                forgejo/forgejo is on both codeberg.org and code.forgejo.org -
+                and keying only on provider and repository made two cards write
+                to one file, so whichever built second silently showed the
+                other server's avatar.
+              */ -}}
+              {{- with resources.Copy (printf "images/%s/%s/%s.png" $provider $serverKey (replace $repo "/" "-")) . -}}
                 {{- $card = merge $card (dict "thumbnail" .RelPermalink "thumbnailFit" "contain") -}}
               {{- end -}}
             {{- end -}}
           {{- end -}}
         {{- end -}}
       {{- end -}}
+    {{- else -}}
+      {{- /*
+        resources.GetRemote reports an HTTP 404 as a nil resource and no error,
+        so without this branch a missing or private repository degrades to a
+        bare card with nothing written to the build log.
+      */ -}}
+      {{- warnf "%s: %q was not found, rendering a plain card" $provider $api -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

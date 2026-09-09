@@ -10,6 +10,14 @@
   animation: hextra-typeit-blink 1s step-end infinite;
 }
 
+/* Pause control for a looping animation (WCAG 2.2.2). */
+.hextra-typeit__toggle {
+  @apply hx:mt-2 hx:inline-block hx:cursor-pointer hx:rounded hx:border hx:bg-transparent;
+  @apply hx:px-2 hx:py-1 hx:text-xs;
+  @apply hx:border-gray-300 hx:text-gray-700;
+  @apply hx:dark:border-neutral-700 hx:dark:text-gray-200;
+}
+
 @keyframes hextra-typeit-blink {
   0%,
   100% {
