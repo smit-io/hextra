@@ -46,6 +46,8 @@ You must call this shortcode using the percent notation.
     {{- errorf "The %q shortcode only fetches http and https URLs, got %q. See %s" .Name $url .Position }}
   {{- else if and $allowedHosts (not (in $allowedHosts $parsed.Host)) }}
     {{- errorf "The %q shortcode may not fetch from %q; add it to params.include.allowedHosts. See %s" .Name $parsed.Host .Position }}
+  {{- else if not (partial "utils/remote-fetch-enabled.html" .) }}
+    {{- warnf "include: remote fetching is disabled, skipping %q. See %s" $url .Position }}
   {{- else }}
 
     {{- /* A failed fetch is a warning so a build without network access still succeeds. */}}

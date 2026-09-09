@@ -51,7 +51,7 @@
   "icon" $icon
 -}}
 
-{{- $enabled := ne (printf "%v" site.Params.repoCards.enable) "false" -}}
+{{- $enabled := partial "utils/remote-fetch-enabled.html" . -}}
 
 {{- if $enabled -}}
   {{- $api := printf "%s/api/v1/repos/%s" $server $repo -}}

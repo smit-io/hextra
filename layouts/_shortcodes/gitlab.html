@@ -53,7 +53,7 @@ namespace path in addition to the numeric project id.
   "icon" "gitlab"
 -}}
 
-{{- $enabled := ne (printf "%v" site.Params.repoCards.enable) "false" -}}
+{{- $enabled := partial "utils/remote-fetch-enabled.html" . -}}
 
 {{- if $enabled -}}
   {{- $api := printf "%s/api/v4/projects/%s" $baseURL $ref -}}
