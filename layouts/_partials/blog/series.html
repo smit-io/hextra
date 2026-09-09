@@ -67,6 +67,31 @@
         {{- end -}}
       {{- end -}}
 
+      {{- /* At a series boundary only one side is populated: part 1 has no
+      previous, the last part has no next. Because this nav replaces the pager
+      wholesale, that would leave the reader with no way back into the blog
+      from the foot of the first or last article. Fill the missing side with
+      the date-ordered neighbour the pager would have used. */ -}}
+      {{- if or $prev $next -}}
+        {{- $reverse := $context.Params.reversePagination | default true -}}
+        {{- if not $prev -}}
+          {{- with cond $reverse $context.PrevInSection $context.NextInSection -}}
+            {{- $prev = . -}}
+            {{- $prevLabel = partial "utils/title" . -}}
+          {{- end -}}
+        {{- end -}}
+        {{- if not $next -}}
+          {{- with cond $reverse $context.NextInSection $context.PrevInSection -}}
+            {{- $next = . -}}
+            {{- $nextLabel = partial "utils/title" . -}}
+          {{- end -}}
+        {{- end -}}
+        {{- /* A section of two would otherwise point both links at one page. */ -}}
+        {{- if and $prev $next (eq $prev.RelPermalink $next.RelPermalink) -}}
+          {{- $next = false -}}
+        {{- end -}}
+      {{- end -}}
+
       {{- if or $prev $next -}}
         <nav class="hextra-series-nav" aria-label="{{ $intro }}">
           {{- with $prev -}}
