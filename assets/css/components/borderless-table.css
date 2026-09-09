@@ -1,0 +1,81 @@
+/* The `borderless-table` shortcode: a Markdown table rendered as a quiet
+   reference block rather than a ruled grid.
+
+   The table inside is ordinary Markdown, so it arrives already carrying the
+   default table styling from typography.css. Those rules are written as
+   `:where(table):not(...)`, which has zero specificity, so a single class here
+   outranks them without `!important` and without `not-prose` - the latter
+   would also strip the `code` styling the cells depend on. */
+
+/* The scroll container is this wrapper, not the table. The default table
+   styling in typography.css makes the table itself `display: block` with
+   `overflow-x: auto`, which stops it generating a table box: the rows fall
+   into an anonymous table box that shrinks to fit its content, so `w-full`
+   stretches the block and leaves the table narrow inside it. Scrolling the
+   wrapper instead lets the table stay a table and actually fill the column. */
+.hextra-borderless-table {
+  @apply hx:my-6 hx:overflow-x-auto;
+
+  table {
+    @apply hx:my-0 hx:table hx:w-full hx:text-sm;
+  }
+
+  /* A single underline under the header carries the column structure. Below
+     `lg` the header is dropped entirely and the cells stack, so the labels
+     would be stranded at the top of the page away from their values. */
+  thead {
+    @apply hx:bg-transparent hx:text-left hx:max-lg:hidden;
+    @apply hx:border-b hx:border-gray-200 hx:dark:border-neutral-800;
+  }
+
+  /* Column gutters are trailing padding, so the last column has none: the
+     description, which is the column that wants the room, runs to the edge. */
+  th {
+    @apply hx:border-0 hx:px-0 hx:py-1.5 hx:font-semibold;
+    @apply hx:ltr:pr-4 hx:rtl:pl-4;
+
+    &:last-child {
+      @apply hx:ltr:pr-0 hx:rtl:pl-0;
+    }
+  }
+
+  /* Hairlines between rows, none around cells: the eye follows the row, and
+     the code spans inside the cells supply their own boxes. */
+  tr {
+    @apply hx:border-0;
+  }
+
+  tbody tr {
+    @apply hx:border-b hx:border-gray-200 hx:dark:border-neutral-800;
+
+    &:last-child {
+      @apply hx:border-b-0;
+    }
+  }
+
+  td {
+    @apply hx:border-0 hx:px-0 hx:py-3 hx:align-top;
+    @apply hx:ltr:pr-4 hx:rtl:pl-4;
+
+    &:last-child {
+      @apply hx:ltr:pr-0 hx:rtl:pl-0;
+    }
+  }
+
+  /* Stacked layout on narrow screens. Each cell becomes its own line, which
+     is why the identifying column has to come first - it is what the reader
+     lands on at the top of each group. */
+  @media (width < 64rem) {
+    td {
+      @apply hx:block hx:py-1 hx:ltr:pr-0 hx:rtl:pl-0;
+
+      &:first-child {
+        @apply hx:pt-3 hx:font-semibold;
+      }
+
+      &:last-child {
+        @apply hx:pb-3;
+      }
+    }
+  }
+}

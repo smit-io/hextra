@@ -1,0 +1,29 @@
+{{- /*
+  A table without rules, for reference material.
+
+  Wraps an ordinary Markdown table so it renders as a quiet reference block -
+  a single underline beneath the header, hairlines between rows, no cell
+  borders - instead of the fully ruled grid Markdown tables get by default.
+  Intended for the Name / Type / Default listings that document shortcode
+  parameters, front matter keys and configuration options, where a full grid
+  competes with the code spans inside the cells.
+
+  The body is normal Markdown, so `code`, links and emphasis inside the cells
+  all work, and a table written this way is still a table if the shortcode is
+  ever removed. Markdown tables elsewhere on the page are untouched.
+
+  Below the `lg` breakpoint the header row is dropped and each cell becomes its
+  own line, so a four-column reference reads as a stack rather than scrolling
+  sideways. Put the identifying column first: it is what the reader sees at the
+  top of each stacked group.
+
+  The body is a Markdown table and nothing else. It is not reproduced here as
+  an @example: prettier reflows a table written inside this comment onto one
+  line. See docs/content/docs/guide/shortcodes/borderless-table.md.
+  */
+-}}
+
+
+<div class="hextra-borderless-table">
+  {{- .InnerDeindent | .Page.RenderString (dict "display" "block") -}}
+</div>

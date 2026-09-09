@@ -315,6 +315,18 @@
     ],
     "description": "Lead paragraph (layouts/_shortcodes/lead.html)."
   },
+  "Hextra: borderless table": {
+    "scope": "markdown",
+    "prefix": "hxborderless",
+    "body": [
+      "{{< borderless-table >}}",
+      "| Name | Type | Default |",
+      "| ---- | ---- | ------- |",
+      "| `${1:name}` | `${2:type}` | ${3:-} |",
+      "{{< /borderless-table >}}"
+    ],
+    "description": "Reference table without cell borders (layouts/_shortcodes/borderless-table.html)."
+  },
   "Hextra: keywords": {
     "scope": "markdown",
     "prefix": "hxkeywords",

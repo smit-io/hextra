@@ -73,7 +73,7 @@ assets/
 - **Shortcodes** (in `layouts/_shortcodes/`, grouped by what they do):
   - Layout and structure: `cards`, `card`, `tabs`, `tab`, `steps`, `details`,
     `accordion`, `accordion-item`, `timeline`, `timeline-item`, `filetree/*`,
-    `hextra/*` (home page hero and feature grid)
+    `borderless-table`, `hextra/*` (home page hero and feature grid)
   - Text and callouts: `callout`, `badge`, `lead`, `keyword`, `keywords`,
     `stat`, `stats`, `swatches`, `icon`, `ltr`, `rtl`
   - Links and actions: `button`, `cta`, `email`, `article`, `list`

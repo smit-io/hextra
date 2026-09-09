@@ -228,4 +228,5 @@ body {
 @import "./components/repo-card.css";
 @import "./components/accordion.css";
 @import "./components/series.css";
+@import "./components/borderless-table.css";
 @import "./fonts.css";

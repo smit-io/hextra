@@ -3,7 +3,7 @@ title: VS Code 代码片段
 weight: 7
 ---
 
-本 fork 提供 `.vscode/hextra.code-snippets` —— 88 个手写的 VS Code 代码片段，覆盖每一个 Hextra shortcode、布局所读取的页面 front matter 键，以及渲染钩子能识别的代码围栏属性。在 VS Code 中打开仓库即可立即使用；不需要扩展，也不需要配置。
+本 fork 提供 `.vscode/hextra.code-snippets` —— 89 个手写的 VS Code 代码片段，覆盖每一个 Hextra shortcode、布局所读取的页面 front matter 键，以及渲染钩子能识别的代码围栏属性。在 VS Code 中打开仓库即可立即使用；不需要扩展，也不需要配置。
 
 <!--more-->
 
@@ -93,6 +93,7 @@ Content
 | `hxbutton-page`         | 通过 `pageRef` 链接到站内页面的按钮                          |
 | `hxcta`                 | 行动号召按钮                                               |
 | `hxlead`                | 导语段落                                                   |
+| `hxborderless`          | 无单元格边框的参考表格                                     |
 | `hxkeywords`            | 含两个关键词的关键词容器                                     |
 | `hxkeyword`             | 单个关键词                                                 |
 | `hxstats`               | 含两项指标的指标网格                                        |
