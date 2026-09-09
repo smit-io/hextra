@@ -30,7 +30,7 @@
      `lg` the header is dropped entirely and the cells stack, so the labels
      would be stranded at the top of the page away from their values. */
   thead {
-    @apply hx:bg-transparent hx:text-start hx:max-lg:hidden;
+    @apply hx:bg-transparent hx:text-start;
     @apply hx:border-b hx:border-gray-200 hx:dark:border-neutral-800;
   }
 
@@ -70,8 +70,18 @@
 
   /* Stacked layout on narrow screens. Each cell becomes its own line, which
      is why the identifying column has to come first - it is what the reader
-     lands on at the top of each group. */
-  @media (width < 64rem) {
+     lands on at the top of each group.
+
+     Restricted to `screen`. A bare width query carries media type `all`,
+     which matches print, and in print the viewport is the page box - 816px
+     for US Letter, 794px for A4, both under the breakpoint. Printing from
+     any window width would otherwise drop the header row and stack a table
+     that fits the paper. */
+  @media screen and (width < 64rem) {
+    thead {
+      @apply hx:hidden;
+    }
+
     td {
       @apply hx:block hx:py-1 hx:ltr:pr-0 hx:rtl:pl-0;
 
