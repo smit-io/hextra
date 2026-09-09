@@ -9,79 +9,18 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 @param {string} repo Required. Repository as "owner/name".
 @param {string} server Required. Instance URL, e.g. "https://git.example.com".
 @param {bool} showThumbnail Show the owner's avatar. Default false.
+@param {string} icon Icon shown before the title. Default "gitea".
 
 @example {{< gitea server="https://git.fsfe.org" repo="FSFE/fsfe-website" >}}
 */ -}}
 
-{{- $repo := .Get "repo" -}}
-{{- $server := .Get "server" -}}
-{{- $icon := .Get "icon" | default "gitea" -}}
-{{- $showThumbnail := eq (printf "%v" (.Get "showThumbnail")) "true" -}}
-
-{{- if not $repo -}}
-  {{- errorf "The %q shortcode requires a 'repo' parameter. See %s" .Name .Position -}}
-{{- end -}}
-
-{{- if not $server -}}
-  {{- errorf "The %q shortcode requires a 'server' parameter, e.g. \"https://git.example.com\". See %s" .Name .Position -}}
-{{- end -}}
-
-{{- if not (findRE `^[A-Za-z0-9._-]+/[A-Za-z0-9._-]+$` $repo) -}}
-  {{- errorf "The %q shortcode expects a repo as \"owner/name\", got %q. See %s" .Name $repo .Position -}}
-{{- end -}}
-
-{{- $server = strings.TrimSuffix "/" $server -}}
-{{- if not (in (slice "http" "https") (urls.Parse $server).Scheme) -}}
-  {{- errorf "The %q shortcode expects an http or https server, got %q. See %s" .Name $server .Position -}}
-{{- end -}}
-
-{{- $card := dict
-  "url" (printf "%s/%s" $server $repo)
-  "title" $repo
-  "icon" $icon
+{{- partial "shortcodes/gitea-card.html" (dict
+  "repo" (.Get "repo")
+  "server" (.Get "server")
+  "icon" (.Get "icon" | default "gitea")
+  "showThumbnail" (.Get "showThumbnail")
+  "provider" "gitea"
+  "shortcode" .Name
+  "position" .Position
+  )
 -}}
-
-{{- $enabled := ne (printf "%v" site.Params.repoCards.enable) "false" -}}
-
-{{- if $enabled -}}
-  {{- $api := printf "%s/api/v1/repos/%s" $server $repo -}}
-  {{- with try (resources.GetRemote $api) -}}
-    {{- with .Err -}}
-      {{- warnf "gitea: unable to fetch %q, rendering a plain card: %s" $api . -}}
-    {{- else with .Value -}}
-      {{- with . | transform.Unmarshal -}}
-        {{- $card = merge $card (dict
-          "url" (.html_url | default $card.url)
-          "title" (.full_name | default $card.title)
-          "description" .description
-          "language" .language
-          "stars" .stars_count
-          "forks" .forks_count
-          )
-        -}}
-
-        {{- /* Self-hosted rather than linked, so the card makes no third-party request. */ -}}
-        {{- $avatar := .avatar_url -}}
-        {{- if not $avatar -}}
-          {{- with .owner -}}
-            {{- $avatar = .avatar_url -}}
-          {{- end -}}
-        {{- end -}}
-
-        {{- if and $showThumbnail $avatar -}}
-          {{- with try (resources.GetRemote $avatar) -}}
-            {{- with .Err -}}
-              {{- warnf "gitea: unable to fetch the avatar for %q: %s" $repo . -}}
-            {{- else with .Value -}}
-              {{- with resources.Copy (printf "images/gitea/%s.png" (replace $repo "/" "-")) . -}}
-                {{- $card = merge $card (dict "thumbnail" .RelPermalink "thumbnailFit" "contain") -}}
-              {{- end -}}
-            {{- end -}}
-          {{- end -}}
-        {{- end -}}
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
-{{- end -}}
-
-{{- partial "components/repo-card.html" $card -}}
