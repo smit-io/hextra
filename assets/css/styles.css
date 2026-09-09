@@ -216,4 +216,5 @@ body {
 @import "./components/stats.css";
 @import "./components/timeline.css";
 @import "./components/swatches.css";
+@import "./components/direction.css";
 @import "./fonts.css";
