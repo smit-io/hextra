@@ -50,6 +50,26 @@
   // container user; --with-deps elevates on its own for the apt step only.
   // Chromium only: playwright.config.ts declares no projects.
   "postCreateCommand": "sudo chown -R \"$(id -u):$(id -g)\" node_modules && npm install && npx playwright install --with-deps chromium",
+  // Docker Desktop's VirtioFS periodically serves uid 0 for the *root inode* of
+  // a bind mount. Measured in this container: 32 of 300 reads (~11%), in ~1s
+  // windows roughly every 25s. Children are never affected - 0 of 300 on both
+  // the repo and .git - because they are looked up from their parent, while the
+  // mount root has no parent and is answered from a separate code path.
+  //
+  // Git checks the ownership of the worktree, which here is the mount root, so
+  // ~11% of git calls see uid 0 and abort with "detected dubious ownership".
+  // hugo.yaml sets enableGitInfo, so `make preview` makes hundreds of git calls
+  // per build and reliably loses that lottery; the Source Control panel goes
+  // blank for the same reason.
+  //
+  // This does not repair the ownership - nothing can, the value is fabricated
+  // per-read and is not stored anywhere - it tells git to stop consulting it.
+  // See docker/for-mac#6298 and #6243, both open.
+  //
+  // postStart, not postCreate: the value is wrong intermittently for the life
+  // of the container, so this has to be in place on every start, not just the
+  // first. Guarded so repeated starts do not append duplicate entries.
+  "postStartCommand": "git config --global --get-all safe.directory 2>/dev/null | grep -qxF \"${containerWorkspaceFolder}\" || git config --global --add safe.directory \"${containerWorkspaceFolder}\"",
   // 1313 is the Hugo dev server, preview:8043 is the goStatic service.
   "forwardPorts": [1313, "preview:8043"]
 }
