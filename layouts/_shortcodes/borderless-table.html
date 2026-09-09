@@ -17,6 +17,11 @@
   sideways. Put the identifying column first: it is what the reader sees at the
   top of each stacked group.
 
+  The wrapper is the horizontal scroll container, so it carries `tabindex="0"`
+  to keep a table wider than the column reachable without a pointer, matching
+  gallery.html and jupyter.html. styles.css already gives `[tabindex="0"]` a
+  focus ring on `:focus-visible`.
+
   The body is a Markdown table and nothing else. It is not reproduced here as
   an @example: prettier reflows a table written inside this comment onto one
   line. See docs/content/docs/guide/shortcodes/borderless-table.md.
@@ -24,6 +29,6 @@
 -}}
 
 
-<div class="hextra-borderless-table">
+<div class="hextra-borderless-table" tabindex="0">
   {{- .InnerDeindent | .Page.RenderString (dict "display" "block") -}}
 </div>
