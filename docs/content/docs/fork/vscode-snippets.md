@@ -9,7 +9,7 @@ The fork ships `.vscode/hextra.code-snippets` — 89 hand-written VS Code snippe
 
 ## Why
 
-Hextra's features are discoverable only by reading the docs. Authoring a page means remembering that a card tag color is `tagColor` (not `tagType`), that a mosaic gallery item takes `span="wide"`, that line highlighting is `hl_lines=[2,4]`, and that three shortcodes need [percent notation](#notation-is-not-uniform) instead of the usual angle brackets. The snippets put all of it behind a prefix and a `Tab`.
+Hextra's features are discoverable only by reading the docs. Authoring a page means remembering that a card tag color is `tagColor` (not `tagType`), that a mosaic gallery item takes `span="wide"`, that line highlighting is `hl_lines=[2,4]`, and that five shortcodes need [percent notation](#notation-is-not-uniform) instead of the usual angle brackets. The snippets put all of it behind a prefix and a `Tab`.
 
 Every parameter name in the file is taken from the `.Get "…"` calls in `layouts/_shortcodes/`, and every enum value from the style maps in `layouts/_partials/shortcodes/` — not from the docs, which can drift.
 
@@ -46,12 +46,12 @@ Content
 
 ## Notation is not uniform
 
-Three shortcodes use percent delimiters so their inner content is rendered as Markdown; the rest use angle brackets. Getting this wrong produces content that renders as literal text. The snippets encode the right one for each:
+Five shortcodes use percent delimiters so their inner content is rendered as Markdown; the rest use angle brackets. Getting this wrong produces content that renders as literal text. The snippets encode the right one for each:
 
-| Notation        | Shortcodes                    |
-| --------------- | ----------------------------- |
+| Notation        | Shortcodes                                  |
+| --------------- | ------------------------------------------- |
 | `{{%/* … */%}}` | `steps`, `details`, `include`, `ltr`, `rtl` |
-| `{{</* … */>}}` | everything else               |
+| `{{</* … */>}}` | everything else                             |
 
 ## Reference
 
@@ -228,3 +228,7 @@ To make them available in every project instead of one, drop the same file into 
 {{< callout type="warning" >}}
 Installed globally, the snippets fire in every Markdown file you open — including non-Hugo projects, where `hxcallout` inserts syntax that renders as literal text. Prefer the per-project `.vscode/` copy unless Hextra is most of what you write.
 {{< /callout >}}
+
+## They also generate the agent skill
+
+These snippets also feed [`skills/hextra/`](https://github.com/smit-io/hextra/tree/main/skills/hextra), a skill package that teaches coding agents to author Hextra sites. There the shortcode templates are the authority — `npm run build:skill` reads parameter names, defaults and required-ness straight from `layouts/_shortcodes/`, and uses the snippets for the enum choices and copy-paste examples the templates express poorly. The generator cross-checks the two and reports any snippet naming a parameter no template reads, so a hand-typed snippet cannot quietly drift from the implementation.

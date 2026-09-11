@@ -1,0 +1,420 @@
+# Site configuration
+
+The `hugo.yaml` surface. Everything here is optional — a site with only `baseURL`, `title`, and the theme import builds and works. Add a block when you want to change its default.
+
+## Minimum viable config
+
+```yaml
+baseURL: "https://example.com/"
+title: "My Site"
+
+module:
+  hugoVersion:
+    extended: true
+    min: "0.146.0"
+  imports:
+    - path: github.com/imfing/hextra
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+```
+
+`unsafe: true` allows raw HTML in Markdown. The home-page layout depends on it.
+
+## Top-level keys
+
+| Key                      | Notes                                                     |
+| ------------------------ | --------------------------------------------------------- |
+| `enableGitInfo`          | Required for "last updated" dates and author attribution. |
+| `enableRobotsTXT`        | Generates `robots.txt`.                                   |
+| `enableInlineShortcodes` | Allows shortcodes inside shortcode parameters.            |
+| `hasCJKLanguage`         | Fixes word counts and summaries for CJK content.          |
+| `defaultContentLanguage` | Language key treated as the site default.                 |
+| `outputs`                | See [Machine-readable output](#machine-readable-output).  |
+
+## Markup
+
+```yaml
+markup:
+  highlight:
+    noClasses: false # required — the theme styles Chroma via CSS classes
+  goldmark:
+    renderer:
+      unsafe: true
+    extensions:
+      passthrough: # required for LaTeX
+        enable: true
+        delimiters:
+          block: [['\[', '\]'], ["$$", "$$"]]
+          inline: [['\(', '\)']]
+```
+
+`noClasses: false` is not optional if you want the theme's syntax themes and dark mode to apply to code blocks.
+
+## Appearance
+
+```yaml
+params:
+  description: One-line site description, used for meta tags.
+
+  navbar:
+    displayTitle: true
+    displayLogo: true
+    logo:
+      path: images/logo.svg
+      dark: images/logo-dark.svg
+      link: /
+      width: 40
+      height: 20
+    width: wide # normal | wide | full
+
+  theme:
+    default: system # light | dark | system
+    displayToggle: true
+
+  footer:
+    enable: true
+    displayCopyright: true
+    displayPoweredBy: true
+    width: normal
+
+  page:
+    width: wide # site-wide default; pages override with `width`
+    tabs:
+      sync: true # tabs with the same name switch together across the page
+
+  externalLinkDecoration: true
+  enableImageLazyLoading: true
+  imageZoom:
+    enable: true
+```
+
+### Fonts
+
+A fork feature. Loads Google Fonts with a fallback stack:
+
+```yaml
+params:
+  fonts:
+    enable: true
+    heading: { family: "Sora", axes: "wght@100..800", display: "swap" }
+    body: { family: "Mozilla Text", axes: "wght@200..700", display: "swap" }
+    code: { family: "Google Sans Code", axes: "ital,wght@0,300;1,300", display: "swap" }
+    fallbacks:
+      heading: "system-ui, sans-serif"
+      body: "system-ui, sans-serif"
+      code: "ui-monospace, monospace"
+```
+
+Set `enable: false` to drop the external request entirely and use the fallbacks.
+
+## Search
+
+```yaml
+params:
+  search:
+    enable: true
+    type: flexsearch
+    flexsearch:
+      index: content # content | summary | heading | title
+      tokenize: forward # full | forward | reverse | strict
+```
+
+FlexSearch builds the index at build time and runs offline in the browser. `index: content` is the most useful and the largest; `title` is the smallest. Exclude a page with `excludeSearch: true` in its front matter.
+
+## Page metadata
+
+```yaml
+params:
+  displayUpdatedDate: true
+  displayUpdatedAuthor: false
+  dateFormat: "January 2, 2006"
+
+  editURL:
+    enable: true
+    base: "https://github.com/owner/repo/edit/main/content"
+
+  toc:
+    displayTags: true
+```
+
+`displayUpdatedDate` needs `enableGitInfo: true` at the top level to have a date to show.
+
+Breadcrumbs are on by default and have no site-level switch — hide them per page with `breadcrumbs: false` in front matter.
+
+## Code blocks
+
+```yaml
+params:
+  highlight:
+    copy:
+      enable: true
+      display: hover # hover | always
+    filenameIcon:
+      enable: true
+    lineNumberDivider:
+      enable: false
+```
+
+## Network fetching
+
+```yaml
+params:
+  remoteFetch:
+    enable: true
+  include:
+    allowedHosts:
+      - raw.githubusercontent.com
+```
+
+`remoteFetch.enable: false` is the master switch for every build-time fetch: the repository cards, `gist`, `codeimporter`, `youtube-lite` poster images, and `include` with a URL. Set it false for offline or air-gapped builds; those shortcodes then render nothing rather than failing the build.
+
+`include.allowedHosts` is a separate allowlist restricting which hosts the `include` shortcode may read from.
+
+The `github` shortcode reads `HUGO_GITHUB_TOKEN` from the environment. Without it, GitHub's unauthenticated limit of 60 requests/hour applies, which a site with many repository cards will exhaust. The `HUGO_` prefix is required — Hugo does not expose other environment variables to templates.
+
+## Math
+
+```yaml
+params:
+  math:
+    engine: katex # anything else emits MathJax delimiters
+    katex:
+      base: "" # module base for the KaTeX bundle
+      css: "" # stylesheet URL, defaulting to base + katex.min.css
+      assets: "" # font directory, when self-hosting KaTeX
+```
+
+## Vendored asset overrides
+
+The theme self-hosts the scripts behind its richer components, and each path can be repointed at a CDN, a pinned version, or a local fork. Leave them unset unless you have a reason.
+
+```yaml
+params:
+  mermaid:
+    base: "" # module base for the Mermaid bundle
+    js: "" # full script URL, overriding base
+  chart:
+    js: "" # Chart.js
+  gallery:
+    base: "" # PhotoSwipe module base
+    js: ""
+    lightboxJs: ""
+    css: ""
+  asciinema:
+    base: ""
+    js: ""
+    css: ""
+  liveCode:
+    js: "" # highlight.js, used by `codeimporter live=true`
+  search:
+    flexsearch:
+      base: "" # module base for the FlexSearch bundle
+      js: "" # full script URL, overriding base
+      version: "" # pinned version used to build the default URL
+```
+
+Each script loads only on a page that actually uses the matching feature.
+
+### Deprecated
+
+`params.repoCards.enable` is the former name of `params.remoteFetch.enable`. It is still honoured so existing sites keep working; use `remoteFetch` in new configuration.
+
+## Comments
+
+```yaml
+params:
+  comments:
+    enable: true
+    type: giscus
+    giscus:
+      repo: owner/repo
+      repoId: "R_..."
+      category: General
+      categoryId: "DIC_..."
+```
+
+`repoId` and `categoryId` are GitHub node IDs and cannot be derived from the repository name — generate them at giscus.app for your own repository. Copying someone else's values posts comments to their repository.
+
+## Deploying
+
+Deployment is ordinary Hugo — the theme adds no build step of its own. Three things matter:
+
+| Requirement                         | Why                                                                                                                               |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Hugo **extended**, 0.146.0 or newer | The theme's CSS pipeline needs the extended build. Pin `HUGO_VERSION` on the host.                                                |
+| A correct `baseURL`                 | Wrong values break the search index, RSS, and every generated link. Pass `--baseURL` at build time when the host assigns the URL. |
+| Go installed, for a module install  | `module.imports` resolves through Go. A submodule or `themesDir` install does not need it.                                        |
+
+Build command everywhere: `hugo --gc --minify`.
+
+On GitHub Pages, take `--baseURL` from the `actions/configure-pages` output rather than hardcoding it, so project and user sites both work. Cloudflare Pages, Netlify, and Vercel each need `HUGO_VERSION` set as an environment variable — Netlify can take it from `netlify.toml` instead.
+
+## Announcement banner
+
+A dismissible bar pinned above the navbar. Presence is the switch:
+
+```yaml
+params:
+  banner:
+    message: "🎉 **v2 is out** — [read the release notes](/blog/v2/)."
+```
+
+The message renders as Markdown. Remove the block to hide the banner. For markup beyond a sentence, override `layouts/_partials/custom/banner.html`, which takes precedence over `message`.
+
+## Analytics
+
+```yaml
+params:
+  analytics:
+    umami: { ... }
+    matomo: { ... }
+    goatCounter: { ... }
+```
+
+Google Analytics uses Hugo's own `services.googleAnalytics.ID`.
+
+## Blog
+
+The largest block. Full reference in `blog.md`:
+
+```yaml
+params:
+  blog:
+    list: { ... }
+    article: { ... }
+    rail: { ... }
+    widgets: { ... }
+  archives:
+    section: blog
+    dateFormat: "Jan 02"
+```
+
+A site with no `params.blog` block renders the plain upstream blog layout, so the whole three-column layout is opt-in.
+
+## Menus
+
+Three menus, all optional. They supplement the navigation generated from the file tree.
+
+```yaml
+menu:
+  main:
+    - identifier: documentation
+      name: Documentation
+      pageRef: /docs
+      weight: 1
+    - identifier: more # a parent with no pageRef becomes a dropdown
+      name: More
+      weight: 2
+    - identifier: about
+      name: About
+      pageRef: /about
+      parent: more # nests under the dropdown
+    - name: Search
+      weight: 8
+      params:
+        type: search # renders the search box
+    - name: GitHub
+      url: "https://github.com/owner/repo"
+      weight: 9
+      params:
+        icon: github # icon-only entry
+
+  sidebar:
+    - identifier: more
+      name: More
+      params:
+        type: separator # a heading rule, not a link
+      weight: 1
+    - name: "Hugo Docs ↗"
+      url: "https://gohugo.io/documentation/"
+      weight: 2
+
+  blog:
+    - name: Home
+      pageRef: /
+      weight: 1
+      params: { type: link, icon: home }
+    - name: GitHub # no type: link → social row
+      url: "https://github.com/owner/repo"
+      weight: 10
+      params: { icon: github }
+```
+
+`pageRef` for internal pages, `url` for external. `params.type` is `link`, `search`, or `separator`. `params.icon` takes a name from `icons.md`.
+
+In the `blog` menu, entries with a label render as navigation rows and icon-only entries collect into a social row.
+
+## Languages
+
+```yaml
+defaultContentLanguage: en
+languages:
+  en:
+    label: English
+    weight: 1
+    title: My Site
+  ja:
+    label: 日本語
+    locale: ja-JP
+    weight: 2
+    title: My Site
+  fa:
+    label: فارسی
+    locale: fa
+    direction: rtl
+    weight: 3
+    title: سایت من
+```
+
+`direction: rtl` flips the whole layout for that language. Any `params` key can be overridden per language by nesting a `params` block inside the language entry.
+
+Content files use the language key as a filename suffix — see `content-structure.md`.
+
+## Machine-readable output
+
+```yaml
+outputs:
+  home: [html, llms]
+  page: [html, markdown]
+  section: [html, rss, markdown]
+```
+
+The `llms` format writes an `llms.txt` index of the site at the root. The `markdown` format gives every page a raw-Markdown twin, which is what the page context menu's "Open in ChatGPT / Claude" links point at. Exclude a page from `llms.txt` with `llms: false` in its front matter.
+
+```yaml
+params:
+  page:
+    contextMenu:
+      enable: true
+      links:
+        - name: Open in Claude
+          icon: claude
+          url: "https://claude.ai/new?q=Reading+this+page%3A+{url}"
+```
+
+`{url}` and `{title}` are substituted per page.
+
+```yaml
+params:
+  rss:
+    sections: [blog] # which sections the RSS feed covers; defaults to blog
+  Author:
+    name: Ada Lovelace # RSS managingEditor / webMaster
+    email: ada@example.com
+```
+
+`params.Author` (capitalised — it is Hugo's own convention) fills the RSS feed's
+`managingEditor`, `webMaster`, and per-item `author` fields. Without `email`,
+none of the three are emitted. It is unrelated to a blog post's `authors` front
+matter, which drives the byline.
+
+## Social metadata
+
+```yaml
+params:
+  social:
+    facebook_admin: "0123456789" # emits fb:admins for Facebook Insights
+```
