@@ -222,11 +222,30 @@ When introducing a new component or modifying an existing one, verify it works w
 - Format code with `npx prettier --write .` before committing
 - Verify multi-language functionality across supported languages
 
+## Authoring docs vs developing the theme
+
+This file covers **developing the theme**. For writing content _with_ it —
+shortcode syntax, front matter keys, `hugo.yaml` params, the blog — see
+[`skills/hextra/`](skills/hextra/), a self-contained skill package that ships
+with the theme and is installable into any coding agent. Its shortcode and icon
+references are generated from `layouts/_shortcodes/` (the authority for
+parameters, via each template's `@param` and `@example` doc comments), with
+`.vscode/hextra.code-snippets` supplying enum choices and examples and
+`data/icons.yaml` the icon list. Run `npm run build:skill` after changing any of
+them, or CI will flag the output as stale. The generator also reports shortcodes
+whose doc comments have drifted from their code.
+
+The repo doubles as a Claude Code plugin marketplace: `.claude-plugin/` holds the
+plugin and marketplace manifests, whose `version` fields are stamped from the
+root `VERSION` file by the same generator. Edit any other field by hand. Validate
+with `claude plugin validate ./ --strict` before releasing.
+
 ## Skill routing
 
 When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
 
 Key routing rules:
+
 - Product ideas/brainstorming → invoke /office-hours
 - Strategy/scope → invoke /plan-ceo-review
 - Architecture → invoke /plan-eng-review

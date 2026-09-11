@@ -2,6 +2,7 @@
   "scripts": {
     "dev:theme": "hugo server --logLevel=debug --config=hugo.yaml,../dev.toml --environment=theme --source=docs --themesDir=../.. -D -F --port 1313",
     "dev": "hugo server --source=docs --themesDir=../.. --disableFastRender -D --port 1313",
+    "build:skill": "node scripts/build-skill.mjs",
     "build:css": "npx postcss --config postcss.config.mjs --env production assets/css/styles.css -o assets/css/compiled/main.css",
     "watch:css": "npx postcss --config postcss.config.mjs --env development assets/css/styles.css -o assets/css/compiled/main.css --watch",
     "build": "hugo --gc --minify --themesDir=../.. --source=docs",

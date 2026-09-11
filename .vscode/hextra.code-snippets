@@ -200,7 +200,7 @@
     "body": [
       "{{< icon \"${1:github}\" >}}"
     ],
-    "description": "Inline SVG icon. 263 built-in names in data/icons.yaml."
+    "description": "Inline SVG icon. Names come from data/icons.yaml."
   },
   "Hextra: icon (remote)": {
     "scope": "markdown",
