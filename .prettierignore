@@ -9,3 +9,10 @@
 # data/icons.yaml.
 skills/hextra/references/shortcodes.md
 skills/hextra/references/icons.md
+
+# Version-stamped by scripts/build-skill.mjs from the root VERSION file, and
+# serialized with JSON.stringify. Prettier reflows the arrays, which would make
+# `node scripts/build-skill.mjs --check` fail on a clean tree. Edit any field
+# except "version" by hand; the generator preserves it.
+.claude-plugin/plugin.json
+.claude-plugin/marketplace.json

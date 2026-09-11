@@ -235,6 +235,11 @@ parameters, via each template's `@param` and `@example` doc comments), with
 them, or CI will flag the output as stale. The generator also reports shortcodes
 whose doc comments have drifted from their code.
 
+The repo doubles as a Claude Code plugin marketplace: `.claude-plugin/` holds the
+plugin and marketplace manifests, whose `version` fields are stamped from the
+root `VERSION` file by the same generator. Edit any other field by hand. Validate
+with `claude plugin validate ./ --strict` before releasing.
+
 ## Skill routing
 
 When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.

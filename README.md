@@ -4,6 +4,7 @@
   <p align="center">Modern, responsive, batteries-included Hugo theme for creating beautiful static websites.</p>
 
 Demo → [imfing.github.io/hextra](https://imfing.github.io/hextra/)
+
 </div>
 
 <picture>
@@ -38,6 +39,21 @@ The template repository also includes a [GitHub Actions workflow](https://docs.g
 ### Usage
 
 Refer to the [documentation](https://imfing.github.io/hextra/docs) for more information.
+
+## For coding agents
+
+This fork ships an installable skill that teaches AI coding agents to author Hextra sites — shortcodes, front matter, `hugo.yaml`, the blog, theming, and Hugo's own built-in shortcodes.
+
+In Claude Code:
+
+```
+/plugin marketplace add smit-io/hextra
+/plugin install hextra@hextra
+```
+
+The agent then knows the theme's ~60 shortcodes with their real parameters, the 272 icon names, and which front matter keys apply to docs pages versus blog posts.
+
+For other agents, or to install it by hand, see [`skills/README.md`](skills/README.md).
 
 ## Contributing
 

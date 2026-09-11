@@ -730,6 +730,96 @@ function hugoShortcodeGaps(shortcodes) {
 }
 
 // ---------------------------------------------------------------------------
+// Plugin manifests
+// ---------------------------------------------------------------------------
+
+// The repo is installable as a Claude Code plugin, and is its own marketplace.
+// VERSION is the repo's single source of truth — release.yml fires on it
+// changing — so the manifests follow it rather than carrying a second number
+// somebody has to remember. Only the version field is rewritten; every other
+// field stays hand-editable.
+const pluginDir = join(root, ".claude-plugin");
+const pluginManifest = join(pluginDir, "plugin.json");
+const marketplaceManifest = join(pluginDir, "marketplace.json");
+const version = readFileSync(join(root, "VERSION"), "utf8").trim();
+
+const serialize = (value) => JSON.stringify(value, null, 2) + "\n";
+
+function buildPluginManifest() {
+  const manifest = JSON.parse(readFileSync(pluginManifest, "utf8"));
+  manifest.version = version;
+  return serialize(manifest);
+}
+
+function buildMarketplaceManifest() {
+  const manifest = JSON.parse(readFileSync(marketplaceManifest, "utf8"));
+  for (const entry of manifest.plugins ?? []) {
+    // Only this repo's own plugin tracks VERSION. An entry pointing at another
+    // repository carries whatever version that repository published.
+    if (typeof entry.source === "string" && entry.source.startsWith(".")) {
+      entry.version = version;
+    }
+  }
+  return serialize(manifest);
+}
+
+const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/;
+
+function manifestGaps() {
+  const gaps = [];
+  let plugin;
+  let marketplace;
+
+  try {
+    plugin = JSON.parse(readFileSync(pluginManifest, "utf8"));
+  } catch (error) {
+    return [`.claude-plugin/plugin.json is missing or invalid: ${error.message}`];
+  }
+  try {
+    marketplace = JSON.parse(readFileSync(marketplaceManifest, "utf8"));
+  } catch (error) {
+    return [`.claude-plugin/marketplace.json is missing or invalid: ${error.message}`];
+  }
+
+  if (!KEBAB.test(plugin.name ?? "")) gaps.push(`plugin.json name '${plugin.name}' is not kebab-case`);
+  if (!KEBAB.test(marketplace.name ?? "")) gaps.push(`marketplace.json name '${marketplace.name}' is not kebab-case`);
+  if (!marketplace.owner?.name) gaps.push("marketplace.json is missing owner.name");
+
+  const self = (marketplace.plugins ?? []).find((entry) => typeof entry.source === "string" && entry.source.startsWith("."));
+  if (!self) {
+    gaps.push("marketplace.json lists no plugin sourced from this repository");
+  } else {
+    // The entry's name is what users type in `/plugin install <name>@<market>`.
+    // If it drifts from plugin.json the install resolves to nothing.
+    if (self.name !== plugin.name) {
+      gaps.push(`marketplace entry '${self.name}' does not match plugin.json name '${plugin.name}'`);
+    }
+    try {
+      readFileSync(join(pluginDir, "..", self.source, ".claude-plugin", "plugin.json"));
+    } catch {
+      gaps.push(`marketplace entry source '${self.source}' has no .claude-plugin/plugin.json`);
+    }
+  }
+
+  // Skills are namespaced <plugin>:<skill>, and a plugin's skills directory
+  // defaults to ./skills/. A skill folder without SKILL.md installs as nothing.
+  const skillsDir = join(root, "skills");
+  const skills = readdirSync(skillsDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
+  if (skills.length === 0) gaps.push("skills/ contains no skill directories");
+  for (const skill of skills) {
+    try {
+      readFileSync(join(skillsDir, skill, "SKILL.md"));
+    } catch {
+      gaps.push(`skills/${skill}/ has no SKILL.md, so it installs as nothing`);
+    }
+  }
+
+  return gaps;
+}
+
+// ---------------------------------------------------------------------------
 // Cross-check
 // ---------------------------------------------------------------------------
 
@@ -787,6 +877,8 @@ const snippets = loadSnippets();
 const outputs = [
   { path: join(outDir, "shortcodes.md"), content: buildShortcodes(shortcodes, snippets) },
   { path: join(outDir, "icons.md"), content: buildIcons(readFileSync(iconsFile, "utf8")) },
+  { path: pluginManifest, content: buildPluginManifest() },
+  { path: marketplaceManifest, content: buildMarketplaceManifest() },
 ];
 
 let stale = 0;
@@ -811,7 +903,7 @@ for (const { path, content } of outputs) {
   }
 }
 
-const problems = [...mismatches(shortcodes, snippets), ...coverageGaps(), ...docsGaps(), ...hugoShortcodeGaps(shortcodes)];
+const problems = [...mismatches(shortcodes, snippets), ...coverageGaps(), ...docsGaps(), ...hugoShortcodeGaps(shortcodes), ...manifestGaps()];
 if (problems.length > 0) {
   console.error(`\n${problems.length} documentation gap(s) between the theme and the skill:`);
   for (const problem of problems) console.error(`  ${problem}`);

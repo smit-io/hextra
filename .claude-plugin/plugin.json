@@ -1,0 +1,21 @@
+{
+  "name": "hextra",
+  "displayName": "Hextra",
+  "description": "Author and configure a Hugo site built on the Hextra theme — shortcodes, front matter, hugo.yaml, the blog, and Markdown features.",
+  "version": "0.13.0",
+  "author": {
+    "name": "smit-io",
+    "url": "https://github.com/smit-io"
+  },
+  "homepage": "https://github.com/smit-io/hextra",
+  "repository": "https://github.com/smit-io/hextra",
+  "license": "MIT",
+  "keywords": [
+    "hugo",
+    "hextra",
+    "theme",
+    "documentation",
+    "shortcodes",
+    "blog"
+  ]
+}
