@@ -8,6 +8,29 @@ Agent-facing skill packages that ship with the theme.
 
 These are for agents working on a site that _uses_ the theme. For agents working on the theme itself, see [`AGENTS.md`](../AGENTS.md) at the repository root.
 
+## When the skill fires
+
+Nothing schedules or configures this. The agent decides, and it decides from one thing: the `description` in `skills/hextra/SKILL.md`'s front matter. There is no keyword list, no hook, and no trigger config anywhere.
+
+Loading happens in two stages, which is why the always-on cost stays small:
+
+| Stage         | What loads                                                  | Cost        |
+| ------------- | ----------------------------------------------------------- | ----------- |
+| Every session | `name` and `description` only                               | ~145 tokens |
+| On invoke     | `SKILL.md`'s body                                           | ~2k tokens  |
+| On demand     | One reference file, chosen by the routing table in the body | varies      |
+
+A question about the blog pulls `references/blog.md` and never touches the 1,300-line shortcode reference. That split is the whole reason the package is eight files rather than one.
+
+**It fires on** writing or editing content for a Hextra site: adding a callout, cards, tabs or a gallery; setting front matter; configuring `hugo.yaml`; setting up the blog; theming.
+
+**It does not fire on** developing the theme itself — a CSS rebuild, a template change, a release. [`AGENTS.md`](../AGENTS.md) covers that, and the skill says so in its own opening lines.
+
+Two things follow from this being a judgement call rather than a rule:
+
+- It is not deterministic. If it does not fire when you expected, name it directly — "use the hextra skill" — and it will.
+- The `description` is the only lever. Widen it and the skill fires more often, costing context on sessions that did not need it; narrow it and it misses cases. It is hand-written and the generator never rewrites it, so edit it directly and reinstall.
+
 ## Installing
 
 ### As a plugin (Claude Code)
@@ -19,7 +42,7 @@ The repo is its own plugin marketplace, so two commands install the skill and ke
 /plugin install hextra@hextra
 ```
 
-The skill then resolves as `/hextra:hextra`. It costs roughly 145 tokens of always-on context; the reference files load only when the skill actually fires.
+The skill then resolves as `/hextra:hextra`.
 
 Updates ship when the repo's `VERSION` is bumped, since the manifests track it. To pull a new version: `/plugin marketplace update hextra`.
 
