@@ -43,3 +43,8 @@
 {{- if (.Store.Get "hasImageZoom") -}}
   {{- partial "scripts/medium-zoom.html" . -}}
 {{- end -}}
+
+{{/* Ad network loaders */}}
+{{- if (.Store.Get "hasAds") -}}
+  {{- partial "scripts/ads.html" . -}}
+{{- end -}}

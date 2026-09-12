@@ -832,6 +832,128 @@ params:
       # allowFrame: true
 ```
 
+### Ads
+
+Hextra can place advertising in four fixed positions from configuration alone, and the [`ad` shortcode](/docs/guide/shortcodes/ad) places one anywhere else you want it. Nothing renders until `params.ads` exists, and ads never load outside a production build — a dashed placeholder box is drawn at the reserved height instead.
+
+```yaml {filename="hugo.yaml"}
+params:
+  ads:
+    enable: true
+
+    # Default network. adsense | ethicalads | carbon | custom
+    provider: adsense
+
+    adsense:
+      client: ca-pub-XXXXXXXXXXXXXXXX
+
+    slots:
+      blogBottom: "1111111111"
+      blogEnd: "2222222222"
+      blogList:
+        slot: "3333333333"
+        every: 4
+      docsBottom: "4444444444"
+```
+
+#### Slots
+
+A slot's value is the ad unit id, or `true` for a network that needs no id, or a map carrying its own overrides. Omit a slot and that position stays empty.
+
+| Slot         | Where it renders                                                      |
+| ------------ | --------------------------------------------------------------------- |
+| `blogBottom` | Blog post, directly below the article body                            |
+| `blogEnd`    | Blog post, directly above the comments                                |
+| `blogList`   | Blog index, after every `every` cards, never after the last on a page |
+| `docsBottom` | Docs page, directly below the page body                               |
+
+`blogList` takes two extra keys: `every` (default 4) sets the interval, and `offset` (default 0) skips that many cards before counting starts.
+
+There are no slots in the navbar, the footer, the sidebars, or the home page, and none in the blog rails — those are reserved for sponsor placements.
+
+#### Presentation
+
+These apply to every slot and every shortcode call, and every one of them can be overridden per slot, per call, or per page.
+
+| Key           | Default  | Effect                                                     |
+| ------------- | -------- | ---------------------------------------------------------- |
+| `label`       | `true`   | Show the "Advertisement" caption                           |
+| `labelText`   | —        | Replace the caption text                                   |
+| `height`      | `280px`  | Reserved height, so an arriving ad does not shift the page |
+| `maxWidth`    | —        | Cap the width                                              |
+| `align`       | `center` | `left`, `center`, `right`                                  |
+| `border`      | `true`   | Hairline around the ad                                     |
+| `background`  | `true`   | Tinted area behind the ad                                  |
+| `class`       | —        | Extra classes on the wrapper                               |
+| `placeholder` | `true`   | Draw the dashed box outside production                     |
+| `production`  | `true`   | Set false to render live ads in development too            |
+| `consent`     | —        | `npa` asks AdSense for non-personalised ads                |
+
+#### Networks
+
+Each network has its own block. Any of its keys can also be set on an individual slot or shortcode call.
+
+```yaml {filename="hugo.yaml"}
+params:
+  ads:
+    adsense:
+      client: ca-pub-XXXXXXXXXXXXXXXX
+      format: auto # auto | fluid | rectangle | vertical | horizontal
+      fullWidth: true
+      layout: "" # in-article and in-feed units
+      layoutKey: "" # in-feed units
+      test: false # request test ads instead of live ones
+
+    ethicalads:
+      publisher: your-publisher-id
+      type: image # image | text
+      style: horizontal # horizontal | vertical | raw
+      keywords: [hugo, documentation]
+
+    carbon:
+      serve: XXXXXXXX
+      placement: yoursite
+
+    # The custom provider runs named creatives instead of ad units — house ads
+    # and sponsor banners, with no ad network involved. Name one with `slot`.
+    custom:
+      sponsor: '<a href="/sponsor">Sponsor this project</a>'
+```
+
+A creative can be served by a configured slot as well as by the shortcode, so
+`blogBottom: { provider: custom, slot: sponsor }` runs a house ad with no
+shortcode in any page. Names are matched lowercase.
+
+A misconfigured network is disabled rather than half-rendered, and says so once during the build rather than once per page.
+
+#### Turning ads off
+
+`enable: false` silences every ad on the site while keeping the ids and settings in place. A single page opts out with front matter, which can also disable one named slot or restyle that page's ads:
+
+```yaml {filename="content/blog/quiet-post.md"}
+---
+title: A quiet post
+ads: false
+---
+```
+
+```yaml {filename="content/blog/another-post.md"}
+---
+title: Another post
+ads:
+  blogEnd: false
+  height: 120px
+---
+```
+
+Front matter can take ads away and change how they look, but it cannot switch on a slot the site configuration left off.
+
+#### What Hextra cannot do for you
+
+AdSense needs an `ads.txt` file at your site root; put it in `static/ads.txt`. Personalised ads shown in the EU and UK need a certified consent management platform, which you enable under Privacy & messaging in your AdSense account. Hextra has no consent layer to hook into, and `consent: npa` is a fallback rather than a substitute.
+
+AdSense also prohibits ads on error pages. Hextra's 404 page is built outside the normal page pipeline, so it carries none regardless of configuration.
+
 ### LLMS.txt Support
 
 To enable [llms.txt](https://llmstxt.org/) output format for your site, which provides a structured text outline for [large language models](https://en.wikipedia.org/wiki/Large_language_model) and AI agents, add the `llms` output format to your site's `hugo.yaml`:
