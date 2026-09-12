@@ -1,3 +1,8 @@
+# Opt in to the theme's taxonomies (category, tag, series). Hugo only honours
+# a merge strategy set here, not in the theme's own config.
+taxonomies:
+  _merge: shallow
+
 # Configuration
 baseURL: "https://example.com/"
 title: "Hextra"

@@ -8,7 +8,7 @@ tags:
   - Guide
   - Fork Features
 series:
-  - Fork Guides
+  - Guides
 seriesOrder: 4
 ---
 

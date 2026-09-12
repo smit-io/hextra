@@ -65,6 +65,12 @@ test("all English pages pass axe-core WCAG AA", async ({ page, baseURL }) => {
   const pages = await getEnglishPages(baseURL!);
   const failures: string[] = [];
 
+  // One test walks every English page, so the budget has to scale with the
+  // sitemap rather than sit at the 60s default: adding a handful of pages was
+  // enough to time out mid-run, which reads as an accessibility failure when
+  // nothing is actually wrong. Roughly 1s per page, with a floor for startup.
+  test.setTimeout(Math.max(60_000, pages.length * 1_000 + 30_000));
+
   for (const path of pages) {
     await test.step(path, async () => {
       await page.goto(path, { waitUntil: "load" });

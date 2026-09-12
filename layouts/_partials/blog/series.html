@@ -128,6 +128,18 @@
       {{- range $names -}}
         {{- $name := . -}}
         {{- $pages := partialCached "utils/series-pages.html" (dict "name" $name "type" $context.Type) $name $context.Type site.Language.Lang -}}
+        {{/* The heading names the group, so it has to come from the same place
+          membership does. Front matter is per-post: a post that writes
+          `series: ["guides"]` joins `Guides` through the taxonomy, and would
+          then head its own box "guides" while every other member heads theirs
+          "Guides" - the same series renamed as the reader navigates. The term
+          page carries one canonical title, so prefer it and fall back to the
+          post's own string on sites with no `series` taxonomy declared.
+        */}}
+        {{- $displayName := $name -}}
+        {{- with site.GetPage (printf "/series/%s" (urlize $name)) -}}
+          {{- $displayName = .Title -}}
+        {{- end -}}
         {{- /* A series of one is just an article; the module would say nothing. */ -}}
         {{- if gt (len $pages) 1 -}}
           <details class="hextra-series" {{ if $opened }}open{{ end }}>
@@ -138,7 +150,7 @@
                 </svg>
               </span>
               <span class="hextra-series__heading">
-                <span class="hextra-series__name">{{ $name }}</span>
+                <span class="hextra-series__name">{{ $displayName }}</span>
                 <span class="hextra-series__intro">{{ $intro }}</span>
               </span>
             </summary>
