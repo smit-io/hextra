@@ -90,7 +90,7 @@ A shortcode to create a badge.
 
 | Parameter | Type | Notes |
 | --- | --- | --- |
-| `border` | string | _Undocumented in the template._ |
+| `border` | bool | Draw the badge outline. Default `true; pass false for a flat badge`. |
 | `class` | string | The class of the badge. |
 | `color` | string | The color of the badge. One of `gray`, `purple`, `indigo`, `blue`, `green`, `yellow`, `orange`, `amber`, `red`. Deprecated alias: `type`. |
 | `content` | string | The content of the badge. |
@@ -225,12 +225,12 @@ A shortcode to create a card.
 | `link` | string | The link to the card. |
 | `method` | string | The method to process the image. One of `Resize`, `Fit`, `Fill`, `Crop`. Default `Resize`. |
 | `options` | string | The options to process the image. Default `800x webp q80`. |
-| `process` | string | Default `(printf "%s %s" $method $options)`. _Undocumented in the template._ |
+| `process` | string | Full image processing spec, used instead of `method` and `options` when set. Default `(printf "%s %s" $method $options)`. |
 | `subtitle` | string | The subtitle of the card. |
 | `tag` | string | The tag of the card. |
-| `tagBorder` | string | _Undocumented in the template._ |
+| `tagBorder` | bool | Draw the tag outline. Default `true; pass false for a flat tag`. |
 | `tagColor` | string | The color of the tag. One of `gray`, `purple`, `indigo`, `blue`, `green`, `yellow`, `orange`, `amber`, `red`. Deprecated alias: `tagType`. |
-| `tagIcon` | string | _Undocumented in the template._ |
+| `tagIcon` | string | Icon shown before the tag text. |
 | `tagType` | string | _Undocumented in the template._ |
 | `title` | string | The title of the card. |
 
@@ -698,17 +698,19 @@ Second line
 
 {{< >}} · self-closing · accepts positional arguments
 
-Get parameters
+Embed an asciinema terminal recording.
 
 | Parameter | Type | Notes |
 | --- | --- | --- |
-| `autoplay` | string | Default `false`. _Undocumented in the template._ |
+| `autoplay` | bool | Start playing on load. Default `false`. |
 | `file` | string | Also accepted as the first positional argument. _Undocumented in the template._ |
-| `loop` | string | Default `false`. _Undocumented in the template._ |
-| `markers` | string | _Undocumented in the template._ |
-| `poster` | string | _Undocumented in the template._ |
-| `speed` | string | Default `1`. _Undocumented in the template._ |
-| `theme` | string | Default `asciinema`. _Undocumented in the template._ |
+| `loop` | bool | Restart when the recording ends. Default `false`. |
+| `markers` | string | Comma-separated markers, each a time in seconds or "time:label", e.g. "5,12:Install,30:Done". |
+| `poster` | string | Frame to show before playback, e.g. "npt:0:05". |
+| `speed` | string | Playback speed multiplier. Default `1`. |
+| `theme` | string | Player theme. Default `"asciinema"`. |
+
+Positional: The .cast recording to play.
 
 ```markdown
 {{< asciinema file="demo.cast" theme="asciinema" speed="1" autoplay=true loop=true poster="npt:0:05" >}}
