@@ -860,6 +860,10 @@ params:
 
 A slot's value is the ad unit id, or `true` for a network that needs no id, or a map carrying its own overrides. Omit a slot and that position stays empty.
 
+The ids above are filler. A real AdSense setup uses two different identifiers, both of which appear in the snippet AdSense gives you when you create a display unit under **Ads → By ad unit**: `adsense.client` is your account (`ca-pub-` followed by 16 digits, set once) and each slot value is a single ad unit (10 digits). Give each position its own unit — every unit is a separate reporting bucket, so distinct ids are what show you which placement earns. Quote them, since a bare id is a YAML integer and a leading zero would be lost.
+
+EthicalAds and Carbon have no per-unit id, so their slots take `true`. With `provider: custom` the slot value names a creative under `params.ads.custom` rather than an ad unit.
+
 | Slot         | Where it renders                                                      |
 | ------------ | --------------------------------------------------------------------- |
 | `blogBottom` | Blog post, directly below the article body                            |

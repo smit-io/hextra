@@ -17,7 +17,10 @@ your own site to see them.
 
 ## Usage
 
-With a provider configured, a call needs only the ad unit id.
+With a provider configured, a call needs only the ad unit id — the 10-digit
+number AdSense shows as `data-ad-slot` when you create a display unit under
+**Ads → By ad unit**. The account id goes in `params.ads.adsense.client` once,
+not here.
 
 ```
 {{</* ad slot="1234567890" */>}}
