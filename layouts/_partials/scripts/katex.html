@@ -14,7 +14,9 @@
     - Default to a KaTeX release line compatible with Hugo; same as remote path above.
 
   Additional:
-  - assets: optional list to publish extra assets. CSS/JS get tags with integrity (JS loads async).
+  - assets: optional list to publish extra assets. Each entry is an asset path, a
+    glob containing "*", or a directory path ending in "/" (published recursively).
+    CSS/JS get tags with integrity (JS loads async).
 */ -}}
 {{- $noop := .WordCount -}}
 
@@ -82,10 +84,28 @@
   {{- end -}}
 {{- end -}}
 
-{{- /* Optionally publish files (fonts, css, js, etc.) from assets and emit tags for css/js with integrity and crossorigin */ -}}
+{{- /* Optionally publish files (fonts, css, js, etc.) from assets and emit tags for css/js with integrity and crossorigin.
+  An entry ending in "/" publishes that asset directory recursively; an entry containing "*" is treated as a glob. */ -}}
 {{- with site.Params.math.katex.assets -}}
-  {{- range . -}}
-    {{- with resources.Get . -}}
+  {{- range $entry := . -}}
+    {{- $files := slice -}}
+    {{- if strings.HasSuffix $entry "/" -}}
+      {{- $files = resources.Match (printf "%s**" $entry) -}}
+    {{- else if strings.Contains $entry "*" -}}
+      {{- $files = resources.Match $entry -}}
+    {{- else -}}
+      {{- with resources.Get $entry -}}
+        {{- $files = slice . -}}
+      {{- else -}}
+        {{- errorf "KaTeX asset not found at %q" $entry -}}
+      {{- end -}}
+    {{- end -}}
+
+    {{- if not $files -}}
+      {{- warnf "KaTeX assets entry %q matched no files." $entry -}}
+    {{- end -}}
+
+    {{- range $files -}}
       {{- $name := .Name | lower -}}
       {{- if strings.HasSuffix $name ".css" -}}
         {{- $built := . | fingerprint "sha512" -}}
