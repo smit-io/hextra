@@ -12,6 +12,11 @@ This page describes the available options and how to customize the theme further
 
 To add custom CSS, we need to create a file `assets/css/custom.css` in our site. Hextra will automatically load this file.
 
+In production builds Hextra minifies its own stylesheet, but loads `custom.css`
+as a separate fingerprinted file **without minifying it**, so the rules we write
+reach the browser as written. It is still linked after the theme stylesheet, so
+the cascade is unchanged.
+
 ### Font Family
 
 The font family of the content can be customized using:
