@@ -106,7 +106,7 @@ params:
 ---
 title: "Guide: Adding Google Fonts"
 series:
-  - Fork Guides
+  - Guides
 seriesOrder: 2
 ---
 ```

@@ -14,8 +14,11 @@
   alongside `cover`. A `seriesOrder` that is not a number is warned about and
   ordered by date rather than failing the build.
 
-  The series name is matched verbatim: `series: ["Fork Guides"]` is looked up
-  as `Fork Guides`, not as a urlized taxonomy key.
+  The series name is matched verbatim: `series: ["Guides"]` is looked up as
+  `Guides`, not as a urlized taxonomy key. Blowfish, where `series_order`
+  comes from, resolves series through a `series` taxonomy instead, so it
+  tolerates case and spacing drift between posts; here every post in a series
+  must spell the name identically, and renaming one means renaming all.
 
   `type` scopes the lookup to one content type, and callers should always pass
   it. Only the blog layouts render the series module, so a docs page that

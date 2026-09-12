@@ -106,7 +106,7 @@ Group related posts and every post in the group gains a collapsible index of the
 ---
 title: "Guide: Adding Google Fonts"
 series:
-  - Fork Guides
+  - Guides
 seriesOrder: 2
 ---
 ```
