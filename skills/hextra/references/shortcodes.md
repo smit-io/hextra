@@ -703,7 +703,7 @@ Embed an asciinema terminal recording.
 | Parameter | Type | Notes |
 | --- | --- | --- |
 | `autoplay` | bool | Start playing on load. Default `false`. |
-| `file` | string | Also accepted as the first positional argument. _Undocumented in the template._ |
+| `file` | string | The .cast recording to play. Also accepted as the first positional argument. |
 | `loop` | bool | Restart when the recording ends. Default `false`. |
 | `markers` | string | Comma-separated markers, each a time in seconds or "time:label", e.g. "5,12:Install,30:Done". |
 | `poster` | string | Frame to show before playback, e.g. "npt:0:05". |
@@ -725,7 +725,7 @@ Render Jupyter Notebook
 | Parameter | Type | Notes |
 | --- | --- | --- |
 | `prompts` | bool | Show In/Out execution count prompts. Use named params: {{< jupyter src="notebook.ipynb" prompts=true >}} |
-| `src` | string | _Undocumented in the template._ |
+| `src` | string | The path of the Jupyter Notebook. |
 
 Positional: The path of the Jupyter Notebook.
 
