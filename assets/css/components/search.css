@@ -33,7 +33,7 @@
 /* Dialog */
 .hextra-search-dialog {
   --hextra-search-results-max-height: min(28rem, calc(100vh - 7rem));
-  @apply hx:p-0 hx:rounded-sm hx:overflow-hidden
+  @apply hx:p-0 hx:rounded-lg hx:overflow-hidden
     hx:bg-hextra-light-100 hx:dark:bg-neutral-900
     hx:border hx:border-gray-200 hx:dark:border-neutral-800
     hx:text-gray-900 hx:dark:text-gray-100;

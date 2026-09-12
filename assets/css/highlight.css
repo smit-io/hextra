@@ -17,7 +17,7 @@
   } */
 
   .hextra-code-filename {
-    @apply hx:absolute hx:top-0 hx:z-1 hx:w-full hx:flex hx:items-center hx:gap-1.5 hx:rounded-t-sm hx:bg-hextra-light-200 hx:py-3 hx:px-4 hx:text-xs hx:text-gray-700 hx:dark:bg-hextra-dark-700 hx:dark:text-gray-200 hx:border-1  hx:border-hextra-light-900 hx:dark:border-1 hx:dark:border-neutral-700;
+    @apply hx:absolute hx:top-0 hx:z-1 hx:w-full hx:flex hx:items-center hx:gap-1.5 hx:rounded-t-lg hx:bg-hextra-light-200 hx:py-3 hx:px-4 hx:text-xs hx:text-gray-700 hx:dark:bg-hextra-dark-700 hx:dark:text-gray-200 hx:border-1  hx:border-hextra-light-900 hx:dark:border-1 hx:dark:border-neutral-700;
   }
 
   /* Pinned to the inline-end of the bar. The copy button drops to top-10 when a
@@ -49,7 +49,7 @@
 }
 
 .hextra-code-block pre:not(.lntable pre) {
-  @apply hx:px-4 hx:mb-4 hx:py-4 hx:rounded-sm;
+  @apply hx:px-4 hx:mb-4 hx:py-4 hx:rounded-lg;
 }
 
 .hextra-code-block div:nth-of-type(2) pre {
@@ -65,7 +65,7 @@
     bug because there the <pre> is itself the scroll container.
   */
   .lntable {
-    @apply hx:m-0 hx:block hx:w-auto hx:overflow-auto hx:rounded-sm;
+    @apply hx:m-0 hx:block hx:w-auto hx:overflow-auto hx:rounded-lg;
     @apply hx:border hx:border-hextra-light-900 hx:dark:border-neutral-700;
 
     pre {
