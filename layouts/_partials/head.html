@@ -36,8 +36,7 @@
 
   {{- /* Production build */ -}}
   {{- if hugo.IsProduction }}
-    {{- /* Keep the theme CSS minified, but load custom.css as its own file so author
-      rules are not altered by the minifier (e.g. quoted multi-word font names). */ -}}
+    {{- /* Theme CSS stays minified; custom.css loads separately so the minifier does not rewrite author rules. */ -}}
     {{- $styles := slice $variablesCss $fontsCss $mainCss | resources.Concat "css/compiled/main.css" | minify | fingerprint }}
     <link rel="preload" href="{{ $styles.RelPermalink }}" as="style" integrity="{{ $styles.Data.Integrity }}" />
     <link href="{{ $styles.RelPermalink }}" rel="stylesheet" integrity="{{ $styles.Data.Integrity }}" />
