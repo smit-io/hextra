@@ -16,3 +16,16 @@ skills/hextra/references/icons.md
 # except "version" by hand; the generator preserves it.
 .claude-plugin/plugin.json
 .claude-plugin/marketplace.json
+
+# A CSS file whose Hugo template code lives inside a CSS comment, so Hugo can
+# derive the variables at build time. Prettier's CSS parser crashes on the
+# template actions, and renaming it so the go-template parser picks it up makes
+# things worse: that parser reflows the comment and drops the :root block. There
+# is no extension or edit that makes this file safe to format.
+assets/css/variables.css
+
+# A Hugo template that emits the FlexSearch index, so it opens with a template
+# action and is not valid JSON. Renaming it so prettier skips it is not an
+# option either: Hugo derives the media type from the extension, and a non-.json
+# source leaves the generated file with no mimetype, which fails minification.
+assets/json/search-data.json
