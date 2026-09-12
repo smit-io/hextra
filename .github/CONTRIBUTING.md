@@ -3,6 +3,7 @@
 👋 Thank you for being interested in contributing to Hextra! As an open source project, we welcome contributions of many forms including bug reports, feature requests, documentation improvements, and code contributions.
 
 <!-- omit in toc -->
+
 ## Table of Contents
 
 - [Guidelines](#guidelines)
@@ -15,7 +16,6 @@
   - [Project structure](#project-structure)
   - [Start the development server](#start-the-development-server)
   - [Compile the styles](#compile-the-styles)
-
 
 ## Guidelines
 

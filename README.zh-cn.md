@@ -4,6 +4,7 @@
   <p align="center">用于创建美观的静态站点的现代化, 响应式, 功能强大的 Hugo 主题.</p>
 
 演示 → [imfing.github.io/hextra](https://imfing.github.io/hextra/)
+
 </div>
 
 <picture>

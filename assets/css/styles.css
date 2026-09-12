@@ -16,7 +16,7 @@
   --color-dark: #111;
 
   /* Rather than having a hue, saturation and lightness, it is better to generate a custom palette for hextra-light and dark modes and have an accent color */
-  
+
   /* Light mode palette */
   /* 
   --color-hextra-light-50:  #f8f8f8;
@@ -31,19 +31,18 @@
   --color-hextra-light-900: #aaaaaa; 
   */
 
-  --color-hextra-light-50:   oklch(98.8235% 0 0);   /* #fcfcfc */
-  --color-hextra-light-100:  oklch(97.2549% 0 0);   /* #f8f8f8 */
-  --color-hextra-light-200:  oklch(93.7255% 0 0);   /* #efefef */
-  --color-hextra-light-300:  oklch(90.5882% 0 0);   /* #e7e7e7 */
-  --color-hextra-light-400:  oklch(87.0588% 0 0);   /* #dedede */
-  --color-hextra-light-500:  oklch(83.5294% 0 0);   /* #d5d5d5 */
-  --color-hextra-light-600:  oklch(80.3922% 0 0);   /* #cdcdcd */
-  --color-hextra-light-700:  oklch(76.8627% 0 0);   /* #c4c4c4 */
-  --color-hextra-light-800:  oklch(73.3333% 0 0);   /* #bbbbbb */
-  --color-hextra-light-900:  oklch(70.1961% 0 0);   /* #b3b3b3 */
-  --color-hextra-light-950:  oklch(66.6667% 0 0);   /* #aaaaaa */
+  --color-hextra-light-50: oklch(98.8235% 0 0); /* #fcfcfc */
+  --color-hextra-light-100: oklch(97.2549% 0 0); /* #f8f8f8 */
+  --color-hextra-light-200: oklch(93.7255% 0 0); /* #efefef */
+  --color-hextra-light-300: oklch(90.5882% 0 0); /* #e7e7e7 */
+  --color-hextra-light-400: oklch(87.0588% 0 0); /* #dedede */
+  --color-hextra-light-500: oklch(83.5294% 0 0); /* #d5d5d5 */
+  --color-hextra-light-600: oklch(80.3922% 0 0); /* #cdcdcd */
+  --color-hextra-light-700: oklch(76.8627% 0 0); /* #c4c4c4 */
+  --color-hextra-light-800: oklch(73.3333% 0 0); /* #bbbbbb */
+  --color-hextra-light-900: oklch(70.1961% 0 0); /* #b3b3b3 */
+  --color-hextra-light-950: oklch(66.6667% 0 0); /* #aaaaaa */
 
-  
   /* Dark mode palette */
   /* 
   --color-hextra-dark-50:  #111111;
@@ -57,19 +56,19 @@
   --color-hextra-dark-800: #3e3e3e;
   --color-hextra-dark-900: #444444; 
   */
-  
-  --color-hextra-dark-50:   oklch(3.1373% 0 0);     /* #080808 */
-  --color-hextra-dark-100:  oklch(6.6667% 0 0);     /* #111111 */
-  --color-hextra-dark-200:  oklch(9.0196% 0 0);     /* #171717 */
-  --color-hextra-dark-300:  oklch(10.9804% 0 0);    /* #1c1c1c */
-  --color-hextra-dark-400:  oklch(13.3333% 0 0);    /* #222222 */
-  --color-hextra-dark-500:  oklch(15.6863% 0 0);    /* #282828 */
-  --color-hextra-dark-600:  oklch(17.6471% 0 0);    /* #2d2d2d */
-  --color-hextra-dark-700:  oklch(20.0% 0 0);       /* #333333 */
-  --color-hextra-dark-800:  oklch(22.3529% 0 0);    /* #393939 */
-  --color-hextra-dark-900:  oklch(24.3137% 0 0);    /* #3e3e3e */
-  --color-hextra-dark-950:  oklch(26.6667% 0 0);    /* #444444 */
-  
+
+  --color-hextra-dark-50: oklch(3.1373% 0 0); /* #080808 */
+  --color-hextra-dark-100: oklch(6.6667% 0 0); /* #111111 */
+  --color-hextra-dark-200: oklch(9.0196% 0 0); /* #171717 */
+  --color-hextra-dark-300: oklch(10.9804% 0 0); /* #1c1c1c */
+  --color-hextra-dark-400: oklch(13.3333% 0 0); /* #222222 */
+  --color-hextra-dark-500: oklch(15.6863% 0 0); /* #282828 */
+  --color-hextra-dark-600: oklch(17.6471% 0 0); /* #2d2d2d */
+  --color-hextra-dark-700: oklch(20% 0 0); /* #333333 */
+  --color-hextra-dark-800: oklch(22.3529% 0 0); /* #393939 */
+  --color-hextra-dark-900: oklch(24.3137% 0 0); /* #3e3e3e */
+  --color-hextra-dark-950: oklch(26.6667% 0 0); /* #444444 */
+
   /* Accent color pelette */
   --color-hextra-accent-50: var(--color-accent-color-50);
   --color-hextra-accent-100: var(--color-accent-color-100);
@@ -82,7 +81,6 @@
   --color-hextra-accent-800: var(--color-accent-color-800);
   --color-hextra-accent-900: var(--color-accent-color-900);
   --color-hextra-accent-950: var(--color-accent-color-950);
-
 
   --color-accent-colorbackground: var(--color-hextra-light-100);
   --color-hextra-dark-background: var(--color-hextra-dark-600);

@@ -219,7 +219,14 @@ When introducing a new component or modifying an existing one, verify it works w
 
 - Test all changes in `docs/` before releasing
 - Use `npm run dev:theme` for theme development with hot reloading
-- Format code with `npx prettier --write .` before committing
+- Format with `make fmt` before committing (`make fmt-check` verifies without writing)
+- Prettier is deliberately scoped: Hugo templates (`layouts/`, `docs/layouts/`) and
+  Markdown content (`docs/content/`) are excluded, because formatting them changes
+  what the site renders — it injects newlines inside attribute values (breaking
+  `aria-expanded`), splits the closing delimiter of multi-line `{{- /* */ -}}`
+  comments so Hugo cannot parse the template, and reads the `>}}` closing a
+  multi-line shortcode as a blockquote. `.prettierignore` records each case.
+  Format templates by hand; do not remove those entries
 - Verify multi-language functionality across supported languages
 
 ## Authoring docs vs developing the theme

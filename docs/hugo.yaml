@@ -79,7 +79,7 @@ markup:
     extensions:
       passthrough:
         delimiters:
-          block: [['\[', '\]'], ['$$', '$$']]
+          block: [['\[', '\]'], ["$$", "$$"]]
           inline: [['\(', '\)']]
         enable: true
 
@@ -234,7 +234,7 @@ params:
       family: "Google Sans Code"
       axes: "ital,wght@0,300;1,300"
       display: "swap"
-    
+
     # Fallback fonts (used if Google Fonts fail to load)
     fallbacks:
       heading: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"

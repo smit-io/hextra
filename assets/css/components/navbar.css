@@ -1,6 +1,4 @@
-@supports (
-  (-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))
-) {
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
   .hextra-nav-container-blur {
     @apply hx:backdrop-blur-md hx:bg-hextra-light-100/[.85] hx:dark:bg-hextra-dark-600/80!;
   }

@@ -29,15 +29,15 @@
 }
 
 .hextra-jupyter-notebook {
-  :where(p > img[src^="data:image/"]):not(:where([class~=not-prose],[class~=not-prose] *)) {
+  :where(p > img[src^="data:image/"]):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     @apply hx:inline-block hx:align-middle;
   }
 
-  :where(h2):not(:where([class~=not-prose],[class~=not-prose] *)) {
+  :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     @apply hx:border-b hx:pb-1 hx:border-neutral-200/70 hx:contrast-more:border-neutral-400 hx:dark:border-hextra-accent-100/10 hx:contrast-more:dark:border-neutral-400;
   }
 
-  :where(hr):not(:where([class~=not-prose],[class~=not-prose] *)) {
+  :where(hr):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     @apply hx:my-6 hx:first:mt-0 hx:last:mb-0;
   }
 }

@@ -7,13 +7,11 @@ const DISABLED_RULES = ["color-contrast", "target-size"];
 const EXCLUDED_SELECTORS = [
   // Third-party player internals are outside the theme's control and can change
   // independently, while the iframe element itself remains covered by page HTML.
-  "iframe[src*=\"youtube.com/embed\"]",
-  "iframe[src*=\"youtube-nocookie.com/embed\"]",
+  'iframe[src*="youtube.com/embed"]',
+  'iframe[src*="youtube-nocookie.com/embed"]',
 ];
 
-type Violation = Awaited<
-  ReturnType<InstanceType<typeof AxeBuilder>["analyze"]>
->["violations"][number];
+type Violation = Awaited<ReturnType<InstanceType<typeof AxeBuilder>["analyze"]>>["violations"][number];
 
 function decodeXmlEntities(value: string): string {
   return value
@@ -40,20 +38,17 @@ async function getEnglishPages(baseURL: string): Promise<string[]> {
   const sitemapUrl = `${baseURL}/en/sitemap.xml`;
   const response = await fetch(sitemapUrl);
   if (!response.ok) {
-    throw new Error(
-      `Failed to fetch sitemap (${response.status} ${response.statusText}) at ${sitemapUrl}`,
-    );
+    throw new Error(`Failed to fetch sitemap (${response.status} ${response.statusText}) at ${sitemapUrl}`);
   }
 
   const xml = await response.text();
-  const pages = parseLocUrlsFromSitemap(xml)
-    .map((url) => {
-      try {
-        return new URL(url).pathname;
-      } catch {
-        return url;
-      }
-    });
+  const pages = parseLocUrlsFromSitemap(xml).map((url) => {
+    try {
+      return new URL(url).pathname;
+    } catch {
+      return url;
+    }
+  });
 
   if (pages.length === 0) {
     throw new Error(`Sitemap at ${sitemapUrl} returned no URLs.`);
@@ -74,9 +69,7 @@ test("all English pages pass axe-core WCAG AA", async ({ page, baseURL }) => {
     await test.step(path, async () => {
       await page.goto(path, { waitUntil: "load" });
 
-      const axe = new AxeBuilder({ page })
-        .withTags(WCAG_TAGS)
-        .disableRules(DISABLED_RULES);
+      const axe = new AxeBuilder({ page }).withTags(WCAG_TAGS).disableRules(DISABLED_RULES);
 
       for (const selector of EXCLUDED_SELECTORS) {
         axe.exclude(selector);
@@ -88,16 +81,9 @@ test("all English pages pass axe-core WCAG AA", async ({ page, baseURL }) => {
         return;
       }
 
-      failures.push(
-        `--- ${path} ---\n${results.violations
-          .map(formatViolation)
-          .join("\n\n")}`,
-      );
+      failures.push(`--- ${path} ---\n${results.violations.map(formatViolation).join("\n\n")}`);
     });
   }
 
-  expect(
-    failures,
-    `Accessibility violations found:\n\n${failures.join("\n\n")}`,
-  ).toHaveLength(0);
+  expect(failures, `Accessibility violations found:\n\n${failures.join("\n\n")}`).toHaveLength(0);
 });

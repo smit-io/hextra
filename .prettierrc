@@ -1,7 +1,5 @@
 {
-  "plugins": [
-    "prettier-plugin-go-template"
-  ],
+  "plugins": ["prettier-plugin-go-template"],
   "goTemplateBracketSpacing": true,
   "htmlWhitespaceSensitivity": "css",
   "printWidth": 200,
@@ -10,9 +8,7 @@
   "trailingComma": "es5",
   "overrides": [
     {
-      "files": [
-        "*.html"
-      ],
+      "files": ["*.html"],
       "options": {
         "parser": "go-template"
       }

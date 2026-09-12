@@ -29,3 +29,41 @@ assets/css/variables.css
 # option either: Hugo derives the media type from the extension, and a non-.json
 # source leaves the generated file with no mimetype, which fails minification.
 assets/json/search-data.json
+
+# ---------------------------------------------------------------- Hugo templates
+#
+# prettier-plugin-go-template cannot format Hugo templates without changing what
+# they render. Three failures, each reproduced by building the site and diffing
+# all 302 pages:
+#
+#   1. It reflows a single-line attribute across lines, and the newlines land
+#      inside the attribute value. `aria-expanded="{{ if $open }}true{{ else }}
+#      false{{ end }}"` renders as aria-expanded=" false " on every collapsible
+#      sidebar section, breaking ARIA on 259 of 302 pages.
+#   2. It moves the closing `-}}` of a multi-line `{{- /* ... */ -}}` comment onto
+#      its own line, splitting `*/ -}}` into something Hugo cannot parse. ~94
+#      templates carry such comments.
+#   3. It drops significant spaces next to template actions, merging CSS class
+#      names and deleting separators (see the title separator in head.html).
+#
+# Formatting these by hand where it mattered is what the fixes above do; running
+# the formatter over all of them is not safe.
+layouts/**/*.html
+docs/layouts/**/*.html
+
+# ------------------------------------------------------------- Markdown content
+#
+# Prettier reads the indented `>}}` that closes a multi-line shortcode call as a
+# blockquote marker and rewrites it to `> }}`, after which Hugo fails with
+# "unrecognized character in shortcode action". Avoiding it would mean putting
+# every multi-line shortcode call in content on a single line.
+docs/content/**
+
+# ----------------------------------------------------------- Generated / vendored
+#
+# Build output and third-party bundles: regenerated or copied verbatim, so
+# formatting them is churn at best and expands minified bundles at worst.
+assets/css/compiled/
+assets/js/vendor/
+docs/hugo_stats.json
+docs/public/

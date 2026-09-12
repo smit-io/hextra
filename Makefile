@@ -309,10 +309,17 @@ clean-all: clean ## Everything `clean` does, plus node_modules
 	@$(OK) "removed node_modules - run: make deps"
 
 .PHONY: fmt
-fmt: deps ## Format templates, CSS and JS with Prettier
+fmt: deps ## Format the CSS, JS and Markdown Prettier can handle safely
 	@$(SAY) "Formatting"
 	@npx prettier --write . --log-level warn
 	@$(OK) "formatted"
+	@$(WARN) "Hugo templates and docs/content are excluded - see .prettierignore."
+
+.PHONY: fmt-check
+fmt-check: deps ## Verify formatting without writing (for CI)
+	@$(SAY) "Checking formatting"
+	@npx prettier --check . --log-level warn
+	@$(OK) "formatting is current"
 
 ##@ Fork sync
 

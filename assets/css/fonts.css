@@ -12,11 +12,19 @@ html {
   font-family: var(--font-body);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
 }
 
-pre, code, kbd, samp {
+pre,
+code,
+kbd,
+samp {
   font-family: var(--font-code);
 }
 
@@ -29,4 +37,4 @@ pre, code, kbd, samp {
 /* Inline code */
 :not(pre) > code {
   font-family: var(--font-code);
-} 
+}
