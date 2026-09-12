@@ -118,3 +118,11 @@ layouts/_partials/shortcodes/tabs.html
 # Prettier reformats its own config into JSONC - it collapses the overrides and
 # leaves a trailing comma - which strict JSON.parse consumers then reject.
 .prettierrc
+
+# Its doc comment carries `{{< ... >}}` examples, which prettier parses as
+# template actions and moves onto their own lines. scripts/build-skill.mjs reads
+# each @param and @example to the end of its line, so the wrap truncated the
+# generated reference: "prompts=true >}}" became "prompts=true". The doc comments
+# are the authority for the shipped skill, so this file keeps its own formatting.
+layouts/_shortcodes/jupyter.html
+
