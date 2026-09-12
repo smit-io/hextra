@@ -1,36 +1,36 @@
-{{/*
-Embed a GitHub gist.
+{{/* Embed a GitHub gist.
 
-The gist is fetched from the GitHub API at build time and rendered with the
-theme's own code block, so it gets Chroma highlighting, the filename header and
-the copy button, and the page loads no third-party script.
+  The gist is fetched from the GitHub API at build time and rendered with the
+  theme's own code block, so it gets Chroma highlighting, the filename header and
+  the copy button, and the page loads no third-party script.
 
-Ported from the Blowfish theme (MIT, Nuno Coração), which embeds GitHub's
-gist.js. That script uses document.write, ships GitHub's own stylesheet, and
-renders nothing when scripting is off.
+  Ported from the Blowfish theme (MIT, Nuno Coração), which embeds GitHub's
+  gist.js. That script uses document.write, ships GitHub's own stylesheet, and
+  renders nothing when scripting is off.
 
-@param {string} id Required. The gist id.
-@param {string} user The gist owner. Accepted for compatibility; the API does not need it.
-@param {string} file Render only this file from the gist.
-@param {string} hl_lines Lines to highlight, e.g. "34-38 43". A gist carries no
+  @param {string} id Required. The gist id.
+  @param {string} user The gist owner. Accepted for compatibility; the API does not need it.
+  @param {string} file Render only this file from the gist.
+  @param {string} hl_lines Lines to highlight, e.g. "34-38 43". A gist carries no
   highlighting metadata of its own, so this is given at the call site.
-@param {bool} lineNos Show line numbers.
-@param {int} lineNoStart First line number. Default 1.
-@param {bool} live Re-fetch each file in the reader's browser and refresh it if
+  @param {bool} lineNos Show line numbers.
+  @param {int} lineNoStart First line number. Default 1.
+  @param {bool} live Re-fetch each file in the reader's browser and refresh it if
   the gist has changed since the build. Default false. Only files that existed
   at build time are refreshed - a file added to the gist later has no block to
   appear in, and one deleted later keeps showing its build-time content.
 
-or
+  or
 
-@param {string} 0 The gist owner.
-@param {string} 1 The gist id.
-@param {string} 2 Optional filename.
+  @param {string} 0 The gist owner.
+  @param {string} 1 The gist id.
+  @param {string} 2 Optional filename.
 
-@example {{< gist id="6cad326836d38bd3a7ae" >}}
-@example {{< gist "octocat" "6cad326836d38bd3a7ae" "hello_world.rb" >}}
+  @example {{< gist id="6cad326836d38bd3a7ae"
+>}}
+@example
+{{< gist "octocat" "6cad326836d38bd3a7ae" "hello_world.rb" >}}
 */}}
-
 {{- $id := .Get "id" -}}
 {{- $file := .Get "file" -}}
 {{- if not $id -}}
@@ -76,22 +76,18 @@ or
 {{- end -}}
 {{- with .Get "lineNoStart" -}}
   {{- $options = merge $options (dict "lineNoStart" (int .)) -}}
-{{- end -}}{{/*
-  Booleans are compared through printf so an explicit `false` is honoured:
+{{- end -}}{{/* Booleans are compared through printf so an explicit `false` is honoured:
   `default` treats false as empty and would restore the default instead.
 */}}
-{{- $live := eq (printf "%v" (.Get "live")) "true" -}}{{/*
-  A build that must not reach the network must not hand the job to the
+{{- $live := eq (printf "%v" (.Get "live")) "true" -}}{{/* A build that must not reach the network must not hand the job to the
   reader's browser either, so the same switch turns the live refresh off.
 */}}
 {{- if and $live (not $remoteFetch) -}}
   {{- $live = false -}}
 {{- end -}}
 
-
 {{- with $gist -}}
-  {{- $htmlURL := .html_url | default (printf "https://gist.github.com/%s" $id) -}}{{/*
-    The API's per-file raw_url pins a revision, so it would never change and is
+  {{- $htmlURL := .html_url | default (printf "https://gist.github.com/%s" $id) -}}{{/* The API's per-file raw_url pins a revision, so it would never change and is
     useless for a live refresh. The owner-scoped form without the revision -
     gist.githubusercontent.com/<owner>/<id>/raw/<file> - always serves the
     current version and sends Access-Control-Allow-Origin, so the browser may
@@ -109,18 +105,17 @@ or
     {{- $.Page.Store.Set "hasLiveCode" true -}}
   {{- end -}}
 
+
   <div class="hextra-gist">
     {{- range $name, $meta := .files -}}
       {{- if or (not $file) (eq $name $file) -}}
-        {{- $lang := lower ($meta.language | default "") -}}{{/*
-          Assembled into one string so a non-live gist's markup is unchanged and
+        {{- $lang := lower ($meta.language | default "") -}}{{/* Assembled into one string so a non-live gist's markup is unchanged and
           the tag stays balanced, which prettier-plugin-go-template requires.
 
           The values are htmlEscaped because safeHTMLAttr below switches off
           Hugo's escaping: a gist filename or language is third-party data, and
           a `"` in one would otherwise close the attribute early.
-        */}}{{/*
-          A file the API truncated is never refreshed. The raw URL serves it
+        */}}{{/* A file the API truncated is never refreshed. The raw URL serves it
           whole, so its hash could never match the partial content hashed here,
           and the block would re-fetch the whole file, re-hash it and re-run
           the highlighter over it on every page view, for every reader,
@@ -132,8 +127,8 @@ or
           {{- $fileLive = false -}}
         {{- end -}}
         {{- $liveAttrs := "" -}}
-        {{- if $fileLive -}}{{/*
-            A bare `%` in a gist filename makes urls.JoinPath fail the build
+        {{- if $fileLive -}}
+          {{/* A bare `%` in a gist filename makes urls.JoinPath fail the build
             outright - Go tries to unescape the joined path and reports
             `invalid URL escape` - and a filename that already looks escaped,
             such as `a%20b.go`, is passed through as-is and fetches the wrong
@@ -145,7 +140,7 @@ or
           {{- $rawURL := urls.JoinPath "https://gist.githubusercontent.com" $owner $id "raw" (replace $name "%" "%25") -}}
           {{- $liveAttrs = printf ` data-live-url="%s" data-live-lang="%s" data-live-hash="%s"` (htmlEscape $rawURL) (htmlEscape $lang) (string (hash.FNV32a ($meta.content | default ""))) -}}
         {{- end -}}
-        <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code"{{ $liveAttrs | safeHTMLAttr }}>
+        <div class="hextra-code-block hx:relative hx:mt-6 hx:first:mt-0 hx:group/code" {{ $liveAttrs | safeHTMLAttr }}>
           {{- partial "components/codeblock" (dict
             "filename" $name
             "base_url" ""
@@ -153,12 +148,12 @@ or
             "content" ($meta.content | default "")
             "options" $options
             "action" (dict
-              "url" $htmlURL
-              "icon" "github"
-              "label" ((T "viewOnGitHub") | default "View on GitHub")
+            "url" $htmlURL
+            "icon" "github"
+            "label" ((T "viewOnGitHub") | default "View on GitHub")
             )
             )
-          -}}
+            -}}
           {{- if $copyEnabled -}}
             {{- partial "components/codeblock-copy-button" (dict "filename" $name) -}}
           {{- end -}}

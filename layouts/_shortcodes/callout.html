@@ -1,20 +1,20 @@
-{{/*
-A shortcode to create a callout.
+{{/* A shortcode to create a callout.
 
-@param {string} type The type of the callout (default, info, warning, error, important).
-@param {string} content The content of the callout.
-@param {string} emoji The emoji of the callout.
-@param {string} icon The icon of the callout (related to type or can be a custom icon).
+  @param {string} type The type of the callout (default, info, warning, error, important).
+  @param {string} content The content of the callout.
+  @param {string} emoji The emoji of the callout.
+  @param {string} icon The icon of the callout (related to type or can be a custom icon).
 
-@example {{< callout type="info" >}}Content{{< /callout >}}
+  @example {{< callout type="info"
+>}}Content{{< /callout >}}
 */}}
-
 {{- $type := .Get "type" | default "default" -}}
 {{- $emoji := .Get "emoji" -}}
 {{- $icon := .Get "icon" -}}
 
 {{- $styles := newScratch -}}{{/* Default icons are GitHub's alert Octicons, matching the
-  [!NOTE]-style alerts (components/github-style-alert.html) */}}
+  [!NOTE]-style alerts (components/github-style-alert.html)
+*/}}
 {{- $styles.Set "default" (dict
   "icon" "octicon-light-bulb"
   "style" "hx:border-green-400 hx:bg-green-50 hx:text-green-700 hx:dark:border-green-500/70 hx:dark:bg-green-950/60 hx:dark:text-green-400"

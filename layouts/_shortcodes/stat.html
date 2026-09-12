@@ -1,13 +1,14 @@
-{{/*
-A single metric within the `stats` shortcode.
+{{/* A single metric within the `stats` shortcode.
 
-@param {string} value The headline figure.
-@param {string} label The short description of the figure.
-@param {string} icon Optional icon displayed above the figure.
+  @param {string} value The headline figure.
+  @param {string} label The short description of the figure.
+  @param {string} icon Optional icon displayed above the figure.
 
-@example {{< stat value="40+" label="Shortcodes" >}}Compose pages without bespoke templates.{{< /stat >}}
+  @example {{< stat value="40+" label="Shortcodes"
+>}}Compose
+pages without bespoke
+templates.{{< /stat >}}
 */}}
-
 {{- $value := .Get "value" -}}
 {{- $label := .Get "label" -}}
 {{- $icon := .Get "icon" -}}
@@ -15,6 +16,7 @@ A single metric within the `stats` shortcode.
 {{- if not $value -}}
   {{- errorf "The %q shortcode requires a 'value' parameter. See %s" .Name .Position -}}
 {{- end -}}
+
 
 <div class="hextra-stat">
   {{- with $icon -}}

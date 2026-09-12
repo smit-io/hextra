@@ -1,5 +1,4 @@
-{{/*
-  Share links for a post.
+{{/* Share links for a post.
 
   Link URLs are templates using the same `{placeholder}` convention as
   `params.page.contextMenu.links`; `{url}` and `{title}` are substituted and
@@ -30,13 +29,7 @@
         {{- if and .icon (not $hasIcon) -}}{{- warnf "hextra: blog share icon %q not found in data/icons.yaml; skipping" .icon -}}{{- end -}}
         <li>
           {{- if eq (.type | default "link") "copy" -}}
-            <button
-              type="button"
-              class="hextra-blog-share-link hextra-blog-share-copy hx:group/sharecopy"
-              data-copied-label="{{ $copiedLabel }}"
-              title="{{ .name }}"
-              aria-label="{{ .name }}"
-            >
+            <button type="button" class="hextra-blog-share-link hextra-blog-share-copy hx:group/sharecopy" data-copied-label="{{ $copiedLabel }}" title="{{ .name }}" aria-label="{{ .name }}">
               <span class="hx:pointer-events-none hx:inline-flex hx:group-[.copied]/sharecopy:hidden">
                 {{- if $hasIcon -}}
                   {{- partial "utils/icon.html" (dict "name" .icon "attributes" `height="18" width="18"`) -}}

@@ -1,15 +1,14 @@
-{{/*
-A shortcode for showcasing a set of colours, such as a palette.
+{{/* A shortcode for showcasing a set of colours, such as a palette.
 
-Takes any number of positional hex codes. Each swatch shows the hex value as
-text as well as the colour, so the information is not conveyed by colour alone.
-Ported from the Blowfish theme (MIT, Nuno Coração), which is limited to three.
+  Takes any number of positional hex codes. Each swatch shows the hex value as
+  text as well as the colour, so the information is not conveyed by colour alone.
+  Ported from the Blowfish theme (MIT, Nuno Coração), which is limited to three.
 
-@param {string} 0..n Hex colour codes, e.g. "#64748b".
+  @param {string} 0..n Hex colour codes, e.g. "#64748b".
 
-@example {{< swatches "#64748b" "#3b82f6" "#06b6d4" >}}
+  @example {{< swatches "#64748b" "#3b82f6" "#06b6d4"
+>}}
 */}}
-
 {{- $colors := slice -}}
 {{- range .Params -}}
   {{- $color := . | strings.TrimSpace -}}
@@ -23,6 +22,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração), which is limited to three.
 {{- if not $colors -}}
   {{- errorf "The %q shortcode requires at least one hex colour code. See %s" .Name .Position -}}
 {{- end -}}
+
 
 <div class="hextra-swatches not-prose">
   {{- range $colors -}}

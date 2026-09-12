@@ -1,20 +1,20 @@
-{{/*
-A single entry within the `timeline` shortcode.
+{{/* A single entry within the `timeline` shortcode.
 
-@param {string} header The title of the entry.
-@param {string} subheader Optional secondary line below the title.
-@param {string} badge Optional short text shown as a badge next to the title.
-@param {string} badgeColor Optional badge colour, see the badge shortcode.
-@param {string} icon Optional icon shown on the timeline rail.
+  @param {string} header The title of the entry.
+  @param {string} subheader Optional secondary line below the title.
+  @param {string} badge Optional short text shown as a badge next to the title.
+  @param {string} badgeColor Optional badge colour, see the badge shortcode.
+  @param {string} icon Optional icon shown on the timeline rail.
 
-@example {{< timeline-item header="v1.0" badge="2024" icon="star" >}}Content{{< /timeline-item >}}
+  @example {{< timeline-item header="v1.0" badge="2024" icon="star"
+>}}Content{{< /timeline-item >}}
 */}}
-
 {{- $header := .Get "header" -}}
 {{- $subheader := .Get "subheader" -}}
 {{- $badge := .Get "badge" -}}
 {{- $badgeColor := .Get "badgeColor" | default "gray" -}}
 {{- $icon := .Get "icon" -}}
+
 
 <li class="hextra-timeline__item">
   <span class="hextra-timeline__marker" aria-hidden="true">

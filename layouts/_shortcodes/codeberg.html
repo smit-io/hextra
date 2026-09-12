@@ -1,20 +1,19 @@
-{{/*
-Render a card for a Codeberg repository, with its description, language and
-current star and fork counts.
+{{/* Render a card for a Codeberg repository, with its description, language and
+  current star and fork counts.
 
-Codeberg runs Forgejo, which exposes the Gitea API, so this is the `gitea`
-shortcode with codeberg.org as the default server.
+  Codeberg runs Forgejo, which exposes the Gitea API, so this is the `gitea`
+  shortcode with codeberg.org as the default server.
 
-Ported from the Blowfish theme (MIT, Nuno Coração).
+  Ported from the Blowfish theme (MIT, Nuno Coração).
 
-@param {string} repo Required. Repository as "owner/name".
-@param {string} server Instance URL. Default "https://codeberg.org".
-@param {bool} showThumbnail Show the owner's avatar. Default false.
-@param {string} icon Icon shown before the title. Default "codeberg".
+  @param {string} repo Required. Repository as "owner/name".
+  @param {string} server Instance URL. Default "https://codeberg.org".
+  @param {bool} showThumbnail Show the owner's avatar. Default false.
+  @param {string} icon Icon shown before the title. Default "codeberg".
 
-@example {{< codeberg repo="forgejo/forgejo" >}}
+  @example {{< codeberg repo="forgejo/forgejo"
+>}}
 */}}
-
 {{- partial "shortcodes/gitea-card.html" (dict
   "repo" (.Get "repo" | default (.Get 0))
   "server" (.Get "server" | default "https://codeberg.org")

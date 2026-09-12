@@ -1,25 +1,26 @@
 {{- /*
-Include content from another page in this site, or from a remote Markdown file.
+  Include content from another page in this site, or from a remote Markdown file.
 
-Local includes render the target page with RenderShortcodes, so shortcodes in
-the included page still work. Remote files are fetched at build time and
-rendered with RenderString: Markdown, render hooks and syntax highlighting all
-apply, but shortcodes in the remote file are not expanded.
+  Local includes render the target page with RenderShortcodes, so shortcodes in
+  the included page still work. Remote files are fetched at build time and
+  rendered with RenderString: Markdown, render hooks and syntax highlighting all
+  apply, but shortcodes in the remote file are not expanded.
 
-The remote form replaces Blowfish's separate `mdimporter` shortcode
-(MIT, Nuno Coração).
+  The remote form replaces Blowfish's separate `mdimporter` shortcode
+  (MIT, Nuno Coração).
 
-You must call this shortcode using the percent notation.
+  You must call this shortcode using the percent notation.
 
-@param {string} (positional parameter 0) The path to the page, relative to the content directory.
-@param {string} url URL of a remote Markdown file. Must be http or https, and
+  @param {string} (positional parameter 0) The path to the page, relative to the content directory.
+  @param {string} url URL of a remote Markdown file. Must be http or https, and
   must be listed in params.include.allowedHosts when that is set.
-@returns template.HTML
+  @returns template.HTML
 
-@example {{% include "functions/_common/glob-patterns" %}}
-@example {{% include url="https://example.com/README.md" %}}
+  @example {{% include "functions/_common/glob-patterns"
+%}}
+@example
+{{% include url="https://example.com/README.md" %}}
 */}}
-
 {{- $url := .Get "url" -}}
 {{- $path := .Get 0 -}}
 
@@ -28,7 +29,6 @@ You must call this shortcode using the percent notation.
 {{- end }}
 
 {{- if $url }}
-
   {{- /*
     errorf logs and carries on, so these checks have to guard the fetch with
     an else rather than sit above it - otherwise a rejected URL was reported
@@ -49,7 +49,6 @@ You must call this shortcode using the percent notation.
   {{- else if not (partial "utils/remote-fetch-enabled.html" .) }}
     {{- warnf "include: remote fetching is disabled, skipping %q. See %s" $url .Position }}
   {{- else }}
-
     {{- /* A failed fetch is a warning so a build without network access still succeeds. */}}
     {{- with try (resources.GetRemote $url) }}
       {{- with .Err }}

@@ -1,17 +1,17 @@
-{{/*
-Render a card for an Ansible Galaxy role or collection, with its description
-and download count.
+{{/* Render a card for an Ansible Galaxy role or collection, with its description
+  and download count.
 
-Ported from the Blowfish theme (MIT, Nuno Coração).
+  Ported from the Blowfish theme (MIT, Nuno Coração).
 
-@param {string} role Role as "namespace.name", e.g. "geerlingguy.docker".
-@param {string} collection Collection as "namespace.name", e.g. "community.general".
-@param {string} icon Icon shown before the title. Default "ansible".
+  @param {string} role Role as "namespace.name", e.g. "geerlingguy.docker".
+  @param {string} collection Collection as "namespace.name", e.g. "community.general".
+  @param {string} icon Icon shown before the title. Default "ansible".
 
-@example {{< ansible role="geerlingguy.docker" >}}
-@example {{< ansible collection="community.general" >}}
+  @example {{< ansible role="geerlingguy.docker"
+>}}
+@example
+{{< ansible collection="community.general" >}}
 */}}
-
 {{- $role := .Get "role" -}}
 {{- $collection := .Get "collection" -}}
 {{- $icon := .Get "icon" | default "ansible" -}}
@@ -36,8 +36,8 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 
 {{- $card := dict
   "url" (cond $isCollection
-    (printf "https://galaxy.ansible.com/ui/repo/published/%s/%s/" $namespace $name)
-    (printf "https://galaxy.ansible.com/ui/standalone/roles/%s/%s/" $namespace $name))
+  (printf "https://galaxy.ansible.com/ui/repo/published/%s/%s/" $namespace $name)
+  (printf "https://galaxy.ansible.com/ui/standalone/roles/%s/%s/" $namespace $name))
   "title" $id
   "icon" $icon
   "language" (cond $isCollection "collection" "role")
@@ -45,8 +45,8 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 
 {{- $enabled := partial "utils/remote-fetch-enabled.html" . -}}
 
-{{- if $enabled -}}{{/*
-    Roles and collections live behind entirely different APIs: roles are still
+{{- if $enabled -}}
+  {{/* Roles and collections live behind entirely different APIs: roles are still
     on the v1 search endpoint, collections on the v3 content index.
   */}}
   {{- $api := cond $isCollection
@@ -88,8 +88,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           {{- end -}}
 
           {{- with $version -}}
-            {{- $card = merge $card (dict "language" (printf "v%s" .)) -}}{{/*
-              A role's description comes back with the v1 search result, but
+            {{- $card = merge $card (dict "language" (printf "v%s" .)) -}}{{/* A role's description comes back with the v1 search result, but
               the v3 collections index returns only name, namespace, download
               count and the newest version - no description at all, which left
               every collection card blank. It lives on that version's own
@@ -122,8 +121,8 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           {{- warnf "ansible: %q was not found on Galaxy, rendering a plain card" $id -}}
         {{- end -}}
       {{- end -}}
-    {{- else -}}{{/*
-        resources.GetRemote reports an HTTP 404 as a nil resource and no error.
+    {{- else -}}
+      {{/* resources.GetRemote reports an HTTP 404 as a nil resource and no error.
         The warning above sits inside the unmarshal block and so only covers an
         empty result set, not a response that never arrived.
       */}}

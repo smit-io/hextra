@@ -1,5 +1,4 @@
-{{/*
-  Shared implementation for the Gitea-family repository cards.
+{{/* Shared implementation for the Gitea-family repository cards.
 
   Gitea, Forgejo and Codeberg all expose the same /api/v1/repos endpoint, so
   the shortcodes differ only in their icon and, where there is a canonical
@@ -16,7 +15,6 @@
   @example {{ partial "shortcodes/gitea-card.html" (dict "repo" $repo "server" $server)
 }}
 */}}
-
 {{- $repo := .repo -}}
 {{- $server := .server -}}
 {{- $icon := .icon -}}
@@ -82,8 +80,8 @@
           {{- with try (resources.GetRemote $avatar) -}}
             {{- with .Err -}}
               {{- warnf "%s: unable to fetch the avatar for %q: %s" $provider $repo . -}}
-            {{- else with .Value -}}{{/*
-                The published path has to include the instance host. The same
+            {{- else with .Value -}}
+              {{/* The published path has to include the instance host. The same
                 owner/name exists on more than one Gitea or Forgejo server -
                 forgejo/forgejo is on both codeberg.org and code.forgejo.org -
                 and keying only on provider and repository made two cards write
@@ -97,8 +95,8 @@
           {{- end -}}
         {{- end -}}
       {{- end -}}
-    {{- else -}}{{/*
-        resources.GetRemote reports an HTTP 404 as a nil resource and no error,
+    {{- else -}}
+      {{/* resources.GetRemote reports an HTTP 404 as a nil resource and no error,
         so without this branch a missing or private repository degrades to a
         bare card with nothing written to the build log.
       */}}

@@ -1,19 +1,19 @@
-{{/*
-Render a card for a GitHub repository, with its description and current star
-and fork counts.
+{{/* Render a card for a GitHub repository, with its description and current star
+  and fork counts.
 
-The repository is queried at build time, so the numbers are as of the last
-build and the reader's browser contacts nobody.
+  The repository is queried at build time, so the numbers are as of the last
+  build and the reader's browser contacts nobody.
 
-Ported from the Blowfish theme (MIT, Nuno Coração).
+  Ported from the Blowfish theme (MIT, Nuno Coração).
 
-@param {string} repo Required. Repository as "owner/name".
-@param {bool} showThumbnail Show the repository's social preview image. Default false.
+  @param {string} repo Required. Repository as "owner/name".
+  @param {bool} showThumbnail Show the repository's social preview image. Default false.
 
-@example {{< github repo="imfing/hextra" >}}
-@example {{< github repo="imfing/hextra" showThumbnail=true >}}
+  @example {{< github repo="imfing/hextra"
+>}}
+@example
+{{< github repo="imfing/hextra" showThumbnail=true >}}
 */}}
-
 {{- $repo := .Get "repo" | default (.Get 0) -}}
 
 {{- if not $repo -}}
@@ -34,8 +34,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 {{- $enabled := partial "utils/remote-fetch-enabled.html" . -}}
 
 {{- if $enabled -}}
-  {{- $headers := dict "Accept" "application/vnd.github+json" -}}{{/*
-    The unauthenticated API allows 60 requests an hour per IP, which a build
+  {{- $headers := dict "Accept" "application/vnd.github+json" -}}{{/* The unauthenticated API allows 60 requests an hour per IP, which a build
     with several cards on a shared CI runner will exhaust. A token raises that
     to 5000.
 
@@ -64,16 +63,15 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           {{- $avatar = .avatar_url -}}
         {{- end -}}
       {{- end -}}
-    {{- else -}}{{/*
-        resources.GetRemote reports an HTTP 404 as a nil resource and no error,
+    {{- else -}}
+      {{/* resources.GetRemote reports an HTTP 404 as a nil resource and no error,
         so without this branch a typo'd, renamed, deleted or private repository
         degrades to a bare card with nothing written to the build log.
       */}}
       {{- warnf "github: %q was not found, rendering a plain card" $repo -}}
     {{- end -}}
   {{- end -}}
-{{- end -}}{{/*
-  Images are fetched and served from this site rather than linked:
+{{- end -}}{{/* Images are fetched and served from this site rather than linked:
   opengraph.githubassets.com refuses hotlinked requests, so a linked preview
   renders as a broken icon. Self-hosting also keeps the card free of
   third-party requests.

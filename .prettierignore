@@ -48,8 +48,6 @@ assets/json/search-data.json
 #
 # Formatting these by hand where it mattered is what the fixes above do; running
 # the formatter over all of them is not safe.
-layouts/**/*.html
-docs/layouts/**/*.html
 
 # ------------------------------------------------------------- Markdown content
 #
@@ -94,3 +92,33 @@ layouts/_shortcodes/ltr.html
 layouts/_shortcodes/rtl.html
 layouts/_shortcodes/steps.html
 layouts/_shortcodes/timeline.html
+
+# ------------------------------------ templates with spaces next to an action
+#
+# These carry a significant space immediately next to a template action inside a
+# tag, either separating attributes or separating class names:
+#
+#   {{ if $enableImageZoom }} data-zoomable{{ end }}{{ if $lazyLoading }} loading="lazy"{{ end }}
+#   class="hextra-list{{ if $cardView }} hextra-list--cards{{ end }} not-prose"
+#
+# Prettier deletes that space, fusing `data-zoomableloading=lazy` or two class
+# names. Unlike the attribute-wrapping damage, this is not fixed by printWidth.
+# It is fixable by assembling the attributes in a variable and emitting them with
+# safeHTMLAttr - a plain string in attribute-name position trips Hugo's
+# contextual escaping and renders ZgotmplZ - but that is a rewrite of each site,
+# so they are excluded until then.
+layouts/_markup/render-image.html
+layouts/_partials/components/analytics/umami.html
+layouts/_partials/components/github-style-alert.html
+layouts/_partials/shortcodes/article-card.html
+layouts/_partials/shortcodes/button.html
+layouts/_shortcodes/gallery-item.html
+layouts/_shortcodes/hextra/feature-card.html
+layouts/_shortcodes/hextra/hero-container.html
+layouts/_shortcodes/list.html
+
+# Tab labels sit adjacent with no whitespace between them, deliberately: the
+# formatter's indentation becomes real whitespace in .PlainText, turning the meta
+# description "JSONYAMLTOML" into "JSON YAML TOML". Arguably nicer, but it is a
+# rendered-output change, so this file keeps its current layout.
+layouts/_partials/shortcodes/tabs.html

@@ -1,21 +1,19 @@
-{{/*
-A single collapsible section within the `accordion` shortcode.
+{{/* A single collapsible section within the `accordion` shortcode.
 
-@param {string} title The section heading.
-@param {string} icon Optional icon shown before the heading.
-@param {bool} open Whether the section starts open. Default false.
+  @param {string} title The section heading.
+  @param {string} icon Optional icon shown before the heading.
+  @param {bool} open Whether the section starts open. Default false.
 
-@example {{< accordion-item title="What is included?" icon="check" >}}Content{{< /accordion-item >}}
+  @example {{< accordion-item title="What is included?" icon="check"
+>}}Content{{< /accordion-item >}}
 */}}
-
 {{- $title := .Get "title" | default (.Get 0) -}}
 {{- $icon := .Get "icon" -}}
 {{- $open := eq (printf "%v" (.Get "open")) "true" -}}
 
 {{- if not $title -}}
   {{- errorf "The %q shortcode requires a 'title' parameter. See %s" .Name .Position -}}
-{{- end -}}{{/*
-  In collapse mode every section in the group shares a name, which is what
+{{- end -}}{{/* In collapse mode every section in the group shares a name, which is what
   makes the browser close the others when one opens.
 
   The name is scoped to the whole document, so it has to be unique per
@@ -33,6 +31,7 @@ A single collapsible section within the `accordion` shortcode.
     {{- $group = printf "hextra-accordion-%s" (substr (md5 (printf "%v" .Position)) 0 10) -}}
   {{- end -}}
 {{- end -}}
+
 
 <details class="hextra-accordion__item" {{ with $group }}name="{{ . }}"{{ end }} {{ if $open }}open{{ end }}>
   <summary class="hextra-accordion__summary">

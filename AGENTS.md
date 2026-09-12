@@ -220,15 +220,20 @@ When introducing a new component or modifying an existing one, verify it works w
 - Test all changes in `docs/` before releasing
 - Use `npm run dev:theme` for theme development with hot reloading
 - Format with `make fmt` before committing (`make fmt-check` verifies without writing)
-- Prettier formats templates, CSS, JS and Markdown. Two settings make that safe,
-  and both matter: `.prettierrc` sets `printWidth` to a very large value for
-  `*.html`, because wrapping a tag's attributes lets the plugin put newlines
-  inside an attribute value and delete significant spaces; and multi-line
-  template comments use the no-trim `{{/* ... */}}` form, because the plugin
-  splits the closing `-}}` of a `{{- /* ... */ -}}` comment onto its own line.
-  Write new multi-line comments in the no-trim form, or on one line
-- `docs/content/` and fifteen templates are excluded; `.prettierignore` records
-  why for each. Do not remove those entries
+- Prettier formats 161 of 186 templates, plus CSS, JS and Markdown. Two things
+  make that safe: `.prettierrc` sets a very large `printWidth` for `*.html`,
+  because wrapping a tag's attributes lets the plugin put newlines inside an
+  attribute value; and multi-line template comments use the no-trim
+  `{{/* ... */}}` form, because the plugin splits the closing `-}}` of a
+  `{{- /* ... */ -}}` comment onto its own line. Write new multi-line comments in
+  the no-trim form, or on one line
+- 25 templates and `docs/content/` are excluded, each with its reason in
+  `.prettierignore`: a significant space next to a template action (prettier
+  deletes it), a doc comment against literal HTML (no neighbour can absorb the
+  whitespace), or shortcode syntax prettier misreads. Do not remove those entries
+- `make fmt` changes no rendered page except for whitespace inside meta
+  descriptions on 27 pages. If a change to formatting config or scope alters
+  rendered output beyond that, treat it as a regression
 - Verify multi-language functionality across supported languages
 
 ## Authoring docs vs developing the theme

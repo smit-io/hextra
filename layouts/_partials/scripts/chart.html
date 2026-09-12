@@ -1,5 +1,4 @@
-{{/*
-  Chart.js loader and initialiser.
+{{/* Chart.js loader and initialiser.
 
   Loaded only on pages that use the shortcode, gated on the "hasChart" store
   flag in scripts.html.
@@ -16,6 +15,7 @@
 {{- else -}}
   {{- errorf "Chart.js asset not found at %q. Run `npm run vendor:js` or set params.chart.js." $asset -}}
 {{- end -}}
+
 
 <script>
   (() => {

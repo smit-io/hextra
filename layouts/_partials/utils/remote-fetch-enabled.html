@@ -1,5 +1,4 @@
-{{/*
-  Whether shortcodes may reach the network while the site is being built.
+{{/* Whether shortcodes may reach the network while the site is being built.
 
   params.repoCards.enable was the original switch and the check was copied
   verbatim into five card templates, none of which shared it - so gist,
@@ -11,9 +10,9 @@
 
   @returns bool
 
-  @example {{ $enabled := partial "utils/remote-fetch-enabled.html" . }}
+  @example {{ $enabled := partial "utils/remote-fetch-enabled.html" .
+}}
 */}}
-
 {{- $enabled := true -}}
 {{- if eq (printf "%v" site.Params.remoteFetch.enable) "false" -}}
   {{- $enabled = false -}}

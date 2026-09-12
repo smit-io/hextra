@@ -1,20 +1,22 @@
-{{/*
-Visually highlight an important word or phrase, such as a skill or a technology.
+{{/* Visually highlight an important word or phrase, such as a skill or a technology.
 
-Use `keywords` to group several of them together. Ported from the Blowfish
-theme (MIT, Nuno Coração), where the container is named `keywordList`.
+  Use `keywords` to group several of them together. Ported from the Blowfish
+  theme (MIT, Nuno Coração), where the container is named `keywordList`.
 
-@param {string} icon Optional icon to display before the text.
+  @param {string} icon Optional icon to display before the text.
 
-or
+  or
 
-@param {string} 0 Optional icon to display before the text.
+  @param {string} 0 Optional icon to display before the text.
 
-@example {{< keyword icon="github" >}}**Hugo** themes{{< /keyword >}}
-@example {{< keyword >}}Static sites{{< /keyword >}}
+  @example {{< keyword icon="github"
+>}}**Hugo**
+themes{{< /keyword >}}
+@example {{< keyword >}}Static
+sites{{< /keyword >}}
 */}}
-
 {{- $icon := .Get "icon" | default (.Get 0) -}}
+
 
 <span class="hextra-keyword">
   {{- with $icon -}}

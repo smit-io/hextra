@@ -1,5 +1,4 @@
-{{/*
-  Shared card for the repository shortcodes (github, gitlab, gitea, codeberg,
+{{/* Shared card for the repository shortcodes (github, gitlab, gitea, codeberg,
   forgejo and friends).
 
   Each provider shortcode fetches its own API, normalises the response into the
@@ -13,7 +12,7 @@
   @param {int} stars Star count.
   @param {int} forks Fork count.
   @param {slice} metrics Alternative to stars/forks for providers that count
-    something else, as dicts of `icon`, `label` and `value`.
+  something else, as dicts of `icon`, `label` and `value`.
   @param {string} icon Provider icon name.
   @param {string} thumbnail Optional image URL shown above the card body.
   @param {string} thumbnailFit How the thumbnail fills its box: cover (default) or contain.
@@ -21,7 +20,6 @@
   @example {{ partial "components/repo-card.html" (dict "url" $url "title" $name)
 }}
 */}}
-
 {{- $url := .url -}}
 {{- $title := .title | default $url -}}
 {{- $description := .description -}}
@@ -29,11 +27,9 @@
 {{- $stars := .stars -}}
 {{- $forks := .forks -}}
 {{- $icon := .icon -}}
-{{- $thumbnail := .thumbnail -}}{{/*
-  Stars and forks are the common case, so they stay first-class parameters;
+{{- $thumbnail := .thumbnail -}}{{/* Stars and forks are the common case, so they stay first-class parameters;
   providers that count something else (likes, downloads) pass `metrics`.
-*/}}{{/*
-  Tested against nil rather than for truthiness: zero stars is a fact about the
+*/}}{{/* Tested against nil rather than for truthiness: zero stars is a fact about the
   repository, and `with` treats it as a missing value, so a new repository lost
   its whole metrics row and looked exactly like a card whose fetch had failed.
 */}}
@@ -47,12 +43,14 @@
   {{- end -}}
 {{- end -}}
 
+
 <a class="hextra-repo-card not-prose" href="{{ $url }}" target="_blank" rel="noreferrer">
   {{- with $thumbnail -}}
     <span class="hextra-repo-card__thumbnail hextra-repo-card__thumbnail--{{ $.thumbnailFit | default "cover" }}">
       <img src="{{ . }}" alt="" loading="lazy" decoding="async" />
     </span>
   {{- end -}}
+
 
   <span class="hextra-repo-card__body">
     <span class="hextra-repo-card__title">

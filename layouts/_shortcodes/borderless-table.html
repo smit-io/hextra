@@ -43,12 +43,12 @@
   */
 -}}
 
-
 {{- $rendered := .InnerDeindent | .Page.RenderString (dict "display" "block" "markup" "markdown") -}}
 
 {{- if not (strings.Contains $rendered "<table") -}}
   {{- errorf "borderless-table: the body did not parse as a Markdown table (%s). A block shortcode inside a cell renders across several lines and terminates the table - use an inline one, or a plain Markdown table." .Position -}}
 {{- end -}}
+
 
 <div class="hextra-borderless-table" tabindex="0">
   {{- $rendered -}}

@@ -1,5 +1,4 @@
-{{/*
-  Horizontal post card, used on the tag pages: cover image on the
+{{/* Horizontal post card, used on the tag pages: cover image on the
   inline-start edge, title, meta and excerpt filling the rest. A page
   without a cover renders text across the full card width — there is no
   placeholder.
@@ -17,6 +16,7 @@
 {{- $page := .page -}}
 {{- $card := .config.card -}}
 {{- $displayTags := site.Params.blog.list.displayTags -}}
+
 
 <article class="hextra-blog-card hextra-blog-card-h">
   {{- if $card.cover -}}

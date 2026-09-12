@@ -1,14 +1,14 @@
-{{/*
-  Tag links for a page.
+{{/* Tag links for a page.
 
   Emits anchors only; the caller supplies the wrapper, so a chip caller is
   expected to wrap them in `.hextra-tag-cloud`.
 
   @param {page} context The page whose `tags` front matter is rendered.
   @param {string} [variant] "chip" for the bordered pills used by the trending
-    tags widget. Any other value renders inline text links.
+  tags widget. Any other value renders inline text links.
 
-  @example {{ partial "tags.html" (dict "context" . "variant" "chip") }}
+  @example {{ partial "tags.html" (dict "context" . "variant" "chip")
+}}
 */}}
 {{- $context := .context -}}
 {{- $isChip := eq (.variant | default "inline") "chip" -}}
