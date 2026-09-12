@@ -134,6 +134,7 @@ function parseDoc(comment) {
   const positionalDocs = [];
   const examples = [];
   const prose = [];
+  const deprecated = [];
 
   for (const line of lines) {
     const param = line.match(/^@param\s+\{([^}]*)\}\s+(\S+)\s*(.*)$/);
@@ -152,6 +153,16 @@ function parseDoc(comment) {
       for (const name of names.filter((name) => !/^\d/.test(name))) {
         params.push({ type: param[1], name, desc });
       }
+      continue;
+    }
+    // `@deprecated name Use `x` instead.` documents a parameter the template
+    // still accepts but nobody should reach for: an old spelling kept working,
+    // or one that warns at build time. Without it such a parameter looks like an
+    // omission to the cross-check, and the reference advertised it as an
+    // ordinary parameter with no description and no warning.
+    const deprecatedTag = line.match(/^@deprecated\s+(\S+)\s*(.*)$/);
+    if (deprecatedTag) {
+      deprecated.push({ name: deprecatedTag[1], note: deprecatedTag[2].trim() });
       continue;
     }
     const example = line.match(/^@example\s+(.*)$/);
@@ -176,6 +187,7 @@ function parseDoc(comment) {
     params,
     positionalDocs,
     examples,
+    deprecated,
   };
 }
 
@@ -198,7 +210,8 @@ function parseShortcode(file) {
   const examples = doc.examples.filter((e) => /\}\}\s*$/.test(e) && !/^\w+:/.test(e));
 
   const documented = new Map(doc.params.map((p) => [p.name, p]));
-  const paramNames = [...new Set([...named.keys(), ...documented.keys()])].sort();
+  const deprecated = new Map(doc.deprecated.map((d) => [d.name, d.note]));
+  const paramNames = [...new Set([...named.keys(), ...documented.keys(), ...deprecated.keys()])].sort();
 
   const params = paramNames.map((pname) => {
     const d = documented.get(pname);
@@ -214,7 +227,10 @@ function parseShortcode(file) {
       type: d?.type ?? "",
       desc,
       inCode,
-      documented: Boolean(d),
+      // A deprecated parameter is documented - just not recommended - so it is
+      // neither a gap nor an undescribed row.
+      documented: Boolean(d) || deprecated.has(pname),
+      deprecated: deprecated.get(pname),
       required: required.has(pname) || /\bRequired\b/.test(desc),
       // A default stated in the doc comment is the readable one; fall back to
       // the literal in the template only when the comment says nothing.
@@ -412,6 +428,7 @@ function paramTable(shortcode, enums) {
     if (p.default) notes.push(`Default \`${p.default}\`.`);
     if (p.positionalAlias) notes.push("Also accepted as the first positional argument.");
     if (p.alias) notes.push(`Deprecated alias: \`${p.alias}\`.`);
+    if (p.deprecated !== undefined) notes.push(`**Deprecated.** ${p.deprecated}`.trim());
     if (!p.documented) notes.push("_Undocumented in the template._");
     if (p.documented && !p.inCode) notes.push("_Documented but not read by the template._");
 
