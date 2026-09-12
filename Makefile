@@ -25,6 +25,9 @@ PREVIEW_URL ?= http://localhost:8043/
 # the host, via forwardPorts). On a host checkout, override:
 #   make test-preview PREVIEW_TEST_URL=http://localhost:8043
 PREVIEW_TEST_URL ?= http://preview:8043
+# Playwright's HTML report. Fixed so the devcontainer can forward it; see
+# playwright.config.ts.
+REPORT_PORT ?= 9323
 SITE        := docs
 STATS       := $(SITE)/hugo_stats.json
 CSS_OUT     := assets/css/compiled/main.css
@@ -247,6 +250,15 @@ test-mobile: build ## Build, then run mobile menu tests
 .PHONY: test-build
 test-build: build ## Build, then run build-output tests (asciidoc, render-link, search data)
 	@npm run test:build
+
+# Serves playwright-report/ from the last run. The port is fixed in
+# playwright.config.ts and forwarded by the devcontainer, so this is reachable at
+# http://localhost:9323 on the host. Blocks until interrupted.
+.PHONY: report
+report: ## Serve the last Playwright HTML report on port 9323
+	@$(SAY) "Serving the Playwright report on http://localhost:$(REPORT_PORT)"
+	@test -d playwright-report || { $(WARN) "no playwright-report/ - run make test first"; exit 1; }
+	@npx playwright show-report --host 0.0.0.0 --port $(REPORT_PORT)
 
 ##@ Local CI (act)
 

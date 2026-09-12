@@ -9,7 +9,13 @@ export default defineConfig({
   testDir: "./tests",
   timeout: 60_000,
   retries: 0,
-  reporter: [["list"], ["html"]],
+  // The HTML report is served on a fixed port so the devcontainer can forward it
+  // (9323 in .devcontainer/devcontainer.json); the default picks a free port,
+  // which a forward cannot follow. host 0.0.0.0 rather than the default
+  // localhost so the forward reaches it from outside the container, and
+  // open "never" because there is no browser in here to launch - view it with
+  // `make report`.
+  reporter: [["list"], ["html", { host: "0.0.0.0", port: 9323, open: "never" }]],
   use: {
     baseURL,
   },
