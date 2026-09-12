@@ -4,15 +4,16 @@
    The light surface is `light-50`, the same near-white a code block uses, rather
    than the `light-200` grey it had: side by side with a code block the grey read
    as muddy. The hover keeps its two-step distance from the resting surface, so
-   it moves down with it. Dark mode is unchanged. */
+   it moves down with it. The border is `light-900`, also the code block's, so the
+   two draw the same weight of edge. Dark mode is unchanged. */
 .hextra-accordion {
   @apply hx:my-6 hx:overflow-hidden hx:rounded-lg hx:border;
-  @apply hx:border-hextra-light-600 hx:bg-hextra-light-50;
+  @apply hx:border-hextra-light-900 hx:bg-hextra-light-50;
   @apply hx:dark:border-neutral-700 hx:dark:bg-hextra-dark-700;
 }
 
 .hextra-accordion__item {
-  @apply hx:border-b hx:border-hextra-light-600 hx:dark:border-neutral-700;
+  @apply hx:border-b hx:border-hextra-light-900 hx:dark:border-neutral-700;
 
   &:last-child {
     @apply hx:border-b-0;
