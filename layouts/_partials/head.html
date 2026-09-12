@@ -12,7 +12,7 @@
     {{- if .IsHome -}}
       {{ .Site.Title -}}
     {{ else -}}
-      {{ with .Title }}{{ . }} – {{ end -}}
+      {{ with .Title }}{{ printf "%s – " . }}{{ end -}}
       {{ .Site.Title -}}
     {{ end -}}
   </title>
@@ -46,7 +46,7 @@
       <link href="{{ $custom.RelPermalink }}" rel="stylesheet" integrity="{{ $custom.Data.Integrity }}" />
     {{- end }}
 
-  {{- /* Theme development mode (non-production + theme environment) */ -}}
+    {{- /* Theme development mode (non-production + theme environment) */ -}}
   {{- else if eq hugo.Environment "theme" }}
     {{- $devStyles := resources.Get "css/styles.css" | postCSS (dict "inlineImports" true) }}
     <link href="{{ $devStyles.RelPermalink }}" rel="stylesheet" />
@@ -54,7 +54,7 @@
     <link href="{{ $fontsCss.RelPermalink }}" rel="stylesheet" />
     <link href="{{ $customCss.RelPermalink }}" rel="stylesheet" />
 
-  {{- /* User local development */ -}}
+    {{- /* User local development */ -}}
   {{- else }}
     {{- $styles := resources.Get "css/compiled/main.css" -}}
     <link href="{{ $styles.RelPermalink }}" rel="stylesheet" />
@@ -73,7 +73,7 @@
   {{- $scripts := $scriptsHead | resources.Concat "js/main-head.js" -}}
 
   {{- if hugo.IsProduction -}}
-  {{- $scripts = $scripts | minify | fingerprint -}}
+    {{- $scripts = $scripts | minify | fingerprint -}}
   {{- end -}}
   <script src="{{ $scripts.RelPermalink }}" integrity="{{ $scripts.Data.Integrity }}"></script>
 
