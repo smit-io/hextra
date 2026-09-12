@@ -36,9 +36,16 @@
 
   {{- /* Production build */ -}}
   {{- if hugo.IsProduction }}
-    {{- $styles := slice $variablesCss $fontsCss $mainCss $customCss | resources.Concat "css/compiled/main.css" | minify | fingerprint }}
+    {{- /* Keep the theme CSS minified, but load custom.css as its own file so author
+      rules are not altered by the minifier (e.g. quoted multi-word font names). */ -}}
+    {{- $styles := slice $variablesCss $fontsCss $mainCss | resources.Concat "css/compiled/main.css" | minify | fingerprint }}
     <link rel="preload" href="{{ $styles.RelPermalink }}" as="style" integrity="{{ $styles.Data.Integrity }}" />
     <link href="{{ $styles.RelPermalink }}" rel="stylesheet" integrity="{{ $styles.Data.Integrity }}" />
+    {{- with $customCss }}
+      {{- $custom := . | fingerprint }}
+      <link rel="preload" href="{{ $custom.RelPermalink }}" as="style" integrity="{{ $custom.Data.Integrity }}" />
+      <link href="{{ $custom.RelPermalink }}" rel="stylesheet" integrity="{{ $custom.Data.Integrity }}" />
+    {{- end }}
 
   {{- /* Theme development mode (non-production + theme environment) */ -}}
   {{- else if eq hugo.Environment "theme" }}
