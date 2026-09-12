@@ -879,19 +879,34 @@ There are no slots in the navbar, the footer, the sidebars, or the home page, an
 
 These apply to every slot and every shortcode call, and every one of them can be overridden per slot, per call, or per page.
 
-| Key           | Default  | Effect                                                     |
-| ------------- | -------- | ---------------------------------------------------------- |
-| `label`       | `true`   | Show the "Advertisement" caption                           |
-| `labelText`   | —        | Replace the caption text                                   |
-| `height`      | `280px`  | Reserved height, so an arriving ad does not shift the page |
-| `maxWidth`    | —        | Cap the width                                              |
-| `align`       | `center` | `left`, `center`, `right`                                  |
-| `border`      | `true`   | Hairline around the ad                                     |
-| `background`  | `true`   | Tinted area behind the ad                                  |
-| `class`       | —        | Extra classes on the wrapper                               |
-| `placeholder` | `true`   | Draw the dashed box outside production                     |
-| `production`  | `true`   | Set false to render live ads in development too            |
-| `consent`     | —        | `npa` asks AdSense for non-personalised ads                |
+| Key           | Default  | Effect                                                             |
+| ------------- | -------- | ------------------------------------------------------------------ |
+| `label`       | `true`   | Show the "Advertisement" caption                                   |
+| `labelText`   | —        | Replace the caption text                                           |
+| `height`      | `280px`  | Minimum reserved height, so an arriving ad does not shift the page |
+| `maxWidth`    | —        | Cap the width; unset means the full content column                 |
+| `align`       | `center` | `left`, `center`, `right`. Needs `maxWidth` to have any effect     |
+| `border`      | `true`   | Hairline around the ad                                             |
+| `background`  | `true`   | Tinted area behind the ad                                          |
+| `class`       | —        | Extra classes on the wrapper                                       |
+| `placeholder` | `true`   | Draw the dashed box outside production                             |
+| `production`  | `true`   | Set false to render live ads in development too                    |
+| `consent`     | —        | `npa` asks AdSense for non-personalised ads                        |
+
+An ad fills the width of the content column unless `maxWidth` caps it, and `height` is a floor rather than a fixed size — with AdSense's default `format: auto`, Google measures the container and picks a creative that is often taller. Set both for a fixed-size unit:
+
+```yaml {filename="hugo.yaml"}
+params:
+  ads:
+    slots:
+      docsBottom:
+        slot: "7391046628"
+        maxWidth: 728px
+        height: 90px
+        format: horizontal
+```
+
+The box always fills the width it is given, because a responsive ad unit with no width to measure collapses to nothing. So `align` positions the box within the room `maxWidth` leaves over rather than shrinking it, and using `align` without `maxWidth` warns during the build instead of silently doing nothing.
 
 #### Networks
 

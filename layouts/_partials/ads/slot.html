@@ -73,6 +73,16 @@
     {{- $align = "center" -}}
   {{- end -}}
 
+  {{/* An ad fills the width it is given - a responsive unit with no width to
+    measure collapses to nothing - so alignment needs `maxWidth` to leave it
+    somewhere to move. Asking for one without the other is an authoring
+    mistake with no visible effect, which is worth saying out loud rather than
+    ignoring. Reported once per build, not once per page.
+  */}}
+  {{- if and (ne $align "center") (not $maxWidth) -}}
+    {{- warnidf (printf "ads-align-%s" $align) "ads: align %q needs maxWidth to have any effect, because an ad fills the width it is given. Set maxWidth on the %s slot, or drop the align." $align (index $opts "name") -}}
+  {{- end -}}
+
   {{/* Carbon writes its ad at the position of its own script element and
     serves one placement per page, so a second one renders nothing at all.
   */}}

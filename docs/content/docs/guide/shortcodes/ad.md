@@ -39,6 +39,22 @@ The id can be positional.
 {{</* ad "1234567890" */>}}
 ```
 
+## Size
+
+An ad fills the width of the content column, and `height` reserves a minimum
+rather than fixing the size — with AdSense's default `format: auto`, Google
+measures the container and often returns something taller. Cap both for a
+fixed-size unit:
+
+```
+{{</* ad slot="1234567890" maxWidth="728px" height="90px" format="horizontal" */>}}
+```
+
+The box always fills the width it is given, since a responsive ad unit with no
+width to measure collapses to nothing. `align` therefore positions the box
+inside whatever room `maxWidth` leaves over rather than shrinking it; using it
+without `maxWidth` warns during the build rather than silently doing nothing.
+
 ## Providers
 
 Four networks, chosen with `provider`. The default comes from
@@ -125,9 +141,9 @@ Everything here is optional except `slot`, which AdSense requires.
 | `keywords`    | string | Comma-separated targeting keywords for EthicalAds                         |
 | `serve`       | string | Override `params.ads.carbon.serve`                                        |
 | `placement`   | string | Override `params.ads.carbon.placement`                                    |
-| `height`      | string | Reserved height as a CSS length. Default `280px`.                         |
-| `maxWidth`    | string | Cap the width as a CSS length                                             |
-| `align`       | string | `center` (default), `left`, `right`                                       |
+| `height`      | string | Minimum reserved height as a CSS length. Default `280px`.                 |
+| `maxWidth`    | string | Cap the width as a CSS length. Unset means the full content column.       |
+| `align`       | string | `center` (default), `left`, `right`. Needs `maxWidth` to have any effect. |
 | `label`       | bool   | Show the "Advertisement" caption. Default true.                           |
 | `labelText`   | string | Replace the caption text                                                  |
 | `border`      | bool   | Hairline around the ad. Default true.                                     |

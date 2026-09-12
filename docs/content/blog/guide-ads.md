@@ -183,6 +183,27 @@ The same keys work on a shortcode call, so a single ad can differ from everythin
 
 The full list — `label`, `labelText`, `height`, `maxWidth`, `align`, `border`, `background`, `class`, `placeholder`, `production`, `consent` — is in the [configuration reference](/docs/guide/configuration#ads).
 
+### How wide is an ad?
+
+As wide as your content column, by default. An unconfigured slot is a full-width container at least 280px tall, which is what a responsive ad unit wants — AdSense measures the container and fills it.
+
+For something smaller, cap the width and lower the floor:
+
+```yaml {filename="hugo.yaml"}
+params:
+  ads:
+    slots:
+      docsBottom:
+        slot: "7391046628"
+        maxWidth: 728px # classic leaderboard
+        height: 90px
+        format: horizontal
+```
+
+`align` matters only once `maxWidth` has left some room to align within — at full width there is nothing to move. The ad box always fills the width it is given, because a responsive AdSense unit with no width to measure collapses to nothing, so `align` positions the box rather than shrinking it. Asking for `align` without `maxWidth` warns during the build rather than silently doing nothing.
+
+On the blog index, a slot inherits the same full width, so an interleaved ad lines up with the post cards above and below it.
+
 ## Three ways to switch ads off
 
 Coarse to fine:
@@ -228,7 +249,7 @@ Outside a production build, no ad network is contacted. You get a dashed placeho
 
 You can see and tune the layout without a single third-party request, and a development build cannot put your AdSense account at risk. To check the real markup locally, run `hugo server --environment production`, or set `production: false` on the call.
 
-The reserved height is the other half of that. `height` becomes a CSS `min-height` on the slot, so the box occupies its final size before any creative arrives and your text never jumps. It is validated as a real CSS length — anything else warns during the build and falls back to the default rather than reaching the style attribute.
+The reserved height is the other half of that. `height` becomes a CSS `min-height` on the slot, so the space is claimed before any creative arrives and your text never jumps. It is a floor, not a fixed size: with AdSense's default `format: auto`, Google measures the container and picks its own creative, which is often taller than 280px. `height` is validated as a real CSS length — anything else warns during the build and falls back to the default rather than reaching the style attribute.
 
 ## Getting approved
 

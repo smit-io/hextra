@@ -289,9 +289,9 @@ params:
     # Presentation, overridable per slot, per shortcode call, and per page
     label: true
     labelText: ""
-    height: 280px
-    maxWidth: ""
-    align: center # left | center | right
+    height: 280px # a minimum, not a fixed size
+    maxWidth: "" # unset means the full content column width
+    align: center # left | center | right; needs maxWidth to have any effect
     border: true
     background: true
     class: ""
