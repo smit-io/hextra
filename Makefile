@@ -313,7 +313,7 @@ fmt: deps ## Format templates, CSS, JS and Markdown with Prettier
 	@$(SAY) "Formatting"
 	@npx prettier --write . --log-level warn
 	@$(OK) "formatted"
-	@$(WARN) "25 templates are excluded - see .prettierignore."
+	@$(WARN) "Shortcodes and some templates are excluded - see .prettierignore."
 
 .PHONY: fmt-check
 fmt-check: deps ## Verify formatting without writing (for CI)
