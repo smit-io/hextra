@@ -183,6 +183,20 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  /*
+   * Exempt SVG subtrees from the near-zero transition duration above.
+   *
+   * Zero preserves the reduced-motion intent, no animation, while letting
+   * geometry changes apply immediately so measurements stay correct.
+   * Mermaid sizes a diagram by reading the rendered SVG back, and a 0.01ms
+   * transition is long enough that it measures the pre-transition geometry
+   * and scales the diagram wrong.
+   */
+  svg,
+  svg * {
+    transition-duration: 0s !important;
+  }
 }
 
 @layer base {
