@@ -8,8 +8,10 @@
      image, so it needs a bottom margin only. */
   @apply hx:mt-0 hx:mb-6 hx:overflow-hidden hx:rounded-lg hx:border;
   /* Same surface, border and hover colours as the `details` shortcode and the
-     accordion, so every collapsible in the theme reads as one family. */
-  @apply hx:border-hextra-light-600 hx:bg-hextra-light-200;
+     accordion, so every collapsible in the theme reads as one family: the
+     near-white `light-50` a code block uses, and its `light-900` border. The
+     `light-200` grey this carried read as muddy next to a code block. */
+  @apply hx:border-hextra-light-900 hx:bg-hextra-light-50;
   @apply hx:dark:border-neutral-700 hx:dark:bg-hextra-dark-700;
 }
 
@@ -25,7 +27,7 @@
   }
 
   &:hover {
-    @apply hx:bg-hextra-light-400 hx:dark:bg-hextra-dark-900;
+    @apply hx:bg-hextra-light-200 hx:dark:bg-hextra-dark-900;
   }
 }
 
@@ -64,6 +66,9 @@ ol.hextra-series__list {
 }
 
 .hextra-series__item {
+  /* Left at `light-600`: this is the dotted rule threading the parts together,
+     not a component edge, and at the container's `light-900` it competed with
+     the border it sits inside. */
   @apply hx:border-s hx:border-dotted hx:border-hextra-light-600 hx:dark:border-neutral-700;
   @apply hx:py-1 hx:ps-4 hx:text-sm;
 

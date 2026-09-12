@@ -96,7 +96,7 @@ A shortcode to create a badge.
 | `content` | string | The content of the badge. |
 | `icon` | string | The icon of the badge. |
 | `link` | string | The link of the badge. |
-| `type` | string | _Undocumented in the template._ |
+| `type` | string | **Deprecated.** Earlier name for `color`; still accepted. |
 
 Positional: The content of the badge.
 
@@ -117,7 +117,7 @@ A shortcode for presenting concise metrics in a responsive grid.
 | Parameter | Type | Notes |
 | --- | --- | --- |
 | `cols` | string | The number of columns ( One of `1`, `2`, `3`, `4`, `5`, `6`. Default `3)`. Deprecated alias: `columns`. |
-| `columns` | string | _Undocumented in the template._ |
+| `columns` | string | **Deprecated.** Blowfish's name for `cols`; still accepted. |
 
 ```markdown
 {{< stats cols="1" >}}
@@ -231,7 +231,7 @@ A shortcode to create a card.
 | `tagBorder` | bool | Draw the tag outline. Default `true; pass false for a flat tag`. |
 | `tagColor` | string | The color of the tag. One of `gray`, `purple`, `indigo`, `blue`, `green`, `yellow`, `orange`, `amber`, `red`. Deprecated alias: `tagType`. |
 | `tagIcon` | string | Icon shown before the tag text. |
-| `tagType` | string | _Undocumented in the template._ |
+| `tagType` | string | **Deprecated.** Earlier name for `tagColor`; still accepted. |
 | `title` | string | The title of the card. |
 
 ```markdown
@@ -250,8 +250,8 @@ Create a tabbed interface with the given items.
 
 | Parameter | Type | Notes |
 | --- | --- | --- |
-| `defaultIndex` | string | _Undocumented in the template._ |
-| `items` | string | _Undocumented in the template._ |
+| `defaultIndex` | string | **Deprecated.** Warns at build time. Use `selected` on `tab` instead. |
+| `items` | string | **Deprecated.** Warns at build time. Use `name` on `tab` instead. |
 
 ```markdown
 {{< tabs >}}
@@ -776,7 +776,7 @@ Import a code file from an external source and render it as a code block.
 | `endLine` | int | Last line to include, inclusive. |
 | `filename` | string | Optional filename header. Pass "auto" to use the URL's last segment. |
 | `hl_lines` | string | Lines to highlight, e.g. "34-38 43". Numbers the imported excerpt. |
-| `lang` | string | _Undocumented in the template._ |
+| `lang` | string | **Deprecated.** Earlier name for `type`; still accepted. |
 | `lineNoStart` | int | First line number. Default `1`. |
 | `lineNos` | bool | Show line numbers. Default `false`. |
 | `live` | bool | Re-fetch in the reader's browser and refresh if changed. Default `false`. |

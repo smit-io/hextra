@@ -70,6 +70,8 @@
   // of the container, so this has to be in place on every start, not just the
   // first. Guarded so repeated starts do not append duplicate entries.
   "postStartCommand": "git config --global --get-all safe.directory 2>/dev/null | grep -qxF \"${containerWorkspaceFolder}\" || git config --global --add safe.directory \"${containerWorkspaceFolder}\"",
-  // 1313 is the Hugo dev server, preview:8043 is the goStatic service.
-  "forwardPorts": [1313, "preview:8043"]
+  // 1313 is the Hugo dev server, preview:8043 is the goStatic service, 9323 is
+  // the Playwright HTML report (`make report`, or served automatically after a
+  // failing run).
+  "forwardPorts": [1313, "preview:8043", 9323]
 }
