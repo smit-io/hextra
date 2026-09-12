@@ -140,8 +140,18 @@ function parseDoc(comment) {
     if (param) {
       // `@param {string} 0` and `0..n` document positional arguments, which
       // are read with `.Get 0` rather than by name.
-      if (/^\d/.test(param[2])) positionalDocs.push(param[3].trim());
-      else params.push({ type: param[1], name: param[2], desc: param[3].trim() });
+      //
+      // A name may carry both spellings, as in `0|src`: the value can be passed
+      // positionally or under that name. Splitting on the bar records each side,
+      // so the named half is not lost to the leading digit - it used to be, and
+      // the parameter was then reported as undocumented and printed in the
+      // reference as "Undocumented in the template" despite being documented.
+      const desc = param[3].trim();
+      const names = param[2].split("|").filter(Boolean);
+      if (names.some((name) => /^\d/.test(name))) positionalDocs.push(desc);
+      for (const name of names.filter((name) => !/^\d/.test(name))) {
+        params.push({ type: param[1], name, desc });
+      }
       continue;
     }
     const example = line.match(/^@example\s+(.*)$/);

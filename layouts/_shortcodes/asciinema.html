@@ -1,3 +1,20 @@
+{{/* Embed an asciinema terminal recording.
+
+  The cast file is resolved in order: a page resource, a global asset, then a
+  static file. An absolute URL is used as given.
+
+  @param {string} 0|file The .cast recording to play.
+  @param {string} theme Player theme. Default "asciinema".
+  @param {string} speed Playback speed multiplier. Default 1.
+  @param {bool} autoplay Start playing on load. Default false.
+  @param {bool} loop Restart when the recording ends. Default false.
+  @param {string} poster Frame to show before playback, e.g. "npt:0:05".
+  @param {string} markers Comma-separated markers, each a time in seconds or "time:label", e.g. "5,12:Install,30:Done".
+
+  @example {{< asciinema file="demo.cast" >}}
+  @example {{< asciinema file="demo.cast" theme="asciinema" speed="1" autoplay=true loop=true poster="npt:0:05" >}}
+*/}}
+
 {{- /* Get parameters */ -}}
 {{- $castFile := .Get "file" | default (.Get 0) -}}
 {{- $theme := .Get "theme" | default "asciinema" -}}
