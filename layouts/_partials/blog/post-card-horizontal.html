@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Horizontal post card, used on the tag pages: cover image on the
   inline-start edge, title, meta and excerpt filling the rest. A page
   without a cover renders text across the full card width — there is no
@@ -13,7 +13,7 @@
 
   @example {{ partial "blog/post-card-horizontal.html" (dict "page" . "config" $cfg)
 }}
-*/ -}}
+*/}}
 {{- $page := .page -}}
 {{- $card := .config.card -}}
 {{- $displayTags := site.Params.blog.list.displayTags -}}

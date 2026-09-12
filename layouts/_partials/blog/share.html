@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Share links for a post.
 
   Link URLs are templates using the same `{placeholder}` convention as
@@ -15,7 +15,7 @@
 
   @example {{ partial "blog/share.html" (dict "context" . "config" $cfg)
 }}
-*/ -}}
+*/}}
 {{- $share := .config.article.share -}}
 {{- if $share.enable -}}
   {{- $context := .context -}}

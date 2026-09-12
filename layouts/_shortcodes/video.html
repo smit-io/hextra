@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Embed a video with an optional poster and caption.
 
 Ported from the Blowfish theme (MIT, Nuno Coração). Local paths are resolved
@@ -21,7 +21,7 @@ with the same helper the `pdf` shortcode uses, so an absolute path points at
 
 @example {{< video src="demo.mp4" caption="A short demo" >}}
 @example {{< video src="demo.mp4" autoplay=true loop=true ratio="4/3" >}}
-*/ -}}
+*/}}
 
 {{- $src := .Get "src" | default (.Get 0) -}}
 
@@ -34,12 +34,10 @@ with the same helper the `pdf` shortcode uses, so an absolute path points at
 {{- $poster := .Get "poster" -}}
 {{- with $poster -}}
   {{- $poster = partial "utils/file-path" (dict "page" $.Page "path" .) -}}
-{{- end -}}
-
-{{- /*
+{{- end -}}{{/*
   Booleans are compared through printf so an explicit `false` is honoured:
   `default` treats false as empty and would restore the default instead.
-*/ -}}
+*/}}
 {{- $autoplay := eq (printf "%v" (.Get "autoplay")) "true" -}}
 {{- $loop := eq (printf "%v" (.Get "loop")) "true" -}}
 {{- $muted := eq (printf "%v" (.Get "muted")) "true" -}}

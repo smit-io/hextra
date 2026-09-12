@@ -67,3 +67,30 @@ assets/css/compiled/
 assets/js/vendor/
 docs/hugo_stats.json
 docs/public/
+
+# ------------------------------------------------- templates that cannot be formatted
+#
+# Each of these opens (or interleaves) a multi-line doc comment whose surrounding
+# whitespace is trimmed by the comment's own `-}}`, and whose neighbour is literal
+# HTML rather than another action. Prettier splits `*/ -}}` on such a comment, and
+# every way of avoiding that leaks whitespace into the output instead:
+#   * the no-trim `{{/* ... */}}` form emits the whitespace the comment used to trim;
+#   * an ignore fence must also use the no-trim form (the plugin does not recognise
+#     `{{- /* prettier-ignore-start */ -}}`), so the fence leaks in its place.
+# Nothing adjacent can absorb it, so these keep their doc comments and exact output.
+# Every other template under layouts/ is formatted.
+layouts/_partials/blog/identity.html
+layouts/_partials/blog/rail.html
+layouts/_partials/blog/widget-heading.html
+layouts/_partials/components/codeblock.html
+layouts/_partials/scripts/typeit.html
+layouts/_partials/scripts/youtube-lite.html
+layouts/_shortcodes/chart.html
+layouts/_shortcodes/email.html
+layouts/_shortcodes/filetree/container.html
+layouts/_shortcodes/keywords.html
+layouts/_shortcodes/lead.html
+layouts/_shortcodes/ltr.html
+layouts/_shortcodes/rtl.html
+layouts/_shortcodes/steps.html
+layouts/_shortcodes/timeline.html

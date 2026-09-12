@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Render a card for a Codeberg repository, with its description, language and
 current star and fork counts.
 
@@ -13,7 +13,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 @param {string} icon Icon shown before the title. Default "codeberg".
 
 @example {{< codeberg repo="forgejo/forgejo" >}}
-*/ -}}
+*/}}
 
 {{- partial "shortcodes/gitea-card.html" (dict
   "repo" (.Get "repo" | default (.Get 0))

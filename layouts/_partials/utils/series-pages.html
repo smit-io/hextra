@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Every post in a series, in reading order.
 
   Resolved against `site.RegularPages` rather than a `series` taxonomy, so the
@@ -31,7 +31,7 @@
 
   @example {{ partialCached "utils/series-pages.html" (dict "name" $name "type" .Type) $name .Type site.Language.Lang
 }}
-*/ -}}
+*/}}
 {{- $name := .name -}}
 {{- $type := .type -}}
 {{- $ordered := slice -}}

@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Highlight a glossary term
 
 @param {string} entry Either the glossary abbreviation or the term.
@@ -9,7 +9,7 @@ or
 
 @example {{< term entry="MAC" >}}
 @example {{< term "MAC" >}}
-*/ -}}
+*/}}
 
 {{- $entry := .Get "entry" | default (.Get 0) -}}
 {{- $entryLower := lower $entry -}}

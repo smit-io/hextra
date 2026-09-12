@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Optional call-to-action card pinned to the bottom of the blog rail.
 
   Renders only when `params.blog.rail.sponsor` defines both `text` and `url`.
@@ -7,7 +7,7 @@
 
   @example {{ partial "blog/sponsor.html" (dict "config" $cfg)
 }}
-*/ -}}
+*/}}
 {{- with .config.rail.sponsor -}}
   {{- if and .text .url -}}
     {{- $external := hasPrefix .url "http" -}}

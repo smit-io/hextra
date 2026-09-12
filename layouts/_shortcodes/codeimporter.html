@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Import a code file from an external source and render it as a code block.
 
 The file is fetched at build time. A failed fetch is a warning, not an error,
@@ -35,7 +35,7 @@ server generally does not, and the refresh then quietly does nothing.
 @example {{< codeimporter url="https://example.com/main.go" startLine="10" endLine="20" >}}
 @example {{< codeimporter url="https://example.com/main.go" lineNos=true hl_lines="3-5" >}}
 @example {{< codeimporter url="https://example.com/main.go" live=true >}}
-*/ -}}
+*/}}
 {{- $url := .Get "url" -}}
 
 {{- if not $url -}}
@@ -64,13 +64,12 @@ server generally does not, and the refresh then quietly does nothing.
   {{- with try (resources.GetRemote $url) -}}
     {{- with .Err -}}
       {{- warnf "codeimporter: unable to fetch %q: %s" $url . -}}
-    {{- else with .Value -}}
-      {{- /*
+    {{- else with .Value -}}{{/*
         The byte-order mark is stripped here because the browser's res.text()
         strips it too. Keeping it would put it inside the hash on this side
         only, so a Windows-authored file could never match itself and every
         reader would re-fetch and re-highlight the block on every page view.
-      */ -}}
+      */}}
       {{- $content = strings.TrimPrefix "\ufeff" .Content -}}
     {{- else -}}
       {{- warnf "codeimporter: %q returned no content" $url -}}
@@ -79,23 +78,17 @@ server generally does not, and the refresh then quietly does nothing.
 {{- else -}}
   {{- /* The block has no offline fallback, so say why it is missing. */ -}}
   {{- warnf "codeimporter: remote fetching is disabled, skipping %q. See %s" $url .Position -}}
-{{- end -}}
-
-{{- /*
+{{- end -}}{{/*
   Booleans are compared through printf so an explicit `false` is honoured:
   `default` treats false as empty and would restore the default instead.
-*/ -}}
-{{- $live := eq (printf "%v" (.Get "live")) "true" -}}
-
-{{- /*
+*/}}
+{{- $live := eq (printf "%v" (.Get "live")) "true" -}}{{/*
   A build that must not reach the network must not hand the job to the
   reader's browser either, so the same switch turns the live refresh off.
-*/ -}}
+*/}}
 {{- if and $live (not $remoteFetch) -}}
   {{- $live = false -}}
-{{- end -}}
-
-{{- /*
+{{- end -}}{{/*
   Line numbers are validated as plain decimal digits and parsed base 10, to
   match the `parseInt(x, 10)` the client does in scripts/live-code.html.
   Hugo's `int` parses base 0: it reads "010" as octal 8 and "0x10" as 16,
@@ -104,7 +97,7 @@ server generally does not, and the refresh then quietly does nothing.
   never match and the block would re-render on every page view - and "08",
   which is not valid octal, failed the whole build rather than warning like
   every other bad input here.
-*/ -}}
+*/}}
 {{- $startLine := .Get "startLine" -}}
 {{- $endLine := .Get "endLine" -}}
 {{- with $startLine -}}
@@ -118,9 +111,7 @@ server generally does not, and the refresh then quietly does nothing.
     {{- warnf "codeimporter: endLine %q is not a whole number for %q, ignoring it. See %s" . $url $.Position -}}
     {{- $endLine = "" -}}
   {{- end -}}
-{{- end -}}
-
-{{- /*
+{{- end -}}{{/*
   Chroma options, assembled the same way gist.html does. Without this the
   partial receives an empty dict and hl_lines/lineNos are silently ignored -
   the block renders, just with no highlighted lines and no line numbers.
@@ -128,7 +119,7 @@ server generally does not, and the refresh then quietly does nothing.
   Note these number the *imported* excerpt, not the original file: after a
   startLine/endLine slice, line 1 is the first line kept. Use lineNoStart to
   restore the original numbering.
-*/ -}}
+*/}}
 {{- $options := dict -}}
 {{- with .Get "hl_lines" -}}
   {{- $options = merge $options (dict "hl_lines" .) -}}
@@ -138,16 +129,14 @@ server generally does not, and the refresh then quietly does nothing.
 {{- end -}}
 {{- with .Get "lineNoStart" -}}
   {{- $options = merge $options (dict "lineNoStart" (int .)) -}}
-{{- end -}}
-
-{{- /*
+{{- end -}}{{/*
   The slice runs outside the content guard so `live` can still emit the block
   when the build-time fetch failed. With an empty body it is a no-op.
 
   The client repeats this arithmetic verbatim in scripts/live-code.html. Any
   change here has to be mirrored there, or a refreshed block would slice
   differently from the one it replaces.
-*/ -}}
+*/}}
 {{- $body := $content -}}
 {{- if and $body (or $startLine $endLine) -}}
   {{- $lines := split (strings.TrimSuffix "\n" $body) "\n" -}}
@@ -177,8 +166,7 @@ server generally does not, and the refresh then quietly does nothing.
   {{- .Page.Store.Set "hasLiveCode" true -}}
 {{- end -}}
 
-{{- if or $body $live -}}
-  {{- /*
+{{- if or $body $live -}}{{/*
     The live attributes are assembled into a single string rather than written
     inline in the tag. Two reasons: a non-live block's markup stays
     byte-identical to what this shortcode emitted before `live` existed, and
@@ -194,7 +182,7 @@ server generally does not, and the refresh then quietly does nothing.
     Go's %q quoting is not HTML quoting, and a `"` in an author-supplied value
     would otherwise close the attribute and let the rest of it be parsed as
     markup.
-  */ -}}
+  */}}
   {{- $liveAttrs := "" -}}
   {{- if $live -}}
     {{- $liveAttrs = printf ` data-live-url="%s" data-live-lang="%s" data-live-hash="%s"` (htmlEscape $url) (htmlEscape $lang) (string (hash.FNV32a $body)) -}}
@@ -203,8 +191,7 @@ server generally does not, and the refresh then quietly does nothing.
     {{- end -}}
     {{- with $endLine -}}
       {{- $liveAttrs = printf `%s data-live-end="%s"` $liveAttrs (htmlEscape (string .)) -}}
-    {{- end -}}
-    {{- /*
+    {{- end -}}{{/*
       With no body there is no Chroma output for the client to read the block's
       shape back from, so the options are recorded here instead. Without them a
       block recovered from a failed build-time fetch came back with nothing
@@ -213,12 +200,11 @@ server generally does not, and the refresh then quietly does nothing.
       Only emitted in that case: when the block did render, its own markup is
       the better answer, since Chroma has already resolved how the options
       interact.
-    */ -}}
+    */}}
     {{- if not $body -}}
-      {{- if $options.lineNos -}}
-        {{- /* Chroma's default layout; the inline one is a site-wide setting
+      {{- if $options.lineNos -}}{{/* Chroma's default layout; the inline one is a site-wide setting
                the client cannot see, and it re-reads the real shape as soon as
-               a build renders the block. */ -}}
+               a build renders the block. */}}
         {{- $liveAttrs = printf `%s data-live-linenos="table"` $liveAttrs -}}
       {{- end -}}
       {{- with $options.lineNoStart -}}

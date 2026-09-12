@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Chart.js loader and initialiser.
 
   Loaded only on pages that use the shortcode, gated on the "hasChart" store
@@ -7,7 +7,7 @@
   The library is vendored under assets/js/vendor (see scripts/vendor-js.mjs) so
   neither the build nor the page depends on a CDN. Point params.chart.js at
   another asset to override it.
-*/ -}}
+*/}}
 
 {{- $asset := site.Params.chart.js | default "js/vendor/chart.umd.min.js" -}}
 {{- with resources.Get $asset -}}

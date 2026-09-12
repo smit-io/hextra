@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Create a tab.
 
 @param {string} name The name of the tab.
@@ -6,7 +6,7 @@ Create a tab.
 @param {string} selected Whether the tab is selected.
 
 @example {{< tab name="Foo" icon="document-text" selected=true >}}content{{< /tab >}}
-*/ -}}
+*/}}
 
 {{- $name := .Get "name" | default (printf "Tab %d" .Ordinal) -}}
 

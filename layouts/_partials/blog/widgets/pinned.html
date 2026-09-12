@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   "Pinned" widget: posts with `pinned: true` in front matter.
 
   @param {pages} pages Candidate pages.
@@ -6,7 +6,7 @@
 
   @example {{ partial "blog/widgets/pinned.html" (dict "pages" $pages "count" 3)
 }}
-*/ -}}
+*/}}
 {{- $pages := first .count (where .pages "Params.pinned" true) -}}
 {{- with $pages -}}
   {{- $title := (T "pinnedPosts") | default "Pinned" -}}

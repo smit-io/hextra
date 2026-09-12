@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 A shortcode for rendering a badge with a link.
 
 @param {string} link The link of the badge.
@@ -6,7 +6,7 @@ A shortcode for rendering a badge with a link.
 @param {string} style The style of the badge.
 
 @example {{< hextra/hero-badge >}}{{< /hextra/hero-badge >}}
-*/ -}}
+*/}}
 
 {{- $link := .Get "link" -}}
 {{- $external := hasPrefix $link "http" -}}

@@ -4,12 +4,11 @@
 {{- $customLinks := site.Params.page.contextMenu.links | default slice -}}
 
 {{- if $enable -}}
-  {{- with .OutputFormats.Get "markdown" -}}
-    {{- /* Relative, so the copy/view fetch is same-origin wherever the build
+  {{- with .OutputFormats.Get "markdown" -}}{{/* Relative, so the copy/view fetch is same-origin wherever the build
     is served — an absolute permalink breaks both when baseURL doesn't match
     the serving host (e.g. a `make build` output on the preview container).
     Custom links go to external services, so their `{markdown_url}` stays
-    absolute. */ -}}
+    absolute. */}}
     {{- $markdownURL := .RelPermalink -}}
     {{- $markdownPermalink := .Permalink -}}
     {{- $pageURL := $.Permalink -}}

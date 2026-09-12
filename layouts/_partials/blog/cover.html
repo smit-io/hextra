@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Cover image for a post card or a post hero.
 
   Renders nothing when the page has no cover, so there is no placeholder and
@@ -10,7 +10,7 @@
 
   @example {{ partial "blog/cover.html" (dict "page" . "variant" "hero")
 }}
-*/ -}}
+*/}}
 {{- $hero := eq (.variant | default "card") "hero" -}}
 {{- $process := cond $hero "Resize 1600x webp q80" "Resize 800x webp q80" -}}
 {{- $cover := partial "utils/page-image.html" (dict "page" .page "process" $process) -}}

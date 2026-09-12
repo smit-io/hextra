@@ -220,13 +220,15 @@ When introducing a new component or modifying an existing one, verify it works w
 - Test all changes in `docs/` before releasing
 - Use `npm run dev:theme` for theme development with hot reloading
 - Format with `make fmt` before committing (`make fmt-check` verifies without writing)
-- Prettier is deliberately scoped: Hugo templates (`layouts/`, `docs/layouts/`) and
-  Markdown content (`docs/content/`) are excluded, because formatting them changes
-  what the site renders — it injects newlines inside attribute values (breaking
-  `aria-expanded`), splits the closing delimiter of multi-line `{{- /* */ -}}`
-  comments so Hugo cannot parse the template, and reads the `>}}` closing a
-  multi-line shortcode as a blockquote. `.prettierignore` records each case.
-  Format templates by hand; do not remove those entries
+- Prettier formats templates, CSS, JS and Markdown. Two settings make that safe,
+  and both matter: `.prettierrc` sets `printWidth` to a very large value for
+  `*.html`, because wrapping a tag's attributes lets the plugin put newlines
+  inside an attribute value and delete significant spaces; and multi-line
+  template comments use the no-trim `{{/* ... */}}` form, because the plugin
+  splits the closing `-}}` of a `{{- /* ... */ -}}` comment onto its own line.
+  Write new multi-line comments in the no-trim form, or on one line
+- `docs/content/` and fifteen templates are excluded; `.prettierignore` records
+  why for each. Do not remove those entries
 - Verify multi-language functionality across supported languages
 
 ## Authoring docs vs developing the theme

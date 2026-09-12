@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Render Jupyter Notebook
 
   @param {string} 0|src The path of the Jupyter Notebook.
@@ -9,7 +9,7 @@
 {{< jupyter "notebook.ipynb" >}}
 @example
 {{< jupyter src="notebook.ipynb" prompts=true >}}
-*/ -}}
+*/}}
 {{- $path := .Get "src" -}}
 {{- if not $path -}}
   {{- $path = .Get 0 -}}

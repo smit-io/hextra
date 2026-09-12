@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Render a card for a GitHub repository, with its description and current star
 and fork counts.
 
@@ -12,7 +12,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 
 @example {{< github repo="imfing/hextra" >}}
 @example {{< github repo="imfing/hextra" showThumbnail=true >}}
-*/ -}}
+*/}}
 
 {{- $repo := .Get "repo" | default (.Get 0) -}}
 
@@ -34,8 +34,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 {{- $enabled := partial "utils/remote-fetch-enabled.html" . -}}
 
 {{- if $enabled -}}
-  {{- $headers := dict "Accept" "application/vnd.github+json" -}}
-  {{- /*
+  {{- $headers := dict "Accept" "application/vnd.github+json" -}}{{/*
     The unauthenticated API allows 60 requests an hour per IP, which a build
     with several cards on a shared CI runner will exhaust. A token raises that
     to 5000.
@@ -43,7 +42,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
     The name has to start with HUGO_: Hugo's default security policy only
     permits getenv on ^HUGO_ and ^CI$, and a denied read is a hard build error
     rather than an empty string. Map GITHUB_TOKEN to it in CI.
-  */ -}}
+  */}}
   {{- $token := getenv "HUGO_GITHUB_TOKEN" -}}
   {{- with $token -}}
     {{- $headers = merge $headers (dict "Authorization" (printf "Bearer %s" .)) -}}
@@ -65,18 +64,15 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           {{- $avatar = .avatar_url -}}
         {{- end -}}
       {{- end -}}
-    {{- else -}}
-      {{- /*
+    {{- else -}}{{/*
         resources.GetRemote reports an HTTP 404 as a nil resource and no error,
         so without this branch a typo'd, renamed, deleted or private repository
         degrades to a bare card with nothing written to the build log.
-      */ -}}
+      */}}
       {{- warnf "github: %q was not found, rendering a plain card" $repo -}}
     {{- end -}}
   {{- end -}}
-{{- end -}}
-
-{{- /*
+{{- end -}}{{/*
   Images are fetched and served from this site rather than linked:
   opengraph.githubassets.com refuses hotlinked requests, so a linked preview
   renders as a broken icon. Self-hosting also keeps the card free of
@@ -85,7 +81,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
   That host also rate-limits generated previews hard - a 429 asking for a
   fifteen minute backoff is routine - so the owner's avatar is used as a
   fallback. It is square, hence the contain fit.
-*/ -}}
+*/}}
 {{- if and $showThumbnail $enabled -}}
   {{- $thumbnail := "" -}}
   {{- $fit := "cover" -}}

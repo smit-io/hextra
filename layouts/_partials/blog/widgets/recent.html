@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   "Recently updated" widget: the most recently modified posts in the section.
 
   Note that `Lastmod` falls back to `Date` unless the site sets
@@ -10,7 +10,7 @@
 
   @example {{ partial "blog/widgets/recent.html" (dict "pages" $pages "count" 5)
 }}
-*/ -}}
+*/}}
 {{- $pages := first .count (.pages.ByLastmod.Reverse) -}}
 {{- with $pages -}}
   {{- $title := (T "recentlyUpdated") | default "Recently updated" -}}

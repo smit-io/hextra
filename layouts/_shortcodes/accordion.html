@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 A group of collapsible sections.
 
 Use `accordion-item` for each section. Hextra already has `details` for a
@@ -15,7 +15,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração), where the item is named
 @param {string} mode "multiple" (default) or "collapse" for one section at a time.
 
 @example {{< accordion mode="collapse" >}}{{< /accordion >}}
-*/ -}}
+*/}}
 
 {{- $mode := .Get "mode" | default "multiple" -}}
 {{- if not (in (slice "multiple" "collapse" "open") $mode) -}}

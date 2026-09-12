@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Shared card used by the `article` and `list` shortcodes.
 
   Both run while Hugo is already rendering page content (search-data.json
@@ -19,7 +19,7 @@
 
   @example {{ partial "shortcodes/article-card.html" (dict "page" $p "self" $self)
 }}
-*/ -}}
+*/}}
 
 {{- $showSummary := ne (printf "%v" .showSummary) "false" -}}
 {{- $compactSummary := eq (printf "%v" .compactSummary) "true" -}}
@@ -37,13 +37,11 @@
     {{- $date := "" -}}
     {{- if not .Date.IsZero -}}
       {{- $date = .Date | time.Format (site.Params.dateFormat | default ":date_long") -}}
-    {{- end -}}
-
-    {{- /*
+    {{- end -}}{{/*
       .RawContent is the file as written, so reading it costs nothing and
       cannot recurse. Shortcode calls are dropped first: they are markup, not
       prose, and would otherwise be counted and shown verbatim.
-    */ -}}
+    */}}
     {{- $raw := replaceRE `(?s)\{\{[%<].*?[%>]\}\}` " " .RawContent -}}
 
     {{- /* Hugo's own reading time is ceil(words / 213). */ -}}

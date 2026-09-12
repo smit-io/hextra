@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   "This article is part of a series" module.
 
   Renders one disclosure per series named in the post's front matter, listing
@@ -25,7 +25,7 @@
 
   @example {{ partial "blog/series.html" (dict "context" . "config" $cfg)
 }}
-*/ -}}
+*/}}
 {{- $context := .context -}}
 {{- $series := .config.article.series -}}
 {{- $variant := .variant | default "full" -}}

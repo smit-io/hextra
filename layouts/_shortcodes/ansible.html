@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Render a card for an Ansible Galaxy role or collection, with its description
 and download count.
 
@@ -10,7 +10,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 
 @example {{< ansible role="geerlingguy.docker" >}}
 @example {{< ansible collection="community.general" >}}
-*/ -}}
+*/}}
 
 {{- $role := .Get "role" -}}
 {{- $collection := .Get "collection" -}}
@@ -45,11 +45,10 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 
 {{- $enabled := partial "utils/remote-fetch-enabled.html" . -}}
 
-{{- if $enabled -}}
-  {{- /*
+{{- if $enabled -}}{{/*
     Roles and collections live behind entirely different APIs: roles are still
     on the v1 search endpoint, collections on the v3 content index.
-  */ -}}
+  */}}
   {{- $api := cond $isCollection
     (printf "https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/%s/%s/" $namespace $name)
     (printf "https://galaxy.ansible.com/api/v1/roles/?owner__username=%s&name=%s" $namespace $name)
@@ -89,15 +88,13 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           {{- end -}}
 
           {{- with $version -}}
-            {{- $card = merge $card (dict "language" (printf "v%s" .)) -}}
-
-            {{- /*
+            {{- $card = merge $card (dict "language" (printf "v%s" .)) -}}{{/*
               A role's description comes back with the v1 search result, but
               the v3 collections index returns only name, namespace, download
               count and the newest version - no description at all, which left
               every collection card blank. It lives on that version's own
               endpoint, under metadata.
-            */ -}}
+            */}}
             {{- if not $description -}}
               {{- $detail := printf "https://galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/%s/%s/versions/%s/" $namespace $name . -}}
               {{- with try (resources.GetRemote $detail) -}}
@@ -125,12 +122,11 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           {{- warnf "ansible: %q was not found on Galaxy, rendering a plain card" $id -}}
         {{- end -}}
       {{- end -}}
-    {{- else -}}
-      {{- /*
+    {{- else -}}{{/*
         resources.GetRemote reports an HTTP 404 as a nil resource and no error.
         The warning above sits inside the unmarshal block and so only covers an
         empty result set, not a response that never arrived.
-      */ -}}
+      */}}
       {{- warnf "ansible: %q was not found, rendering a plain card" $api -}}
     {{- end -}}
   {{- end -}}

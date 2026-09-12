@@ -1,13 +1,11 @@
-{{- $tabsID := .id }}
-
-{{- /*
+{{- $tabsID := .id -}}{{/*
 The `tabs` parameter is a list of dict with the following keys:
   - `id`: (int) the ID of the tab (the Ordinal of the tab shortcode).
   - `name`: (string) the name of the tab (the title).
   - `icon`: (string) the icon of the tab.
   - `content`: (string) the content of the tab.
   - `selected`: (bool) whether the tab is selected.
-*/ -}}
+*/}}
 {{- $tabs := .tabs }}
 
 {{- if eq (len $tabs) 0 -}}
@@ -29,10 +27,8 @@ The `tabs` parameter is a list of dict with the following keys:
 {{- end -}}
 
 {{- /* Generate a unique ID for each tab group. */ -}}
-{{- $globalID := printf "tabs-%02v" $tabsID -}}
-
-{{- /* TODO (fork): "background: linear-gradient(to top, #052964 0%, transparent 15%)" on the
-     selected tab looked great - convert to Tailwind and apply on data-[state=selected]. */ -}}
+{{- $globalID := printf "tabs-%02v" $tabsID -}}{{/* TODO (fork): "background: linear-gradient(to top, #052964 0%, transparent 15%)" on the
+     selected tab looked great - convert to Tailwind and apply on data-[state=selected]. */}}
 
 {{- /* Keep HTML on single lines to avoid `>` being parsed as blockquote when nested in steps (#876) */ -}}
 <div class="hextra-scrollbar hx:overflow-x-auto hx:overflow-y-hidden hx:overscroll-x-contain">

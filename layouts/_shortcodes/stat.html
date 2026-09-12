@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 A single metric within the `stats` shortcode.
 
 @param {string} value The headline figure.
@@ -6,7 +6,7 @@ A single metric within the `stats` shortcode.
 @param {string} icon Optional icon displayed above the figure.
 
 @example {{< stat value="40+" label="Shortcodes" >}}Compose pages without bespoke templates.{{< /stat >}}
-*/ -}}
+*/}}
 
 {{- $value := .Get "value" -}}
 {{- $label := .Get "label" -}}

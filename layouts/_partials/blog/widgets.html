@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Right rail for blog pages: recently updated, pinned, trending tags.
 
   Rendered twice per page with different layouts — as a sticky rail from the
@@ -14,7 +14,7 @@
 
   @example {{ partial "blog/widgets.html" (dict "context" . "config" $cfg "layout" "rail")
 }}
-*/ -}}
+*/}}
 {{- $widgets := .config.widgets -}}
 {{- if $widgets.enable -}}
   {{- $context := .context -}}

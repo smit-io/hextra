@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Inline metadata row for a post: date, reading time, tags.
 
   Shared by the post card and the post hero so both read identically.
@@ -9,7 +9,7 @@
 
   @example {{ partial "blog/post-meta.html" (dict "page" . "readingTime" true "tags" true)
 }}
-*/ -}}
+*/}}
 {{- $page := .page -}}
 {{- $showReadingTime := .readingTime | default false -}}
 {{- $showTags := and (.tags | default false) $page.Params.tags -}}

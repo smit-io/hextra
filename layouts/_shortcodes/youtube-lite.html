@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Embed a YouTube video as a facade: a poster image and a play button that swap
 themselves for the real player on click.
 
@@ -19,7 +19,7 @@ lite-youtube-embed library; this implementation has no dependency.
 @param {string} params Extra player parameters, e.g. "start=130&controls=0".
 
 @example {{< youtube-lite id="dQw4w9WgXcQ" label="Never Gonna Give You Up" >}}
-*/ -}}
+*/}}
 
 {{- $id := .Get "id" | default (.Get 0) -}}
 
@@ -35,23 +35,19 @@ lite-youtube-embed library; this implementation has no dependency.
 {{- if and $params (not (findRE `^[A-Za-z0-9_=&.,%-]+$` $params)) -}}
   {{- warnf "youtube-lite: dropping unsafe params %q. See %s" $params .Position -}}
   {{- $params = "" -}}
-{{- end -}}
-
-{{- /*
+{{- end -}}{{/*
   default "" normalises the missing case: with positional parameters .Get on a
   string key returns nil, `ne nil ""` is true, and the button rendered
   aria-label="Play video: %!s(<nil>)". The activation script copies that string
   into the iframe's title, so a screen-reader user heard the format error both
   before and after playback.
-*/ -}}
+*/}}
 {{- $label := .Get "label" | default "" -}}
-{{- $buttonLabel := cond (ne $label "") (printf "%s: %s" ((T "playVideo") | default "Play video") $label) ((T "playVideo") | default "Play video") -}}
-
-{{- /*
+{{- $buttonLabel := cond (ne $label "") (printf "%s: %s" ((T "playVideo") | default "Play video") $label) ((T "playVideo") | default "Play video") -}}{{/*
   Self-host the poster so an unplayed embed makes no third-party request. A
   build that must not reach the network skips the fetch and keeps the CDN URL,
   which is the same fallback an unreachable network already produces.
-*/ -}}
+*/}}
 {{- $remotePoster := printf "https://i.ytimg.com/vi/%s/hqdefault.jpg" $id -}}
 {{- $poster := $remotePoster -}}
 {{- if partial "utils/remote-fetch-enabled.html" . -}}

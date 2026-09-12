@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   A shortcode to create a card.
 
   @param {string} link The link to the card.
@@ -15,7 +15,7 @@
 
   @example {{< card link="/" title="Image Card"
 }}
-*/ -}}
+*/}}
 {{- $link := .Get "link" -}}
 {{- $title := .Get "title" -}}
 {{- $icon := .Get "icon" -}}

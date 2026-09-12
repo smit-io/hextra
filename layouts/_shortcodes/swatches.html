@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 A shortcode for showcasing a set of colours, such as a palette.
 
 Takes any number of positional hex codes. Each swatch shows the hex value as
@@ -8,7 +8,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração), which is limited to three.
 @param {string} 0..n Hex colour codes, e.g. "#64748b".
 
 @example {{< swatches "#64748b" "#3b82f6" "#06b6d4" >}}
-*/ -}}
+*/}}
 
 {{- $colors := slice -}}
 {{- range .Params -}}

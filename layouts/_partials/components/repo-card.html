@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Shared card for the repository shortcodes (github, gitlab, gitea, codeberg,
   forgejo and friends).
 
@@ -20,7 +20,7 @@
 
   @example {{ partial "components/repo-card.html" (dict "url" $url "title" $name)
 }}
-*/ -}}
+*/}}
 
 {{- $url := .url -}}
 {{- $title := .title | default $url -}}
@@ -29,17 +29,14 @@
 {{- $stars := .stars -}}
 {{- $forks := .forks -}}
 {{- $icon := .icon -}}
-{{- $thumbnail := .thumbnail -}}
-
-{{- /*
+{{- $thumbnail := .thumbnail -}}{{/*
   Stars and forks are the common case, so they stay first-class parameters;
   providers that count something else (likes, downloads) pass `metrics`.
-*/ -}}
-{{- /*
+*/}}{{/*
   Tested against nil rather than for truthiness: zero stars is a fact about the
   repository, and `with` treats it as a missing value, so a new repository lost
   its whole metrics row and looked exactly like a card whose fetch had failed.
-*/ -}}
+*/}}
 {{- $metrics := .metrics | default slice -}}
 {{- if not $metrics -}}
   {{- if ne $stars nil -}}

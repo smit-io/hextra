@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   A single post card in the blog list.
 
   The whole card is clickable: the title link is stretched over the card with
@@ -11,7 +11,7 @@
 
   @example {{ partial "blog/post-card.html" (dict "page" . "config" $cfg)
 }}
-*/ -}}
+*/}}
 {{- $page := .page -}}
 {{- $card := .config.card -}}
 {{- $displayTags := site.Params.blog.list.displayTags -}}

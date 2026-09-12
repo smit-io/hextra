@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Render a card for a Forgejo repository, with its description, language and
 current star and fork counts.
 
@@ -14,7 +14,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 @param {string} icon Icon shown before the title. Default "forgejo".
 
 @example {{< forgejo server="https://v11.next.forgejo.org" repo="a/mastodon" >}}
-*/ -}}
+*/}}
 
 {{- partial "shortcodes/gitea-card.html" (dict
   "repo" (.Get "repo")

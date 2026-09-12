@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Render a card for a Hugging Face model or dataset, with its task, likes and
 download count.
 
@@ -10,7 +10,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 
 @example {{< huggingface model="google-bert/bert-base-uncased" >}}
 @example {{< huggingface dataset="stanfordnlp/imdb" >}}
-*/ -}}
+*/}}
 
 {{- $model := .Get "model" -}}
 {{- $dataset := .Get "dataset" -}}
@@ -46,11 +46,10 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
     {{- with .Err -}}
       {{- warnf "huggingface: unable to fetch %q, rendering a plain card: %s" $api . -}}
     {{- else with .Value -}}
-      {{- with . | transform.Unmarshal -}}
-        {{- /*
+      {{- with . | transform.Unmarshal -}}{{/*
           The task tag is the most useful one-line summary the API offers for a
           model; datasets have no equivalent, so they fall back to the kind.
-        */ -}}
+        */}}
         {{- $language := .pipeline_tag | default (cond (eq $kind "datasets") "dataset" "model") -}}
 
         {{- /* Hugging Face counts likes and downloads, not stars and forks. */ -}}
@@ -70,13 +69,11 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           "language" $language
           "metrics" $metrics
           )
-        -}}
-
-        {{- /*
+        -}}{{/*
           Datasets return description at the top level. cardData.description
           was the only field read before, and the dataset API never returns
           it, so every dataset card came out with no description at all.
-        */ -}}
+        */}}
         {{- $description := .description -}}
         {{- if not $description -}}
           {{- with .cardData -}}
@@ -87,19 +84,16 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
           {{- $card = merge $card (dict "description" .) -}}
         {{- end -}}
       {{- end -}}
-    {{- else -}}
-      {{- /*
+    {{- else -}}{{/*
         resources.GetRemote reports an HTTP 404 as a nil resource and no error,
         so without this branch a missing or gated repository degrades to a bare
         card with nothing written to the build log. Hugging Face happens to
         answer 401 for gated repositories, which does surface as an error, but
         a plain typo does not.
-      */ -}}
+      */}}
       {{- warnf "huggingface: %q was not found, rendering a plain card" $api -}}
     {{- end -}}
-  {{- end -}}
-
-  {{- /*
+  {{- end -}}{{/*
     Self-hosted rather than linked, so the card makes no third-party request.
 
     The avatar endpoint answers with JSON metadata rather than an image -
@@ -107,7 +101,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
     be unmarshalled and the URL it points at fetched separately. It also
     covers organizations only: a user-owned repository answers 404, which
     resources.GetRemote reports as a nil resource with no error.
-  */ -}}
+  */}}
   {{- if and $showThumbnail (in $id "/") -}}
     {{- $owner := index (split $id "/") 0 -}}
     {{- $lookup := printf "https://huggingface.co/api/organizations/%s/avatar" $owner -}}

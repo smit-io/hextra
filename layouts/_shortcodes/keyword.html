@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Visually highlight an important word or phrase, such as a skill or a technology.
 
 Use `keywords` to group several of them together. Ported from the Blowfish
@@ -12,7 +12,7 @@ or
 
 @example {{< keyword icon="github" >}}**Hugo** themes{{< /keyword >}}
 @example {{< keyword >}}Static sites{{< /keyword >}}
-*/ -}}
+*/}}
 
 {{- $icon := .Get "icon" | default (.Get 0) -}}
 

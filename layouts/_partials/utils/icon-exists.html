@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Report whether an icon name can be rendered by `utils/icon.html`.
 
   `utils/icon.html` calls `errorf` for an unknown name, which fails the build.
@@ -13,7 +13,7 @@
 
   @example {{ if partial "utils/icon-exists.html" (dict "name" $icon)
 }}
-*/ -}}
+*/}}
 {{- $name := .name | default "" -}}
 {{- $exists := false -}}
 {{- with $name -}}

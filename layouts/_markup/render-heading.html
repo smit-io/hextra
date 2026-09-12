@@ -1,9 +1,9 @@
-{{- /* Heading render hook.
+{{/* Heading render hook.
 
   Only the tag name goes through printf and safeHTML: prettier-plugin-go-template
   has no node for a tag whose name is an expression (`<h{{ .Level
 }}>`)
-and aborts on the file. The anchor markup below stays literal so Hugo still URL-escapes the href; building it as a string bypasses that escaping. */ -}}
+and aborts on the file. The anchor markup below stays literal so Hugo still URL-escapes the href; building it as a string bypasses that escaping. */}}
 {{- $class := "" -}}
 {{- with .Attributes.class -}}
   {{- $class = printf " class=\"%s\"" . -}}

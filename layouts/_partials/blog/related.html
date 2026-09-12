@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Related posts, scored by how many tags they share with the current post.
 
   Hugo's built-in `.Related` indexes `keywords` and `date` by default, so it
@@ -10,7 +10,7 @@
 
   @example {{ partial "blog/related.html" (dict "context" . "config" $cfg)
 }}
-*/ -}}
+*/}}
 {{- $related := .config.article.related -}}
 {{- if $related.enable -}}
   {{- $context := .context -}}

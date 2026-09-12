@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Extracts all headings from a page and adds them to the scratchpad.
 
 The keys can be obtained from the scratchpad by using the "keys" key.
@@ -13,7 +13,7 @@ The scratchpad must be initialized with empty slices before calling this functio
 @param {any} scratch The scratchpad to add the heading metadata to.
 
 @example {{ partial "utils/extract-headings.html" (dict "target" $h1 "scratch" $s) }}
-*/ -}}
+*/}}
 {{- range $heading := index .target.Headings -}}
   {{- if and (eq $heading.Level 0) (not $heading.Title) -}}
     {{- $.scratch.Add "keys" (slice $heading.Title) -}}

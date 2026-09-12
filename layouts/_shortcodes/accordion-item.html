@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 A single collapsible section within the `accordion` shortcode.
 
 @param {string} title The section heading.
@@ -6,7 +6,7 @@ A single collapsible section within the `accordion` shortcode.
 @param {bool} open Whether the section starts open. Default false.
 
 @example {{< accordion-item title="What is included?" icon="check" >}}Content{{< /accordion-item >}}
-*/ -}}
+*/}}
 
 {{- $title := .Get "title" | default (.Get 0) -}}
 {{- $icon := .Get "icon" -}}
@@ -14,9 +14,7 @@ A single collapsible section within the `accordion` shortcode.
 
 {{- if not $title -}}
   {{- errorf "The %q shortcode requires a 'title' parameter. See %s" .Name .Position -}}
-{{- end -}}
-
-{{- /*
+{{- end -}}{{/*
   In collapse mode every section in the group shares a name, which is what
   makes the browser close the others when one opens.
 
@@ -26,7 +24,7 @@ A single collapsible section within the `accordion` shortcode.
   one and the two ended up in a single exclusive group - opening a section
   inside the tab collapsed an unrelated section outside it. The parent's
   source position is unique per accordion, so hash that instead.
-*/ -}}
+*/}}
 {{- $mode := "multiple" -}}
 {{- $group := "" -}}
 {{- with .Parent -}}

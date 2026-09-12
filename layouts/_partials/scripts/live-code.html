@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Refresh `live=true` code blocks from their source URL.
 
   Loaded only on pages that use the parameter, gated on the "hasLiveCode" store
@@ -10,7 +10,7 @@
   replaces it when the remote file has actually changed, which the FNV-1a hash
   emitted by the shortcode makes cheap to decide: on the common path the fetch
   completes, the hashes match, and nothing touches the DOM.
-*/ -}}
+*/}}
 
 {{- $asset := site.Params.liveCode.js | default "js/vendor/highlight.min.js" -}}
 {{- with resources.Get $asset -}}

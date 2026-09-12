@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Resolve the blog layout configuration for a page into a single dict.
 
   Every feature is opt-in: defining the corresponding block under
@@ -14,7 +14,7 @@
 
   @example {{ $cfg := partial "blog/config.html" .
 }}
-*/ -}}
+*/}}
 {{- $page := . -}}
 {{- $blog := site.Params.blog -}}
 

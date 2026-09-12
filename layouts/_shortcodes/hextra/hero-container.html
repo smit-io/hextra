@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 A simple hero container with an image on the left side.
 
 @param {string} class The class of the container.
@@ -14,7 +14,7 @@ A simple hero container with an image on the left side.
 @param {string} style The style of the container.
 
 @example {{< hextra/hero-container image="image.png" imageLink="https://example.com" imageTitle="Example Image" >}}
-*/ -}}
+*/}}
 
 {{- $class := .Get "class" -}}
 {{- $cols := .Get "cols" | default 2 -}}

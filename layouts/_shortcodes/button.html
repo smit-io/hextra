@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 A shortcode for rendering a button that highlights a primary action.
 
 `pageRef` resolves an internal page reference against the current page, so the
@@ -17,7 +17,7 @@ from its `cta` shortcode folded in.
 
 @example {{< button href="https://gohugo.io" target="_blank" >}}Hugo{{< /button >}}
 @example {{< button pageRef="/docs/guide/organize-files" style="outline" >}}Get started{{< /button >}}
-*/ -}}
+*/}}
 
 {{- $pageRef := .Get "pageRef" -}}
 {{- $href := .Get "href" -}}

@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Render a card for a Gitea repository, with its description, language and
 current star and fork counts.
 
@@ -12,7 +12,7 @@ Ported from the Blowfish theme (MIT, Nuno Coração).
 @param {string} icon Icon shown before the title. Default "gitea".
 
 @example {{< gitea server="https://git.fsfe.org" repo="FSFE/fsfe-website" >}}
-*/ -}}
+*/}}
 
 {{- partial "shortcodes/gitea-card.html" (dict
   "repo" (.Get "repo")

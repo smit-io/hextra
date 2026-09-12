@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Resolve a page's cover image and return its URL and dimensions.
 
   Resolution order:
@@ -18,7 +18,7 @@
 
   @example {{ $cover := partial "utils/page-image.html" (dict "page" . "process" "Resize 1600x webp q80")
 }}
-*/ -}}
+*/}}
 {{- $page := .page -}}
 {{- $process := .process | default "Resize 800x webp q80" -}}
 {{- $image := .image -}}

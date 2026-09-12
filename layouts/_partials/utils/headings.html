@@ -1,4 +1,4 @@
-{{- /*
+{{/*
   Returns page headings in the same top-level shape as Page.Fragments.Headings.
 
   Hugo may not populate Page.Fragments for external renderers unless the renderer is
@@ -8,7 +8,7 @@
   @param {Page} .
 
   @returns {dict} A "headings" slice with page heading entries.
-*/ -}}
+*/}}
 
 {{- $headings := slice -}}
 {{- with .Fragments -}}

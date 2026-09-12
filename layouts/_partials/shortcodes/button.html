@@ -1,4 +1,4 @@
-{{- /*
+{{/*
 Shared renderer for the `button` and `cta` shortcodes.
 
 @param {string} url The resolved destination.
@@ -7,7 +7,7 @@ Shared renderer for the `button` and `cta` shortcodes.
 @param {string} target The anchor target attribute.
 @param {string} rel The anchor rel attribute.
 @param {string} icon Optional icon name shown before the label.
-*/ -}}
+*/}}
 
 {{- $url := .url | default "#" -}}
 {{- $label := .label -}}
