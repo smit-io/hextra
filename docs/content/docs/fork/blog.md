@@ -115,7 +115,16 @@ seriesOrder: 2
 
 Part numbers are positional, not the `seriesOrder` value. Unpublishing part 3 of six renumbers the rest instead of printing a gap, and two posts that both claim `seriesOrder: 4` still get distinct labels.
 
-No `[taxonomies]` block is required — series resolve straight from front matter and are scoped to the current language, so translations never mix. Site-wide options:
+No `[taxonomies]` block is required — series resolve straight from front matter and are scoped to the current language, so translations never mix.
+
+To also get `/series/<name>/` landing pages, opt in to the theme's taxonomies with one line:
+
+```yaml {filename="hugo.yaml"}
+taxonomies:
+  _merge: shallow
+```
+
+Hugo only honours a taxonomy merge strategy set in your own configuration, so the theme cannot enable this for you. The line above merges the theme's block, which declares `category` and `tag` alongside `series` — writing your own `taxonomies` block with only `series` would drop the other two. Landing pages list their posts newest-first, like every other blog listing; the part numbers in the series module come from `seriesOrder` and are unaffected. Site-wide options:
 
 ```yaml {filename="hugo.yaml"}
 params:

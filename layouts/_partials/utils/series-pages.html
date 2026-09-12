@@ -1,9 +1,12 @@
 {{/* Every post in a series, in reading order.
 
   Resolved against `site.RegularPages` rather than a `series` taxonomy, so the
-  feature needs no `[taxonomies]` block in the site configuration - adding one
-  would force the site to re-declare `tag` and `category` or silently lose
-  them. `site.RegularPages` is already scoped to the current language, so a
+  module works whether or not the site declares one. It cannot depend on the
+  taxonomy: Hugo gives `taxonomies` a merge strategy of "none" and honours a
+  strategy only from the project config, so the block this theme ships in
+  `hugo.toml` does nothing until a site opts in with `taxonomies: {_merge:
+  shallow}`. Opting in adds /series/<name>/ landing pages and changes nothing
+  here. `site.RegularPages` is already scoped to the current language, so a
   series never mixes translations.
 
   Order comes from three buckets, concatenated in this order: posts with an
