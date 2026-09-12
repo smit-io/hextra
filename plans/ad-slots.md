@@ -410,3 +410,47 @@ Carbon, per-call overrides, a misspelled slot name and an invalid CSS length:
 
 The three warnings the fixture provokes — unknown slot name, duplicate Carbon,
 invalid length — all fire once and disable only what is broken.
+
+## Follow-up: getting approved
+
+Every network reviews before serving. AdSense approves an account and then each
+site; EthicalAds and Carbon are application-based. Only `custom` needs no
+approval, because no network is involved.
+
+This exposed a gap in the design above. AdSense looks for its loader on the live
+site while reviewing, and the loader is emitted only on pages that actually
+rendered an ad — correct for performance, wrong for review, because a site with
+no slots configured yet shows Google no code at all.
+
+Two paths, both now supported and documented:
+
+1. **Configure one slot before applying.** A single `docsBottom` puts the loader
+   on every documentation page. No code needed; this already worked.
+2. **`params.ads.adsense.verifyAllPages: true`** puts the loader in the head of
+   every page without placing any ads, via `layouts/_partials/ads/verify.html`
+   called from `head.html`. This is also what Auto ads needs, and it is the
+   better option if the site should be reviewable before deciding where ads go.
+
+`scripts/ads.html` skips the AdSense loader when `verifyAllPages` is on, so a
+page carrying an ad gets one loader rather than two. The switch honours every
+gate that matters: no `params.ads`, `enable: false`, a page's `ads: false`, and
+the production build.
+
+### Verified
+
+| Configuration              | Docs page       | Blog post       | Page with `ads: false` |
+| -------------------------- | --------------- | --------------- | ---------------------- |
+| `verifyAllPages`, no slots | 1 loader, 0 ads | 1 loader, 0 ads | 0 loaders              |
+| `verifyAllPages` + slots   | 1 loader, 1 ad  | 1 loader, 1 ad  | 0 loaders              |
+| default                    | 1 loader, 1 ad  | 0 loaders       | 0 loaders              |
+
+The loader renders in `<head>` when `verifyAllPages` is on and at the end of the
+body otherwise, with one preconnect either way.
+
+The `head.html` hook is written with trim markers on both the comment and the
+partial call. Without them it emitted blank lines into the head of every page on
+every site, whether or not ads were configured; with them, a build with
+`params.ads` absent is unchanged apart from the documentation text added here.
+
+`static/ads.txt` remains the site author's responsibility — a theme cannot ship
+one, since it names the publisher.

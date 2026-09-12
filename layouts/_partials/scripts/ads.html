@@ -6,11 +6,18 @@
 
   Carbon is absent on purpose. It writes its ad at the position of its own
   script element, so `ads/slot.html` emits that inline at the slot instead.
+
+  AdSense is skipped when `verifyAllPages` is on, because `ads/verify.html` has
+  already put the loader in the head of every page and two loaders for one
+  publisher id is a configuration Google warns about.
 */}}
 
 {{- $providers := .Store.Get "hextraAdProviders" | default slice -}}
+{{- $ads := partialCached "ads/config.html" . .RelPermalink -}}
+{{- $inHead := false -}}
+{{- with index $ads.providers "adsense" }}{{ $inHead = index . "verifyallpages" }}{{ end -}}
 
-{{- if in $providers "adsense" -}}
+{{- if and (in $providers "adsense") (not $inHead) -}}
   <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
   {{- /* One loader per publisher id in use; see ads/slot.html. */ -}}
   {{- range $client := (.Store.Get "hextraAdClients" | default slice) -}}

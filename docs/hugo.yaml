@@ -445,6 +445,10 @@ params:
   #     layout: "" # in-article and in-feed units
   #     layoutKey: "" # in-feed units
   #     test: false # request test ads instead of live ones
+  #     # Put the loader on every page rather than only on pages carrying an
+  #     # ad. AdSense looks for it while reviewing your site, and Auto ads
+  #     # needs it site-wide. Configuring one slot achieves the same thing.
+  #     verifyAllPages: false
   #
   #   ethicalads:
   #     publisher: your-publisher-id

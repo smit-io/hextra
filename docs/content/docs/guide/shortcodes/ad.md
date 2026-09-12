@@ -136,7 +136,17 @@ Everything here is optional except `slot`, which AdSense requires.
 
 ## Before you run ads
 
-Two requirements no theme can satisfy for you:
+Every network here reviews you first. AdSense approves an account and then each
+site; EthicalAds and Carbon are both application-based. Only `custom` needs no
+approval, since there is no network behind it.
+
+AdSense looks for its loader on your live site while reviewing, and it is only
+emitted on pages that actually render an ad — so configure at least one slot
+before applying, or set `params.ads.adsense.verifyAllPages: true` to put the
+loader on every page without placing any ads. See
+[Getting approved](/docs/guide/configuration#getting-approved).
+
+Two further requirements no theme can satisfy for you:
 
 - **`ads.txt`.** AdSense needs a file at your site root declaring who may sell
   your inventory. Put it in `static/ads.txt` and it is served at `/ads.txt`.

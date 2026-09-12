@@ -299,7 +299,7 @@ params:
     production: true
     consent: "" # npa for non-personalised AdSense
 
-    adsense: { client, format, fullWidth, layout, layoutKey, test }
+    adsense: { client, format, fullWidth, layout, layoutKey, test, verifyAllPages }
     ethicalads: { publisher, type, style, keywords }
     carbon: { serve, placement }
     custom: { <name>: "<raw html>" } # named creatives for house ads
@@ -315,7 +315,9 @@ A slot value is an ad unit id, `true` for a network needing no id, or a map of o
 
 Page-level: `ads: false` disables a page; `ads: { blogEnd: false, height: 120px }` disables one slot or restyles that page. Front matter cannot enable a slot the site left off.
 
-Requires an `ads.txt` at the site root and, for EU personalised ads, a consent platform configured in your AdSense account — neither of which the theme provides.
+`verifyAllPages: true` puts the AdSense loader in the head of every page instead of only pages carrying an ad, which is what AdSense review and Auto ads both need; configuring one slot achieves the same thing. It still honours `enable: false`, a page's `ads: false`, and the production gate, and a page that also renders an ad still gets one loader rather than two.
+
+Requires an `ads.txt` at the site root and, for EU personalised ads, a consent platform configured in your AdSense account — neither of which the theme provides. Every network reviews you before serving; only `custom` does not.
 
 ## Blog
 

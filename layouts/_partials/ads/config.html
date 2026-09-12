@@ -59,14 +59,14 @@
   flattening safe.
 */}}
 {{- $providerFields := dict
-  "adsense" (dict "client" "" "format" "auto" "fullwidth" true "layout" "" "layoutkey" "" "test" false)
+  "adsense" (dict "client" "" "format" "auto" "fullwidth" true "layout" "" "layoutkey" "" "test" false "verifyallpages" false)
   "ethicalads" (dict "publisher" "" "type" "image" "style" "horizontal" "keywords" slice)
   "carbon" (dict "serve" "" "placement" "")
   "custom" dict
 -}}
 
 {{- $commonKeys := slice "provider" "label" "labeltext" "height" "maxwidth" "align" "class" "border" "background" "placeholder" "production" "consent" -}}
-{{- $fieldKeys := slice "client" "format" "fullwidth" "layout" "layoutkey" "test" "publisher" "type" "style" "keywords" "serve" "placement" -}}
+{{- $fieldKeys := slice "client" "format" "fullwidth" "layout" "layoutkey" "test" "verifyallpages" "publisher" "type" "style" "keywords" "serve" "placement" -}}
 {{- $slotKeys := union $commonKeys $fieldKeys -}}
 
 {{/* The slots this theme has render points for. A name outside this list in

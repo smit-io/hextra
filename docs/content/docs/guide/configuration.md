@@ -903,6 +903,9 @@ params:
       layout: "" # in-article and in-feed units
       layoutKey: "" # in-feed units
       test: false # request test ads instead of live ones
+      # Put the loader on every page, not only pages with an ad. Needed for
+      # AdSense review and for Auto ads. See "Getting approved" below.
+      verifyAllPages: false
 
     ethicalads:
       publisher: your-publisher-id
@@ -947,6 +950,37 @@ ads:
 ```
 
 Front matter can take ads away and change how they look, but it cannot switch on a slot the site configuration left off.
+
+#### Getting approved
+
+Every ad network here reviews you before serving anything. AdSense approves an account and then each site; EthicalAds and Carbon are both application-based. Only the `custom` provider needs no approval, because there is no network behind it.
+
+AdSense looks for its loader on your live site while it reviews, and Hextra only emits that loader on pages that actually rendered an ad. Good for performance, awkward for review: a site with no slots configured yet shows Google no code at all. Two ways round it.
+
+Configure at least one slot before you apply. A single `docsBottom` puts the loader on every documentation page, which is enough to be reviewed:
+
+```yaml {filename="hugo.yaml"}
+params:
+  ads:
+    adsense:
+      client: ca-pub-XXXXXXXXXXXXXXXX
+    slots:
+      docsBottom: "4444444444"
+```
+
+Or put the loader on every page without placing any ads at all:
+
+```yaml {filename="hugo.yaml"}
+params:
+  ads:
+    adsense:
+      client: ca-pub-XXXXXXXXXXXXXXXX
+      verifyAllPages: true
+```
+
+`verifyAllPages` emits the loader in the head of every page, which is both what review wants and what [Auto ads](https://support.google.com/adsense/answer/9261805) needs. It is the better option if you want the site reviewable before deciding where ads go. With it on, a page that also renders an ad still gets exactly one loader.
+
+It respects every switch that matters: nothing is emitted without `params.ads`, with `enable: false`, on a page whose front matter says `ads: false`, or outside a production build. That last one means you will not see it with `hugo server` — use `hugo server --environment production` to check.
 
 #### What Hextra cannot do for you
 
