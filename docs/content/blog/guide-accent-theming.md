@@ -19,7 +19,7 @@ Upstream Hextra derives its whole primary color from three HSL variables — one
 
 ## Why a palette instead of a hue?
 
-Deriving 10 shades from a single hue/saturation pair produces muddy mid-tones and poor contrast at the extremes. A hand-picked (or generator-picked) palette lets each shade be tuned independently — and `oklch` keeps perceived lightness consistent across hues, so an orange accent and a blue accent at shade `500` *look* equally bright.
+Deriving 10 shades from a single hue/saturation pair produces muddy mid-tones and poor contrast at the extremes. A hand-picked (or generator-picked) palette lets each shade be tuned independently — and `oklch` keeps perceived lightness consistent across hues, so an orange accent and a blue accent at shade `500` _look_ equally bright.
 
 The same design carries in dark mode without extra work:
 
@@ -72,17 +72,17 @@ Reload the site. That's the whole rebrand — no theme rebuild needed, because t
 
 The fork migrated every component that previously used the HSL primary color:
 
-| Component                     | Accent usage                                            |
-| ----------------------------- | ------------------------------------------------------- |
-| Tabs                          | Selected tab border and text; hover underline           |
-| Sidebar                       | Active item highlight (light and dark mode)             |
-| Search                        | Result highlight, searchbox focus borders               |
-| Tags                          | Tag borders                                             |
-| Cards                         | Card border on hover                                    |
-| Hero button                   | Focus ring                                              |
-| Theme toggle, language switch | Hover/active states                                     |
-| Code blocks                   | Copy button, line highlighting                          |
-| Links and homepage            | Accent text and decorations                             |
+| Component                     | Accent usage                                  |
+| ----------------------------- | --------------------------------------------- |
+| Tabs                          | Selected tab border and text; hover underline |
+| Sidebar                       | Active item highlight (light and dark mode)   |
+| Search                        | Result highlight, searchbox focus borders     |
+| Tags                          | Tag borders                                   |
+| Cards                         | Card border on hover                          |
+| Hero button                   | Focus ring                                    |
+| Theme toggle, language switch | Hover/active states                           |
+| Code blocks                   | Copy button, line highlighting                |
+| Links and homepage            | Accent text and decorations                   |
 
 ## Step 3 (optional) — Tune the neutrals
 
@@ -101,7 +101,7 @@ Override only the shades you want to change, same file:
 ```
 
 {{< callout type="warning" >}}
-Keep the *ordering* of each ramp intact — each shade darker or lighter than its neighbor, as in the defaults. Components assume the ramp is monotonic; inverting shades produces invisible borders or low-contrast text.
+Keep the _ordering_ of each ramp intact — each shade darker or lighter than its neighbor, as in the defaults. Components assume the ramp is monotonic; inverting shades produces invisible borders or low-contrast text.
 {{< /callout >}}
 
 ## How it works under the hood

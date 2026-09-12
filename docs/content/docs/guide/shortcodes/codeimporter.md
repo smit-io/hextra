@@ -41,17 +41,17 @@ pinned to a specific revision, which would never change; the shorter
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
-| `url` | Required. URL of the file. Must be `http` or `https`. |
-| `type` | Language for syntax highlighting. Defaults to the file extension. |
-| `startLine` | First line to include, 1-based and inclusive. |
-| `endLine` | Last line to include, inclusive. |
-| `filename` | Filename header above the block. Pass `auto` to use the URL's last path segment. |
-| `hl_lines` | Lines to highlight, e.g. `34-38 43`. Ranges and single lines, space separated. |
-| `lineNos` | Show line numbers. Default `false`. |
-| `lineNoStart` | First line number. Default `1`. |
-| `live` | Re-fetch in the reader's browser and refresh the block if the source changed. Default `false`. |
+| Parameter     | Description                                                                                    |
+| ------------- | ---------------------------------------------------------------------------------------------- |
+| `url`         | Required. URL of the file. Must be `http` or `https`.                                          |
+| `type`        | Language for syntax highlighting. Defaults to the file extension.                              |
+| `startLine`   | First line to include, 1-based and inclusive.                                                  |
+| `endLine`     | Last line to include, inclusive.                                                               |
+| `filename`    | Filename header above the block. Pass `auto` to use the URL's last path segment.               |
+| `hl_lines`    | Lines to highlight, e.g. `34-38 43`. Ranges and single lines, space separated.                 |
+| `lineNos`     | Show line numbers. Default `false`.                                                            |
+| `lineNoStart` | First line number. Default `1`.                                                                |
+| `live`        | Re-fetch in the reader's browser and refresh the block if the source changed. Default `false`. |
 
 `hl_lines` and `lineNos` number the **imported excerpt**, not the original file —
 after a `startLine`/`endLine` slice, line 1 is the first line kept. Pass
@@ -59,7 +59,7 @@ after a `startLine`/`endLine` slice, line 1 is the first line kept. Pass
 
 They work the same with or without `live` — a refreshed block keeps its line
 numbers and its highlighted lines. Note that highlighting is pinned to line
-*positions*, not to the code on them: if the source changes, line 34 stays
+_positions_, not to the code on them: if the source changes, line 34 stays
 highlighted even when what is on line 34 has moved.
 
 The block is rendered through the same partial as a fenced code block, so it

@@ -24,11 +24,11 @@ A collection:
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
-| `role` | Role as `namespace.name`, e.g. `geerlingguy.docker`. |
+| Parameter    | Description                                               |
+| ------------ | --------------------------------------------------------- |
+| `role`       | Role as `namespace.name`, e.g. `geerlingguy.docker`.      |
 | `collection` | Collection as `namespace.name`, e.g. `community.general`. |
-| `icon` | Icon shown before the title. Default `ansible`. |
+| `icon`       | Icon shown before the title. Default `ansible`.           |
 
 Pass either `role` or `collection`, not both — doing so is a build error.
 
@@ -40,7 +40,7 @@ warning and falls back to a plain card; `params.repoCards.enable = false` skips
 every call.
 
 {{< callout type="info" >}}
-  Roles and collections sit behind entirely different APIs — roles on the old
-  v1 search endpoint, collections on the v3 content index — which is why the
-  two parameters are not interchangeable.
+Roles and collections sit behind entirely different APIs — roles on the old
+v1 search endpoint, collections on the v3 content index — which is why the
+two parameters are not interchangeable.
 {{< /callout >}}

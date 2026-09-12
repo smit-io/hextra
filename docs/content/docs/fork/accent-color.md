@@ -9,7 +9,7 @@ Upstream Hextra themes its primary color from three HSL variables (`--primary-hu
 
 ## Why a palette instead of a hue?
 
-Deriving 10 shades from a single hue/saturation pair produces muddy mid-tones and poor contrast at the extremes. A hand-picked (or generator-picked) palette lets each shade be tuned independently — and `oklch` keeps perceived lightness consistent across hues, so an orange accent and a blue accent at shade `500` *look* equally bright.
+Deriving 10 shades from a single hue/saturation pair produces muddy mid-tones and poor contrast at the extremes. A hand-picked (or generator-picked) palette lets each shade be tuned independently — and `oklch` keeps perceived lightness consistent across hues, so an orange accent and a blue accent at shade `500` _look_ equally bright.
 
 ## Overriding the accent color
 
@@ -100,17 +100,17 @@ The indirection matters: templates reference the stable `hextra-accent-*` tokens
 
 The fork migrated every component that previously used the HSL primary color:
 
-| Component | Accent usage |
-|---|---|
-| Tabs | Selected tab border and text; hover underline |
-| Sidebar | Active item highlight (light and dark mode) |
-| Search | Result highlight, searchbox focus borders |
-| Tags | Tag borders |
-| Cards | Card border on hover |
-| Hero button | Focus ring |
-| Theme toggle & language switch | Hover/active states |
-| Code blocks | Copy button, [line highlighting](code-blocks#line-highlighting) |
-| Links & homepage | Accent text and decorations |
+| Component                      | Accent usage                                                    |
+| ------------------------------ | --------------------------------------------------------------- |
+| Tabs                           | Selected tab border and text; hover underline                   |
+| Sidebar                        | Active item highlight (light and dark mode)                     |
+| Search                         | Result highlight, searchbox focus borders                       |
+| Tags                           | Tag borders                                                     |
+| Cards                          | Card border on hover                                            |
+| Hero button                    | Focus ring                                                      |
+| Theme toggle & language switch | Hover/active states                                             |
+| Code blocks                    | Copy button, [line highlighting](code-blocks#line-highlighting) |
+| Links & homepage               | Accent text and decorations                                     |
 
 ## Shade usage conventions
 

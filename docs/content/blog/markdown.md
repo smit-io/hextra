@@ -18,6 +18,7 @@ excludeSearch: true
 ---
 
 This article offers a sample of basic Markdown syntax that can be used in Hugo content files.
+
 <!--more-->
 
 ## Basic Syntax
@@ -34,9 +35,13 @@ This article offers a sample of basic Markdown syntax that can be used in Hugo c
 ```
 
 ## Heading 2
+
 ### Heading 3
+
 #### Heading 4
+
 ##### Heading 5
+
 ###### Heading 6
 
 ### Emphasis
@@ -51,13 +56,13 @@ __This will also be bold__
 _You **can** combine them_
 ```
 
-*This text will be italic*
+_This text will be italic_
 
 _This will also be italic_
 
 **This text will be bold**
 
-__This will also be bold__
+**This will also be bold**
 
 _You **can** combine them_
 
@@ -72,10 +77,10 @@ _You **can** combine them_
   * Item 2b
 ```
 
-* Item 1
-* Item 2
-  * Item 2a
-  * Item 2b
+- Item 1
+- Item 2
+  - Item 2a
+  - Item 2b
 
 #### Ordered
 

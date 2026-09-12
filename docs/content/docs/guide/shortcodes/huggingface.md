@@ -24,10 +24,10 @@ A dataset:
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
-| `model` | Model as `owner/name`. |
-| `dataset` | Dataset as `owner/name`. |
+| Parameter       | Description                               |
+| --------------- | ----------------------------------------- |
+| `model`         | Model as `owner/name`.                    |
+| `dataset`       | Dataset as `owner/name`.                  |
 | `showThumbnail` | Show the owner's avatar. Default `false`. |
 
 Pass either `model` or `dataset`, not both — doing so is a build error.
@@ -41,7 +41,7 @@ warning and falls back to a plain card; `params.repoCards.enable = false` skips
 every call.
 
 {{< callout type="info" >}}
-  Hugging Face counts likes and downloads rather than stars and forks, so these
-  cards show a heart and a download icon. The shared card partial takes an
-  arbitrary metrics list for exactly this reason.
+Hugging Face counts likes and downloads rather than stars and forks, so these
+cards show a heart and a download icon. The shared card partial takes an
+arbitrary metrics list for exactly this reason.
 {{< /callout >}}

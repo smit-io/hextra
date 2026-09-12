@@ -22,12 +22,12 @@ With the owner's avatar:
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
-| `repo` | Required. Repository as `owner/name`. Can also be passed positionally. |
-| `server` | Instance URL. Default `https://codeberg.org`. |
-| `showThumbnail` | Show the owner's avatar. Default `false`. |
-| `icon` | Icon shown before the title. Default `codeberg`. |
+| Parameter       | Description                                                            |
+| --------------- | ---------------------------------------------------------------------- |
+| `repo`          | Required. Repository as `owner/name`. Can also be passed positionally. |
+| `server`        | Instance URL. Default `https://codeberg.org`.                          |
+| `showThumbnail` | Show the owner's avatar. Default `false`.                              |
+| `icon`          | Icon shown before the title. Default `codeberg`.                       |
 
 Codeberg runs Forgejo, which exposes the Gitea API, so this is the
 [Gitea](../gitea) card with `codeberg.org` as the default server. Everything

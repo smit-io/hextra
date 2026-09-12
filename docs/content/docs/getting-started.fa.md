@@ -87,7 +87,6 @@ hugo server --buildDrafts --disableFastRender
 
 {{% /steps %}}
 
-
 {{% details title="چگونه تم را به‌روزرسانی کنیم؟" %}}
 
 برای به‌روزرسانی تمام ماژول‌های Hugo در پروژه خود به آخرین نسخه‌ها، دستور زیر را اجرا کنید:
@@ -165,7 +164,6 @@ hugo server --buildDrafts --disableFastRender
 
 {{% /steps %}}
 
-
 هنگام استفاده از [CI/CD](https://en.wikipedia.org/wiki/CI/CD) برای استقرار سایت Hugo، ضروری است که قبل از اجرای دستور `hugo`، دستور زیر اجرا شود.
 
 ```shell
@@ -173,7 +171,6 @@ git submodule update --init
 ```
 
 عدم اجرای این دستور منجر به پر نشدن پوشه تم با فایل‌های تم Hextra شده و باعث شکست ساخت می‌شود.
-
 
 {{% details title="چگونه تم را به‌روزرسانی کنیم؟" %}}
 
@@ -198,7 +195,7 @@ git submodule update --remote themes/hextra
 برای شروع افزودن محتوای بیشتر، بخش‌های زیر را بررسی کنید:
 
 {{< cards >}}
-  {{< card link="../guide/organize-files" title="سازماندهی فایل‌ها" icon="document-duplicate" >}}
-  {{< card link="../guide/configuration" title="پیکربندی" icon="adjustments" >}}
-  {{< card link="../guide/markdown" title="Markdown" icon="markdown" >}}
+{{< card link="../guide/organize-files" title="سازماندهی فایل‌ها" icon="document-duplicate" >}}
+{{< card link="../guide/configuration" title="پیکربندی" icon="adjustments" >}}
+{{< card link="../guide/markdown" title="Markdown" icon="markdown" >}}
 {{< /cards >}}

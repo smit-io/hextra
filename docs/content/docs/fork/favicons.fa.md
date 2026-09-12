@@ -12,19 +12,19 @@ weight: 5
 نسخه اصلی فاوآیکون‌ها را پراکنده در `static/` نگه می‌دارد. فورک آن‌ها را به زیر `static/icons/` منتقل می‌کند:
 
 {{< filetree/container >}}
-  {{< filetree/folder name="static" >}}
-    {{< filetree/folder name="icons" >}}
-      {{< filetree/file name="favicon.ico" >}}
-      {{< filetree/file name="favicon.svg" >}}
-      {{< filetree/file name="favicon-dark.svg" >}}
-      {{< filetree/file name="favicon-16x16.png" >}}
-      {{< filetree/file name="favicon-32x32.png" >}}
-      {{< filetree/file name="apple-touch-icon.png" >}}
-      {{< filetree/file name="android-chrome-192x192.png" >}}
-      {{< filetree/file name="android-chrome-512x512.png" >}}
-    {{< /filetree/folder >}}
-    {{< filetree/file name="site.webmanifest" >}}
-  {{< /filetree/folder >}}
+{{< filetree/folder name="static" >}}
+{{< filetree/folder name="icons" >}}
+{{< filetree/file name="favicon.ico" >}}
+{{< filetree/file name="favicon.svg" >}}
+{{< filetree/file name="favicon-dark.svg" >}}
+{{< filetree/file name="favicon-16x16.png" >}}
+{{< filetree/file name="favicon-32x32.png" >}}
+{{< filetree/file name="apple-touch-icon.png" >}}
+{{< filetree/file name="android-chrome-192x192.png" >}}
+{{< filetree/file name="android-chrome-512x512.png" >}}
+{{< /filetree/folder >}}
+{{< filetree/file name="site.webmanifest" >}}
+{{< /filetree/folder >}}
 {{< /filetree/container >}}
 
 `layouts/_partials/favicons.html`، `assets/js/core/favicon.js` و `static/site.webmanifest` همگی به مسیرهای `icons/` ارجاع می‌دهند، بنابراین هنگام استفاده از این فورک، فایل‌های آیکون سایت شما باید در `static/icons/` قرار داشته باشند (نه `static/`).

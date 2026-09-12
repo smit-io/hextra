@@ -13,7 +13,7 @@ series:
 seriesOrder: 2
 ---
 
-Typography is the fastest way to make a documentation site feel like *yours*. This fork of Hextra ships first-class Google Fonts support: separate fonts for headings, body text, and code, configured entirely from `hugo.yaml` — no template overrides, no custom CSS, no client-side JavaScript. This guide walks through setting it up from scratch, picking the right axes values, and fixing the common pitfalls.
+Typography is the fastest way to make a documentation site feel like _yours_. This fork of Hextra ships first-class Google Fonts support: separate fonts for headings, body text, and code, configured entirely from `hugo.yaml` — no template overrides, no custom CSS, no client-side JavaScript. This guide walks through setting it up from scratch, picking the right axes values, and fixing the common pitfalls.
 
 <!--more-->
 
@@ -21,11 +21,11 @@ Typography is the fastest way to make a documentation site feel like *yours*. Th
 
 Three independently configurable font groups:
 
-| Group     | Applies to                                                    |
-| --------- | ------------------------------------------------------------- |
-| `heading` | `h1`–`h6`, including headings inside rendered Markdown        |
-| `body`    | Everything else — paragraphs, lists, navigation, UI chrome    |
-| `code`    | Fenced code blocks, inline code, `kbd`, `samp`                |
+| Group     | Applies to                                                 |
+| --------- | ---------------------------------------------------------- |
+| `heading` | `h1`–`h6`, including headings inside rendered Markdown     |
+| `body`    | Everything else — paragraphs, lists, navigation, UI chrome |
+| `code`    | Fenced code blocks, inline code, `kbd`, `samp`             |
 
 Each group loads from Google's CDN with `preconnect` hints, supports variable fonts via the modern `axes` syntax, and falls back to a system stack you define — so the site stays readable if Google Fonts is slow or unreachable.
 
@@ -92,12 +92,12 @@ Split the `family=` value at the colon. Everything before the `:` is your `famil
 
 Common patterns you'll see:
 
-| Pattern                    | Meaning                                                              |
-| -------------------------- | -------------------------------------------------------------------- |
-| `wght@400;700`             | Static weights 400 and 700                                           |
+| Pattern                    | Meaning                                                                 |
+| -------------------------- | ----------------------------------------------------------------------- |
+| `wght@400;700`             | Static weights 400 and 700                                              |
 | `wght@100..800`            | Full variable weight range 100–800 — one small file for the whole range |
-| `ital,wght@0,400;1,400`    | Regular and italic at weight 400                                     |
-| `opsz,wght@6..12,200..900` | Optical size + weight ranges                                         |
+| `ital,wght@0,400;1,400`    | Regular and italic at weight 400                                        |
+| `opsz,wght@6..12,200..900` | Optical size + weight ranges                                            |
 
 {{< callout type="info" >}}
 Prefer range syntax (`wght@100..800`) for variable fonts — you get every weight from one request instead of one file per static weight. This is both faster and more flexible: any weight you use in CSS later is already loaded.

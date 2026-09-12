@@ -33,15 +33,15 @@ The positional form Blowfish uses also works:
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
-| `id` | Required. The gist id — the hex string at the end of its URL. |
-| `file` | Render only this file from the gist. Without it, every file is shown. |
-| `hl_lines` | Lines to highlight, e.g. `34-38 43`. Ranges and single lines, space separated. |
-| `lineNos` | Show line numbers. Default `false`. |
-| `lineNoStart` | First line number. Default `1`. |
-| `user` | The gist owner. Accepted for compatibility with Blowfish; the API does not need it. |
-| `live` | Re-fetch each file in the reader's browser and refresh it if the gist changed. Default `false`. |
+| Parameter     | Description                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------------- |
+| `id`          | Required. The gist id — the hex string at the end of its URL.                                   |
+| `file`        | Render only this file from the gist. Without it, every file is shown.                           |
+| `hl_lines`    | Lines to highlight, e.g. `34-38 43`. Ranges and single lines, space separated.                  |
+| `lineNos`     | Show line numbers. Default `false`.                                                             |
+| `lineNoStart` | First line number. Default `1`.                                                                 |
+| `user`        | The gist owner. Accepted for compatibility with Blowfish; the API does not need it.             |
+| `live`        | Re-fetch each file in the reader's browser and refresh it if the gist changed. Default `false`. |
 
 A gist carries no highlighting metadata of its own, so `hl_lines` is given at
 the call site rather than in the gist — unlike a fenced block, where it goes in
@@ -58,10 +58,10 @@ renders nothing when scripting is off. Fetching at build time instead means:
 - No request to GitHub when a reader loads the page
 
 {{< callout type="warning" >}}
-  Every build makes one unauthenticated GitHub API request per gist, and that
-  API allows 60 requests an hour per IP. A build with many gists, or a busy
-  shared CI runner, can be rate-limited. A failed fetch degrades to a plain
-  link and logs a warning rather than failing the build.
+Every build makes one unauthenticated GitHub API request per gist, and that
+API allows 60 requests an hour per IP. A build with many gists, or a busy
+shared CI runner, can be rate-limited. A failed fetch degrades to a plain
+link and logs a warning rather than failing the build.
 {{< /callout >}}
 
 Very large files are truncated by the GitHub API. When that happens the visible
@@ -93,16 +93,16 @@ once.
 
 `hl_lines`, `lineNos` and `lineNoStart` work the same with or without `live` —
 a refreshed block keeps its line numbers and its highlighted lines. Highlighting
-is pinned to line *positions* rather than to the code on them, so if the gist
+is pinned to line _positions_ rather than to the code on them, so if the gist
 changes, line 34 stays highlighted even when what is on line 34 has moved.
 
 Anonymous gists have no owner to build the raw URL from, so `live` is ignored
 there, with a warning.
 
 {{< callout type="warning" >}}
-  With `live=true` the **reader's** browser contacts
-  `gist.githubusercontent.com`, so the host sees their IP address. Without it,
-  only your build machine ever connects. A restrictive Content Security Policy
-  needs that host in `connect-src`. Pages using it also load about 126 KB of
-  client-side highlighter, since Chroma cannot run in a browser.
+With `live=true` the **reader's** browser contacts
+`gist.githubusercontent.com`, so the host sees their IP address. Without it,
+only your build machine ever connects. A restrictive Content Security Policy
+needs that host in `connect-src`. Pages using it also load about 126 KB of
+client-side highlighter, since Chroma cannot run in a browser.
 {{< /callout >}}

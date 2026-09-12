@@ -87,7 +87,6 @@ hugo server --buildDrafts --disableFastRender
 
 {{% /steps %}}
 
-
 {{% details title="テーマを更新するには？" %}}
 
 プロジェクト内のすべての Hugo モジュールを最新バージョンに更新するには、次のコマンドを実行します:
@@ -165,7 +164,6 @@ hugo server --buildDrafts --disableFastRender
 
 {{% /steps %}}
 
-
 Hugo ウェブサイトのデプロイに [CI/CD](https://ja.wikipedia.org/wiki/CI/CD) を使用する場合、`hugo` コマンドを実行する前に以下のコマンドを実行することが重要です。
 
 ```shell
@@ -173,7 +171,6 @@ git submodule update --init
 ```
 
 このコマンドを実行しないと、テーマフォルダに Hextra テーマファイルが配置されず、ビルドが失敗します。
-
 
 {{% details title="テーマを更新するには？" %}}
 
@@ -198,7 +195,7 @@ git submodule update --remote themes/hextra
 以下のセクションを探索して、さらにコンテンツを追加しましょう:
 
 {{< cards >}}
-  {{< card link="../guide/organize-files" title="ファイルの整理" icon="document-duplicate" >}}
-  {{< card link="../guide/configuration" title="設定" icon="adjustments" >}}
-  {{< card link="../guide/markdown" title="Markdown" icon="markdown" >}}
+{{< card link="../guide/organize-files" title="ファイルの整理" icon="document-duplicate" >}}
+{{< card link="../guide/configuration" title="設定" icon="adjustments" >}}
+{{< card link="../guide/markdown" title="Markdown" icon="markdown" >}}
 {{< /cards >}}

@@ -17,13 +17,13 @@ Markdown works throughout:
 - Responsive behaviour
 - Accessible markup
 - `inline code` and **emphasis**
-{{< /accordion-item >}}
+  {{< /accordion-item >}}
 
 {{< accordion-item title="Can I nest other shortcodes?" icon="collection" >}}
 Yes. Here is a callout inside an accordion:
 
 {{< callout type="info" >}}
-  Nested shortcodes render normally.
+Nested shortcodes render normally.
 {{< /callout >}}
 {{< /accordion-item >}}
 
@@ -74,17 +74,17 @@ No.
 
 `accordion`:
 
-| Parameter | Description |
-|---|---|
-| `mode` | `multiple` (default) or `collapse` for one section at a time. |
+| Parameter | Description                                                   |
+| --------- | ------------------------------------------------------------- |
+| `mode`    | `multiple` (default) or `collapse` for one section at a time. |
 
 `accordion-item`:
 
-| Parameter | Description |
-|---|---|
-| `title` | Required. The section heading. Markdown is supported. Can also be passed positionally. |
-| `icon` | Optional icon before the heading. See [Icon](../icon) for available names. |
-| `open` | Whether the section starts open. Default `false`. |
+| Parameter | Description                                                                            |
+| --------- | -------------------------------------------------------------------------------------- |
+| `title`   | Required. The section heading. Markdown is supported. Can also be passed positionally. |
+| `icon`    | Optional icon before the heading. See [Icon](../icon) for available names.             |
+| `open`    | Whether the section starts open. Default `false`.                                      |
 
 ## Implementation notes
 
@@ -95,7 +95,7 @@ in a browser too old to support it the sections simply open independently,
 which is a reasonable fallback rather than a broken one.
 
 {{< callout type="info" >}}
-  Coming from the Blowfish theme, the item is named `accordionItem` there. In
-  Hextra it is `accordion-item`, matching the theme's kebab-case shortcode
-  filenames.
+Coming from the Blowfish theme, the item is named `accordionItem` there. In
+Hextra it is `accordion-item`, matching the theme's kebab-case shortcode
+filenames.
 {{< /callout >}}

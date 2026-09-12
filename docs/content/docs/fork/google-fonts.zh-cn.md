@@ -46,13 +46,13 @@ params:
 
 ## 参数
 
-| 参数 | 类型 | 说明 |
-|---|---|---|
-| `enable` | boolean | 总开关。为 `false`（或省略）时，主题使用系统字体栈，不从 Google 加载任何内容。 |
-| `<group>.family` | string | 与 Google Fonts 完全一致的字体家族名称，例如 `"Inter"`、`"JetBrains Mono"`。允许包含空格——会自动进行 URL 编码。 |
-| `<group>.axes` | string | 来自 Google Fonts 嵌入 URL 的可变字体 axes 规格（见下文）。 |
-| `<group>.display` | string | `font-display` 策略：`auto`、`block`、`swap`、`fallback` 或 `optional`。除非有特殊理由，否则使用 `swap`。 |
-| `fallbacks.<group>` | string | 追加在 Google 字体之后的 CSS 字体栈。 |
+| 参数                | 类型    | 说明                                                                                                            |
+| ------------------- | ------- | --------------------------------------------------------------------------------------------------------------- |
+| `enable`            | boolean | 总开关。为 `false`（或省略）时，主题使用系统字体栈，不从 Google 加载任何内容。                                  |
+| `<group>.family`    | string  | 与 Google Fonts 完全一致的字体家族名称，例如 `"Inter"`、`"JetBrains Mono"`。允许包含空格——会自动进行 URL 编码。 |
+| `<group>.axes`      | string  | 来自 Google Fonts 嵌入 URL 的可变字体 axes 规格（见下文）。                                                     |
+| `<group>.display`   | string  | `font-display` 策略：`auto`、`block`、`swap`、`fallback` 或 `optional`。除非有特殊理由，否则使用 `swap`。       |
+| `fallbacks.<group>` | string  | 追加在 Google 字体之后的 CSS 字体栈。                                                                           |
 
 `<group>` 为 `heading`、`body` 或 `code` 之一。
 
@@ -82,12 +82,12 @@ Google Fonts 已从简单的字重列表转向基于 axes 的 URL 格式。获�
 
 常见的 axes 模式：
 
-| 模式 | 含义 |
-|---|---|
-| `wght@400;700` | 静态字重 400 和 700 |
-| `wght@100..800` | 完整可变字重范围 100–800（可变字体只需一个小文件） |
-| `ital,wght@0,400;1,400` | 字重 400 的常规体和斜体 |
-| `opsz,wght@6..12,200..900` | 光学尺寸 + 字重范围 |
+| 模式                       | 含义                                               |
+| -------------------------- | -------------------------------------------------- |
+| `wght@400;700`             | 静态字重 400 和 700                                |
+| `wght@100..800`            | 完整可变字重范围 100–800（可变字体只需一个小文件） |
+| `ital,wght@0,400;1,400`    | 字重 400 的常规体和斜体                            |
+| `opsz,wght@6..12,200..900` | 光学尺寸 + 字重范围                                |
 
 {{< callout type="info" >}}
 对于可变字体，优先使用范围语法（`wght@100..800`）——一次请求即可获得所有字重，而不是每个静态字重一个文件。

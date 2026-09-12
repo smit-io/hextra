@@ -41,23 +41,23 @@ Hugo has no shortcode context for it.
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
+| Parameter      | Description                                                     |
+| -------------- | --------------------------------------------------------------- |
 | positional `0` | Path to a page in this site, relative to the content directory. |
-| `url` | URL of a remote Markdown file. Must be `http` or `https`. |
+| `url`          | URL of a remote Markdown file. Must be `http` or `https`.       |
 
 Passing both is a build error.
 
 {{< callout type="warning" >}}
-  This shortcode must be called with the percent notation. With the
-  angle-bracket notation the included Markdown is emitted as raw text.
+This shortcode must be called with the percent notation. With the
+angle-bracket notation the included Markdown is emitted as raw text.
 {{< /callout >}}
 
 A remote fetch that fails logs a warning and includes nothing, so a build
 without network access still succeeds.
 
 {{< callout type="info" >}}
-  The remote form replaces Blowfish's separate `mdimporter` shortcode. For code
-  files, use [Code Importer](../codeimporter) instead — it adds syntax
-  highlighting, a filename header, a copy button and line ranges.
+The remote form replaces Blowfish's separate `mdimporter` shortcode. For code
+files, use [Code Importer](../codeimporter) instead — it adds syntax
+highlighting, a filename header, a copy button and line ranges.
 {{< /callout >}}

@@ -49,14 +49,6 @@ assets/json/search-data.json
 # Formatting these by hand where it mattered is what the fixes above do; running
 # the formatter over all of them is not safe.
 
-# ------------------------------------------------------------- Markdown content
-#
-# Prettier reads the indented `>}}` that closes a multi-line shortcode call as a
-# blockquote marker and rewrites it to `> }}`, after which Hugo fails with
-# "unrecognized character in shortcode action". Avoiding it would mean putting
-# every multi-line shortcode call in content on a single line.
-docs/content/**
-
 # ----------------------------------------------------------- Generated / vendored
 #
 # Build output and third-party bundles: regenerated or copied verbatim, so
@@ -122,3 +114,7 @@ layouts/_shortcodes/list.html
 # description "JSONYAMLTOML" into "JSON YAML TOML". Arguably nicer, but it is a
 # rendered-output change, so this file keeps its current layout.
 layouts/_partials/shortcodes/tabs.html
+
+# Prettier reformats its own config into JSONC - it collapses the overrides and
+# leaves a trailing comma - which strict JSON.parse consumers then reject.
+.prettierrc

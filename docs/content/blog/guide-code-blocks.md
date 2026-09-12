@@ -130,15 +130,15 @@ Highlighted lines inside the code cell also drop their left accent border — it
 
 For the curious, the complete delta:
 
-| Aspect          | Upstream                                   | This fork                                                    |
-| --------------- | ------------------------------------------ | ------------------------------------------------------------ |
-| Border          | None                                       | 1px border in both modes                                     |
-| Corner radius   | `rounded-xl`                               | `rounded-sm`                                                 |
-| Background      | Translucent primary tint                   | Solid palette: `hextra-light-50` / `hextra-dark-50`          |
-| Filename header | Primary-tinted, `rounded-t-xl`             | Palette background with border, `rounded-t-sm`               |
-| Line highlight  | Faint `primary-800/10` wash                | Accent background + 2px accent left border, tuned per mode   |
-| Copy button     | Broken contrast in light mode              | Fixed, neutral surface that fits both modes                  |
-| File-type icons | None                                       | Monochrome icon resolved from the filename extension         |
+| Aspect          | Upstream                       | This fork                                                  |
+| --------------- | ------------------------------ | ---------------------------------------------------------- |
+| Border          | None                           | 1px border in both modes                                   |
+| Corner radius   | `rounded-xl`                   | `rounded-sm`                                               |
+| Background      | Translucent primary tint       | Solid palette: `hextra-light-50` / `hextra-dark-50`        |
+| Filename header | Primary-tinted, `rounded-t-xl` | Palette background with border, `rounded-t-sm`             |
+| Line highlight  | Faint `primary-800/10` wash    | Accent background + 2px accent left border, tuned per mode |
+| Copy button     | Broken contrast in light mode  | Fixed, neutral surface that fits both modes                |
+| File-type icons | None                           | Monochrome icon resolved from the filename extension       |
 
 All of it lives in `assets/css/highlight.css`.
 

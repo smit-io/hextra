@@ -32,17 +32,17 @@ Self-hosted and enterprise instances work too, as long as the
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
-| `project` | Namespace path, e.g. `gitlab-org/gitlab`. Can also be passed positionally. |
-| `projectID` | Numeric project id, e.g. `278964`. Either this or `project` is required. |
-| `baseURL` | Instance URL. Default `https://gitlab.com`. |
-| `showThumbnail` | Show the project's avatar. Default `false`. |
+| Parameter       | Description                                                                |
+| --------------- | -------------------------------------------------------------------------- |
+| `project`       | Namespace path, e.g. `gitlab-org/gitlab`. Can also be passed positionally. |
+| `projectID`     | Numeric project id, e.g. `278964`. Either this or `project` is required.   |
+| `baseURL`       | Instance URL. Default `https://gitlab.com`.                                |
+| `showThumbnail` | Show the project's avatar. Default `false`.                                |
 
 {{< callout type="info" >}}
-  Blowfish only accepts the numeric `projectID`, which means looking it up in
-  the project settings first. The `project` path works here as well, since the
-  GitLab API accepts a URL-encoded namespace path in place of an id.
+Blowfish only accepts the numeric `projectID`, which means looking it up in
+the project settings first. The `project` path works here as well, since the
+GitLab API accepts a URL-encoded namespace path in place of an id.
 {{< /callout >}}
 
 Unlike the [GitHub](../github) card there is no language shown: the GitLab

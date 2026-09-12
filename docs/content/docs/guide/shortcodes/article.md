@@ -29,12 +29,12 @@ Title and meta only:
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
-| `link` | Required. Path or permalink of the target page, e.g. `/blog/my-post`. Can also be passed positionally. |
-| `showSummary` | Show the page summary. Default `true`. |
-| `compactSummary` | Clamp the summary to a single line. Default `false`. |
-| `cover` | Show the page's cover image when it has one. Default `true`. |
+| Parameter        | Description                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------------ |
+| `link`           | Required. Path or permalink of the target page, e.g. `/blog/my-post`. Can also be passed positionally. |
+| `showSummary`    | Show the page summary. Default `true`.                                                                 |
+| `compactSummary` | Clamp the summary to a single line. Default `false`.                                                   |
+| `cover`          | Show the page's cover image when it has one. Default `true`.                                           |
 
 The cover is resolved with the same lookup the rest of the theme uses: the
 `cover` front matter field, then `featured_image`, then a matching image in the
@@ -44,6 +44,6 @@ Reading time and date are omitted when the target page has none, so the
 component works for docs pages as well as blog posts.
 
 {{< callout type="info" >}}
-  A card that links to the page it sits on renders nothing and logs a build
-  warning, so an index page can loop over its own section safely.
+A card that links to the page it sits on renders nothing and logs a build
+warning, so an index page can loop over its own section safely.
 {{< /callout >}}

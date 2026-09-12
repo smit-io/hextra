@@ -21,19 +21,19 @@ A favicon that disappears against a dark browser toolbar is a small thing that r
 Upstream keeps favicons loose in `static/`. The fork moves them under `static/icons/`:
 
 {{< filetree/container >}}
-  {{< filetree/folder name="static" >}}
-    {{< filetree/folder name="icons" >}}
-      {{< filetree/file name="favicon.ico" >}}
-      {{< filetree/file name="favicon.svg" >}}
-      {{< filetree/file name="favicon-dark.svg" >}}
-      {{< filetree/file name="favicon-16x16.png" >}}
-      {{< filetree/file name="favicon-32x32.png" >}}
-      {{< filetree/file name="apple-touch-icon.png" >}}
-      {{< filetree/file name="android-chrome-192x192.png" >}}
-      {{< filetree/file name="android-chrome-512x512.png" >}}
-    {{< /filetree/folder >}}
-    {{< filetree/file name="site.webmanifest" >}}
-  {{< /filetree/folder >}}
+{{< filetree/folder name="static" >}}
+{{< filetree/folder name="icons" >}}
+{{< filetree/file name="favicon.ico" >}}
+{{< filetree/file name="favicon.svg" >}}
+{{< filetree/file name="favicon-dark.svg" >}}
+{{< filetree/file name="favicon-16x16.png" >}}
+{{< filetree/file name="favicon-32x32.png" >}}
+{{< filetree/file name="apple-touch-icon.png" >}}
+{{< filetree/file name="android-chrome-192x192.png" >}}
+{{< filetree/file name="android-chrome-512x512.png" >}}
+{{< /filetree/folder >}}
+{{< filetree/file name="site.webmanifest" >}}
+{{< /filetree/folder >}}
 {{< /filetree/container >}}
 
 {{< callout type="warning" >}}

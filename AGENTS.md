@@ -227,13 +227,17 @@ When introducing a new component or modifying an existing one, verify it works w
   `{{/* ... */}}` form, because the plugin splits the closing `-}}` of a
   `{{- /* ... */ -}}` comment onto its own line. Write new multi-line comments in
   the no-trim form, or on one line
-- 25 templates and `docs/content/` are excluded, each with its reason in
-  `.prettierignore`: a significant space next to a template action (prettier
-  deletes it), a doc comment against literal HTML (no neighbour can absorb the
-  whitespace), or shortcode syntax prettier misreads. Do not remove those entries
-- `make fmt` changes no rendered page except for whitespace inside meta
-  descriptions on 27 pages. If a change to formatting config or scope alters
-  rendered output beyond that, treat it as a regression
+- `docs/content/` is formatted too. Two content conventions keep it safe: a
+  multi-line shortcode call closes on its last parameter line (`... >}}`), never
+  on a line of its own, because a leading `>` is a Markdown blockquote; and a
+  `{{% /shortcode %}}` closer gets a blank line after a list, or Prettier indents
+  it into the list item. `.prettierrc` also sets `embeddedLanguageFormatting` to
+  off for `*.md`, so Prettier leaves the shortcode examples inside fenced code
+  blocks alone
+- 25 templates are excluded, each with its reason in `.prettierignore`: a
+  significant space next to a template action (Prettier deletes it), or a doc
+  comment against literal HTML (no neighbour can absorb the whitespace). Do not
+  remove those entries
 - Verify multi-language functionality across supported languages
 
 ## Authoring docs vs developing the theme

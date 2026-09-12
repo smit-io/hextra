@@ -12,19 +12,19 @@ weight: 5
 アップストリームはファビコンを `static/` 直下にそのまま置いています。このフォークでは `static/icons/` 配下に移動します：
 
 {{< filetree/container >}}
-  {{< filetree/folder name="static" >}}
-    {{< filetree/folder name="icons" >}}
-      {{< filetree/file name="favicon.ico" >}}
-      {{< filetree/file name="favicon.svg" >}}
-      {{< filetree/file name="favicon-dark.svg" >}}
-      {{< filetree/file name="favicon-16x16.png" >}}
-      {{< filetree/file name="favicon-32x32.png" >}}
-      {{< filetree/file name="apple-touch-icon.png" >}}
-      {{< filetree/file name="android-chrome-192x192.png" >}}
-      {{< filetree/file name="android-chrome-512x512.png" >}}
-    {{< /filetree/folder >}}
-    {{< filetree/file name="site.webmanifest" >}}
-  {{< /filetree/folder >}}
+{{< filetree/folder name="static" >}}
+{{< filetree/folder name="icons" >}}
+{{< filetree/file name="favicon.ico" >}}
+{{< filetree/file name="favicon.svg" >}}
+{{< filetree/file name="favicon-dark.svg" >}}
+{{< filetree/file name="favicon-16x16.png" >}}
+{{< filetree/file name="favicon-32x32.png" >}}
+{{< filetree/file name="apple-touch-icon.png" >}}
+{{< filetree/file name="android-chrome-192x192.png" >}}
+{{< filetree/file name="android-chrome-512x512.png" >}}
+{{< /filetree/folder >}}
+{{< filetree/file name="site.webmanifest" >}}
+{{< /filetree/folder >}}
 {{< /filetree/container >}}
 
 `layouts/_partials/favicons.html`、`assets/js/core/favicon.js`、`static/site.webmanifest` はすべて `icons/` パスを参照するため、このフォークを使う場合、サイトのアイコンファイルは（`static/` ではなく）`static/icons/` に置く必要があります。

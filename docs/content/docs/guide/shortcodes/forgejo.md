@@ -21,12 +21,12 @@ the best-known instance, use the [Codeberg](../codeberg) shortcode instead.
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
-| `repo` | Required. Repository as `owner/name`. |
-| `server` | Required. Instance URL, e.g. `https://forge.example.com`. |
-| `showThumbnail` | Show the owner's avatar. Default `false`. |
-| `icon` | Icon shown before the title. Default `forgejo`. |
+| Parameter       | Description                                               |
+| --------------- | --------------------------------------------------------- |
+| `repo`          | Required. Repository as `owner/name`.                     |
+| `server`        | Required. Instance URL, e.g. `https://forge.example.com`. |
+| `showThumbnail` | Show the owner's avatar. Default `false`.                 |
+| `icon`          | Icon shown before the title. Default `forgejo`.           |
 
 Forgejo exposes the Gitea API, so this is the [Gitea](../gitea) card with a
 different icon. Everything that page says about rate limits, offline builds and

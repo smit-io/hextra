@@ -22,36 +22,36 @@ Run `make help` for the full annotated list. The targets you'll actually live in
 
 ### Developing
 
-| Target           | What it does                                                                     |
-| ---------------- | -------------------------------------------------------------------------------- |
+| Target           | What it does                                                                        |
+| ---------------- | ----------------------------------------------------------------------------------- |
 | `make dev`       | Dev server with the full theme pipeline (writes `hugo_stats.json` on every rebuild) |
-| `make serve`     | Dev server without the theme pipeline — faster startup when only editing content |
-| `make css`       | Compile production CSS — regenerates stats first, so it's always correct         |
-| `make css-watch` | Recompile CSS on change; run alongside `make dev`                                |
+| `make serve`     | Dev server without the theme pipeline — faster startup when only editing content    |
+| `make css`       | Compile production CSS — regenerates stats first, so it's always correct            |
+| `make css-watch` | Recompile CSS on change; run alongside `make dev`                                   |
 
-The dependency chaining is the point. Tailwind tree-shakes against `docs/hugo_stats.json`, so compiling CSS after a template change requires regenerating stats *first*. Upstream's raw npm scripts make you remember that two-step dance; `make css` encodes it — it depends on `make stats`, and `make build` depends on `make css`. You can't get the order wrong.
+The dependency chaining is the point. Tailwind tree-shakes against `docs/hugo_stats.json`, so compiling CSS after a template change requires regenerating stats _first_. Upstream's raw npm scripts make you remember that two-step dance; `make css` encodes it — it depends on `make stats`, and `make build` depends on `make css`. You can't get the order wrong.
 
 ### Writing content
 
-| Target                            | What it does                                                              |
-| --------------------------------- | ------------------------------------------------------------------------- |
+| Target                            | What it does                                                                                         |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | `make new-blog NAME=my-post`      | Scaffold a blog post as a draft, with tags, excerpt marker, and commented author/cover/pinned fields |
-| `make new-doc NAME=guide/my-page` | Scaffold a docs page; `weight` left commented for manual placement        |
-| `make new-doc-auto NAME=...`      | Like `new-doc`, but `weight` is set to one past the section's last page   |
+| `make new-doc NAME=guide/my-page` | Scaffold a docs page; `weight` left commented for manual placement                                   |
+| `make new-doc-auto NAME=...`      | Like `new-doc`, but `weight` is set to one past the section's last page                              |
 
 Blog posts start as drafts (`draft: true`): visible on the dev server and preview, excluded from `make build` until you remove the flag. `new-doc-auto` computes `weight` by scanning the target folder at creation time — spaced weight conventions (10, 20, 30…) yield 31, not 40, so it slots after without renumbering.
 
 ### Building, previewing, testing
 
-| Target              | What it does                                                             |
-| ------------------- | ------------------------------------------------------------------------ |
-| `make build`        | Full production build into `docs/public`, drafts excluded — what ships   |
+| Target              | What it does                                                                             |
+| ------------------- | ---------------------------------------------------------------------------------------- |
+| `make build`        | Full production build into `docs/public`, drafts excluded — what ships                   |
 | `make preview`      | Production build **including drafts**, served at [localhost:8043](http://localhost:8043) |
-| `make test`         | Full Playwright suite against a fresh draft-free production build        |
-| `make test-a11y`    | Accessibility tests only (WCAG 2.2 AA)                                   |
-| `make test-preview` | Rebuild the preview, then test the live preview container                |
-| `make fmt`          | Prettier over templates, CSS, and JS                                     |
-| `make doctor`       | Diagnose toolchain problems (Hugo/Node versions, stale binaries)         |
+| `make test`         | Full Playwright suite against a fresh draft-free production build                        |
+| `make test-a11y`    | Accessibility tests only (WCAG 2.2 AA)                                                   |
+| `make test-preview` | Rebuild the preview, then test the live preview container                                |
+| `make fmt`          | Prettier over templates, CSS, and JS                                                     |
+| `make doctor`       | Diagnose toolchain problems (Hugo/Node versions, stale binaries)                         |
 
 ## The devcontainer
 

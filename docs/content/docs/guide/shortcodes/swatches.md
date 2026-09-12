@@ -32,7 +32,7 @@ An input that is not a valid hex code is skipped with a build warning rather
 than rendered, and the shortcode fails the build if no valid colour is left.
 
 {{< callout type="info" >}}
-  Each swatch prints its hex value beneath the colour. Colour is never the only
-  way the value is conveyed, which keeps the component usable for readers who
-  cannot distinguish the shades.
+Each swatch prints its hex value beneath the colour. Colour is never the only
+way the value is conveyed, which keeps the component usable for readers who
+cannot distinguish the shades.
 {{< /callout >}}

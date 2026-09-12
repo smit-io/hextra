@@ -20,7 +20,7 @@ Full-text search landed alongside a system-aware colour scheme.
 
 - FlexSearch index built at compile time
 - No runtime dependencies
-{{< /timeline-item >}}
+  {{< /timeline-item >}}
 
 {{< timeline-item header="Accessibility pass" subheader="WCAG 2.2 AA" badge="Now" badgeColor="green" icon="badge-check" >}}
 Keyboard navigation, focus rings and colour contrast reviewed across every
@@ -49,19 +49,19 @@ Keyboard navigation, focus rings and colour contrast reviewed.
 
 `timeline-item`:
 
-| Parameter | Description |
-|---|---|
-| `header` | Title of the entry. Markdown is supported. |
-| `subheader` | Optional secondary line below the title. Markdown is supported. |
-| `badge` | Optional short text shown as a badge next to the title. |
+| Parameter    | Description                                                                                      |
+| ------------ | ------------------------------------------------------------------------------------------------ |
+| `header`     | Title of the entry. Markdown is supported.                                                       |
+| `subheader`  | Optional secondary line below the title. Markdown is supported.                                  |
+| `badge`      | Optional short text shown as a badge next to the title.                                          |
 | `badgeColor` | Badge colour. Accepts the same values as the [Badge](../others#badge) shortcode. Default `gray`. |
-| `icon` | Optional icon shown on the rail. See [Icon](../icon) for available names. |
+| `icon`       | Optional icon shown on the rail. See [Icon](../icon) for available names.                        |
 
 The body is written in Markdown, so lists, links, code blocks and other
 shortcodes all work inside an entry.
 
 {{< callout type="info" >}}
-  Coming from the Blowfish theme, the item is named `timelineItem` there. In
-  Hextra it is `timeline-item`, matching the theme's kebab-case shortcode
-  filenames.
+Coming from the Blowfish theme, the item is named `timelineItem` there. In
+Hextra it is `timeline-item`, matching the theme's kebab-case shortcode
+filenames.
 {{< /callout >}}

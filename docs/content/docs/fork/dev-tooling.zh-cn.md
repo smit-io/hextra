@@ -13,47 +13,47 @@ weight: 6
 
 ### 开发
 
-| 目标 | 作用 |
-|---|---|
-| `make dev` | 启动带完整主题管线的开发服务器（每次重新构建时写入 `hugo_stats.json`） |
-| `make serve` | 启动不带主题管线的开发服务器——只编辑内容时启动更快 |
-| `make stats` | 重新生成 `docs/hugo_stats.json`（Tailwind 用于摇树优化的类清单） |
-| `make css` | 编译生产环境 CSS——会先重新生成 stats，因此结果始终正确 |
-| `make css-watch` | 文件变化时重新编译 CSS；与 `make dev` 并行运行 |
+| 目标             | 作用                                                                   |
+| ---------------- | ---------------------------------------------------------------------- |
+| `make dev`       | 启动带完整主题管线的开发服务器（每次重新构建时写入 `hugo_stats.json`） |
+| `make serve`     | 启动不带主题管线的开发服务器——只编辑内容时启动更快                     |
+| `make stats`     | 重新生成 `docs/hugo_stats.json`（Tailwind 用于摇树优化的类清单）       |
+| `make css`       | 编译生产环境 CSS——会先重新生成 stats，因此结果始终正确                 |
+| `make css-watch` | 文件变化时重新编译 CSS；与 `make dev` 并行运行                         |
 
 ### 撰写内容
 
-| 目标 | 作用 |
-|---|---|
-| `make new-blog NAME=my-post` | 以草稿形式创建博客文章（`docs/content/blog/my-post.md`），带标签、摘要标记和注释掉的 author/cover/pinned 字段 |
-| `make new-doc NAME=guide/my-page` | 创建带标题和标签的文档页；`weight` 保持注释状态以便手动排序 |
-| `make new-doc-auto NAME=guide/my-page` | 类似 `new-doc`，但 `weight` 会自动设为该章节最后一页的下一个值 |
-| `make new-page NAME=showcase/thing` | 通过默认原型在 `docs/content/` 下创建任意页面 |
+| 目标                                   | 作用                                                                                                          |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `make new-blog NAME=my-post`           | 以草稿形式创建博客文章（`docs/content/blog/my-post.md`），带标签、摘要标记和注释掉的 author/cover/pinned 字段 |
+| `make new-doc NAME=guide/my-page`      | 创建带标题和标签的文档页；`weight` 保持注释状态以便手动排序                                                   |
+| `make new-doc-auto NAME=guide/my-page` | 类似 `new-doc`，但 `weight` 会自动设为该章节最后一页的下一个值                                                |
+| `make new-page NAME=showcase/thing`    | 通过默认原型在 `docs/content/` 下创建任意页面                                                                 |
 
 ### 构建与预览
 
-| 目标 | 作用 |
-|---|---|
-| `make build` | 完整的生产构建，输出到 `docs/public`（先编译 CSS），不含草稿——即最终发布的内容 |
+| 目标           | 作用                                                                                      |
+| -------------- | ----------------------------------------------------------------------------------------- |
+| `make build`   | 完整的生产构建，输出到 `docs/public`（先编译 CSS），不含草稿——即最终发布的内容            |
 | `make preview` | **包含草稿**的生产构建，由常驻预览容器在 [localhost:8043](http://localhost:8043) 提供服务 |
 
 ### 测试
 
-| 目标 | 作用 |
-|---|---|
-| `make test` | 针对全新的无草稿生产构建运行完整 Playwright 测试套件 |
-| `make test-a11y` | 仅运行无障碍测试（WCAG 2.2 AA） |
-| `make test-mobile` / `test-build` | 移动端菜单和构建输出测试套件 |
-| `make test-preview` | 重新构建预览（含草稿），然后针对运行中的预览容器执行测试套件——你测试的正是 8043 持续提供的内容 |
+| 目标                              | 作用                                                                                           |
+| --------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `make test`                       | 针对全新的无草稿生产构建运行完整 Playwright 测试套件                                           |
+| `make test-a11y`                  | 仅运行无障碍测试（WCAG 2.2 AA）                                                                |
+| `make test-mobile` / `test-build` | 移动端菜单和构建输出测试套件                                                                   |
+| `make test-preview`               | 重新构建预览（含草稿），然后针对运行中的预览容器执行测试套件——你测试的正是 8043 持续提供的内容 |
 
 ### 日常维护
 
-| 目标 | 作用 |
-|---|---|
-| `make fmt` | 用 Prettier 格式化模板、CSS 和 JS |
-| `make doctor` | 诊断工具链问题（Hugo/Node 版本、过期二进制） |
-| `make reset` | 清除并重新安装 `node_modules`——修复宿主机/devcontainer 之间的二进制冲突 |
-| `make clean` / `clean-stats` / `clean-all` | 删除构建输出、stats 变动或全部内容 |
+| 目标                                       | 作用                                                                    |
+| ------------------------------------------ | ----------------------------------------------------------------------- |
+| `make fmt`                                 | 用 Prettier 格式化模板、CSS 和 JS                                       |
+| `make doctor`                              | 诊断工具链问题（Hugo/Node 版本、过期二进制）                            |
+| `make reset`                               | 清除并重新安装 `node_modules`——修复宿主机/devcontainer 之间的二进制冲突 |
+| `make clean` / `clean-stats` / `clean-all` | 删除构建输出、stats 变动或全部内容                                      |
 
 {{< callout type="info" >}}
 依赖链正是关键所在：`make css` 依赖 `stats`，`make build` 依赖 `css`。上游的原生 npm 脚本要求你记住“先重新生成 stats，再构建 CSS”这套两步流程（[原因](https://github.com/smit-io/hextra/blob/main/CLAUDE.md)）；Makefile 将其固化了下来。
@@ -86,10 +86,10 @@ weight: 6
 
 两个端口都会自动转发到宿主机（`devcontainer.json` 中的 `forwardPorts`）：
 
-| 端口 | 服务 | 提供的内容 |
-|---|---|---|
-| `1313` | Hugo 开发服务器（`make dev` / `make serve`） | 实时重载的开发构建 |
-| `8043` | 常驻 `preview` 容器 | 来自 `docs/public` 的最近一次**生产**构建 |
+| 端口   | 服务                                         | 提供的内容                                |
+| ------ | -------------------------------------------- | ----------------------------------------- |
+| `1313` | Hugo 开发服务器（`make dev` / `make serve`） | 实时重载的开发构建                        |
+| `8043` | 常驻 `preview` 容器                          | 来自 `docs/public` 的最近一次**生产**构建 |
 
 这一区分很重要：`1313` 提供快速的实时重建，而 `8043` 展示生产构建——经过压缩、垃圾回收和摇树优化的 CSS。两者都包含草稿（`make preview` 会传入 `-D`，以便以生产形态检查未发布的文章）；只有 `make build` 的输出不含草稿。发布前请检查 `8043`。
 

@@ -12,19 +12,19 @@ weight: 5
 上游将 favicon 散放在 `static/` 中。本 fork 将它们移到 `static/icons/` 下：
 
 {{< filetree/container >}}
-  {{< filetree/folder name="static" >}}
-    {{< filetree/folder name="icons" >}}
-      {{< filetree/file name="favicon.ico" >}}
-      {{< filetree/file name="favicon.svg" >}}
-      {{< filetree/file name="favicon-dark.svg" >}}
-      {{< filetree/file name="favicon-16x16.png" >}}
-      {{< filetree/file name="favicon-32x32.png" >}}
-      {{< filetree/file name="apple-touch-icon.png" >}}
-      {{< filetree/file name="android-chrome-192x192.png" >}}
-      {{< filetree/file name="android-chrome-512x512.png" >}}
-    {{< /filetree/folder >}}
-    {{< filetree/file name="site.webmanifest" >}}
-  {{< /filetree/folder >}}
+{{< filetree/folder name="static" >}}
+{{< filetree/folder name="icons" >}}
+{{< filetree/file name="favicon.ico" >}}
+{{< filetree/file name="favicon.svg" >}}
+{{< filetree/file name="favicon-dark.svg" >}}
+{{< filetree/file name="favicon-16x16.png" >}}
+{{< filetree/file name="favicon-32x32.png" >}}
+{{< filetree/file name="apple-touch-icon.png" >}}
+{{< filetree/file name="android-chrome-192x192.png" >}}
+{{< filetree/file name="android-chrome-512x512.png" >}}
+{{< /filetree/folder >}}
+{{< filetree/file name="site.webmanifest" >}}
+{{< /filetree/folder >}}
 {{< /filetree/container >}}
 
 `layouts/_partials/favicons.html`、`assets/js/core/favicon.js` 和 `static/site.webmanifest` 引用的都是 `icons/` 路径，因此使用本 fork 时，站点的图标文件必须放在 `static/icons/` 中（而不是 `static/`）。

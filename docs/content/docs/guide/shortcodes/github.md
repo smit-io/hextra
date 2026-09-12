@@ -25,10 +25,10 @@ With the repository's social preview image:
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
-| `repo` | Required. Repository as `owner/name`. Can also be passed positionally. |
-| `showThumbnail` | Show the repository's social preview image. Default `false`. |
+| Parameter       | Description                                                            |
+| --------------- | ---------------------------------------------------------------------- |
+| `repo`          | Required. Repository as `owner/name`. Can also be passed positionally. |
+| `showThumbnail` | Show the repository's social preview image. Default `false`.           |
 
 ## Rate limits
 
@@ -51,6 +51,7 @@ Two ways out:
   The `HUGO_` prefix is required: Hugo's default security policy only allows
   `getenv` to read variables matching `^HUGO_` or `^CI$`, and reading anything
   else fails the build outright.
+
 - Set `params.repoCards.enable = false` to skip every API call. Cards still
   render with their name and link, just without live numbers.
 - Set `params.remoteFetch.enable = false` to skip every build-time request the
@@ -61,13 +62,13 @@ A failed request never fails the build: it logs a warning and falls back to a
 plain card.
 
 {{< callout type="info" >}}
-  The social preview is downloaded at build time and served from your own site.
-  GitHub's image host refuses hotlinked requests, so linking to it directly
-  renders a broken image; self-hosting also keeps the card free of third-party
-  requests.
+The social preview is downloaded at build time and served from your own site.
+GitHub's image host refuses hotlinked requests, so linking to it directly
+renders a broken image; self-hosting also keeps the card free of third-party
+requests.
 
-  That host rate-limits generated previews aggressively — a 429 asking for a
-  fifteen minute backoff is routine — so when it is unavailable the card falls
-  back to the owner's avatar. If neither can be fetched, the card renders
-  without an image rather than showing a broken one.
+That host rate-limits generated previews aggressively — a 429 asking for a
+fifteen minute backoff is routine — so when it is unavailable the card falls
+back to the owner's avatar. If neither can be fetched, the card renders
+without an image rather than showing a broken one.
 {{< /callout >}}

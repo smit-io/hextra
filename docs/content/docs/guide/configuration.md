@@ -384,19 +384,19 @@ Share link URLs support the `{url}` and `{title}` placeholders. Related posts ar
 To customize the [favicon](https://en.wikipedia.org/wiki/Favicon) for your site, place icon files under the `static/icons` folder to override the [default favicons from the theme](https://github.com/imfing/hextra/tree/main/static):
 
 {{< filetree/container >}}
-  {{< filetree/folder name="static" >}}
-    {{< filetree/folder name="icons" >}}
-      {{< filetree/file name="android-chrome-192x192.png" >}}
-      {{< filetree/file name="android-chrome-512x512.png" >}}
-      {{< filetree/file name="apple-touch-icon.png" >}}
-      {{< filetree/file name="favicon-16x16.png" >}}
-      {{< filetree/file name="favicon-32x32.png" >}}
-      {{< filetree/file name="favicon-dark.svg" >}}
-      {{< filetree/file name="favicon.ico" >}}
-      {{< filetree/file name="favicon.svg" >}}
-      {{< filetree/file name="site.webmanifest" >}}
-    {{< /filetree/folder >}}
-  {{< /filetree/folder >}}
+{{< filetree/folder name="static" >}}
+{{< filetree/folder name="icons" >}}
+{{< filetree/file name="android-chrome-192x192.png" >}}
+{{< filetree/file name="android-chrome-512x512.png" >}}
+{{< filetree/file name="apple-touch-icon.png" >}}
+{{< filetree/file name="favicon-16x16.png" >}}
+{{< filetree/file name="favicon-32x32.png" >}}
+{{< filetree/file name="favicon-dark.svg" >}}
+{{< filetree/file name="favicon.ico" >}}
+{{< filetree/file name="favicon.svg" >}}
+{{< filetree/file name="site.webmanifest" >}}
+{{< /filetree/folder >}}
+{{< /filetree/folder >}}
 {{< /filetree/container >}}
 
 #### Basic Setup
@@ -940,11 +940,12 @@ The Hextra theme supports configurable Google Fonts for heading, body, and code 
 
 1. Visit [fonts.google.com](https://fonts.google.com/)
 2. Search for and select your desired font then "Get Font" and then "Get embed code"
-4. In the sidebar that appears, click "Embed" tab
-5. Copy the `<link>` tag from the "Embed" section
-6. Extract the font family name and axes from the URL
+3. In the sidebar that appears, click "Embed" tab
+4. Copy the `<link>` tag from the "Embed" section
+5. Extract the font family name and axes from the URL
 
 For example, if the embed code is:
+
 ```html
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 ```
@@ -961,25 +962,25 @@ params:
   fonts:
     # Enable Google Fonts integration
     enable: true
-    
+
     # Heading font configuration
     heading:
       family: "Inter"
       axes: "ital,wght@0,400;0,500;0,600;0,700;1,400"
       display: "swap"
-    
+
     # Body font configuration
     body:
       family: "Inter"
       axes: "ital,wght@0,400;0,500;1,400"
       display: "swap"
-    
+
     # Code block font configuration
     code:
       family: "JetBrains Mono"
       axes: "wght@400;500"
       display: "swap"
-    
+
     # Fallback fonts (used if Google Fonts fail to load)
     fallbacks:
       heading: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
@@ -990,47 +991,57 @@ params:
 #### Parameters
 
 ##### `enable`
+
 - **Type**: `boolean`
 - **Default**: `false`
 - **Description**: Enable or disable Google Fonts integration
 
 ##### `heading`, `body`, `code`
+
 Each font type has the following parameters:
 
 ###### `family`
+
 - **Type**: `string`
 - **Description**: The Google Font family name (e.g., "Inter", "Roboto", "Open Sans")
 
 ###### `axes`
+
 - **Type**: `string`
 - **Description**: Font axes configuration from Google Fonts embed code
 - **Format**: `"axis1,axis2@value1,value2;value3,value4"`
 - **Common axes**: `wght` (weight), `ital` (italic), `slnt` (slant), `opsz` (optical size)
 
 ###### `display`
+
 - **Type**: `string`
 - **Default**: `"swap"`
 - **Description**: Font display strategy
 - **Available options**: `"auto"`, `"block"`, `"swap"`, `"fallback"`, `"optional"`
 
 ##### `fallbacks`
+
 Fallback fonts used when Google Fonts fail to load:
 
 ###### `heading`
+
 - **Type**: `string`
 - **Description**: Fallback font stack for headings
 
 ###### `body`
+
 - **Type**: `string`
 - **Description**: Fallback font stack for body text
 
 ###### `code`
+
 - **Type**: `string`
 - **Description**: Fallback font stack for code elements
 
 #### Popular Font Combinations
 
 ##### Modern & Clean
+
 ```yaml {filename="hugo.yaml"}
 params:
   fonts:
@@ -1047,6 +1058,7 @@ params:
 ```
 
 ##### Classic & Readable
+
 ```yaml {filename="hugo.yaml"}
 params:
   fonts:
@@ -1063,6 +1075,7 @@ params:
 ```
 
 ##### Professional & Elegant
+
 ```yaml {filename="hugo.yaml"}
 params:
   fonts:
@@ -1104,22 +1117,26 @@ Google Fonts are supported by all modern browsers. The theme includes fallback f
 #### Troubleshooting
 
 ##### Fonts Not Loading
+
 1. Check that `fonts.enable` is set to `true`
 2. Verify the font family name is correct (check [Google Fonts](https://fonts.google.com/))
 3. Ensure the axes configuration matches the font's available variations
 4. Copy the exact axes string from the Google Fonts embed code
 
 ##### Performance Issues
+
 1. Reduce the number of axes and values loaded
 2. Consider using system fonts for better performance
 3. Use `display: "optional"` for non-critical fonts
 
 ##### Font Display Issues
+
 1. Check that fallback fonts are properly configured
 2. Verify CSS specificity isn't overriding font declarations
 3. Test with different browsers to ensure compatibility
 
 ##### Common Axes Examples
+
 - **Weight only**: `"wght@400;500;600;700"`
 - **Weight and italic**: `"ital,wght@0,400;0,500;1,400;1,500"`
 - **Weight, italic, and slant**: `"ital,slnt,wght@0,0,400;0,0,500;1,0,400;1,0,500"`

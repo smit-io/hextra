@@ -27,11 +27,11 @@ Starting at 2:10, with player controls hidden:
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
-| `id` | Required. The 11-character YouTube video id. Can also be passed positionally. |
-| `label` | Accessible name for the play button, normally the video title. |
-| `params` | Extra [player parameters](https://developers.google.com/youtube/player_parameters), joined with `&`. |
+| Parameter | Description                                                                                          |
+| --------- | ---------------------------------------------------------------------------------------------------- |
+| `id`      | Required. The 11-character YouTube video id. Can also be passed positionally.                        |
+| `label`   | Accessible name for the play button, normally the video title.                                       |
+| `params`  | Extra [player parameters](https://developers.google.com/youtube/player_parameters), joined with `&`. |
 
 ## Privacy
 
@@ -48,7 +48,7 @@ The connection to YouTube is preconnected on hover or focus, so the delay from
 pressing play is roughly the same as a normal embed.
 
 {{< callout type="info" >}}
-  Always set `label` to the video's title. Without it the play button announces
-  only "Play video", which tells a screen reader user nothing about what they
-  are about to play.
+Always set `label` to the video's title. Without it the play button announces
+only "Play video", which tells a screen reader user nothing about what they
+are about to play.
 {{< /callout >}}

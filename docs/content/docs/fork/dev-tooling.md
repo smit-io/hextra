@@ -13,47 +13,47 @@ Run `make help` for the full annotated list. The important targets, by workflow:
 
 ### Developing
 
-| Target | What it does |
-|---|---|
-| `make dev` | Dev server with the full theme pipeline (writes `hugo_stats.json` on every rebuild) |
-| `make serve` | Dev server without the theme pipeline — faster startup when you're only editing content |
-| `make stats` | Regenerate `docs/hugo_stats.json` (the class inventory Tailwind tree-shakes against) |
-| `make css` | Compile production CSS — regenerates stats first, so it's always correct |
-| `make css-watch` | Recompile CSS on change; run alongside `make dev` |
+| Target           | What it does                                                                            |
+| ---------------- | --------------------------------------------------------------------------------------- |
+| `make dev`       | Dev server with the full theme pipeline (writes `hugo_stats.json` on every rebuild)     |
+| `make serve`     | Dev server without the theme pipeline — faster startup when you're only editing content |
+| `make stats`     | Regenerate `docs/hugo_stats.json` (the class inventory Tailwind tree-shakes against)    |
+| `make css`       | Compile production CSS — regenerates stats first, so it's always correct                |
+| `make css-watch` | Recompile CSS on change; run alongside `make dev`                                       |
 
 ### Writing content
 
-| Target | What it does |
-|---|---|
-| `make new-blog NAME=my-post` | Scaffold a blog post (`docs/content/blog/my-post.md`) as a draft, with tags, excerpt marker, and commented author/cover/pinned fields |
-| `make new-doc NAME=guide/my-page` | Scaffold a docs page with title and tags; `weight` left commented for manual placement |
-| `make new-doc-auto NAME=guide/my-page` | Like `new-doc`, but `weight` is set automatically to one past the section's last page |
-| `make new-page NAME=showcase/thing` | Scaffold any page under `docs/content/` via the default archetype |
+| Target                                 | What it does                                                                                                                          |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `make new-blog NAME=my-post`           | Scaffold a blog post (`docs/content/blog/my-post.md`) as a draft, with tags, excerpt marker, and commented author/cover/pinned fields |
+| `make new-doc NAME=guide/my-page`      | Scaffold a docs page with title and tags; `weight` left commented for manual placement                                                |
+| `make new-doc-auto NAME=guide/my-page` | Like `new-doc`, but `weight` is set automatically to one past the section's last page                                                 |
+| `make new-page NAME=showcase/thing`    | Scaffold any page under `docs/content/` via the default archetype                                                                     |
 
 ### Building & previewing
 
-| Target | What it does |
-|---|---|
-| `make build` | Full production build into `docs/public` (compiles CSS first), drafts excluded — what ships |
+| Target         | What it does                                                                                                                |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `make build`   | Full production build into `docs/public` (compiles CSS first), drafts excluded — what ships                                 |
 | `make preview` | Production build **including drafts**, served by the always-on preview container at [localhost:8043](http://localhost:8043) |
 
 ### Testing
 
-| Target | What it does |
-|---|---|
-| `make test` | Full Playwright suite against a fresh draft-free production build |
-| `make test-a11y` | Accessibility tests only (WCAG 2.2 AA) |
-| `make test-mobile` / `test-build` | Mobile menu and build-output suites |
-| `make test-preview` | Rebuild the preview (drafts included), then run the suite against the live preview container — what you tested is what 8043 keeps serving |
+| Target                            | What it does                                                                                                                              |
+| --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `make test`                       | Full Playwright suite against a fresh draft-free production build                                                                         |
+| `make test-a11y`                  | Accessibility tests only (WCAG 2.2 AA)                                                                                                    |
+| `make test-mobile` / `test-build` | Mobile menu and build-output suites                                                                                                       |
+| `make test-preview`               | Rebuild the preview (drafts included), then run the suite against the live preview container — what you tested is what 8043 keeps serving |
 
 ### Housekeeping
 
-| Target | What it does |
-|---|---|
-| `make fmt` | Prettier over templates, CSS, and JS |
-| `make doctor` | Diagnose toolchain problems (Hugo/Node versions, stale binaries) |
-| `make reset` | Wipe and reinstall `node_modules` — fixes host/devcontainer binary clashes |
-| `make clean` / `clean-stats` / `clean-all` | Remove build output, stats churn, or everything |
+| Target                                     | What it does                                                               |
+| ------------------------------------------ | -------------------------------------------------------------------------- |
+| `make fmt`                                 | Prettier over templates, CSS, and JS                                       |
+| `make doctor`                              | Diagnose toolchain problems (Hugo/Node versions, stale binaries)           |
+| `make reset`                               | Wipe and reinstall `node_modules` — fixes host/devcontainer binary clashes |
+| `make clean` / `clean-stats` / `clean-all` | Remove build output, stats churn, or everything                            |
 
 {{< callout type="info" >}}
 The dependency chaining is the point: `make css` depends on `stats`, `make build` depends on `css`. Upstream's raw npm scripts require you to remember the two-step "regenerate stats, then build CSS" dance ([why](https://github.com/smit-io/hextra/blob/main/CLAUDE.md)); the Makefile encodes it.
@@ -86,10 +86,10 @@ A named volume masks `node_modules` inside the container, so the container keeps
 
 Both ports are auto-forwarded to the host (`forwardPorts` in `devcontainer.json`):
 
-| Port | Service | What you get |
-|---|---|---|
-| `1313` | Hugo dev server (`make dev` / `make serve`) | Live-reloading development build |
-| `8043` | Always-on `preview` container | The last **production** build from `docs/public` |
+| Port   | Service                                     | What you get                                     |
+| ------ | ------------------------------------------- | ------------------------------------------------ |
+| `1313` | Hugo dev server (`make dev` / `make serve`) | Live-reloading development build                 |
+| `8043` | Always-on `preview` container               | The last **production** build from `docs/public` |
 
 The split matters: `1313` gives fast live rebuilds, while `8043` shows the production build — minified, garbage-collected, tree-shaken CSS. Both include drafts (`make preview` passes `-D` so unpublished posts can be checked in production form); only `make build` output is draft-free. Check `8043` before releasing.
 
@@ -119,14 +119,14 @@ VS Code → "Reopen in Container". First open installs Hugo, Node, and npm depen
 
 The repository's GitHub Actions workflows can run locally in Docker via [act](https://nektosact.com), so a PR's checks can be exercised before pushing. Defaults live in `.actrc` (runner image, amd64 architecture for Apple Silicon, container reuse); the Makefile wraps the invocations:
 
-| Target | What it does |
-|---|---|
-| `make ci-dry` | Dry run of every workflow (`act -n`): walks the job graph and prints each step without starting containers — validates workflow syntax and wiring in seconds, no image pull |
-| `make ci` | Runs every workflow that triggers on `pull_request` — accessibility, build output, and mobile menu — exactly as a PR would, one job container each |
-| `make ci-a11y` | The accessibility workflow (`test-accessibility.yml`): production build, then axe-core WCAG 2.2 AA checks over every English page |
-| `make ci-build` | The build-output workflow (`test-build.yml`): production build, then the asciidoc, render-link, and search-data assertions |
-| `make ci-mobile` | The mobile menu workflow (`test-mobile-menu.yml`): production build, then the Playwright mobile navigation suite |
-| `make ci-pages` | The **build** job of the Pages deployment (`pages.yml`) — verifies the site builds the way GitHub Pages builds it. The deploy job is excluded: it needs GitHub's OIDC token and cannot run locally |
+| Target           | What it does                                                                                                                                                                                       |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `make ci-dry`    | Dry run of every workflow (`act -n`): walks the job graph and prints each step without starting containers — validates workflow syntax and wiring in seconds, no image pull                        |
+| `make ci`        | Runs every workflow that triggers on `pull_request` — accessibility, build output, and mobile menu — exactly as a PR would, one job container each                                                 |
+| `make ci-a11y`   | The accessibility workflow (`test-accessibility.yml`): production build, then axe-core WCAG 2.2 AA checks over every English page                                                                  |
+| `make ci-build`  | The build-output workflow (`test-build.yml`): production build, then the asciidoc, render-link, and search-data assertions                                                                         |
+| `make ci-mobile` | The mobile menu workflow (`test-mobile-menu.yml`): production build, then the Playwright mobile navigation suite                                                                                   |
+| `make ci-pages`  | The **build** job of the Pages deployment (`pages.yml`) — verifies the site builds the way GitHub Pages builds it. The deploy job is excluded: it needs GitHub's OIDC token and cannot run locally |
 
 Every target checks that act is installed (`brew install act`) and Docker is running before starting.
 

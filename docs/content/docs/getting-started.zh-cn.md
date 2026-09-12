@@ -87,7 +87,6 @@ hugo server --buildDrafts --disableFastRender
 
 {{% /steps %}}
 
-
 {{% details title="如何更新主题？" %}}
 
 要更新项目中的所有Hugo模块到最新版本，运行以下命令：
@@ -165,7 +164,6 @@ hugo server --buildDrafts --disableFastRender
 
 {{% /steps %}}
 
-
 当使用[CI/CD](https://en.wikipedia.org/wiki/CI/CD)部署Hugo网站时，确保在运行`hugo`命令之前执行以下命令至关重要。
 
 ```shell
@@ -173,7 +171,6 @@ git submodule update --init
 ```
 
 如果不运行此命令，主题文件夹将不会被填充Hextra主题文件，导致构建失败。
-
 
 {{% details title="如何更新主题？" %}}
 
@@ -198,7 +195,7 @@ git submodule update --remote themes/hextra
 探索以下部分以开始添加更多内容：
 
 {{< cards >}}
-  {{< card link="../guide/organize-files" title="组织文件" icon="document-duplicate" >}}
-  {{< card link="../guide/configuration" title="配置" icon="adjustments" >}}
-  {{< card link="../guide/markdown" title="Markdown" icon="markdown" >}}
+{{< card link="../guide/organize-files" title="组织文件" icon="document-duplicate" >}}
+{{< card link="../guide/configuration" title="配置" icon="adjustments" >}}
+{{< card link="../guide/markdown" title="Markdown" icon="markdown" >}}
 {{< /cards >}}

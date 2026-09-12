@@ -60,6 +60,7 @@ The theme now supports a single accent color that can be customized by adding th
 This accent color system provides a complete color palette with 11 shades (50-950) that will be used throughout the theme for links, buttons, highlights, and other accent elements.
 
 You can generate custom accent color palettes for free using [UI Colors](https://uicolors.app) - simply input your desired color and it will generate all the necessary shades for your theme.
+
 ### Component Layout Variables
 
 Hextra provides CSS variables to customize the width of pages, navbar, and footer:

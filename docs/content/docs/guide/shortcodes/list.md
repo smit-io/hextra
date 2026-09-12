@@ -26,13 +26,13 @@ Six blog posts as cards, with a heading:
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
-| `limit` | Required. How many pages to show. |
-| `title` | Optional heading above the list. Markdown is supported. |
+| Parameter  | Description                                                       |
+| ---------- | ----------------------------------------------------------------- |
+| `limit`    | Required. How many pages to show.                                 |
+| `title`    | Optional heading above the list. Markdown is supported.           |
 | `cardView` | Show covers in a grid instead of a compact list. Default `false`. |
-| `where` | Page field to filter on, e.g. `Type`, `Section` or `Params.tags`. |
-| `value` | Value that `where` must match. |
+| `where`    | Page field to filter on, e.g. `Type`, `Section` or `Params.tags`. |
+| `value`    | Value that `where` must match.                                    |
 
 `where` and `value` are passed straight to Hugo's [`where`](https://gohugo.io/functions/collections/where/)
 function against `site.RegularPages`, so any field that function accepts works:
@@ -43,9 +43,9 @@ function against `site.RegularPages`, so any field that function accepts works:
 ```
 
 {{< callout type="info" >}}
-  The page the shortcode sits on is removed from the results before `limit` is
-  applied, so the list always shows as many entries as you asked for. Blowfish
-  applies the limit first, which can leave you one short.
+The page the shortcode sits on is removed from the results before `limit` is
+applied, so the list always shows as many entries as you asked for. Blowfish
+applies the limit first, which can leave you one short.
 {{< /callout >}}
 
 A query that matches nothing renders nothing and logs a build warning rather

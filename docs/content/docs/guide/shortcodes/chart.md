@@ -10,11 +10,11 @@ from structured data written directly in your content.
 {{< chart title="Votes per fruit" >}}
 type: 'bar',
 data: {
-  labels: ['Tomato', 'Blueberry', 'Banana', 'Lime', 'Orange'],
-  datasets: [{
-    label: '# of votes',
-    data: [12, 19, 3, 5, 3],
-  }]
+labels: ['Tomato', 'Blueberry', 'Banana', 'Lime', 'Orange'],
+datasets: [{
+label: '# of votes',
+data: [12, 19, 3, 5, 3],
+}]
 }
 {{< /chart >}}
 
@@ -23,14 +23,14 @@ Any Chart.js type works — here a line chart with two series:
 {{< chart title="Weekly page views by source" >}}
 type: 'line',
 data: {
-  labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-  datasets: [
-    { label: 'Search', data: [120, 190, 300, 250, 220, 90, 80], tension: 0.3 },
-    { label: 'Direct', data: [80, 95, 130, 140, 160, 70, 60], tension: 0.3 }
-  ]
+labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+datasets: [
+{ label: 'Search', data: [120, 190, 300, 250, 220, 90, 80], tension: 0.3 },
+{ label: 'Direct', data: [80, 95, 130, 140, 160, 70, 60], tension: 0.3 }
+]
 },
 options: {
-  plugins: { legend: { position: 'bottom' } }
+plugins: { legend: { position: 'bottom' } }
 }
 {{< /chart >}}
 
@@ -54,9 +54,9 @@ data: {
 
 ### Parameters
 
-| Parameter | Description |
-|---|---|
-| `title` | Accessible description of what the chart shows. |
+| Parameter | Description                                     |
+| --------- | ----------------------------------------------- |
+| `title`   | Accessible description of what the chart shows. |
 
 Refer to the [Chart.js documentation](https://www.chartjs.org/docs/latest/) for
 chart types and options.
@@ -89,7 +89,7 @@ datasets: [{ label: 'Revenue', data: [1, 2, 3], borderColor: '#f43f5e' }]
 ```
 
 {{< callout type="warning" >}}
-  A chart is a canvas, which assistive technology cannot read. The `title`
-  becomes the canvas's accessible name, but that is a summary, not the data. If
-  the numbers matter, put them in a table alongside the chart.
+A chart is a canvas, which assistive technology cannot read. The `title`
+becomes the canvas's accessible name, but that is a summary, not the data. If
+the numbers matter, put them in a table alongside the chart.
 {{< /callout >}}

@@ -87,7 +87,6 @@ Voila, your new site preview is available at `http://localhost:1313/`.
 
 {{% /steps %}}
 
-
 {{% details title="How to update theme?" %}}
 
 To update all Hugo modules in your project to their latest versions, run the following command:
@@ -111,7 +110,6 @@ hugo mod get -u github.com/imfing/hextra@main
 See [Hugo Modules](https://gohugo.io/hugo-modules/use-modules/#update-all-modules) for more details.
 
 {{% /details %}}
-
 
 ### Setup Hextra as Git submodule
 
@@ -172,7 +170,6 @@ Your new site preview is available at `http://localhost:1313/`.
 
 {{% /steps %}}
 
-
 When using [CI/CD](https://en.wikipedia.org/wiki/CI/CD) for Hugo website deployment, it's essential to ensure that the following command is executed before running the `hugo` command.
 
 ```shell
@@ -180,7 +177,6 @@ git submodule update --init
 ```
 
 Failure to run this command results in the theme folder not being populated with Hextra theme files, leading to a build failure.
-
 
 {{% details title="How to update theme?" %}}
 
@@ -205,7 +201,7 @@ See [Git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) for mo
 Explore the following sections to start adding more contents:
 
 {{< cards >}}
-  {{< card link="../guide/organize-files" title="Organize Files" icon="document-duplicate" >}}
-  {{< card link="../guide/configuration" title="Configuration" icon="adjustments" >}}
-  {{< card link="../guide/markdown" title="Markdown" icon="markdown" >}}
+{{< card link="../guide/organize-files" title="Organize Files" icon="document-duplicate" >}}
+{{< card link="../guide/configuration" title="Configuration" icon="adjustments" >}}
+{{< card link="../guide/markdown" title="Markdown" icon="markdown" >}}
 {{< /cards >}}

@@ -46,13 +46,13 @@ When `enable: true` is set, define **all three** font groups (`heading`, `body`,
 
 ## Parameters
 
-| Parameter | Type | Description |
-|---|---|---|
-| `enable` | boolean | Master switch. When `false` (or omitted), the theme uses the system font stack and loads nothing from Google. |
-| `<group>.family` | string | Exact Google Fonts family name, e.g. `"Inter"`, `"JetBrains Mono"`. Spaces are allowed — they are URL-encoded automatically. |
-| `<group>.axes` | string | Variable-font axes spec from the Google Fonts embed URL (see below). |
-| `<group>.display` | string | `font-display` strategy: `auto`, `block`, `swap`, `fallback`, or `optional`. Use `swap` unless you have a reason not to. |
-| `fallbacks.<group>` | string | CSS font stack appended after the Google font. |
+| Parameter           | Type    | Description                                                                                                                  |
+| ------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `enable`            | boolean | Master switch. When `false` (or omitted), the theme uses the system font stack and loads nothing from Google.                |
+| `<group>.family`    | string  | Exact Google Fonts family name, e.g. `"Inter"`, `"JetBrains Mono"`. Spaces are allowed — they are URL-encoded automatically. |
+| `<group>.axes`      | string  | Variable-font axes spec from the Google Fonts embed URL (see below).                                                         |
+| `<group>.display`   | string  | `font-display` strategy: `auto`, `block`, `swap`, `fallback`, or `optional`. Use `swap` unless you have a reason not to.     |
+| `fallbacks.<group>` | string  | CSS font stack appended after the Google font.                                                                               |
 
 `<group>` is one of `heading`, `body`, or `code`.
 
@@ -82,12 +82,12 @@ Everything before the `:` is the family (`Inter`); everything between the `:` an
 
 Common axes patterns:
 
-| Pattern | Meaning |
-|---|---|
-| `wght@400;700` | Static weights 400 and 700 |
-| `wght@100..800` | Full variable weight range 100–800 (single small file for variable fonts) |
-| `ital,wght@0,400;1,400` | Regular and italic at weight 400 |
-| `opsz,wght@6..12,200..900` | Optical size + weight ranges |
+| Pattern                    | Meaning                                                                   |
+| -------------------------- | ------------------------------------------------------------------------- |
+| `wght@400;700`             | Static weights 400 and 700                                                |
+| `wght@100..800`            | Full variable weight range 100–800 (single small file for variable fonts) |
+| `ital,wght@0,400;1,400`    | Regular and italic at weight 400                                          |
+| `opsz,wght@6..12,200..900` | Optical size + weight ranges                                              |
 
 {{< callout type="info" >}}
 Prefer range syntax (`wght@100..800`) for variable fonts — you get every weight from one request instead of one file per static weight.
