@@ -258,6 +258,101 @@ plugin and marketplace manifests, whose `version` fields are stamped from the
 root `VERSION` file by the same generator. Edit any other field by hand. Validate
 with `claude plugin validate ./ --strict` before releasing.
 
+## Working conventions
+
+How changes land in this repo. These are the rules, not suggestions — a change
+that skips them is a change that has to be redone.
+
+### Branches and pull requests
+
+- **One branch per change**, named for what it does: `feat/`, `fix/`, `chore/`,
+  `style/`, `test/`, `build/`, `docs/`. Two unrelated fixes are two branches.
+- **Never commit to `main` directly, and never merge into it locally.** Land
+  every change through a pull request, even a one-line one, even when working
+  alone.
+- This is not ceremony. `test-build.yml`, `test-accessibility.yml` and
+  `test-mobile-menu.yml` all trigger on `pull_request` only — pushing straight
+  to `main` runs _none_ of them, including the `build-skill --check` gate. A
+  stale generated file once rode along through four pushes to `main` for exactly
+  this reason.
+- Stack branches when a change genuinely depends on an unmerged one, and say so
+  in the PR. Otherwise branch from `main`.
+
+### Commits
+
+- Conventional commits: `type(scope): summary`, imperative, lower case.
+- The body explains **why**, and states what was verified. A commit that changes
+  rendered output says so; a commit that claims not to says how that was
+  checked.
+- Never commit with tests unrun or unread. "Ran the command" is not "read the
+  result".
+
+### Releasing
+
+- `VERSION` at the repo root is the single source of truth. A push to `main`
+  that changes it fires `.github/workflows/release.yml`, which tags `v<VERSION>`
+  and publishes the release — so the release happens when the PR merges.
+- Run `npm run build:skill` in the same commit, which restamps
+  `.claude-plugin/*.json` from `VERSION`. CI fails if they drift.
+- Preview the notes first with `npm run changelog`.
+- Minor bump for a `feat`, patch otherwise.
+
+### Verifying a change
+
+Run everything in the devcontainer, not on the host:
+
+```bash
+make fmt-check   # formatting, without writing
+make test        # Playwright: build output, mobile menu, WCAG AA
+make build       # production build of docs/
+```
+
+- **Touching a template, shortcode or content file means verifying rendered
+  output**, not just that the build succeeds. Build before and after to a
+  separate directory and compare the HTML. Whitespace-only differences are
+  usually fine; anything else needs an explanation in the commit body.
+- Rendered-output diffs are noisy by default: asset fingerprints, `lastmod`
+  timestamps, `wordCount` and the lastmod-ordered "Recently updated" widget all
+  move when files are touched. Normalise those before concluding anything
+  changed.
+- Accessibility is WCAG 2.2 AA and enforced by `make test-a11y`. Its budget
+  scales with the sitemap; a timeout there is a slow test, not a violation.
+
+### Formatting
+
+- `make fmt` before committing. It is safe now, but only because the things it
+  breaks are excluded — `.prettierignore` records the reason for every entry.
+  **Do not remove those entries.**
+- `layouts/_shortcodes/` is excluded wholesale: its doc comments generate the
+  shipped skill reference, and Prettier rewrites the `{{< ... >}}` examples
+  inside them.
+- Four Prettier hazards, all found the hard way, all still live outside the
+  exclusions:
+  - A multi-line `{{- /* ... */ -}}` comment gets its closing `-}}` moved to its
+    own line, which Hugo cannot parse. Write multi-line comments as
+    `{{/* ... */}}`, or keep them on one line.
+  - Wrapping a tag's attributes puts newlines _inside_ attribute values. This is
+    why `.prettierrc` sets a very large `printWidth` for `*.html`; it once
+    rendered `aria-expanded=" false "` on 259 pages.
+  - A significant space next to a template action gets deleted, fusing
+    attributes or class names.
+  - In Markdown, a multi-line shortcode call must close on its last parameter
+    line (`... >}}`). A leading `>` is a blockquote, and Prettier rewrites it.
+- CSS: `make css` regenerates `docs/hugo_stats.json` first and then compiles,
+  in that order. Tailwind tree-shakes from that file, so a new utility class is
+  dropped from the build if the stats are stale. Commit the regenerated stats
+  alongside the change that needed it.
+
+### Fork hygiene
+
+- This is a fork of `imfing/hextra`. `make sync-status` lists the files that
+  conflict on every upstream sync; sync one upstream release tag at a time.
+- Regenerate rather than merge: `assets/css/compiled/main.css` and
+  `docs/hugo_stats.json`.
+- When porting an upstream patch, port it by hand rather than cherry-picking —
+  the fork has diverged far enough that the diffs rarely apply — and say in the
+  commit where it came from and what was changed.
+
 ## Skill routing
 
 When the user's request matches an available skill, invoke it via the Skill tool. When in doubt, invoke the skill.
