@@ -77,9 +77,26 @@
       carrying across.
     */}}
     {{- $included := . }}
-    {{- range slice "hasAsciinema" "hasChart" "hasGallery" "hasMath" "hasTypeIt" "hasYoutubeLite" }}
+    {{- range slice "hasAds" "hasAsciinema" "hasChart" "hasGallery" "hasMath" "hasTypeIt" "hasYoutubeLite" }}
       {{- if $included.Store.Get . }}
         {{- $.Page.Store.Set . true }}
+      {{- end }}
+    {{- end }}
+
+    {{- /*
+      The ad loaders need more than a flag: which networks and which publisher
+      ids were used. Those are slices, so they merge rather than overwrite - the
+      host page may have ads of its own.
+    */}}
+    {{- range $key := slice "hextraAdProviders" "hextraAdClients" }}
+      {{- with $included.Store.Get $key }}
+        {{- $merged := $.Page.Store.Get $key | default slice }}
+        {{- range . }}
+          {{- if not (in $merged .) }}
+            {{- $merged = $merged | append . }}
+          {{- end }}
+        {{- end }}
+        {{- $.Page.Store.Set $key $merged }}
       {{- end }}
     {{- end }}
 

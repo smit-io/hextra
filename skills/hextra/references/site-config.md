@@ -276,6 +276,49 @@ params:
 
 Google Analytics uses Hugo's own `services.googleAnalytics.ID`.
 
+## Ads
+
+Absent by default; nothing renders until the block exists. `enable: false` silences every ad while keeping the settings. Ads never load outside a production build — a dashed placeholder is drawn instead.
+
+```yaml
+params:
+  ads:
+    enable: true
+    provider: adsense # adsense | ethicalads | carbon | custom
+
+    # Presentation, overridable per slot, per shortcode call, and per page
+    label: true
+    labelText: ""
+    height: 280px # a minimum, not a fixed size
+    maxWidth: "" # unset means the full content column width
+    align: center # left | center | right; needs maxWidth to have any effect
+    border: true
+    background: true
+    class: ""
+    placeholder: true
+    production: true
+    consent: "" # npa for non-personalised AdSense
+
+    adsense: { client, format, fullWidth, layout, layoutKey, test, verifyAllPages }
+    ethicalads: { publisher, type, style, keywords }
+    carbon: { serve, placement }
+    custom: { <name>: "<raw html>" } # named creatives for house ads
+
+    slots:
+      blogBottom: "1111111111" # below the article body
+      blogEnd: "2222222222" # above the comments
+      blogList: { slot: "3333333333", every: 4, offset: 0 } # between index cards
+      docsBottom: "4444444444" # below the docs page body
+```
+
+A slot value is an ad unit id, `true` for a network needing no id, or a map of overrides. With `provider: custom` the slot names a creative under `params.ads.custom`, so a configured slot can serve a house ad with no shortcode involved. There are no slots in the navbar, footer, sidebars, home page, or blog rails.
+
+Page-level: `ads: false` disables a page; `ads: { blogEnd: false, height: 120px }` disables one slot or restyles that page. Front matter cannot enable a slot the site left off.
+
+`verifyAllPages: true` puts the AdSense loader in the head of every page instead of only pages carrying an ad, which is what AdSense review and Auto ads both need; configuring one slot achieves the same thing. It still honours `enable: false`, a page's `ads: false`, and the production gate, and a page that also renders an ad still gets one loader rather than two.
+
+Requires an `ads.txt` at the site root and, for EU personalised ads, a consent platform configured in your AdSense account — neither of which the theme provides. Every network reviews you before serving; only `custom` does not.
+
 ## Blog
 
 The largest block. Full reference in `blog.md`:

@@ -102,6 +102,8 @@ Content
 | `hxtimeline-item`       | 单个时间线条目 —— `badge`、`badgeColor`、`icon`      |
 | `hxswatches`            | 由位置参数十六进制色值组成的调色板                   |
 | `hxlist`                | 按 `where`/`value` 过滤的页面列表                    |
+| `hxad`                  | 在此处插入一个广告 — 需要配置 `params.ads`           |
+| `hxadprovider`          | 指定广告网络、格式与对齐方式的广告                   |
 | `hxchart`               | 由内联配置生成的 Chart.js 图表                       |
 | `hxtypeit`              | 打字机效果，每行一条字符串                           |
 | `hxvideo`               | 带播放控件的自托管视频                               |

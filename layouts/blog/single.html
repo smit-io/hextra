@@ -61,6 +61,7 @@
           {{ .Content }}
           {{ partial "custom/content-end.html" . }}
         </div>
+        {{- partial "ads/slot.html" (dict "context" . "name" "blogbottom") -}}
         {{- partial "components/last-updated.html" . -}}
         {{- partial "blog/share.html" (dict "context" . "config" $cfg) -}}
         {{- partial "blog/related.html" (dict "context" . "config" $cfg) -}}
@@ -87,6 +88,7 @@
             {{- partial "components/pager.html" . -}}
           {{- end -}}
         {{ end }}
+        {{- partial "ads/slot.html" (dict "context" . "name" "blogend") -}}
         {{- partial "components/comments.html" . -}}
         {{ partial "custom/page-end.html" . }}
       </main>

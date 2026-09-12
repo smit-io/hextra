@@ -22,6 +22,7 @@ toggleSection: "Toggle section"
 resultsFound: "%d results found"
 
 # User-facing UI text
+advertisement: "Advertisement"
 archives: "Archives"
 backToTop: "Scroll to top"
 changeLanguage: "Change language"

@@ -102,6 +102,8 @@ Content
 | `hxtimeline-item`       | タイムラインのエントリ — `badge`、`badgeColor`、`icon`       |
 | `hxswatches`            | 位置引数の 16 進コードによるカラーパレット                   |
 | `hxlist`                | `where`/`value` で絞り込んだページ一覧                       |
+| `hxad`                  | この位置に広告を 1 つ — `params.ads` の設定が必要            |
+| `hxadprovider`          | ネットワーク・形式・配置を明示した広告                       |
 | `hxchart`               | インライン設定による Chart.js のグラフ                       |
 | `hxtypeit`              | タイプライター効果、1 行につき 1 文字列                      |
 | `hxvideo`               | コントロール付きのセルフホスト動画                           |
