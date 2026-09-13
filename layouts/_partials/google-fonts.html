@@ -26,5 +26,18 @@
       {{- $codeFont_url := printf "https://fonts.googleapis.com/css2?family=%s:%s&display=%s" ($codeFont | safeHTMLAttr ) $codeFontAxes $codeFontDisplay -}}
       <link href="{{ $codeFont_url }}" rel="stylesheet" />
     {{- end -}}
+    {{/* Only fetched when a family is named. Left unset, `mono` resolves to the
+      fallback stack in variables.css and costs no request.
+    */}}
+    {{- with .mono -}}
+      {{- $mono := . -}}
+      {{- with $mono.family -}}
+        {{- $monoFontAxes := $mono.axes | default "wght@400..700" -}}
+        {{- $monoFontDisplay := $mono.display | default "swap" -}}
+        {{- $monoFont := replace . " " "+" -}}
+        {{- $monoFont_url := printf "https://fonts.googleapis.com/css2?family=%s:%s&display=%s" ($monoFont | safeHTMLAttr ) $monoFontAxes $monoFontDisplay -}}
+        <link href="{{ $monoFont_url }}" rel="stylesheet" />
+      {{- end -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}

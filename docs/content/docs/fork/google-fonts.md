@@ -31,17 +31,23 @@ params:
       axes: "wght@400;500"
       display: "swap"
 
+    mono:
+      family: "IBM Plex Mono"
+      axes: "wght@400;500;600"
+      display: "swap"
+
     # Used while fonts load and if Google Fonts is unreachable
     fallbacks:
       heading: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       body: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       code: "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace"
+      mono: "SFMono-Regular, 'SF Mono', ui-monospace, Consolas, 'Liberation Mono', Menlo, monospace"
 ```
 
 That's it — no template overrides, no custom CSS required.
 
 {{< callout type="warning" >}}
-When `enable: true` is set, define **all three** font groups (`heading`, `body`, `code`) and the `fallbacks` block. The CSS variable generation reads all of them.
+When `enable: true` is set, define `heading`, `body` and `code` along with their `fallbacks`. The CSS variable generation reads all of them. `mono` is the exception — it is optional, and omitting it falls back to a plain monospace stack.
 {{< /callout >}}
 
 ## Parameters
@@ -54,7 +60,21 @@ When `enable: true` is set, define **all three** font groups (`heading`, `body`,
 | `<group>.display`   | string  | `font-display` strategy: `auto`, `block`, `swap`, `fallback`, or `optional`. Use `swap` unless you have a reason not to.     |
 | `fallbacks.<group>` | string  | CSS font stack appended after the Google font.                                                                               |
 
-`<group>` is one of `heading`, `body`, or `code`.
+`<group>` is one of `heading`, `body`, `code`, or `mono`.
+
+## `code` versus `mono`
+
+These are separate on purpose.
+
+`code` is for **code you read** — fenced blocks, inline code, syntax highlighting, gists, imported source, and notebook cell source. Pick something tuned for reading code.
+
+`mono` is for **monospaced interface chrome** — `<kbd>` keys, `<samp>` output, the search shortcut badge, notebook execution counts, swatch hex labels, and anything styled with the `font-mono` utility. These are UI, not code, and usually want something tighter and more neutral that does not compete with the code font.
+
+`mono` is the only optional group. Leave `family` out and those surfaces use the `fallbacks.mono` stack alone, costing no request — which on Apple platforms means SF Mono, since `ui-monospace` and `SFMono-Regular` resolve to the installed system font.
+
+{{< callout type="info" >}}
+Not every family on Google Fonts is variable. IBM Plex Mono takes discrete weights — `wght@400;500;600` — and rejects a range such as `wght@400..600` with an HTTP 400.
+{{< /callout >}}
 
 ## Finding the `axes` value
 
@@ -105,21 +125,30 @@ Included from `head.html`. When `params.fonts.enable` is true it emits `<link re
 
 ### `assets/css/variables.css`
 
-This file is executed as a Hugo template (`resources.ExecuteAsTemplate`), so it can read site params at build time. It defines three CSS custom properties on `:root`:
+This file is executed as a Hugo template (`resources.ExecuteAsTemplate`), so it can read site params at build time. It defines four CSS custom properties on `:root`:
 
 ```css
 :root {
   --font-heading: "Sora", system-ui, ...;
   --font-body: "Inter", system-ui, ...;
   --font-code: "JetBrains Mono", ui-monospace, ...;
+  --font-monospace: "IBM Plex Mono", SFMono-Regular, ...;
 }
 ```
 
 When fonts are disabled, these resolve to the plain system stacks — the rest of the CSS never needs to know the difference.
 
+`--font-monospace` is named rather than reusing `--font-mono`, because Tailwind owns that name. `assets/css/styles.css` bridges the two in its `@theme` block:
+
+```css
+--font-mono: var(--font-monospace);
+```
+
+The indirection matters: `variables.css` is concatenated _before_ the compiled Tailwind CSS, so a direct `--font-mono` would lose to Tailwind's default on source order. Pointing Tailwind's variable at ours sidesteps that, and means the `font-mono` utility follows `params.fonts.mono` wherever it is used.
+
 ### `assets/css/fonts.css`
 
-Applies the variables: `html` gets `var(--font-body)`, `h1`–`h6` (and the typography plugin's headings) get `var(--font-heading)`, and `pre`, `code`, `kbd`, `samp`, and Hextra code blocks get `var(--font-code)`. In production builds this file is concatenated into the compiled stylesheet in `head.html`.
+Applies the variables: `html` gets `var(--font-body)`, `h1`–`h6` (and the typography plugin's headings) get `var(--font-heading)`, `pre`, `code` and Hextra code blocks get `var(--font-code)`, and `kbd` and `samp` get `var(--font-monospace)`. In production builds this file is concatenated into the compiled stylesheet in `head.html`.
 
 {{% /steps %}}
 
