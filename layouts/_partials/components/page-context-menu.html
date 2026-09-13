@@ -112,9 +112,14 @@
                       {{- partial "utils/icon.html" (dict "name" "arrow-up-right" "attributes" `class="hx:ms-0.5 hx:inline hx:rtl:rotate-270 hx:align-baseline" height="1em" aria-hidden="true"`) -}}
                     {{- end -}}
                   </span>
-                  {{- with $link.description -}}
+                  {{/* No leading trim: it would delete the newline between the
+                    label and the description, fusing the two into one run of
+                    text. The built-in rows above keep that whitespace, and the
+                    two branches have to agree.
+                  */}}
+                  {{ with $link.description }}
                     <span class="{{ $itemDescClass }}" id="{{ $descID }}">{{ . }}</span>
-                  {{- end -}}
+                  {{ end -}}
                 </span>
               </a>
             </li>
