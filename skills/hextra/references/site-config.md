@@ -89,7 +89,17 @@ params:
   enableImageLazyLoading: true
   imageZoom:
     enable: true
+  images:
+    contentMaxWidth: 1920 # px; downscale target for images under assets/
 ```
+
+Every image under `assets/` — covers and markdown body images alike — is
+converted to WebP, measured so it reserves its space, and given an inlined
+low-quality placeholder to show while it loads. `images.contentMaxWidth` caps
+the width; an image already narrower is re-encoded at its own width rather than
+resampled. A downscaled image keeps its original available to `imageZoom` via
+`data-zoom-src`, so click-to-zoom still shows full resolution. Images under
+`static/` are passed through untouched, as are SVGs and GIFs.
 
 ### Fonts
 
