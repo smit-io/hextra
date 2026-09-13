@@ -301,6 +301,22 @@ params:
   displayUpdatedAuthor: true
 ```
 
+### 许可声明
+
+可以在显示最后修改日期的同一行的行首侧显示许可声明，内容为 “This post is licensed under CC BY 4.0 by the author.”，其中许可名称链接到对应网址。除非 `params.license.enable` 为 `true`，否则不会显示。
+
+```yaml {filename="hugo.yaml"}
+params:
+  license:
+    enable: true
+    name: "CC BY 4.0"
+    url: "https://creativecommons.org/licenses/by/4.0/"
+```
+
+只需配置名称和网址，因此任何许可都适用 —— `MIT`、`CC BY-SA 4.0` 等等。包裹它们的句子来自 `license` 翻译字符串，其中的 `%s` 会被替换为带链接的名称；与其他字符串一样，在站点的 `i18n/<lang>.yaml` 中添加 `license` 键即可覆盖。
+
+声明与日期相互独立：任意一个都可以单独显示。
+
 ### 标签
 
 要显示页面标签，在配置文件中设置以下标志：

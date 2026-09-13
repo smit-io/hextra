@@ -10,10 +10,18 @@
   assets, then treated as a path under /static. Remote URLs and SVGs are passed
   through unprocessed.
 
+  Local raster images also get an `lqip`: a 16px-wide copy inlined as a data
+  URI. Painted as the `background-image` of the same `<img>`, it stands in for
+  the cover until the real pixels arrive, and is covered by them exactly when
+  they do — no JavaScript, and nothing to undo on a cached repeat visit. It is
+  empty for remote images and SVGs, which are passed through unprocessed and so
+  have no resource to downscale.
+
   @param {page} page The page to resolve the image for.
   @param {string} [image] An explicit image path, overriding front matter.
   @param {string} [process] Image processing spec. Default "Resize 800x webp q80".
-  @returns {dict} `url`, `width`, `height` — empty dict when there is no image.
+  @param {bool} [lqip] Generate the placeholder. Default true.
+  @returns {dict} `url`, `width`, `height`, `lqip` — empty dict when there is no image.
 
   @example {{ $cover := partial "utils/page-image.html" (dict "page" . "process" "Resize 1600x webp q80")
 }}
@@ -21,6 +29,8 @@
 {{- $page := .page -}}
 {{- $process := .process | default "Resize 800x webp q80" -}}
 {{- $image := .image -}}
+{{- $lqip := "" -}}
+{{- $wantLqip := not (eq .lqip false) -}}
 {{- $url := "" -}}
 {{- $width := 0 -}}
 {{- $height := 0 -}}
@@ -54,12 +64,21 @@
       {{- $url = $processed.RelPermalink -}}
       {{- $width = $processed.Width -}}
       {{- $height = $processed.Height -}}
+      {{/* 16px wide is small enough to inline as text rather than cost a
+        second request, and stretching it back up is what produces the blur —
+        no filter needed, which matters because a filter would blur the real
+        image too and there is no JavaScript here to remove it.
+      */}}
+      {{- if $wantLqip -}}
+        {{- $tiny := .Process "Resize 16x webp q20" -}}
+        {{- $lqip = printf "data:image/webp;base64,%s" ($tiny.Content | base64Encode) -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
 
 {{- $result := dict -}}
 {{- with $url -}}
-  {{- $result = dict "url" . "width" $width "height" $height -}}
+  {{- $result = dict "url" . "width" $width "height" $height "lqip" $lqip -}}
 {{- end -}}
 {{- return $result -}}

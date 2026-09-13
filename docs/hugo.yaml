@@ -276,6 +276,15 @@ params:
   # Display the author name of the last modified date
   displayUpdatedAuthor: false
 
+  # License notice, shown at the inline-start of the same row as the
+  # last-modified date. Off unless `enable` is true. The sentence itself is the
+  # `license` i18n string; only the name and URL are configured here, so any
+  # license works — MIT, CC BY-SA, and so on.
+  license:
+    enable: true
+    name: "CC BY 4.0"
+    url: "https://creativecommons.org/licenses/by/4.0/"
+
   # Search
   # flexsearch is enabled by default
   search:

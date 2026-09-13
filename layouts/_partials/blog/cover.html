@@ -4,6 +4,11 @@
   no layout shift. The image is decorative — the post title always sits next
   to it — so `alt` is intentionally empty.
 
+  When the resolver returns an `lqip`, it is handed to the stylesheet as
+  `--hextra-lqip` and painted as the image's own background, so a blurred
+  stand-in shows until the real pixels land on top of it. Covers without one
+  (remote URLs, SVGs) simply fall back to the flat column background.
+
   @param {page} page The post.
   @param {string} [variant] "card" (default) or "hero".
 
@@ -18,6 +23,7 @@
   <img
     class="{{ cond $hero "hextra-blog-hero" "hextra-blog-card-image" }}"
     src="{{ . | safeURL }}"
+    {{ with $cover.lqip }}style="{{ printf "--hextra-lqip:url('%s')" . | safeCSS }}"{{ end }}
     alt=""
     {{ with $cover.width }}width="{{ . }}"{{ end }}
     {{ with $cover.height }}height="{{ . }}"{{ end }}

@@ -40,6 +40,8 @@ editThisPage: "Edit this page on GitHub →"
 forks: "forks"
 downloads: "downloads"
 lastUpdated: "Last updated on"
+# %s is the license name, linked to params.license.url.
+license: "This post is licensed under %s by the author."
 learnMore: "Learn more"
 light: "Light"
 likes: "likes"

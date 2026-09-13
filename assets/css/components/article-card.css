@@ -16,6 +16,9 @@
 
   img {
     @apply hx:size-full hx:object-cover;
+    /* Placeholder sizing mirrors `object-fit`; see components/blog.css. */
+    @apply hx:bg-cover hx:bg-center hx:bg-no-repeat;
+    background-image: var(--hextra-lqip, none);
   }
 }
 

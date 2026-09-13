@@ -195,6 +195,8 @@
    header/start visible */
 .hextra-blog-card-image {
   @apply hx:h-auto hx:max-h-80 hx:w-full hx:object-cover hx:object-top hx:select-none;
+  @apply hx:bg-cover hx:bg-top hx:bg-no-repeat;
+  background-image: var(--hextra-lqip, none);
 }
 
 .hextra-blog-card-body {
@@ -217,24 +219,49 @@
   @apply hx:mt-3 hx:mb-0 hx:leading-7 hx:text-gray-600 hx:dark:text-gray-300;
 }
 
-/* Horizontal card variant (tag pages): cover on the inline-start edge, text
-   filling the rest. Without a cover the body simply spans the full width. */
+/* Horizontal card variant (tag pages): cover on the inline-start 40%, text
+   filling the remaining 60%. Every card is the same height from `sm` up so
+   the list reads as a grid; below `sm` the cover is hidden and the card
+   sizes to its text. Without a cover the body spans the full width. */
 .hextra-blog-card-h {
-  @apply hx:flex hx:items-stretch;
+  @apply hx:flex hx:items-stretch hx:sm:h-64;
 }
 
 .hextra-blog-card-h-cover {
-  @apply hx:w-44 hx:shrink-0 hx:overflow-hidden hx:bg-gray-100 hx:max-sm:hidden hx:dark:bg-neutral-800;
+  @apply hx:w-2/5 hx:shrink-0 hx:overflow-hidden hx:bg-gray-100 hx:max-sm:hidden hx:dark:bg-neutral-800;
 }
 
-/* In the horizontal card the image fills the cover column's full height
-   instead of sizing dynamically. */
+/* Contained, not cropped: covers are often UI screenshots, which lose their
+   meaning when the edges are cut (same reasoning as `.hextra-blog-hero`
+   below). The image is centred in the column and the column's own background
+   shows through the letterboxing. */
 .hextra-blog-card-h .hextra-blog-card-image {
-  @apply hx:h-full hx:max-h-none;
+  @apply hx:size-full hx:max-h-none hx:object-contain hx:object-center;
+  /* The placeholder is painted as this image's own background, so its sizing
+     has to track `object-fit` exactly — otherwise the stand-in sits in a
+     different rectangle than the photo that lands on top of it, and the
+     mismatch shows as a fringe. `contain`/`center` here mirrors the
+     `cover`/`top` on the base rule. */
+  @apply hx:bg-contain hx:bg-center;
 }
 
+/* A fixed card height means the text has to be bounded rather than clipped
+   mid-glyph, so the title and excerpt each end in an ellipsis. The excerpt
+   is the flexible element: if the meta row wraps onto a second line it gives
+   up space instead of pushing past the card. Clamping the title sets
+   `overflow: hidden` on the h2, which does not clip
+   `.hextra-blog-card-link::after` — the h2 is statically positioned, so the
+   card, not the title, is that pseudo-element's containing block. */
 .hextra-blog-card-h .hextra-blog-card-body {
-  @apply hx:min-w-0 hx:flex-1;
+  @apply hx:flex hx:min-w-0 hx:flex-1 hx:flex-col hx:overflow-hidden;
+}
+
+.hextra-blog-card-h .hextra-blog-card-title {
+  @apply hx:line-clamp-2;
+}
+
+.hextra-blog-card-h .hextra-blog-card-excerpt {
+  @apply hx:min-h-0 hx:line-clamp-3;
 }
 
 .hextra-blog-meta {
@@ -257,6 +284,8 @@
    cropping clips their top and bottom edges */
 .hextra-blog-hero {
   @apply hx:mt-4 hx:mb-4 hx:w-full hx:rounded-lg hx:border hx:border-gray-200 hx:dark:border-neutral-800;
+  @apply hx:bg-cover hx:bg-center hx:bg-no-repeat;
+  background-image: var(--hextra-lqip, none);
 }
 
 /* Every post-footer section uses one rhythm: a top rule with equal padding

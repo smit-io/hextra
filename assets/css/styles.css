@@ -241,6 +241,7 @@ body {
 @import "./components/accordion.css";
 @import "./components/series.css";
 @import "./components/ads.css";
+@import "./components/page-meta.css";
 /* Must stay after ./typography.css: most of its cell rules only tie the
    default table styling on specificity and win on source order. */
 @import "./components/borderless-table.css";

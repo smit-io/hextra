@@ -94,6 +94,15 @@
   }
   :where(img):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     @apply hx:mx-auto hx:my-4 hx:rounded-md;
+    /* Low-quality placeholder from `_markup/render-image.html`, painted as the
+       image's own background so the real pixels cover it without JavaScript.
+       `cover` is exact here: a body image sets no `object-fit`, so its box is
+       already the image's aspect ratio. Images without the custom property —
+       anything under static/, remote, SVG — resolve to `none`. */
+    background-image: var(--hextra-lqip, none);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
   }
   :where(figure):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     figcaption {

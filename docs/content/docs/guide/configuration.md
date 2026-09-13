@@ -461,6 +461,30 @@ params:
   displayUpdatedAuthor: true
 ```
 
+### License Notice
+
+A license notice can be shown at the inline-start of the same row as the last
+modification date, reading "This post is licensed under CC BY 4.0 by the
+author." with the license name linked. It is hidden unless
+`params.license.enable` is `true`.
+
+```yaml {filename="hugo.yaml"}
+params:
+  license:
+    enable: true
+    name: "CC BY 4.0"
+    url: "https://creativecommons.org/licenses/by/4.0/"
+```
+
+Only the name and URL are configured, so any license works — `MIT`,
+`CC BY-SA 4.0`, and so on. The sentence around them comes from the `license`
+translation string, whose `%s` is replaced by the linked name; override it the
+same way as any other string, by adding a `license` key to your site's
+`i18n/<lang>.yaml`.
+
+The notice and the date are independent: either can be displayed without the
+other.
+
 ### Tags
 
 To display page tags, set following flags in the config file:

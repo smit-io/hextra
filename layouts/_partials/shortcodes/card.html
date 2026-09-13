@@ -7,6 +7,7 @@
 {{- $width := .width -}}
 {{- $height := .height -}}
 {{- $imageStyle := .imageStyle -}}
+{{- $lqip := .lqip -}}
 {{- $tag := .tag -}}
 {{- $tagColor := .tagColor | default .tagType | default "" -}}{{- /* Compatibility with previous parameter. */ -}}
 {{- $tagBorder := not (eq .tagBorder false) | default true }}
@@ -16,6 +17,13 @@
 {{- with $image -}}
   {{ $linkClass = "hx:hover:border-hextra-accent-500 hx:bg-gray-100 hx:shadow-sm hx:dark:border-neutral-700 hx:dark:bg-neutral-800 hx:dark:text-gray-50 hx:hover:shadow-lg hx:dark:hover:border-hextra-accent-500 hx:dark:hover:bg-neutral-700" }}
 {{- end -}}
+
+{{/* The placeholder and any caller-supplied `imageStyle` share one `style`
+  attribute; the placeholder goes first so `imageStyle` still wins.
+*/}}
+{{- $style := "" -}}
+{{- with $lqip -}}{{- $style = printf "--hextra-lqip:url('%s');" . -}}{{- end -}}
+{{- with $imageStyle -}}{{- $style = printf "%s%s" $style . -}}{{- end -}}
 
 {{- $external := strings.HasPrefix $link "http" -}}
 {{- $href := cond (strings.HasPrefix $link "/") ($link | relURL) $link -}}
@@ -37,7 +45,7 @@
       src="{{ $image | safeURL }}"
       {{ with $width }}width="{{ . }}"{{ end }}
       {{ with $height }}height="{{ . }}"{{ end }}
-      {{ with $imageStyle }}style="{{ . | safeCSS }}"{{ end }}
+      {{ with $style }}style="{{ . | safeCSS }}"{{ end }}
     />
   {{- end -}}
 
