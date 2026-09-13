@@ -25,8 +25,18 @@ A shortcode for displaying a feature card.
 {{- $external := hasPrefix $link "http" -}}
 {{- $href := cond (strings.HasPrefix $link "/") ($link | relURL) $link -}}
 
-{{- if hasPrefix $image "/" -}}
-  {{- $image = relURL (strings.TrimPrefix "/" $image) -}}
+{{/* Resolve against assets first, the same way `utils/page-image.html` and
+  `_markup/render-image.html` do, so an image can live under assets/ and be
+  referenced by an absolute path. Falls back to treating the path as a static
+  file, which is how this shortcode always behaved. */}}
+{{- if and $image (not (urls.Parse $image).Scheme) -}}
+  {{- with or (.Page.Resources.Get $image) (resources.Get $image) -}}
+    {{- $image = .RelPermalink -}}
+  {{- else -}}
+    {{- if hasPrefix $image "/" -}}
+      {{- $image = relURL (strings.TrimPrefix $image "/") -}}
+    {{- end -}}
+  {{- end -}}
 {{- end -}}
 
 <a
