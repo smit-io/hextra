@@ -7,8 +7,15 @@
   then a stacked label and description. The class strings are hoisted because the
   three rows share them exactly, and the item colours live on the label and
   description spans rather than on the row, so the description stays muted.
+
+  The rows deliberately do not set `whitespace-nowrap`: descriptions are prose,
+  and holding them on one line makes the dropdown as wide as the longest
+  translation. The panel itself carries the sizing instead - `w-max` so it still
+  shrinks to its content (an absolutely positioned box would otherwise be
+  squeezed to the narrow toggle it is anchored to), clamped by a max-width so it
+  can never outgrow the viewport.
 */}}
-{{- $itemClass := "hx:flex hx:w-full hx:cursor-pointer hx:select-none hx:items-start hx:gap-2.5 hx:whitespace-nowrap hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-start hx:outline-none hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800" -}}
+{{- $itemClass := "hx:flex hx:w-full hx:cursor-pointer hx:select-none hx:items-start hx:gap-2.5 hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-start hx:outline-none hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800" -}}
 {{- $itemIconClass := "hx:mt-0.5 hx:size-4 hx:shrink-0 hx:text-gray-500 hx:dark:text-gray-400" -}}
 {{- $itemLabelClass := "hx:text-sm hx:font-medium hx:text-gray-900 hx:dark:text-gray-100" -}}
 {{- $itemDescClass := "hx:text-xs hx:text-gray-600 hx:dark:text-gray-400" -}}
@@ -42,7 +49,7 @@
           </div>
         </button>
       </div>
-      <ul class="hextra-page-context-menu-dropdown not-prose hx:hidden hx:absolute hx:top-full hx:left-0 hx:sm:left-auto hx:sm:right-0 hx:mt-1 hx:z-20 hx:max-h-80 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-hextra-light-100 hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" role="menu">
+      <ul class="hextra-page-context-menu-dropdown not-prose hx:hidden hx:absolute hx:top-full hx:left-0 hx:sm:left-auto hx:sm:right-0 hx:mt-1 hx:z-20 hx:w-max hx:max-w-[calc(100vw-2rem)] hx:sm:max-w-80 hx:max-h-80 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-hextra-light-100 hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" role="menu">
         <li role="none">
           <button data-action="copy" role="menuitem" class="{{ $itemClass }}">
             <div class="{{ $itemIconClass }}">
