@@ -138,9 +138,16 @@ params:
 
   toc:
     displayTags: true
+
+  license:
+    enable: true
+    name: "CC BY 4.0"
+    url: "https://creativecommons.org/licenses/by/4.0/"
 ```
 
 `displayUpdatedDate` needs `enableGitInfo: true` at the top level to have a date to show.
+
+`license` adds a notice at the inline-start of the same row as the last-updated date, and is off unless `enable` is true. Only the name and URL are configured, so any license works; the sentence around them is the `license` i18n string, whose `%s` becomes the linked name. Both switches are independent — either the notice or the date can render on its own.
 
 Breadcrumbs are on by default and have no site-level switch — hide them per page with `breadcrumbs: false` in front matter.
 
