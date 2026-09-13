@@ -75,9 +75,17 @@
       on click. Render hooks are unaffected - their output is re-rendered as
       part of the host's own Markdown - so only the shortcode flags need
       carrying across.
+
+      Reading those flags needs the included page to have been rendered first,
+      and RenderShortcodes above does not do that: it returns placeholders that
+      Hugo substitutes after this template has finished, so at this point the
+      included page's shortcodes have not run and its Store is still empty.
+      Discarding its .Content forces them to run now. Hugo caches the result,
+      so the page is rendered once rather than twice.
     */}}
     {{- $included := . }}
-    {{- range slice "hasAds" "hasAsciinema" "hasChart" "hasGallery" "hasMath" "hasTypeIt" "hasYoutubeLite" }}
+    {{- $_ := .Content }}
+    {{- range slice "hasAds" "hasAsciinema" "hasChart" "hasGallery" "hasLiveCode" "hasMath" "hasTypeIt" "hasYoutubeLite" }}
       {{- if $included.Store.Get . }}
         {{- $.Page.Store.Set . true }}
       {{- end }}
