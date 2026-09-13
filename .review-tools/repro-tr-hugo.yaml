@@ -1,0 +1,13 @@
+baseURL: http://localhost/
+theme: hextra2
+defaultContentLanguage: tr
+languages:
+  tr:
+    languageName: Türkçe
+    weight: 1
+outputs:
+  page: [HTML, Markdown]
+params:
+  page:
+    contextMenu:
+      enable: true

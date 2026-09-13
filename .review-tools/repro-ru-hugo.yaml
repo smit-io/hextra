@@ -1,0 +1,26 @@
+baseURL: http://localhost/
+theme: hextra2
+defaultContentLanguage: ru
+languages:
+  ru:
+    languageName: Русский
+    weight: 1
+outputs:
+  page: [HTML, Markdown]
+params:
+  externalLinkDecoration: true
+  page:
+    contextMenu:
+      enable: true
+      links:
+        - name: Открыть в ChatGPT
+          icon: chatgpt
+          url: "https://chatgpt.com/?q={markdown_url}"
+          description: "Задайте вопрос об этой странице и получите развёрнутый ответ от языковой модели прямо сейчас"
+        - name: Внутренняя ссылка
+          icon: markdown
+          url: "/docs/page/"
+          description: "Относительный адрес"
+        - name: Без иконки
+          url: "https://example.com/?q={url}"
+          description: "Ссылка без иконки"
