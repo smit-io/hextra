@@ -518,6 +518,7 @@ params:
       links:
         - name: باز کردن در ChatGPT
           icon: chatgpt
+          description: درباره این صفحه سوال بپرسید
           url: "https://chatgpt.com/?hints=search&q=I%27m+looking+at+this+documentation%3A+{url}%0AHelp+me+understand+how+to+use+it."
 ```
 
@@ -525,6 +526,7 @@ params:
 
 - `name` - متن نمایشی لینک
 - `icon` - نام آیکون اختیاری (به [آیکون‌ها]({{% relref "docs/guide/shortcodes/icon" %}}) مراجعه کنید)
+- `description` - خط دوم اختیاری که با رنگ کم‌رنگ زیر نام نمایش داده می‌شود
 - `url` - آدرس با جایگزین‌های اختیاری
 
 ### نمایه FlexSearch

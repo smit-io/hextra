@@ -686,6 +686,7 @@ params:
       links:
         - name: Open in ChatGPT
           icon: chatgpt
+          description: Ask questions about this page
           url: "https://chatgpt.com/?hints=search&q=I%27m+looking+at+this+documentation%3A+{url}%0AHelp+me+understand+how+to+use+it."
 ```
 
@@ -693,6 +694,7 @@ Each link can have:
 
 - `name` - The display text for the link
 - `icon` - An optional icon name (see [Icons]({{% relref "docs/guide/shortcodes/icon" %}}))
+- `description` - An optional second line shown in muted text under the name
 - `url` - The URL with optional placeholders
 
 ### FlexSearch Index

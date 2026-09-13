@@ -518,6 +518,7 @@ params:
       links:
         - name: 在 ChatGPT 中打开
           icon: chatgpt
+          description: 就这个页面提问
           url: "https://chatgpt.com/?hints=search&q=I%27m+looking+at+this+documentation%3A+{url}%0AHelp+me+understand+how+to+use+it."
 ```
 
@@ -525,6 +526,7 @@ params:
 
 - `name` - 链接的显示文本
 - `icon` - 可选的图标名称（参见[图标]({{% relref "docs/guide/shortcodes/icon" %}})）
+- `description` - 可选的第二行说明，以浅色显示在名称下方
 - `url` - 包含可选占位符的 URL
 
 ### FlexSearch 索引
