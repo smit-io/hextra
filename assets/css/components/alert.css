@@ -1,5 +1,5 @@
 .hextra-alert {
-  @apply hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-sm hx:border hx:py-4 hx:px-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current;
+  @apply hx:overflow-x-auto hx:mt-6 hx:flex hx:flex-col hx:rounded-lg hx:border hx:py-4 hx:px-4 hx:contrast-more:border-current hx:contrast-more:dark:border-current;
   @apply hx:border-orange-400 hx:bg-orange-50 hx:text-orange-700 hx:dark:border-orange-500/70 hx:dark:bg-orange-950/60 hx:dark:text-orange-400;
 }
 
