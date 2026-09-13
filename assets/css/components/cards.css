@@ -8,6 +8,14 @@
 
 .hextra-card img {
   user-select: none;
+  /* Low-quality placeholder, painted as the image's own background so the real
+     pixels cover it with no JavaScript. `cover` matches the default, unfitted
+     image box; a caller who sets `object-fit` via `imageStyle` should set a
+     matching `background-size` there too. */
+  background-image: var(--hextra-lqip, none);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .hextra-card:hover .hextra-card-icon svg {

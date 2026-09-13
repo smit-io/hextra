@@ -28,6 +28,7 @@
 {{- $width := 0 -}}
 {{- $height := 0 -}}
 {{- $imageStyle := .Get "imageStyle" -}}
+{{- $lqip := "" -}}
 {{- $tag := .Get "tag" -}}
 {{- $tagColor := .Get "tagColor" | default (.Get "tagType") | default "" -}}{{- /* Compatibility with previous parameter. */ -}}
 {{- $tagBorder := not (eq (.Get "tagBorder") false) | default true }}
@@ -47,6 +48,11 @@
       {{- $width = $processed.Width -}}
       {{- $height = $processed.Height -}}
       {{- $image = $processed.RelPermalink -}}
+      {{/* A 16px-wide copy, inlined as a data URI and painted as the image's
+        own background, stands in until the real pixels land on top of it.
+        See `utils/page-image.html`, which does the same for cover images. */}}
+      {{- $tiny := .Process "Resize 16x webp q20" -}}
+      {{- $lqip = printf "data:image/webp;base64,%s" ($tiny.Content | base64Encode) -}}
     {{- end -}}
   {{ else }}
     {{/* Otherwise, use relative link of the image */}}
@@ -67,6 +73,7 @@
   "width"       $width
   "height"      $height
   "imageStyle"  $imageStyle
+  "lqip"        $lqip
   "tag"         $tag
   "tagType"     $tagColor
   "tagBorder"   $tagBorder

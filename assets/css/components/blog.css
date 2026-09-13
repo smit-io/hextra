@@ -195,6 +195,8 @@
    header/start visible */
 .hextra-blog-card-image {
   @apply hx:h-auto hx:max-h-80 hx:w-full hx:object-cover hx:object-top hx:select-none;
+  @apply hx:bg-cover hx:bg-top hx:bg-no-repeat;
+  background-image: var(--hextra-lqip, none);
 }
 
 .hextra-blog-card-body {
@@ -235,6 +237,12 @@
    shows through the letterboxing. */
 .hextra-blog-card-h .hextra-blog-card-image {
   @apply hx:size-full hx:max-h-none hx:object-contain hx:object-center;
+  /* The placeholder is painted as this image's own background, so its sizing
+     has to track `object-fit` exactly — otherwise the stand-in sits in a
+     different rectangle than the photo that lands on top of it, and the
+     mismatch shows as a fringe. `contain`/`center` here mirrors the
+     `cover`/`top` on the base rule. */
+  @apply hx:bg-contain hx:bg-center;
 }
 
 /* A fixed card height means the text has to be bounded rather than clipped
@@ -276,6 +284,8 @@
    cropping clips their top and bottom edges */
 .hextra-blog-hero {
   @apply hx:mt-4 hx:mb-4 hx:w-full hx:rounded-lg hx:border hx:border-gray-200 hx:dark:border-neutral-800;
+  @apply hx:bg-cover hx:bg-center hx:bg-no-repeat;
+  background-image: var(--hextra-lqip, none);
 }
 
 /* Every post-footer section uses one rhythm: a top rule with equal padding
