@@ -408,6 +408,88 @@ params:
   imageZoom:
     enable: true
 
+  # Advertising. Left commented out on purpose: this site's own sponsor copy
+  # says Hextra carries no ads and no trackers, and uncommenting this would
+  # make that a lie. Uncomment on your own site.
+  #
+  # Nothing renders until this block exists. `enable: false` silences every ad
+  # while keeping the settings, and any page can opt out with `ads: false` in
+  # its front matter. Ads never render outside a production build; a dashed
+  # placeholder box is drawn at the reserved height instead.
+  #
+  # ads:
+  #   enable: true
+  #
+  #   # Default network for every slot and every `ad` shortcode.
+  #   # adsense | ethicalads | carbon | custom
+  #   provider: adsense
+  #
+  #   # Presentation defaults. Any slot, and any shortcode call, can override
+  #   # every one of these by name.
+  #   label: true # the "Advertisement" caption
+  #   labelText: "" # replaces the caption text
+  #   height: 280px # reserved height, so arriving ads do not shift the page
+  #   maxWidth: "" # cap the width, e.g. 728px
+  #   align: center # left | center | right
+  #   border: true # hairline around the ad
+  #   background: true # tinted area behind it
+  #   class: "" # extra classes on the wrapper
+  #   placeholder: true # draw the dashed box outside production
+  #   production: true # false renders live ads in development too
+  #   consent: "" # "npa" asks AdSense for non-personalised ads
+  #
+  #   adsense:
+  #     client: ca-pub-XXXXXXXXXXXXXXXX
+  #     format: auto # auto | fluid | rectangle | vertical | horizontal
+  #     fullWidth: true
+  #     layout: "" # in-article and in-feed units
+  #     layoutKey: "" # in-feed units
+  #     test: false # request test ads instead of live ones
+  #     # Put the loader on every page rather than only on pages carrying an
+  #     # ad. AdSense looks for it while reviewing your site, and Auto ads
+  #     # needs it site-wide. Configuring one slot achieves the same thing.
+  #     verifyAllPages: false
+  #
+  #   ethicalads:
+  #     publisher: your-publisher-id
+  #     type: image # image | text
+  #     style: horizontal # horizontal | vertical | raw
+  #     keywords: [hugo, documentation]
+  #
+  #   carbon:
+  #     serve: XXXXXXXX
+  #     placement: yoursite
+  #
+  #   # Named creatives for the `custom` provider: house ads and sponsor
+  #   # banners, no ad network involved. A slot or a shortcode names one with
+  #   # `slot`, e.g. {{< ad provider="custom" slot="sponsor" >}}.
+  #   custom:
+  #     sponsor: '<a href="/sponsor">Sponsor this project</a>'
+  #
+  #   # Where ads appear. Omit a slot and that position stays empty. A value is
+  #   # the ad unit id, or `true` for a network that needs no id, or a map
+  #   # carrying any of the keys above plus its own `provider`.
+  #   slots:
+  #     # Blog post, directly below the article body.
+  #     blogBottom: "1111111111"
+  #     # Blog post, directly above the comments.
+  #     blogEnd: "2222222222"
+  #     # Blog index, after every `every` cards, skipping the first `offset`.
+  #     # Never after the last card on a page.
+  #     blogList:
+  #       slot: "3333333333"
+  #       every: 4
+  #       offset: 0
+  #     # Docs page, directly below the page body.
+  #     docsBottom:
+  #       slot: "4444444444"
+  #       height: 120px
+  #       format: horizontal
+  #
+  # Ads also require two things this theme cannot provide: an ads.txt file at
+  # your site root, and - for EU traffic with personalised ads - a consent
+  # management platform, which you enable in your AdSense account.
+
   comments:
     enable: false
     type: giscus

@@ -3,7 +3,7 @@
 
 # Shortcode reference
 
-Every shortcode the theme ships: 58 of them, with parameters taken from the templates in `layouts/_shortcodes/` and examples from the theme's editor snippets.
+Every shortcode the theme ships: 59 of them, with parameters taken from the templates in `layouts/_shortcodes/` and examples from the theme's editor snippets.
 
 ## Rules that apply throughout
 
@@ -548,6 +548,53 @@ List recent pages from the site, optionally filtered by a page parameter.
 
 ```markdown
 {{< list limit=6 title="From the blog" cardView=false where="Type" value="blog" >}}
+```
+
+## Ads
+
+Manual placement. The slots under `params.ads.slots` cover the repeating positions without a shortcode.
+
+### ad
+
+{{< >}} · self-closing · accepts positional arguments
+
+Place one advertisement at this point in the page.
+
+| Parameter | Type | Notes |
+| --- | --- | --- |
+| `align` | string |  One of `center`, `left`, `right`. |
+| `background` | bool | Tint the area behind the ad. Default `true`. |
+| `border` | bool | Draw a hairline around the ad. Default `true`. |
+| `class` | string | Extra classes for the wrapper. |
+| `client` | string | AdSense publisher id, overriding params.ads.adsense.client. |
+| `consent` | string | Set to npa to ask AdSense for non-personalised ads. |
+| `format` | string | AdSense ad format. One of `auto`, `fluid`, `rectangle`, `vertical`, `horizontal`. |
+| `fullWidth` | bool | Let an AdSense unit go full width on small screens. Default `true`. |
+| `height` | string | Reserved height, as a CSS length. Default `280px`. |
+| `keywords` | string | Comma-separated keywords to target an EthicalAds unit. |
+| `label` | bool | Show the "Advertisement" caption. Default `true`. |
+| `labelText` | string | Replace the caption text. |
+| `layout` | string | AdSense ad layout, for in-feed and in-article units. |
+| `layoutKey` | string | AdSense layout key, for in-feed units. |
+| `maxWidth` | string | Cap the width, as a CSS length. |
+| `placeholder` | bool | Draw the dashed box outside production. Default `true`. |
+| `placement` | string | Carbon placement id, overriding params.ads.carbon.placement. |
+| `production` | bool | Only render the real ad in production. Default `true`. |
+| `provider` | string |  One of `adsense`, `ethicalads`, `carbon`, `custom`. |
+| `publisher` | string | EthicalAds publisher id, overriding params.ads.ethicalads.publisher. |
+| `serve` | string | Carbon serve id, overriding params.ads.carbon.serve. |
+| `slot` | string | **Required.** The ad unit id. Required for AdSense. For the custom provider, the name of a creative under `params.ads.custom`. |
+| `style` | string | EthicalAds shape. One of `horizontal`, `vertical`, `raw`. |
+| `test` | bool | Request test ads rather than live ones. Default `false`. |
+| `type` | string | EthicalAds creative type. One of `image`, `text`. |
+| `variant` | string | Presentation variant. One of `""`, `list`. |
+
+Positional: The ad unit id.
+
+```markdown
+{{< ad slot="1234567890" >}}
+
+{{< ad provider="adsense" slot="1234567890" format="auto" align="center" >}}
 ```
 
 ## Media

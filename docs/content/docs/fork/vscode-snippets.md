@@ -102,6 +102,8 @@ Five shortcodes use percent delimiters so their inner content is rendered as Mar
 | `hxtimeline-item`       | One timeline entry — `badge`, `badgeColor`, `icon`         |
 | `hxswatches`            | Colour palette from positional hex codes                   |
 | `hxlist`                | List of pages, filtered by `where`/`value`                 |
+| `hxad`                  | One ad at this point — needs `params.ads` configured       |
+| `hxadprovider`          | Ad with an explicit network, format and alignment          |
 | `hxchart`               | Chart.js chart from an inline config                       |
 | `hxtypeit`              | Typewriter effect, one string per line                     |
 | `hxvideo`               | Self-hosted video with controls                            |

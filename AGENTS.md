@@ -77,6 +77,8 @@ assets/
   - Text and callouts: `callout`, `badge`, `lead`, `keyword`, `keywords`,
     `stat`, `stats`, `swatches`, `icon`, `ltr`, `rtl`
   - Links and actions: `button`, `cta`, `email`, `article`, `list`
+  - Ads: `ad` (manual placement; the slots under `params.ads.slots` cover the
+    repeating positions without a shortcode)
   - Media: `video`, `youtube-lite`, `gallery`, `gallery-item`, `pdf`, `chart`,
     `typeit`, `asciinema`, `term`, `jupyter`
   - Code and content import: `gist`, `codeimporter`, `include`

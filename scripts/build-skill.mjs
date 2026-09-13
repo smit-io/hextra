@@ -352,6 +352,11 @@ const CATEGORIES = [
     names: ["button", "cta", "email", "article", "list"],
   },
   {
+    title: "Ads",
+    blurb: "Manual placement. The slots under `params.ads.slots` cover the repeating positions without a shortcode.",
+    names: ["ad"],
+  },
+  {
     title: "Media",
     blurb: "Images, video, and rich embeds.",
     names: ["gallery", "gallery-item", "video", "youtube-lite", "pdf", "chart", "typeit", "asciinema", "jupyter"],

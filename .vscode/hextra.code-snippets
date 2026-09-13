@@ -887,5 +887,21 @@
       "\\$\\$"
     ],
     "description": "Display math block. Needs math: true in the page front matter."
+  },
+  "Hextra: ad": {
+    "scope": "markdown",
+    "prefix": "hxad",
+    "body": [
+      "{{< ad slot=\"${1:1234567890}\" >}}"
+    ],
+    "description": "One ad at this point in the page. Needs params.ads configured (layouts/_shortcodes/ad.html)."
+  },
+  "Hextra: ad with provider": {
+    "scope": "markdown",
+    "prefix": "hxadprovider",
+    "body": [
+      "{{< ad provider=\"${1|adsense,ethicalads,carbon,custom|}\" slot=\"${2:1234567890}\" format=\"${3|auto,fluid,rectangle,vertical,horizontal|}\" align=\"${4|center,left,right|}\" >}}"
+    ],
+    "description": "Ad with an explicit network and shape. Every parameter defaults to params.ads."
   }
 }

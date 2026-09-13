@@ -65,6 +65,9 @@
 
   {{ partial "components/analytics/analytics.html" . }}
 
+  {{- /* AdSense loader on every page, when verifyAllPages is on. */ -}}
+  {{- partial "ads/verify.html" . -}}
+
   {{- $scriptsHead := slice -}}
   {{- range resources.Match "js/head/*.js" -}}
     {{ $scriptsHead = $scriptsHead | append (resources.ExecuteAsTemplate .Name $ .) }}
