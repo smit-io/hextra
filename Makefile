@@ -226,8 +226,12 @@ preview: css ## Build production output for the always-on preview service (inclu
 #
 # Each build rewrites docs/hugo_stats.json. `make clean-stats` drops the churn.
 
+# fmt-check comes first so a formatting slip fails in seconds rather than after
+# a full Hugo build. It is safe in that order: docs/hugo_stats.json, which every
+# build rewrites, is in .prettierignore, so the build cannot invalidate the check
+# that just passed.
 .PHONY: test
-test: build ## Build, then run the full Playwright suite
+test: fmt-check build ## Check formatting, build, then run the full Playwright suite
 	@npm test
 
 # Runs against the always-on preview container instead of Playwright's own
