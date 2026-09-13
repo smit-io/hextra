@@ -84,6 +84,19 @@
 
   --color-accent-colorbackground: var(--color-hextra-light-100);
   --color-hextra-dark-background: var(--color-hextra-dark-600);
+
+  /*
+    Tailwind owns `--font-mono`, and its default wins on source order: this
+    file compiles into main.css, which head.html concatenates *after*
+    variables.css. Pointing it at our own variable sidesteps that — custom
+    properties resolve at use time, so the declaration order stops mattering.
+    The indirection is the same trick `--color-primary-*` already uses for
+    `--primary-hue` above.
+
+    The effect is that `hx:font-mono` follows params.fonts.mono everywhere,
+    including the four places that already used it before the param existed.
+  */
+  --font-mono: var(--font-monospace);
 }
 
 html {

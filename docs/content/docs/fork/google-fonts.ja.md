@@ -31,17 +31,23 @@ params:
       axes: "wght@400;500"
       display: "swap"
 
+    mono:
+      family: "IBM Plex Mono"
+      axes: "wght@400;500;600"
+      display: "swap"
+
     # Used while fonts load and if Google Fonts is unreachable
     fallbacks:
       heading: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       body: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       code: "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace"
+      mono: "SFMono-Regular, 'SF Mono', ui-monospace, Consolas, 'Liberation Mono', Menlo, monospace"
 ```
 
 これだけです。テンプレートの上書きもカスタム CSS も必要ありません。
 
 {{< callout type="warning" >}}
-`enable: true` を設定する場合は、**3 つすべて**のフォントグループ（`heading`、`body`、`code`）と `fallbacks` ブロックを定義してください。CSS 変数の生成はそのすべてを読み取ります。
+`enable: true` を設定する場合は、`heading`、`body`、`code` とそれぞれの `fallbacks` を定義してください。CSS 変数の生成はそのすべてを読み取ります。`mono` は例外で任意です。省略すると素の等幅スタックにフォールバックします。
 {{< /callout >}}
 
 ## パラメータ
@@ -54,7 +60,19 @@ params:
 | `<group>.display`   | string  | `font-display` 戦略：`auto`、`block`、`swap`、`fallback`、`optional`。特別な理由がなければ `swap` を使ってください。          |
 | `fallbacks.<group>` | string  | Google フォントの後に追加される CSS フォントスタック。                                                                        |
 
-`<group>` は `heading`、`body`、`code` のいずれかです。
+`<group>` は `heading`、`body`、`code`、`mono` のいずれかです。
+
+## `code` と `mono` の違い
+
+この二つは意図的に分かれています。
+
+`code` は**読むためのコード**向けです — コードブロック、インラインコード、シンタックスハイライト、gist、インポートしたソース、ノートブックのセルソース。
+
+`mono` は**等幅の UI 要素**向けです — `<kbd>` キー、`<samp>` 出力、検索ショートカットのバッジ、ノートブックの実行回数、カラースウォッチの HEX ラベル、そして `font-mono` ユーティリティを使うすべて。これらはコードではなく UI です。
+
+`mono` は唯一の任意グループです。`family` を省略すると、これらの面は `fallbacks.mono` スタックのみを使い、リクエストは発生しません。
+
+Google Fonts のすべてのファミリーがバリアブルフォントではありません。IBM Plex Mono は個別のウェイトを取り — `wght@400;500;600` — `wght@400..600` のような範囲指定は HTTP 400 で拒否されます。
 
 ## `axes` 値の調べ方
 

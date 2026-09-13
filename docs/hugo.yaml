@@ -239,12 +239,22 @@ params:
       family: "Google Sans Code"
       axes: "ital,wght@0,300;1,300"
       display: "swap"
+    # Monospaced interface chrome — keyboard keys, shortcut badges, notebook
+    # execution counts, swatch hex labels. Deliberately not `code`: those are
+    # UI, not code to read. Omit `family` to use the fallback stack alone.
+    mono:
+      # IBM Plex Mono is not a variable font — discrete weights only. A range
+      # such as `wght@400..600` is rejected by the Google Fonts API with a 400.
+      family: "IBM Plex Mono"
+      axes: "wght@400;500;600"
+      display: "swap"
 
     # Fallback fonts (used if Google Fonts fail to load)
     fallbacks:
       heading: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       body: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       code: "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace"
+      mono: "SFMono-Regular, 'SF Mono', ui-monospace, Consolas, 'Liberation Mono', Menlo, monospace"
   externalLinkDecoration: true
 
   navbar:

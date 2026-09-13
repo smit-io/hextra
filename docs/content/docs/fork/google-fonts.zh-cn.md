@@ -31,17 +31,23 @@ params:
       axes: "wght@400;500"
       display: "swap"
 
+    mono:
+      family: "IBM Plex Mono"
+      axes: "wght@400;500;600"
+      display: "swap"
+
     # Used while fonts load and if Google Fonts is unreachable
     fallbacks:
       heading: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       body: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       code: "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace"
+      mono: "SFMono-Regular, 'SF Mono', ui-monospace, Consolas, 'Liberation Mono', Menlo, monospace"
 ```
 
 就这么简单——不需要覆盖模板，也不需要自定义 CSS。
 
 {{< callout type="warning" >}}
-设置 `enable: true` 时，请定义**全部三个**字体组（`heading`、`body`、`code`）以及 `fallbacks` 块。CSS 变量生成会读取它们全部。
+设置 `enable: true` 时，请定义 `heading`、`body` 和 `code` 以及它们的 `fallbacks`，CSS 变量生成会读取全部内容。`mono` 是例外 —— 它是可选的，省略时会回退到普通等宽字体栈。
 {{< /callout >}}
 
 ## 参数
@@ -54,7 +60,19 @@ params:
 | `<group>.display`   | string  | `font-display` 策略：`auto`、`block`、`swap`、`fallback` 或 `optional`。除非有特殊理由，否则使用 `swap`。       |
 | `fallbacks.<group>` | string  | 追加在 Google 字体之后的 CSS 字体栈。                                                                           |
 
-`<group>` 为 `heading`、`body` 或 `code` 之一。
+`<group>` 为 `heading`、`body`、`code` 或 `mono` 之一。
+
+## `code` 与 `mono` 的区别
+
+两者是有意分开的。
+
+`code` 用于**供阅读的代码** —— 代码块、行内代码、语法高亮、gist、导入的源码以及笔记本单元格源码。
+
+`mono` 用于**等宽的界面元素** —— `<kbd>` 按键、`<samp>` 输出、搜索快捷键徽标、笔记本执行计数、色板十六进制标签，以及任何使用 `font-mono` 工具类的地方。它们属于界面，而非代码。
+
+`mono` 是唯一可选的分组。省略 `family` 时，这些位置仅使用 `fallbacks.mono` 字体栈，不产生任何请求。
+
+并非所有 Google Fonts 家族都是可变字体。IBM Plex Mono 只接受离散字重 —— `wght@400;500;600` —— 像 `wght@400..600` 这样的范围会被以 HTTP 400 拒绝。
 
 ## 查找 `axes` 值
 

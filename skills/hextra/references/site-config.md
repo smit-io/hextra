@@ -112,13 +112,21 @@ params:
     heading: { family: "Sora", axes: "wght@100..800", display: "swap" }
     body: { family: "Mozilla Text", axes: "wght@200..700", display: "swap" }
     code: { family: "Google Sans Code", axes: "ital,wght@0,300;1,300", display: "swap" }
+    mono: { family: "IBM Plex Mono", axes: "wght@400;500;600", display: "swap" }
     fallbacks:
       heading: "system-ui, sans-serif"
       body: "system-ui, sans-serif"
       code: "ui-monospace, monospace"
+      mono: "ui-monospace, monospace"
 ```
 
 Set `enable: false` to drop the external request entirely and use the fallbacks.
+
+`code` and `mono` are deliberately separate. `code` is for code you read — fenced blocks, inline code, syntax highlighting, gists, notebook source. `mono` is monospaced interface chrome: `<kbd>` keys, `<samp>` output, the search shortcut badge, notebook execution counts, swatch hex labels, and anything using the `font-mono` utility. Omit `mono.family` and those surfaces use the `fallbacks.mono` stack with no extra request.
+
+Each family is one render-blocking request, so a site naming all four pays four.
+
+Note not every family on Google Fonts is variable — IBM Plex Mono takes discrete weights (`wght@400;500;600`) and rejects a range such as `wght@400..600`.
 
 ## Search
 

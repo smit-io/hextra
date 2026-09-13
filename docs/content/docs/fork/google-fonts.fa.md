@@ -31,17 +31,23 @@ params:
       axes: "wght@400;500"
       display: "swap"
 
+    mono:
+      family: "IBM Plex Mono"
+      axes: "wght@400;500;600"
+      display: "swap"
+
     # Used while fonts load and if Google Fonts is unreachable
     fallbacks:
       heading: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       body: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       code: "ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace"
+      mono: "SFMono-Regular, 'SF Mono', ui-monospace, Consolas, 'Liberation Mono', Menlo, monospace"
 ```
 
 همین — نه نیازی به جایگزینی قالب هست، نه CSS سفارشی.
 
 {{< callout type="warning" >}}
-وقتی `enable: true` تنظیم شده باشد، **هر سه** گروه فونت (`heading`، `body`، `code`) و بلوک `fallbacks` را تعریف کنید. تولید متغیرهای CSS همه آن‌ها را می‌خواند.
+وقتی `enable: true` تنظیم شده باشد، `heading`، `body` و `code` را همراه با `fallbacks` آن‌ها تعریف کنید. تولید متغیرهای CSS همه آن‌ها را می‌خواند. `mono` استثناست — اختیاری است و در صورت نبودن به یک پشته تک‌عرض ساده بازمی‌گردد.
 {{< /callout >}}
 
 ## پارامترها
@@ -54,7 +60,19 @@ params:
 | `<group>.display`   | string  | راهبرد `font-display`: ‏`auto`، `block`، `swap`، `fallback` یا `optional`. مگر دلیل خاصی داشته باشید، از `swap` استفاده کنید. |
 | `fallbacks.<group>` | string  | مجموعه فونت CSS که پس از فونت Google اضافه می‌شود.                                                                            |
 
-`<group>` یکی از `heading`، `body` یا `code` است.
+`<group>` یکی از `heading`، `body`، `code` یا `mono` است.
+
+## `code` در برابر `mono`
+
+این دو به‌صورت عمدی از هم جدا هستند.
+
+`code` برای **کدی است که می‌خوانید** — بلوک‌های کد، کد درون‌خطی، برجسته‌سازی نحو، gist‌ها، منبع واردشده و منبع سلول‌های نوت‌بوک.
+
+`mono` برای **اجزای تک‌عرض رابط کاربری** است — کلیدهای `<kbd>`، خروجی `<samp>`، نشان میان‌بر جست‌وجو، شمارنده‌های اجرای نوت‌بوک، برچسب‌های هگز نمونه‌رنگ‌ها و هر چیزی که با ابزار `font-mono` سبک‌دهی شده باشد. این‌ها رابط کاربری‌اند، نه کد.
+
+`mono` تنها گروه اختیاری است. اگر `family` را ننویسید، این سطح‌ها تنها از پشته `fallbacks.mono` استفاده می‌کنند و هیچ درخواستی هزینه نمی‌شود.
+
+همه خانواده‌های Google Fonts متغیر نیستند. IBM Plex Mono وزن‌های مجزا می‌گیرد — `wght@400;500;600` — و بازه‌ای مثل `wght@400..600` را با خطای HTTP 400 رد می‌کند.
 
 ## پیدا کردن مقدار `axes`
 

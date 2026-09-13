@@ -78,11 +78,21 @@
 
     const instances = new Map();
 
+    // Chart.js ships its own "Helvetica Neue" default, which ignores
+    // params.fonts entirely. Read the body stack off the document so axis
+    // labels and legends match the rest of the page; the variable already
+    // carries its fallbacks, so this degrades exactly as the CSS does.
+    const bodyFont = () => getComputedStyle(document.documentElement).getPropertyValue("--font-body").trim();
+
     const draw = () => {
       if (typeof Chart === "undefined") return;
       const colors = palette();
       Chart.defaults.color = colors.text;
       Chart.defaults.borderColor = colors.grid;
+      // Empty only if the stylesheet has not applied yet; leaving Chart.js to
+      // its own default beats setting an empty family.
+      const font = bodyFont();
+      if (font) Chart.defaults.font.family = font;
 
       for (const entry of window.hextraCharts || []) {
         const canvas = document.getElementById(entry.id);

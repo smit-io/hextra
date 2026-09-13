@@ -22,10 +22,15 @@ h6 {
 }
 
 pre,
-code,
+code {
+  font-family: var(--font-code);
+}
+
+/* A keyboard key and program output are interface chrome, not code to read —
+   the same category as the search shortcut badge — so they follow `mono`. */
 kbd,
 samp {
-  font-family: var(--font-code);
+  font-family: var(--font-monospace);
 }
 
 /* Code blocks */
