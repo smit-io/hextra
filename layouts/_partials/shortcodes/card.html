@@ -19,7 +19,8 @@
 {{- end -}}
 
 {{/* The placeholder and any caller-supplied `imageStyle` share one `style`
-  attribute; the placeholder goes first so `imageStyle` still wins. */}}
+  attribute; the placeholder goes first so `imageStyle` still wins.
+*/}}
 {{- $style := "" -}}
 {{- with $lqip -}}{{- $style = printf "--hextra-lqip:url('%s');" . -}}{{- end -}}
 {{- with $imageStyle -}}{{- $style = printf "%s%s" $style . -}}{{- end -}}

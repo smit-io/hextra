@@ -67,7 +67,8 @@
       {{/* 16px wide is small enough to inline as text rather than cost a
         second request, and stretching it back up is what produces the blur —
         no filter needed, which matters because a filter would blur the real
-        image too and there is no JavaScript here to remove it. */}}
+        image too and there is no JavaScript here to remove it.
+      */}}
       {{- if $wantLqip -}}
         {{- $tiny := .Process "Resize 16x webp q20" -}}
         {{- $lqip = printf "data:image/webp;base64,%s" ($tiny.Content | base64Encode) -}}
