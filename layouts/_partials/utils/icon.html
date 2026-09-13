@@ -79,6 +79,14 @@
     {{- $icon = replaceRE `(<svg[^>]*?)\swidth=("[^"]*"|'[^']*'|[^\s>]+)` `$1` $icon -}}
     {{- $icon = replaceRE `(<svg[^>]*?)\sheight=("[^"]*"|'[^']*'|[^\s>]+)` `$1` $icon -}}
   {{- end -}}
+  {{/* 235 of the icons in data/icons.yaml already carry aria-hidden, so a
+    caller passing its own would otherwise emit the attribute twice. Drop the
+    source one and let the caller win, the same way width/height are handled
+    for remote icons above.
+  */}}
+  {{- if strings.Contains $attributes "aria-hidden" -}}
+    {{- $icon = replaceRE `(<svg[^>]*?)\saria-hidden=("[^"]*"|'[^']*'|[^\s>]+)` `$1` $icon -}}
+  {{- end -}}
   {{- $icon = replaceRE "<svg" (printf "<svg %s" $attributes) $icon -}}
 {{- end -}}
 
