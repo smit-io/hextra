@@ -8,6 +8,14 @@
   three rows share them exactly, and the item colours live on the label and
   description spans rather than on the row, so the description stays muted.
 
+  Each row carries an `aria-label` holding exactly its visible label, plus an
+  `aria-describedby` pointing at its description. Without the label, the name
+  computation walks the row's contents and returns label-and-description as one
+  run-on sentence; `aria-describedby` alone does not change that, because it
+  adds a description rather than removing anything from the name. With both, a
+  screen reader announces name-then-description, and the copy row's name stays
+  equal to the split button's - clicking one forwards to the other.
+
   The rows deliberately do not set `whitespace-nowrap`: descriptions are prose,
   and holding them on one line makes the dropdown as wide as the longest
   translation. The panel itself carries the sizing instead - `w-max` so it still
@@ -19,6 +27,11 @@
 {{- $itemIconClass := "hx:mt-0.5 hx:size-4 hx:shrink-0 hx:text-gray-500 hx:dark:text-gray-400" -}}
 {{- $itemLabelClass := "hx:text-sm hx:font-medium hx:text-gray-900 hx:dark:text-gray-100" -}}
 {{- $itemDescClass := "hx:text-xs hx:text-gray-600 hx:dark:text-gray-400" -}}
+
+{{- $copyLabel := (T "copyAsMarkdown") | default "Copy as Markdown" -}}
+{{- $copyDesc := (T "copyAsMarkdownDescription") | default "Copy page as Markdown for LLMs" -}}
+{{- $viewLabel := (T "viewAsMarkdown") | default "View as Markdown" -}}
+{{- $viewDesc := (T "viewAsMarkdownDescription") | default "Open the raw Markdown source" -}}
 
 {{- if $enable -}}
   {{- with .OutputFormats.Get "markdown" -}}
@@ -34,7 +47,7 @@
     {{- $pageTitle := $.Title -}}
     <div class="hextra-page-context-menu hx:relative hx:inline-flex hx:shrink-0">
       <div class="hx:inline-flex hx:rounded-lg hx:border hx:border-gray-200 hx:transition-colors hx:hover:border-gray-300 hx:dark:border-neutral-800 hx:dark:hover:border-neutral-700">
-        <button class="hextra-page-context-menu-copy hx:group/copybtn hx:inline-flex hx:cursor-pointer hx:items-center hx:gap-1.5 hx:bg-transparent hx:px-2.5 hx:py-1 hx:text-sm hx:font-medium hx:text-gray-700 hx:transition-colors hx:hover:bg-slate-50 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-900 hx:ltr:rounded-l-lg hx:rtl:rounded-r-lg hx:hextra-focus-visible-inset" data-url="{{ $markdownURL }}" title="{{ (T "copyAsMarkdown") | default "Copy as Markdown" }}" aria-label="{{ (T "copyAsMarkdown") | default "Copy as Markdown" }}">
+        <button class="hextra-page-context-menu-copy hx:group/copybtn hx:inline-flex hx:cursor-pointer hx:items-center hx:gap-1.5 hx:bg-transparent hx:px-2.5 hx:py-1 hx:text-sm hx:font-medium hx:text-gray-700 hx:transition-colors hx:hover:bg-slate-50 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-900 hx:ltr:rounded-l-lg hx:rtl:rounded-r-lg hx:hextra-focus-visible-inset" data-url="{{ $markdownURL }}" title="{{ $copyLabel }}" aria-label="{{ $copyLabel }}">
           <div class="hextra-copy-icon hx:group-[.copied]/copybtn:hidden hx:pointer-events-none hx:size-4">
             {{- partial "utils/icon.html" (dict "name" "copy" "attributes" "height=16 width=16") -}}
           </div>
@@ -51,31 +64,32 @@
       </div>
       <ul class="hextra-page-context-menu-dropdown not-prose hx:hidden hx:absolute hx:top-full hx:start-0 hx:sm:start-auto hx:sm:end-0 hx:mt-1 hx:z-20 hx:w-max hx:max-w-[calc(100vw-2rem)] hx:sm:max-w-80 hx:max-h-80 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-hextra-light-100 hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" role="menu">
         <li role="none">
-          <button data-action="copy" role="menuitem" class="{{ $itemClass }}">
+          <button data-action="copy" role="menuitem" class="{{ $itemClass }}" aria-label="{{ $copyLabel }}" aria-describedby="hextra-pcm-desc-copy">
             <div class="{{ $itemIconClass }}">
               {{- partial "utils/icon.html" (dict "name" "copy" "attributes" "height=16 width=16") -}}
             </div>
             <span class="hx:flex hx:flex-col hx:gap-0.5">
-              <span class="{{ $itemLabelClass }}">{{ (T "copyAsMarkdown") | default "Copy as Markdown" }}</span>
-              <span class="{{ $itemDescClass }}">{{ (T "copyAsMarkdownDescription") | default "Copy page as Markdown for LLMs" }}</span>
+              <span class="{{ $itemLabelClass }}">{{ $copyLabel }}</span>
+              <span class="{{ $itemDescClass }}" id="hextra-pcm-desc-copy">{{ $copyDesc }}</span>
             </span>
           </button>
         </li>
         <li role="none">
-          <button data-action="view" data-url="{{ $markdownURL }}" role="menuitem" class="{{ $itemClass }}">
+          <button data-action="view" data-url="{{ $markdownURL }}" role="menuitem" class="{{ $itemClass }}" aria-label="{{ $viewLabel }}" aria-describedby="hextra-pcm-desc-view">
             <div class="{{ $itemIconClass }}">
               {{- partial "utils/icon.html" (dict "name" "markdown" "attributes" "height=16 width=16") -}}
             </div>
             <span class="hx:flex hx:flex-col hx:gap-0.5">
-              <span class="{{ $itemLabelClass }}">{{ (T "viewAsMarkdown") | default "View as Markdown" }}</span>
-              <span class="{{ $itemDescClass }}">{{ (T "viewAsMarkdownDescription") | default "Open the raw Markdown source" }}</span>
+              <span class="{{ $itemLabelClass }}">{{ $viewLabel }}</span>
+              <span class="{{ $itemDescClass }}" id="hextra-pcm-desc-view">{{ $viewDesc }}</span>
             </span>
           </button>
         </li>
         {{- if $customLinks -}}
           <li class="hx:my-1 hx:h-px hx:bg-gray-200 hx:dark:bg-neutral-700" role="separator"></li>
-          {{- range $customLinks -}}
-            {{- $linkURL := partial "utils/template-url.html" (dict "template" .url "values" (dict "url" $pageURL "title" $pageTitle "markdown_url" $markdownPermalink)) -}}
+          {{- range $linkIndex, $link := $customLinks -}}
+            {{- $linkURL := partial "utils/template-url.html" (dict "template" $link.url "values" (dict "url" $pageURL "title" $pageTitle "markdown_url" $markdownPermalink)) -}}
+            {{- $descID := printf "hextra-pcm-desc-link-%d" $linkIndex -}}
             {{/* Same gate as layouts/_markup/render-link.html: the arrow is an
               opt-in site decoration, and it only means anything on a link that
               actually leaves the site. `externalLinkDecoration` has no default,
@@ -85,21 +99,21 @@
             {{- $isExternal := strings.HasPrefix $linkURL "http" -}}
             {{- $decorate := and site.Params.externalLinkDecoration $isExternal -}}
             <li role="none">
-              <a href="{{ $linkURL }}" target="_blank" rel="noopener noreferrer" role="menuitem" class="{{ $itemClass }}">
-                {{- with .icon -}}
+              <a href="{{ $linkURL }}" target="_blank" rel="noopener noreferrer" role="menuitem" class="{{ $itemClass }}" aria-label="{{ $link.name }}" {{ with $link.description }}aria-describedby="{{ $descID }}"{{ end }}>
+                {{- with $link.icon -}}
                   <div class="{{ $itemIconClass }}">
                     {{- partial "utils/icon.html" (dict "name" . "attributes" "height=16 width=16") -}}
                   </div>
                 {{- end -}}
                 <span class="hx:flex hx:flex-col hx:gap-0.5">
                   <span class="{{ $itemLabelClass }}">
-                    {{- .name -}}
+                    {{- $link.name -}}
                     {{- if $decorate -}}
                       {{- partial "utils/icon.html" (dict "name" "arrow-up-right" "attributes" `class="hx:ms-0.5 hx:inline hx:rtl:rotate-270 hx:align-baseline" height="1em" aria-hidden="true"`) -}}
                     {{- end -}}
                   </span>
-                  {{- with .description -}}
-                    <span class="{{ $itemDescClass }}">{{ . }}</span>
+                  {{- with $link.description -}}
+                    <span class="{{ $itemDescClass }}" id="{{ $descID }}">{{ . }}</span>
                   {{- end -}}
                 </span>
               </a>
