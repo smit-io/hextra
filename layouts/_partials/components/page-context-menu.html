@@ -76,6 +76,14 @@
           <li class="hx:my-1 hx:h-px hx:bg-gray-200 hx:dark:bg-neutral-700" role="separator"></li>
           {{- range $customLinks -}}
             {{- $linkURL := partial "utils/template-url.html" (dict "template" .url "values" (dict "url" $pageURL "title" $pageTitle "markdown_url" $markdownPermalink)) -}}
+            {{/* Same gate as layouts/_markup/render-link.html: the arrow is an
+              opt-in site decoration, and it only means anything on a link that
+              actually leaves the site. `externalLinkDecoration` has no default,
+              so an unconditional arrow here would appear on sites that never
+              asked for one anywhere else.
+            */}}
+            {{- $isExternal := strings.HasPrefix $linkURL "http" -}}
+            {{- $decorate := and site.Params.externalLinkDecoration $isExternal -}}
             <li role="none">
               <a href="{{ $linkURL }}" target="_blank" rel="noopener noreferrer" role="menuitem" class="{{ $itemClass }}">
                 {{- with .icon -}}
@@ -86,7 +94,9 @@
                 <span class="hx:flex hx:flex-col hx:gap-0.5">
                   <span class="{{ $itemLabelClass }}">
                     {{- .name -}}
-                    {{- partial "utils/icon.html" (dict "name" "arrow-up-right" "attributes" `class="hx:ms-0.5 hx:inline hx:rtl:rotate-270 hx:align-baseline" height="1em" aria-hidden="true"`) -}}
+                    {{- if $decorate -}}
+                      {{- partial "utils/icon.html" (dict "name" "arrow-up-right" "attributes" `class="hx:ms-0.5 hx:inline hx:rtl:rotate-270 hx:align-baseline" height="1em" aria-hidden="true"`) -}}
+                    {{- end -}}
                   </span>
                   {{- with .description -}}
                     <span class="{{ $itemDescClass }}">{{ . }}</span>
