@@ -518,6 +518,7 @@ params:
       links:
         - name: ChatGPT で開く
           icon: chatgpt
+          description: このページについて質問する
           url: "https://chatgpt.com/?hints=search&q=I%27m+looking+at+this+documentation%3A+{url}%0AHelp+me+understand+how+to+use+it."
 ```
 
@@ -525,6 +526,7 @@ params:
 
 - `name` - リンクの表示テキスト
 - `icon` - オプションのアイコン名（[アイコン]({{% relref "docs/guide/shortcodes/icon" %}})を参照）
+- `description` - 名前の下に淡色で表示されるオプションの2行目
 - `url` - オプションのプレースホルダーを含む URL
 
 ### FlexSearch インデックス

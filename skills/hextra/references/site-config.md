@@ -460,10 +460,12 @@ params:
       links:
         - name: Open in Claude
           icon: claude
+          description: Ask questions about this page
           url: "https://claude.ai/new?q=Reading+this+page%3A+{url}"
 ```
 
-`{url}` and `{title}` are substituted per page.
+`{url}` and `{title}` are substituted per page. `description` is optional and
+renders as a muted second line under the link's name.
 
 ```yaml
 params:

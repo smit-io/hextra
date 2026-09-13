@@ -3,6 +3,16 @@
 {{- $enable := cond (ne $enablePage nil) $enablePage $enableGlobal -}}
 {{- $customLinks := site.Params.page.contextMenu.links | default slice -}}
 
+{{/* Every dropdown row is a two-column grid: an icon aligned to the label line,
+  then a stacked label and description. The class strings are hoisted because the
+  three rows share them exactly, and the item colours live on the label and
+  description spans rather than on the row, so the description stays muted.
+*/}}
+{{- $itemClass := "hx:flex hx:w-full hx:cursor-pointer hx:select-none hx:items-start hx:gap-2.5 hx:whitespace-nowrap hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-start hx:outline-none hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800" -}}
+{{- $itemIconClass := "hx:mt-0.5 hx:size-4 hx:shrink-0 hx:text-gray-500 hx:dark:text-gray-400" -}}
+{{- $itemLabelClass := "hx:text-sm hx:font-medium hx:text-gray-900 hx:dark:text-gray-100" -}}
+{{- $itemDescClass := "hx:text-xs hx:text-gray-500 hx:dark:text-gray-400" -}}
+
 {{- if $enable -}}
   {{- with .OutputFormats.Get "markdown" -}}
     {{/* Relative, so the copy/view fetch is same-origin wherever the build
@@ -32,21 +42,27 @@
           </div>
         </button>
       </div>
-      <ul class="hextra-page-context-menu-dropdown not-prose hx:hidden hx:absolute hx:top-full hx:left-0 hx:sm:left-auto hx:sm:right-0 hx:mt-1 hx:z-20 hx:max-h-64 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-hextra-light-100 hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" role="menu">
+      <ul class="hextra-page-context-menu-dropdown not-prose hx:hidden hx:absolute hx:top-full hx:left-0 hx:sm:left-auto hx:sm:right-0 hx:mt-1 hx:z-20 hx:max-h-80 hx:overflow-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-hextra-light-100 hx:p-1 hx:text-sm hx:shadow-lg hx:dark:border-neutral-700 hx:dark:bg-neutral-900" role="menu">
         <li role="none">
-          <button data-action="copy" role="menuitem" class="hx:flex hx:w-full hx:cursor-pointer hx:select-none hx:items-center hx:gap-2 hx:whitespace-nowrap hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:text-gray-700 hx:outline-none hx:transition-colors hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100">
-            <div class="hx:size-4 hx:shrink-0 hx:text-gray-500 hx:dark:text-gray-400">
+          <button data-action="copy" role="menuitem" class="{{ $itemClass }}">
+            <div class="{{ $itemIconClass }}">
               {{- partial "utils/icon.html" (dict "name" "copy" "attributes" "height=16 width=16") -}}
             </div>
-            {{ i18n "copyAsMarkdown" }}
+            <span class="hx:flex hx:flex-col hx:gap-0.5">
+              <span class="{{ $itemLabelClass }}">{{ i18n "copyAsMarkdown" }}</span>
+              <span class="{{ $itemDescClass }}">{{ i18n "copyAsMarkdownDescription" }}</span>
+            </span>
           </button>
         </li>
         <li role="none">
-          <button data-action="view" data-url="{{ $markdownURL }}" role="menuitem" class="hx:flex hx:w-full hx:cursor-pointer hx:select-none hx:items-center hx:gap-2 hx:whitespace-nowrap hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:text-gray-700 hx:outline-none hx:transition-colors hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100">
-            <div class="hx:size-4 hx:shrink-0 hx:text-gray-500 hx:dark:text-gray-400">
+          <button data-action="view" data-url="{{ $markdownURL }}" role="menuitem" class="{{ $itemClass }}">
+            <div class="{{ $itemIconClass }}">
               {{- partial "utils/icon.html" (dict "name" "markdown" "attributes" "height=16 width=16") -}}
             </div>
-            {{ i18n "viewAsMarkdown" }}
+            <span class="hx:flex hx:flex-col hx:gap-0.5">
+              <span class="{{ $itemLabelClass }}">{{ i18n "viewAsMarkdown" }}</span>
+              <span class="{{ $itemDescClass }}">{{ i18n "viewAsMarkdownDescription" }}</span>
+            </span>
           </button>
         </li>
         {{- if $customLinks -}}
@@ -54,13 +70,21 @@
           {{- range $customLinks -}}
             {{- $linkURL := partial "utils/template-url.html" (dict "template" .url "values" (dict "url" $pageURL "title" $pageTitle "markdown_url" $markdownPermalink)) -}}
             <li role="none">
-              <a href="{{ $linkURL }}" target="_blank" rel="noopener noreferrer" role="menuitem" class="hx:flex hx:w-full hx:cursor-pointer hx:select-none hx:items-center hx:gap-2 hx:whitespace-nowrap hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-sm hx:text-gray-700 hx:outline-none hx:transition-colors hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-100">
+              <a href="{{ $linkURL }}" target="_blank" rel="noopener noreferrer" role="menuitem" class="{{ $itemClass }}">
                 {{- with .icon -}}
-                  <div class="hx:size-4 hx:shrink-0 hx:text-gray-500 hx:dark:text-gray-400">
+                  <div class="{{ $itemIconClass }}">
                     {{- partial "utils/icon.html" (dict "name" . "attributes" "height=16 width=16") -}}
                   </div>
                 {{- end -}}
-                {{ .name }}
+                <span class="hx:flex hx:flex-col hx:gap-0.5">
+                  <span class="{{ $itemLabelClass }}">
+                    {{- .name -}}
+                    {{- partial "utils/icon.html" (dict "name" "arrow-up-right" "attributes" `class="hx:ms-0.5 hx:inline hx:rtl:rotate-270 hx:align-baseline" height="1em" aria-hidden="true"`) -}}
+                  </span>
+                  {{- with .description -}}
+                    <span class="{{ $itemDescClass }}">{{ . }}</span>
+                  {{- end -}}
+                </span>
               </a>
             </li>
           {{- end -}}
