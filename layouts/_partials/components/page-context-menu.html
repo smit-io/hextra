@@ -109,16 +109,23 @@
           {{- range $linkIndex, $link := $customLinks -}}
             {{- $linkURL := partial "utils/template-url.html" (dict "template" $link.url "values" (dict "url" $pageURL "title" $pageTitle "markdown_url" $markdownPermalink)) -}}
             {{- $descID := printf "hextra-pcm-desc-link-%d" $linkIndex -}}
-            {{/* Same gate as layouts/_markup/render-link.html: the arrow is an
-              opt-in site decoration, and it only means anything on a link that
-              actually leaves the site. `externalLinkDecoration` has no default,
-              so an unconditional arrow here would appear on sites that never
-              asked for one anywhere else.
+            {{/* Both gates come from layouts/_markup/render-link.html, and both
+              hang off `$isExternal`. `target="_blank"` because a link that
+              stays on the site has no reason to steal a tab, and the arrow
+              because it is an opt-in site decoration that only means anything
+              on a link which actually leaves the site - `externalLinkDecoration`
+              has no default, so an unconditional arrow would appear on sites
+              that never asked for one anywhere else.
+
+              The two must stay tied to the same condition. Gating only the
+              arrow leaves a same-site link opening in a new tab with nothing
+              saying so, which is the WCAG 3.2.5 On Request failure the arrow
+              exists to prevent.
             */}}
             {{- $isExternal := strings.HasPrefix $linkURL "http" -}}
             {{- $decorate := and site.Params.externalLinkDecoration $isExternal -}}
             <li role="none">
-              <a href="{{ $linkURL }}" target="_blank" rel="noopener noreferrer" role="menuitem" class="{{ $itemClass }}" aria-label="{{ $link.name }}" {{ with $link.description }}aria-describedby="{{ $descID }}"{{ end }}>
+              <a href="{{ $linkURL }}" role="menuitem" class="{{ $itemClass }}" aria-label="{{ $link.name }}" {{ with $link.description }}aria-describedby="{{ $descID }}"{{ end }} {{ if $isExternal }}target="_blank" rel="noopener noreferrer"{{ end }}>
                 {{/* The icon box is rendered even when the link has no icon, which
                   `icon` being optional makes routine. Omitting it would make the
                   text block the row's first flex item, hanging the whole
