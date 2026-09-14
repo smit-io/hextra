@@ -13,13 +13,14 @@ weight: 6
 
 ### 开发
 
-| 目标             | 作用                                                                   |
-| ---------------- | ---------------------------------------------------------------------- |
-| `make dev`       | 启动带完整主题管线的开发服务器（每次重新构建时写入 `hugo_stats.json`） |
-| `make serve`     | 启动不带主题管线的开发服务器——只编辑内容时启动更快                     |
-| `make stats`     | 重新生成 `docs/hugo_stats.json`（Tailwind 用于摇树优化的类清单）       |
-| `make css`       | 编译生产环境 CSS——会先重新生成 stats，因此结果始终正确                 |
-| `make css-watch` | 文件变化时重新编译 CSS；与 `make dev` 并行运行                         |
+| 目标             | 作用                                                                                  |
+| ---------------- | ------------------------------------------------------------------------------------- |
+| `make dev`       | 启动带完整主题管线的开发服务器（每次重新构建时写入 `hugo_stats.json`）                |
+| `make serve`     | 启动不带主题管线的开发服务器——只编辑内容时启动更快                                    |
+| `make stats`     | 重新生成 `docs/hugo_stats.json`（Tailwind 用于摇树优化的类清单）                      |
+| `make css`       | 编译生产环境 CSS——会先重新生成 stats，因此结果始终正确                                |
+| `make css-watch` | 文件变化时重新编译 CSS；与 `make dev` 并行运行                                        |
+| `make skill`     | 重新生成 `skills/hextra/` 中的技能参考，并依据 `VERSION` 标记 `.claude-plugin/*.json` |
 
 ### 撰写内容
 
@@ -41,10 +42,14 @@ weight: 6
 
 | 目标                              | 作用                                                                                           |
 | --------------------------------- | ---------------------------------------------------------------------------------------------- |
-| `make test`                       | 针对全新的无草稿生产构建运行完整 Playwright 测试套件                                           |
+| `make verify`                     | 按顺序执行全部流程——先格式化并重新生成，再重新检查、构建并运行测试套件。提交前使用的命令       |
+| `make test`                       | 先执行 `fmt-check` 与 `skill-check`，然后对不含草稿的全新生产构建运行完整 Playwright 测试套件  |
 | `make test-a11y`                  | 仅运行无障碍测试（WCAG 2.2 AA）                                                                |
 | `make test-mobile` / `test-build` | 移动端菜单和构建输出测试套件                                                                   |
 | `make test-preview`               | 重新构建预览（含草稿），然后针对运行中的预览容器执行测试套件——你测试的正是 8043 持续提供的内容 |
+| `make fmt-check`                  | 只校验格式而不写入——CI 运行的就是它                                                            |
+| `make skill-check`                | 校验生成的技能参考与插件清单是否为最新                                                         |
+| `make report`                     | 在 [localhost:9323](http://localhost:9323) 上提供最近一次 Playwright HTML 报告                 |
 
 ### 日常维护
 
