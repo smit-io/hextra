@@ -903,5 +903,356 @@
       "{{< ad provider=\"${1|adsense,ethicalads,carbon,custom|}\" slot=\"${2:1234567890}\" format=\"${3|auto,fluid,rectangle,vertical,horizontal|}\" align=\"${4|center,left,right|}\" >}}"
     ],
     "description": "Ad with an explicit network and shape. Every parameter defaults to params.ads."
+  },
+  "Hextra: config: minimum viable site": {
+    "scope": "yaml",
+    "prefix": "hxcfg-minimal",
+    "body": [
+      "baseURL: \"${1:https://example.com/}\"",
+      "title: \"${2:My Site}\"",
+      "",
+      "module:",
+      "  hugoVersion:",
+      "    extended: true",
+      "    min: \"0.146.0\"",
+      "  imports:",
+      "    - path: github.com/imfing/hextra",
+      "",
+      "markup:",
+      "  goldmark:",
+      "    renderer:",
+      "      unsafe: true"
+    ],
+    "description": "Smallest hugo.yaml that builds. unsafe: true is required by the home layout."
+  },
+  "Hextra: config: markup": {
+    "scope": "yaml",
+    "prefix": "hxcfg-markup",
+    "body": [
+      "markup:",
+      "  highlight:",
+      "    noClasses: false # required - the theme styles Chroma via CSS classes",
+      "  goldmark:",
+      "    renderer:",
+      "      unsafe: true",
+      "    extensions:",
+      "      passthrough: # required for LaTeX",
+      "        enable: true",
+      "        delimiters:",
+      "          block: [['\\\\[', '\\\\]'], [\"$$\", \"$$\"]]",
+      "          inline: [['\\\\(', '\\\\)']]"
+    ],
+    "description": "Goldmark and Chroma settings. noClasses: false is not optional for dark mode."
+  },
+  "Hextra: config: navbar": {
+    "scope": "yaml",
+    "prefix": "hxcfg-navbar",
+    "body": [
+      "params:",
+      "  navbar:",
+      "    displayTitle: ${1|true,false|}",
+      "    displayLogo: ${2|true,false|}",
+      "    logo:",
+      "      path: ${3:images/logo.svg}",
+      "      dark: ${4:images/logo-dark.svg}",
+      "      link: ${5:/}",
+      "      width: ${6:40}",
+      "      height: ${7:20}",
+      "    width: ${8|normal,wide,full|}"
+    ],
+    "description": "Navbar title, logo and width."
+  },
+  "Hextra: config: theme toggle": {
+    "scope": "yaml",
+    "prefix": "hxcfg-theme",
+    "body": [
+      "params:",
+      "  theme:",
+      "    default: ${1|system,light,dark|}",
+      "    displayToggle: ${2|true,false|}"
+    ],
+    "description": "Default colour scheme and whether the toggle is shown."
+  },
+  "Hextra: config: footer": {
+    "scope": "yaml",
+    "prefix": "hxcfg-footer",
+    "body": [
+      "params:",
+      "  footer:",
+      "    enable: ${1|true,false|}",
+      "    displayCopyright: ${2|true,false|}",
+      "    displayPoweredBy: ${3|true,false|}",
+      "    width: ${4|normal,wide,full|}"
+    ],
+    "description": "Footer visibility and width."
+  },
+  "Hextra: config: fonts": {
+    "scope": "yaml",
+    "prefix": "hxcfg-fonts",
+    "body": [
+      "params:",
+      "  fonts:",
+      "    enable: ${1|true,false|}",
+      "    heading: { family: \"${2:Sora}\", axes: \"${3:wght@100..800}\", display: \"swap\" }",
+      "    body: { family: \"${4:Mozilla Text}\", axes: \"${5:wght@200..700}\", display: \"swap\" }",
+      "    code: { family: \"${6:Google Sans Code}\", axes: \"${7:wght@300..700}\", display: \"swap\" }",
+      "    mono: { family: \"${8:IBM Plex Mono}\", axes: \"${9:wght@400;500;600}\", display: \"swap\" }",
+      "    fallbacks:",
+      "      heading: \"system-ui, sans-serif\"",
+      "      body: \"system-ui, sans-serif\"",
+      "      code: \"ui-monospace, monospace\"",
+      "      mono: \"ui-monospace, monospace\""
+    ],
+    "description": "Google Fonts with a fallback stack. Each family is one render-blocking request; not every family is variable."
+  },
+  "Hextra: config: search": {
+    "scope": "yaml",
+    "prefix": "hxcfg-search",
+    "body": [
+      "params:",
+      "  search:",
+      "    enable: ${1|true,false|}",
+      "    type: flexsearch",
+      "    flexsearch:",
+      "      index: ${2|content,summary,heading,title|}",
+      "      tokenize: ${3|forward,full,reverse,strict|}"
+    ],
+    "description": "FlexSearch index built at build time. index: content is largest and most useful."
+  },
+  "Hextra: config: page metadata": {
+    "scope": "yaml",
+    "prefix": "hxcfg-page-meta",
+    "body": [
+      "params:",
+      "  displayUpdatedDate: ${1|true,false|} # needs enableGitInfo: true",
+      "  displayUpdatedAuthor: ${2|false,true|}",
+      "  dateFormat: \"${3:January 2, 2006}\"",
+      "  editURL:",
+      "    enable: ${4|true,false|}",
+      "    base: \"${5:https://github.com/owner/repo/edit/main/content}\"",
+      "  toc:",
+      "    displayTags: ${6|true,false|}",
+      "  license:",
+      "    enable: ${7|true,false|}",
+      "    name: \"${8:CC BY 4.0}\"",
+      "    url: \"${9:https://creativecommons.org/licenses/by/4.0/}\""
+    ],
+    "description": "Last-updated date, edit link, TOC tags and licence notice."
+  },
+  "Hextra: config: code blocks": {
+    "scope": "yaml",
+    "prefix": "hxcfg-highlight",
+    "body": [
+      "params:",
+      "  highlight:",
+      "    copy:",
+      "      enable: ${1|true,false|}",
+      "      display: ${2|hover,always|}",
+      "    filenameIcon:",
+      "      enable: ${3|true,false|}",
+      "    lineNumberDivider:",
+      "      enable: ${4|false,true|}"
+    ],
+    "description": "Copy button, filename icons and the line-number divider."
+  },
+  "Hextra: config: remote fetching": {
+    "scope": "yaml",
+    "prefix": "hxcfg-remotefetch",
+    "body": [
+      "params:",
+      "  remoteFetch:",
+      "    enable: ${1|true,false|}",
+      "  include:",
+      "    allowedHosts:",
+      "      - ${2:raw.githubusercontent.com}"
+    ],
+    "description": "Master switch for every build-time fetch. false is what air-gapped builds need."
+  },
+  "Hextra: config: math": {
+    "scope": "yaml",
+    "prefix": "hxcfg-math",
+    "body": [
+      "params:",
+      "  math:",
+      "    engine: ${1|katex,mathjax|}",
+      "    katex:",
+      "      base: \"${2:}\"",
+      "      css: \"${3:}\"",
+      "      assets: \"${4:}\""
+    ],
+    "description": "Math engine. Anything other than katex emits MathJax delimiters."
+  },
+  "Hextra: config: comments (giscus)": {
+    "scope": "yaml",
+    "prefix": "hxcfg-comments",
+    "body": [
+      "params:",
+      "  comments:",
+      "    enable: ${1|true,false|}",
+      "    type: giscus",
+      "    giscus:",
+      "      repo: ${2:owner/repo}",
+      "      repoId: \"${3:R_...}\"",
+      "      category: ${4:General}",
+      "      categoryId: \"${5:DIC_...}\""
+    ],
+    "description": "Giscus comments. repoId and categoryId come from giscus.app for your own repo - copying someone else's posts to theirs."
+  },
+  "Hextra: config: announcement banner": {
+    "scope": "yaml",
+    "prefix": "hxcfg-banner",
+    "body": [
+      "params:",
+      "  banner:",
+      "    message: \"${1:🎉 **v2 is out** — [read the release notes](/blog/v2/).}\""
+    ],
+    "description": "Dismissible bar above the navbar. Presence is the switch; the message is Markdown."
+  },
+  "Hextra: config: ads": {
+    "scope": "yaml",
+    "prefix": "hxcfg-ads",
+    "body": [
+      "params:",
+      "  ads:",
+      "    enable: ${1|true,false|}",
+      "    provider: ${2|adsense,ethicalads,carbon,custom|}",
+      "    label: true",
+      "    height: ${3:280px}",
+      "    align: ${4|center,left,right|}",
+      "    production: true",
+      "    slots:",
+      "      blogBottom: \"${5:1111111111}\"",
+      "      blogEnd: \"${6:2222222222}\"",
+      "      blogList: { slot: \"${7:3333333333}\", every: 4, offset: 0 }",
+      "      docsBottom: \"${8:4444444444}\""
+    ],
+    "description": "Ad slots. Nothing renders until this block exists, and never outside a production build."
+  },
+  "Hextra: config: main menu": {
+    "scope": "yaml",
+    "prefix": "hxcfg-menu-main",
+    "body": [
+      "menu:",
+      "  main:",
+      "    - identifier: ${1:documentation}",
+      "      name: ${2:Documentation}",
+      "      pageRef: ${3:/docs}",
+      "      weight: 1",
+      "    - name: Search",
+      "      weight: 8",
+      "      params:",
+      "        type: search",
+      "    - name: GitHub",
+      "      url: \"${4:https://github.com/owner/repo}\"",
+      "      weight: 9",
+      "      params:",
+      "        icon: github"
+    ],
+    "description": "Navbar menu. pageRef for internal pages, url for external; a parent with no pageRef becomes a dropdown."
+  },
+  "Hextra: config: sidebar menu": {
+    "scope": "yaml",
+    "prefix": "hxcfg-menu-sidebar",
+    "body": [
+      "menu:",
+      "  sidebar:",
+      "    - identifier: ${1:more}",
+      "      name: ${2:More}",
+      "      params:",
+      "        type: separator",
+      "      weight: 1",
+      "    - name: \"${3:Hugo Docs ↗}\"",
+      "      url: \"${4:https://gohugo.io/documentation/}\"",
+      "      weight: 2"
+    ],
+    "description": "Extra sidebar entries, appended to the tree-generated navigation. type: separator is a heading rule."
+  },
+  "Hextra: config: blog menu": {
+    "scope": "yaml",
+    "prefix": "hxcfg-menu-blog",
+    "body": [
+      "menu:",
+      "  blog:",
+      "    - name: ${1:Home}",
+      "      pageRef: ${2:/}",
+      "      weight: 1",
+      "      params: { type: link, icon: ${3:home} }",
+      "    - name: GitHub",
+      "      url: \"${4:https://github.com/owner/repo}\"",
+      "      weight: 10",
+      "      params: { icon: github }"
+    ],
+    "description": "Blog rail navigation. Entries with a label become rows; icon-only entries collect into a social row."
+  },
+  "Hextra: config: languages": {
+    "scope": "yaml",
+    "prefix": "hxcfg-languages",
+    "body": [
+      "defaultContentLanguage: ${1:en}",
+      "languages:",
+      "  en:",
+      "    label: English",
+      "    weight: 1",
+      "    title: ${2:My Site}",
+      "  ${3:ja}:",
+      "    label: ${4:日本語}",
+      "    locale: ${5:ja-JP}",
+      "    weight: 2",
+      "    title: ${6:My Site}"
+    ],
+    "description": "Multilingual setup. Add direction: rtl to flip the layout for a language; any params key can be nested per language."
+  },
+  "Hextra: config: outputs": {
+    "scope": "yaml",
+    "prefix": "hxcfg-outputs",
+    "body": [
+      "outputs:",
+      "  home: [html, llms]",
+      "  page: [html, markdown]",
+      "  section: [html, rss, markdown]"
+    ],
+    "description": "Machine-readable output. The page context menu is gated on `markdown` in outputs.page; llms writes llms.txt."
+  },
+  "Hextra: config: page context menu": {
+    "scope": "yaml",
+    "prefix": "hxcfg-context-menu",
+    "body": [
+      "params:",
+      "  page:",
+      "    contextMenu:",
+      "      enable: ${1|true,false|}",
+      "      links:",
+      "        - name: ${2:Open in Claude}",
+      "          icon: ${3:claude}",
+      "          description: ${4:Ask questions about this page}",
+      "          url: \"${5:https://claude.ai/new?q=Reading+this+page%3A+{url\\}}\""
+    ],
+    "description": "Copy/view-as-Markdown menu plus custom links. Needs `markdown` in outputs.page. {url}, {title} and {markdown_url} are substituted per page, URL-encoded."
+  },
+  "Hextra: config: RSS and author": {
+    "scope": "yaml",
+    "prefix": "hxcfg-rss",
+    "body": [
+      "params:",
+      "  rss:",
+      "    sections: [${1:blog}]",
+      "  Author:",
+      "    name: ${2:Ada Lovelace}",
+      "    email: ${3:ada@example.com}"
+    ],
+    "description": "RSS sections and feed author. params.Author is capitalised - Hugo's own convention - and without email none of managingEditor, webMaster or author are emitted."
+  },
+  "Hextra: config: images": {
+    "scope": "yaml",
+    "prefix": "hxcfg-images",
+    "body": [
+      "params:",
+      "  enableImageLazyLoading: ${1|true,false|}",
+      "  imageZoom:",
+      "    enable: ${2|true,false|}",
+      "  images:",
+      "    contentMaxWidth: ${3:1920}"
+    ],
+    "description": "Image handling. Everything under assets/ is converted to WebP and measured; static/ is passed through untouched."
   }
 }
