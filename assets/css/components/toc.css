@@ -2,7 +2,7 @@
 
 /* The active item is marked by a rail on the inline-start edge as well as by
    colour. Colour alone cannot carry it: accent-700 measures 5.42:1 against the
-   #f6f6f6 background but only 1.21:1 against the inactive links beside it, so
+   #f7f7f7 background but only 1.21:1 against the inactive links beside it, so
    the selection reads as a hue shift with almost no lightness shift - hard to
    see, and a WCAG 1.4.1 Use of Color problem as much as a contrast one. The
    rail is 5.42:1 against the background, past the 3:1 SC 1.4.11 asks of a
@@ -72,7 +72,7 @@
 }
 
 /* accent-700 rather than the accent-600 used for hover elsewhere: on the light
-   background (#f6f6f6) accent-600 measures 3.71:1, under the 4.5:1 WCAG AA
+   background (#f7f7f7) accent-600 measures 3.71:1, under the 4.5:1 WCAG AA
    floor for 14px text. accent-700 is 5.41:1. Dark mode keeps accent-400 at
    8.67:1 on #111111. */
 .hextra-toc a.hextra-toc-active {
