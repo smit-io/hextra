@@ -36,27 +36,29 @@ change) is explicitly out of scope — the user said not to fix it.**
 
 One fix per commit, in the order below.
 
-## Done (11 commits)
+## Done — all 14 in-scope findings
 
-| #   | Commit    | What                                                                                        |
-| --- | --------- | ------------------------------------------------------------------------------------------- |
-| 1   | `43243ac` | Description text AA contrast: `text-gray-500` → `text-gray-600` in light mode               |
-| 2   | `a574bb5` | Dropped `whitespace-nowrap` from the row class; panel got `w-max` + max-width clamp         |
-| 3   | `ae24229` | Physical `left/right` insets → logical `start/end`, fixing RTL clipping                     |
-| 4   | `6cdeadf` | Added the localised Claude link to `fa`/`ja`/`zh-cn` in `docs/hugo.yaml`                    |
-| 5   | `f80f0fc` | External-link arrow gated on `externalLinkDecoration` + URL scheme                          |
-| 6   | `fc76688` | `(T "key") \| default "English"` on all six built-in strings                                |
-| 7   | `d3467cb` | `aria-label` + `aria-describedby` so the name is the label, not label+description           |
-| 8   | `cc93210` | Removed the leading trim that fused a custom link's label and description                   |
-| 9   | `0a82e11` | Icon box rendered even when a custom link has no icon                                       |
-| 10  | `12a7006` | `aria-hidden` on the component's decorative icons, plus a dedupe guard in `utils/icon.html` |
-| 11  | `7fa8c64` | Arrow-key navigation, focus-on-open, `aria-controls` for the `role="menu"`                  |
+| #   | Commit    | What                                                                                         |
+| --- | --------- | -------------------------------------------------------------------------------------------- |
+| 1   | `43243ac` | Description text AA contrast: `text-gray-500` → `text-gray-600` in light mode                |
+| 2   | `a574bb5` | Dropped `whitespace-nowrap` from the row class; panel got `w-max` + max-width clamp          |
+| 3   | `ae24229` | Physical `left/right` insets → logical `start/end`, fixing RTL clipping                      |
+| 4   | `6cdeadf` | Added the localised Claude link to `fa`/`ja`/`zh-cn` in `docs/hugo.yaml`                     |
+| 5   | `f80f0fc` | External-link arrow gated on `externalLinkDecoration` + URL scheme                           |
+| 6   | `fc76688` | `(T "key") \| default "English"` on all six built-in strings                                 |
+| 7   | `d3467cb` | `aria-label` + `aria-describedby` so the name is the label, not label+description            |
+| 8   | `cc93210` | Removed the leading trim that fused a custom link's label and description                    |
+| 9   | `0a82e11` | Icon box rendered even when a custom link has no icon                                        |
+| 10  | `12a7006` | `aria-hidden` on the component's decorative icons, plus a dedupe guard in `utils/icon.html`  |
+| 11  | `7fa8c64` | Arrow-key navigation, focus-on-open, `aria-controls` for the `role="menu"`                   |
+| 12  | `3474208` | a11y spec now opens the menu, with `color-contrast` re-enabled for that subtree              |
+| 13  | `f798c00` | Dropped the `aria-label` that hid the copy button's visible label (WCAG 2.5.3)               |
+| 14  | `94942a4` | Corrected `{markdown_url}` and the "what the AI links point at" claim in the skill reference |
 
 Measured numbers for each are in the commit bodies — they are the record, not
 this table.
 
-Two of these went further than the finding, deliberately, and the commit says
-so:
+Three commits went further than the finding, deliberately, and each says so:
 
 - **10** also covers the split button's own icons, and adds the `aria-hidden`
   dedupe to `layouts/_partials/utils/icon.html`. That turned out to fix a
@@ -66,74 +68,42 @@ so:
   it. After the guard: 0.
 - **6** covers the labels as well as the two new description keys, since a
   fallback description under an empty label still leaves the row unnamed.
+- **12** and **13** each carry a regression test, because neither failure is
+  reachable by the existing gate — the first because axe never saw the open
+  menu, the second because `label-content-name-mismatch` is tagged `wcag21a`
+  and experimental, outside `WCAG_TAGS`.
 
-## Remaining (3)
+Findings 12 and 13 were both checked against the pre-fix code by restoring the
+baseline templates (`git checkout 4467f01 -- layouts assets docs/hugo.yaml`)
+and confirming the new tests fail there: five of ten axe/viewport cases, and
+both Label-in-Name cases.
 
-### 12 — `tests/accessibility.spec.ts` cannot see this component _(do this one first)_
+## Verification
 
-`DISABLED_RULES = ["color-contrast", "target-size"]`, and the spec does
-`page.goto()` then `axe.analyze()` with no interaction. The dropdown ships with
-`hx:hidden`, and axe skips `display:none` subtrees — so every element the PR
-added is outside the scanned tree on all ~300 pages. `make test-a11y` and
-`.github/workflows/test-accessibility.yml` both went green on a change carrying
-a measured 1.4.3 failure and a measured 1.4.10 failure.
+Run at the end, on the finished branch:
 
-Fix: open the menu in the spec, and re-enable `color-contrast` for that
-subtree. **Findings 1 and 2 are already fixed, so this should pass on the
-current branch** — if it does not, that is a real regression, not a flaky test.
-Worth also asserting at a 320px viewport so 1.4.10 stays covered.
+```
+make fmt-check   ok, tree-wide
+make test        22 passed in 1.1m (was 11 tests before finding 12)
+make build       clean
+```
 
-Budget note from `AGENTS.md`: the a11y suite scales with the sitemap, and a
-timeout there is a slow test, not a violation.
+Rendered-output diff against the baseline build, normalising asset
+fingerprints and `integrity` hashes:
 
-### 13 — Label in Name on the split button (WCAG 2.5.3, Level A)
+- 202 HTML pages changed. Every one of them carries the context menu.
+- **0** pages without the menu changed by anything other than those
+  fingerprints — checked explicitly, since the `utils/icon.html` change is
+  shared and could have leaked site-wide.
+- 109 pages byte-identical after normalisation.
 
-`layouts/_partials/components/page-context-menu.html`, the
-`.hextra-page-context-menu-copy` button: visible text is **"Copy Page"**
-(`$copyLabel` is _not_ used there — that is `i18n "copyPage"`), while `title`
-and `aria-label` are **"Copy as Markdown"** (`$copyLabel`). `aria-label`
-overrides the contents, so the accessible name does not contain the visible
-label and speech input cannot reach it. axe will not catch it:
-`label-content-name-mismatch` is `wcag21a` + experimental, and `WCAG_TAGS` is
-`[wcag2a, wcag2aa, wcag22aa]`.
+One caveat on those counts: `docs/public/docs/guide/shortcodes/remote-check/`
+is a **stale artifact** with no source file and no sitemap entry, inherited in
+the working copy. Hugo does not delete it without `--cleanDestinationDir`, and
+it is what makes a naive grep report 203 menu-bearing pages instead of 202.
+`docs/public/` is gitignored, so it affects nothing but the arithmetic.
 
-**Read fix 7 before touching this.** After fix 7 the three controls now report:
-
-- split button — visible "Copy Page", accessible name "Copy as Markdown"
-- toggle — "Toggle page context menu"
-- copy row — name "Copy as Markdown", description "Copy page as Markdown for
-  LLMs"
-
-The row's name is now _intentionally_ equal to the split button's aria-label,
-because clicking the row forwards to the button (`page-context-menu.js`, the
-`data-action="copy"` handler). Whatever fix 13 does to the button's name has to
-keep those two in step, or it silently undoes part of fix 7. Simplest option:
-make the accessible name contain the visible label (e.g. drop the `aria-label`
-so the name becomes "Copy Page", and make the row's label match) — but that is
-a copy decision, so it is worth asking rather than guessing.
-
-Verify with `.review-tools/axtree.mjs` (CDP AX tree) plus a
-`getByRole('button', { name: /Copy Page/ })` check.
-
-### 14 — `skills/hextra/references/site-config.md`
-
-Two separate errors in the shipped skill reference, which is the only
-`contextMenu` documentation inside the plugin:
-
-- **line ~467** lists only `{url}` and `{title}` as substituted placeholders.
-  `page-context-menu.html` passes `markdown_url` too, and
-  `docs/content/docs/guide/configuration.md:679` documents it for end users.
-- **line ~453** claims the raw-Markdown twin "is what the page context menu's
-  _Open in ChatGPT / Claude_ links point at". It is not — the shipped hrefs
-  substitute the HTML permalink. An agent trusting that could drop `markdown`
-  from `outputs.page` on a site with no AI links, which removes the entire menu
-  (the template gates everything on `.OutputFormats.Get "markdown"`).
-
-After editing: **`npm run build:skill`**, or CI's `build-skill --check` gate
-fails. Note `site-config.md` may itself be generated — check
-`scripts/build-skill.mjs` before hand-editing, and fix the source if so.
-
-## Not being fixed
+## Not fixed
 
 **15 — `Makefile`, `test: fmt-check build`.** Out of scope by instruction.
 Recorded here only so nobody re-finds it and assumes it was missed. The three
@@ -225,6 +195,7 @@ node .review-tools/accname.mjs docs/public               # role+name matching
 node .review-tools/axtree.mjs  docs/public               # CDP AX name/description
 node .review-tools/kbd.mjs     docs/public               # full keyboard walk
 node .review-tools/click.mjs   docs/public               # pointer + clipboard
+node .review-tools/btnname.mjs docs/public               # split button name vs visible label
 .review-tools/make-repro-sites.sh [outdir]               # ru + tr repro sites
 ```
 
@@ -238,10 +209,11 @@ A baseline build of the pre-fix site was kept at
 `<scratchpad>/public-baseline` — session-local, so it is probably gone. Recreate
 it with `git stash` / `git checkout main -- .` into a separate `--destination`.
 
-### Not yet run on this branch
+### Before this lands
 
-`make test` (full Playwright suite) and `make fmt-check` across the whole tree
-have **not** been run — only per-file `prettier --check` on what was touched,
-plus targeted browser measurements. Run both before considering the branch
-done, and expect finding 12's spec change to be the thing that makes the a11y
-suite meaningful.
+Delete `REVIEW-FIXES.md` and `.review-tools/`. Both are scaffolding, and
+`make fmt-check` covers `.review-tools/`, so leaving it in means the repo lints
+throwaway files forever.
+
+The commits then need replaying onto a real checkout, since this repo shares no
+history with upstream.
