@@ -144,6 +144,20 @@ for (const { path, dir } of CONTEXT_MENU_PAGES) {
     }
   }
 
+  test(`page context menu copy button satisfies Label in Name (${dir})`, async ({ page }) => {
+    await page.goto(path, { waitUntil: "load" });
+
+    // WCAG 2.5.3. axe cannot cover this: label-content-name-mismatch is tagged
+    // wcag21a and experimental, so it is outside WCAG_TAGS. The button carried
+    // an aria-label naming it "Copy as Markdown" over visible text reading
+    // "Copy Page", which left speech input with nothing to match.
+    const button = page.locator(".hextra-page-context-menu-copy");
+    const visibleLabel = (await button.innerText()).trim();
+    expect(visibleLabel.length, "copy button has no visible label").toBeGreaterThan(0);
+
+    await expect(page.getByRole("button", { name: visibleLabel }), `accessible name must contain the visible label ${JSON.stringify(visibleLabel)}`).toHaveCount(1);
+  });
+
   test(`open page context menu stays inside the viewport (${dir}, 320px)`, async ({ page }) => {
     await page.setViewportSize({ width: 320, height: 900 });
 
