@@ -101,6 +101,16 @@ doctor: ## Check the toolchain and diagnose common breakage
 	fi
 	@printf "  %-14s %s\n" "node" "$$(node --version 2>/dev/null || echo MISSING)"
 	@printf "  %-14s %s\n" "npm" "$$(npm --version 2>/dev/null || echo MISSING)"
+	@if command -v freeze >/dev/null 2>&1; then \
+		printf "  %-14s %s\n" "freeze" "$$(freeze --version | head -1)"; \
+	else \
+		printf "  %-14s $(YELLOW)%s$(RESET)\n" "freeze" "not installed - open this repo in the devcontainer"; \
+	fi
+	@if command -v asciinema >/dev/null 2>&1; then \
+		printf "  %-14s %s\n" "asciinema" "$$(asciinema --version | head -1)"; \
+	else \
+		printf "  %-14s $(YELLOW)%s$(RESET)\n" "asciinema" "not installed - open this repo in the devcontainer"; \
+	fi
 	@printf "  %-14s %s\n" "hugo required" "$$(sed -n 's/^min_version *= *"\(.*\)"/\1/p' theme.toml)"
 	@echo
 	@$(SAY) "Native binaries"
