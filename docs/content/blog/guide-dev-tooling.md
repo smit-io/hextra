@@ -56,6 +56,14 @@ Blog posts start as drafts (`draft: true`): visible on the dev server and previe
 | `make fmt`          | Prettier over templates, CSS, and JS                                                                            |
 | `make doctor`       | Diagnose toolchain problems (Hugo/Node versions, stale binaries)                                                |
 
+### Releasing
+
+| Target                     | What it does                                               |
+| -------------------------- | ---------------------------------------------------------- |
+| `make bump VERSION=0.21.2` | Set `VERSION` and restamp `.claude-plugin/*.json` to match |
+
+`VERSION` at the repository root is the only version number in the repo — the theme, the shipped skill, and the plugin manifests all release under it. It is also the only file that arms a publish: a push to `main` that changes it tags `v<VERSION>` and cuts the GitHub release, so an ordinary merge ships the site and nothing else. `bump` writes the file and regenerates the manifests together, and refuses a malformed version, one already set, or one whose tag exists. Preview the notes with `npm run changelog` before merging — afterwards the release is already out.
+
 ## The devcontainer
 
 The fork runs its devcontainer under Docker Compose with two services:
