@@ -16,6 +16,15 @@
   screen reader announces name-then-description, and the copy row's name stays
   equal to the split button's - clicking one forwards to the other.
 
+  Hover tints the row with the accent colour, matching the theme switcher's
+  menu rather than the neutral grey this used to carry - the two dropdowns sit
+  in the same theme and should not highlight differently. The label and icon go
+  to `accent-700`, not the switcher's `accent-600`: against `accent-100` the
+  default sky accent gives 600 only 3.56:1, under the 4.5:1 AA floor, while 700
+  is 5.17:1. The description stays grey on hover (6.59:1 light, 5.47:1 dark on
+  the tinted row), because anything lighter than the label in the accent ramp
+  drops below AA - grey keeps the hierarchy and the contrast.
+
   The rows deliberately do not set `whitespace-nowrap`: descriptions are prose,
   and holding them on one line makes the dropdown as wide as the longest
   translation. The panel itself carries the sizing instead - `w-max` so it still
@@ -23,9 +32,9 @@
   squeezed to the narrow toggle it is anchored to), clamped by a max-width so it
   can never outgrow the viewport.
 */}}
-{{- $itemClass := "hx:flex hx:w-full hx:cursor-pointer hx:select-none hx:items-start hx:gap-2.5 hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-start hx:outline-none hx:transition-colors hx:hover:bg-gray-100 hx:dark:hover:bg-neutral-800" -}}
-{{- $itemIconClass := "hx:mt-0.5 hx:size-4 hx:shrink-0 hx:text-gray-500 hx:dark:text-gray-400" -}}
-{{- $itemLabelClass := "hx:text-sm hx:font-medium hx:text-gray-900 hx:dark:text-gray-100" -}}
+{{- $itemClass := "hx:group/pcmitem hx:flex hx:w-full hx:cursor-pointer hx:select-none hx:items-start hx:gap-2.5 hx:rounded-sm hx:px-2 hx:py-1.5 hx:text-start hx:outline-none hx:transition-colors hx:hover:bg-hextra-accent-100 hx:dark:hover:bg-hextra-accent-950" -}}
+{{- $itemIconClass := "hx:mt-0.5 hx:size-4 hx:shrink-0 hx:text-gray-500 hx:transition-colors hx:group-hover/pcmitem:text-hextra-accent-700 hx:dark:text-gray-400 hx:dark:group-hover/pcmitem:text-hextra-accent-200" -}}
+{{- $itemLabelClass := "hx:text-sm hx:font-medium hx:text-gray-900 hx:transition-colors hx:group-hover/pcmitem:text-hextra-accent-700 hx:dark:text-gray-100 hx:dark:group-hover/pcmitem:text-hextra-accent-200" -}}
 {{- $itemDescClass := "hx:text-xs hx:text-gray-600 hx:dark:text-gray-400" -}}
 
 {{- $copyLabel := (T "copyAsMarkdown") | default "Copy as Markdown" -}}
