@@ -55,6 +55,7 @@ Load one reference, not all of them.
 | Set front matter, or check whether a key applies to docs or blog | `references/frontmatter.md`       |
 | Decide where a file goes, or name it for a second language       | `references/content-structure.md` |
 | Change site-wide behaviour in `hugo.yaml`                        | `references/site-config.md`       |
+| Place ads, or configure an ad network                            | `references/site-config.md`       |
 | Write a code block, diagram, alert, math, or image with options  | `references/markdown.md`          |
 | Set up or configure the blog                                     | `references/blog.md`              |
 | Change colors, fonts, widths, favicons, or add a custom partial  | `references/customization.md`     |
