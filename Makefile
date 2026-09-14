@@ -293,21 +293,38 @@ verify: ## Format, regenerate, build and run everything - use before committing
 	@$(MAKE) test
 	@$(OK) "verified - formatted, generated files current, build and suite green"
 
+# The four suites below each carry skill-check for the same reason `test` does:
+# a stale skill reference is generated-file drift, it fails CI, and running one
+# suite while fixing it is the normal loop - so the warning has to be on the
+# targets people actually iterate with, not only on the slowest one. It costs a
+# node run of a couple of seconds and no Hugo build.
+#
+# Sub-makes, not prerequisites, so skill-check really does come before the
+# build rather than beside it under -j.
+
 .PHONY: test-preview
-test-preview: preview ## Rebuild the preview (with drafts), then run the suite against it
+test-preview: ## Rebuild the preview (with drafts), then run the suite against it
+	@$(MAKE) skill-check
+	@$(MAKE) preview
 	@BASE_URL=$(PREVIEW_TEST_URL) npm test
 
 .PHONY: test-a11y
-test-a11y: build ## Build, then run accessibility tests (WCAG 2.2 AA)
+test-a11y: ## Build, then run accessibility tests (WCAG 2.2 AA)
+	@$(MAKE) skill-check
+	@$(MAKE) build
 	@$(WARN) "Accent colours change contrast ratios - failures here mean tune the shade, not revert."
 	@npm run test:a11y
 
 .PHONY: test-mobile
-test-mobile: build ## Build, then run mobile menu tests
+test-mobile: ## Build, then run mobile menu tests
+	@$(MAKE) skill-check
+	@$(MAKE) build
 	@npm run test:mobile-menu
 
 .PHONY: test-build
-test-build: build ## Build, then run build-output tests (asciidoc, render-link, search data)
+test-build: ## Build, then run build-output tests (asciidoc, render-link, search data)
+	@$(MAKE) skill-check
+	@$(MAKE) build
 	@npm run test:build
 
 # Serves playwright-report/ from the last run. The port is fixed in
