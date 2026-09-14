@@ -206,11 +206,11 @@ range.
 **Colours: three tokens, nothing else.** The palette is deliberately small — a
 wider one is what produced surfaces that nearly matched but didn't.
 
-| Token             | For                                                        |
-| ----------------- | ---------------------------------------------------------- |
-| `neutral-*`       | every surface, border and text colour                      |
-| `hextra-accent-*` | links, focus rings, active states, prompts                 |
-| `hextra-bg`       | the page itself                                            |
+| Token             | For                                        |
+| ----------------- | ------------------------------------------ |
+| `neutral-*`       | every surface, border and text colour      |
+| `hextra-accent-*` | links, focus rings, active states, prompts |
+| `hextra-bg`       | the page itself                            |
 
 `gray`, `slate` and `primary` are gone; do not reintroduce them. `gray` and
 `slate` are blue-tinted, which fights a warm accent. The only exceptions are
@@ -221,19 +221,33 @@ red/amber/blue/green carry meaning; those live in `alert.css`, `jupyter.css`,
 **Surface levels.** Pick by role, not by eye. Note the direction inverts between
 modes: light raises by getting lighter, dark by getting darker.
 
-| Role                            | Light         | Dark          |
-| ------------------------------- | ------------- | ------------- |
-| Page                            | `hextra-bg`   | `hextra-bg`   |
+| Role                             | Light         | Dark          |
+| -------------------------------- | ------------- | ------------- |
+| Page                             | `hextra-bg`   | `hextra-bg`   |
 | Raised — code blocks, cards      | `neutral-50`  | `neutral-950` |
 | Panel — collapsibles, series box | `neutral-50`  | `neutral-900` |
 | Overlay — dropdowns, menus       | `neutral-100` | `neutral-900` |
 | Chrome — filename bars, hover    | `neutral-200` | `neutral-800` |
-| Borders                         | `neutral-400` | `neutral-800` |
+| Borders                          | `neutral-400` | `neutral-800` |
 
 Overlays are their own level on purpose: a floating menu sits slightly darker
 than the page in light mode so it reads as above it, which is how Material and
 Nextra both treat them. `page-context-menu.html`'s item hover at `neutral-200` /
 `neutral-700` only works from that base.
+
+**Radius by size, not by taste.** The scale in use is four steps, and which one
+you want follows from what the element is:
+
+| Radius         | For                                                            |
+| -------------- | -------------------------------------------------------------- |
+| `rounded-lg`   | containers — code blocks, cards, callouts, dropdowns, media    |
+| `rounded-md`   | inline boxes — inline code, copy buttons, gallery items        |
+| `rounded-sm`   | interactive rows — menu items, nav links, tabs, breadcrumbs    |
+| `rounded-full` | pills and circles — badges, tags, buttons, avatars, step marks |
+
+Two deliberate exceptions: the home page hero and feature cards use
+`rounded-3xl`, and prose `pre` outside `.hextra-code-block` uses `rounded-xl`.
+Nothing else should reach past `lg`.
 
 A hover must differ from its own resting surface — check the pair, not the class
 list. Lift the border with the fill (`hover:border-neutral-500` /
@@ -264,7 +278,7 @@ accent-on-surface is where it fails. Verify in both modes before assuming.
 - Hugo's `highlight` returns `<div class="highlight">`. A `<div>` inside a
   `<span>` is invalid; the parser splits the line and no `display:flex` can undo
   it. Rows that wrap highlighted output must be `<div>`.
-- Container query units resolve against the nearest *ancestor* container, never
+- Container query units resolve against the nearest _ancestor_ container, never
   the element declaring `container-type`. Sizing something against its own box
   needs a wrapper — see `command.css`.
 
