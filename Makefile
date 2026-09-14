@@ -215,6 +215,27 @@ preview: css ## Build production output for the always-on preview service (inclu
 	@$(WARN) "Served by the 'preview' container, which is already running."
 	@$(WARN) "Re-run this target to update it; no restart needed."
 
+# Regenerates skills/hextra/references/{shortcodes,icons}.md and stamps the
+# version into .claude-plugin/*.json. The references are generated from the
+# `@param` and `@example` doc comments in layouts/_shortcodes/ and from
+# data/icons.yaml, so editing any of those without re-running this leaves the
+# shipped skill describing a theme that no longer exists.
+.PHONY: skill
+skill: deps ## Regenerate the shipped skill reference and plugin manifests
+	@$(SAY) "Generating the skill reference"
+	@npm run build:skill
+	@$(OK) "skill reference is current"
+
+# The same generator in --check mode: writes nothing, exits non-zero if any
+# output has drifted. It also reports documentation gaps - a parameter read but
+# not documented, or documented but never read - which are warnings rather than
+# failures unless --strict is passed.
+.PHONY: skill-check
+skill-check: deps ## Verify the generated skill files are current (for CI)
+	@$(SAY) "Checking the skill reference"
+	@npm run build:skill -- --check
+	@$(OK) "skill reference is current"
+
 ##@ Test
 
 # Every test target builds first. Playwright serves docs/public, so without a
@@ -230,8 +251,13 @@ preview: css ## Build production output for the always-on preview service (inclu
 # a full Hugo build. It is safe in that order: docs/hugo_stats.json, which every
 # build rewrites, is in .prettierignore, so the build cannot invalidate the check
 # that just passed.
+#
+# skill-check follows for the same reason - seconds, no Hugo - and because until
+# now nothing local caught a stale skill reference. That gate lives only in
+# test-build.yml, which triggers on pull_request, so a push straight to main ran
+# no check at all and a generated file once rode along stale for four pushes.
 .PHONY: test
-test: fmt-check build ## Check formatting, build, then run the full Playwright suite
+test: fmt-check skill-check build ## Check formatting and the skill, build, then run the full Playwright suite
 	@npm test
 
 # Runs against the always-on preview container instead of Playwright's own

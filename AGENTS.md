@@ -251,9 +251,9 @@ with the theme and is installable into any coding agent. Its shortcode and icon
 references are generated from `layouts/_shortcodes/` (the authority for
 parameters, via each template's `@param` and `@example` doc comments), with
 `.vscode/hextra.code-snippets` supplying enum choices and examples and
-`data/icons.yaml` the icon list. Run `npm run build:skill` after changing any of
-them, or CI will flag the output as stale. The generator also reports shortcodes
-whose doc comments have drifted from their code.
+`data/icons.yaml` the icon list. Run `make skill` after changing any of them, or
+CI will flag the output as stale. The generator also reports shortcodes whose
+doc comments have drifted from their code.
 
 The repo doubles as a Claude Code plugin marketplace: `.claude-plugin/` holds the
 plugin and marketplace manifests, whose `version` fields are stamped from the
@@ -294,8 +294,8 @@ that skips them is a change that has to be redone.
 - `VERSION` at the repo root is the single source of truth. A push to `main`
   that changes it fires `.github/workflows/release.yml`, which tags `v<VERSION>`
   and publishes the release — so the release happens when the PR merges.
-- Run `npm run build:skill` in the same commit, which restamps
-  `.claude-plugin/*.json` from `VERSION`. CI fails if they drift.
+- Run `make skill` in the same commit, which restamps `.claude-plugin/*.json`
+  from `VERSION`. CI fails if they drift.
 - Preview the notes first with `npm run changelog`.
 - Minor bump for a `feat`, patch otherwise.
 
@@ -305,7 +305,9 @@ Run everything in the devcontainer, not on the host:
 
 ```bash
 make fmt-check   # formatting, without writing
-make test        # Playwright: build output, mobile menu, WCAG AA
+make skill-check # generated skill files are current
+make test        # the two checks above, then Playwright: build output,
+                 # mobile menu, WCAG AA
 make build       # production build of docs/
 ```
 
