@@ -190,3 +190,144 @@ for (const { path, dir } of CONTEXT_MENU_PAGES) {
     expect(box!.x + box!.width, "menu overhangs the end edge").toBeLessThanOrEqual(clientWidth);
   });
 }
+
+// The TOC active-item indicator. Neither half of it is reachable by the sweep
+// above: the rail is a border colour, which no axe rule scores, and the link
+// colour would need `color-contrast`, still in DISABLED_RULES. So the change
+// this branch is named for shipped with nothing asserting it existed, and the
+// accent shade it picked was unverified. These tests cover both directly.
+const TOC_PAGE = "/docs/guide/configuration/";
+// The TOC is `hx:hidden hx:xl:block`, so it only exists above 1280px.
+const TOC_VIEWPORT = { width: 1440, height: 900 };
+
+type RGB = [number, number, number];
+
+function parseColor(value: string): [number, number, number, number] {
+  const match = value.match(/rgba?\(([^)]+)\)/);
+  if (!match) return [0, 0, 0, 0];
+  const parts = match[1]
+    .split(/[,/\s]+/)
+    .filter(Boolean)
+    .map(Number);
+  return [parts[0], parts[1], parts[2], parts.length > 3 ? parts[3] : 1];
+}
+
+// Composites an element's ancestor backgrounds over the canvas, root first.
+// Taking the first non-transparent background instead would be wrong here: the
+// theme uses Tailwind opacity modifiers (`dark:bg-hextra-accent-400/10` and
+// friends), and treating a 10%-alpha layer as if it were the backdrop is how a
+// contrast figure ends up several points off.
+function compositeOver(stack: string[]): RGB {
+  let base: RGB = [255, 255, 255];
+  for (const layer of stack.slice().reverse()) {
+    const [r, g, b, a] = parseColor(layer);
+    if (a === 0) continue;
+    base = [r * a + base[0] * (1 - a), g * a + base[1] * (1 - a), b * a + base[2] * (1 - a)];
+  }
+  return base;
+}
+
+function relativeLuminance([r, g, b]: RGB): number {
+  const channel = (value: number) => {
+    const s = value / 255;
+    return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+  };
+  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+}
+
+function contrastRatio(a: RGB, b: RGB): number {
+  const [light, dark] = [relativeLuminance(a), relativeLuminance(b)].sort((x, y) => y - x);
+  return (light + 0.05) / (dark + 0.05);
+}
+
+function backgroundStack(locator: import("@playwright/test").Locator): Promise<string[]> {
+  return locator.evaluate((el) => {
+    const layers: string[] = [];
+    let node: Element | null = el;
+    while (node) {
+      layers.push(getComputedStyle(node).backgroundColor);
+      node = node.parentElement;
+    }
+    return layers;
+  });
+}
+
+// Activates the first TOC entry through the hash path rather than by scrolling.
+// toc-scroll.js suppresses its IntersectionObserver for 500ms after a hash
+// navigation, so this is the one trigger that cannot race the observer.
+async function activateFirstTocItem(page: import("@playwright/test").Page) {
+  await page.setViewportSize(TOC_VIEWPORT);
+  await page.goto(TOC_PAGE, { waitUntil: "load" });
+
+  const toc = page.locator(".hextra-toc");
+  await expect(toc, `no TOC on ${TOC_PAGE} - pick a page that has one`).toBeVisible();
+
+  const firstLink = toc.locator('a[href^="#"]').first();
+  await expect(firstLink, `no TOC entries on ${TOC_PAGE} - pick a page with headings`).toHaveCount(1);
+
+  const href = await firstLink.getAttribute("href");
+  await page.evaluate((hash) => {
+    window.location.hash = hash as string;
+  }, href);
+
+  const active = toc.locator(`a[href="${href}"].hextra-toc-active`);
+  await expect(active, "the scroll spy did not mark the hash target active").toHaveCount(1);
+
+  return { toc, active, activeItem: toc.locator(`li:has(> a[href="${href}"])`) };
+}
+
+for (const colorScheme of COLOR_SCHEMES) {
+  test(`TOC active item is marked by a rail, not colour alone (${colorScheme})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme });
+    const { toc, activeItem } = await activateFirstTocItem(page);
+
+    // Every row reserves the rail in transparent so colouring it in cannot
+    // shift the text sideways. Asserting the reservation separately from the
+    // colour is what distinguishes "the rule was dropped" from "the row is not
+    // active".
+    const widths = await toc.locator("ul li").evaluateAll((items) => items.map((el) => getComputedStyle(el).borderInlineStartWidth));
+    expect(widths.length, "the TOC rendered no list items").toBeGreaterThan(0);
+    expect(new Set(widths), "every TOC row must reserve the rail at the same width").toEqual(new Set(["2px"]));
+
+    const inactive = toc.locator("ul li:not(:has(> a.hextra-toc-active))").first();
+    const inactiveColor = await inactive.evaluate((el) => getComputedStyle(el).borderInlineStartColor);
+    expect(parseColor(inactiveColor)[3], "an inactive row must leave its rail transparent").toBe(0);
+
+    // This is the assertion that fails if `:has()` is unsupported or the rule
+    // is dropped for any other reason: the class still lands on the link, the
+    // text still recolours, and the non-colour indicator silently disappears -
+    // the WCAG 1.4.1 failure the rail exists to fix.
+    const activeColor = await activeItem.evaluate((el) => getComputedStyle(el).borderInlineStartColor);
+    expect(parseColor(activeColor)[3], "the active row's rail is transparent - the :has() rule did not apply").toBeGreaterThan(0);
+    expect(activeColor, "the active rail must differ from an inactive one").not.toBe(inactiveColor);
+  });
+
+  test(`TOC active rail and label meet their contrast floors (${colorScheme})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme });
+    const { active, activeItem } = await activateFirstTocItem(page);
+
+    const backdrop = compositeOver(await backgroundStack(activeItem));
+
+    // SC 1.4.11: the rail is a non-text indicator, so 3:1.
+    const rail = parseColor(await activeItem.evaluate((el) => getComputedStyle(el).borderInlineStartColor));
+    const railRatio = contrastRatio([rail[0], rail[1], rail[2]], backdrop);
+    expect(railRatio, `active rail is ${railRatio.toFixed(2)}:1 against its backdrop, under the 3:1 SC 1.4.11 floor`).toBeGreaterThanOrEqual(3);
+
+    // SC 1.4.3: the label is 14px and not bold, so 4.5:1 - no large-text
+    // exemption. This is the gate the accent shade was picked against and the
+    // global axe sweep cannot supply while color-contrast is disabled.
+    const label = parseColor(await active.evaluate((el) => getComputedStyle(el).color));
+    const labelRatio = contrastRatio([label[0], label[1], label[2]], backdrop);
+    expect(labelRatio, `active TOC link is ${labelRatio.toFixed(2)}:1 against its backdrop, under the 4.5:1 AA floor`).toBeGreaterThanOrEqual(4.5);
+  });
+
+  test(`TOC active item is exposed to assistive tech (${colorScheme})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme });
+    const { toc, active } = await activateFirstTocItem(page);
+
+    // A visual-only indicator is half a fix. aria-current="location" is what
+    // makes the same state reach a screen reader.
+    await expect(active).toHaveAttribute("aria-current", "location");
+    await expect(toc.locator("[aria-current]"), "exactly one TOC entry may be current").toHaveCount(1);
+  });
+}
