@@ -13,13 +13,14 @@ Run `make help` for the full annotated list. The important targets, by workflow:
 
 ### Developing
 
-| Target           | What it does                                                                            |
-| ---------------- | --------------------------------------------------------------------------------------- |
-| `make dev`       | Dev server with the full theme pipeline (writes `hugo_stats.json` on every rebuild)     |
-| `make serve`     | Dev server without the theme pipeline — faster startup when you're only editing content |
-| `make stats`     | Regenerate `docs/hugo_stats.json` (the class inventory Tailwind tree-shakes against)    |
-| `make css`       | Compile production CSS — regenerates stats first, so it's always correct                |
-| `make css-watch` | Recompile CSS on change; run alongside `make dev`                                       |
+| Target           | What it does                                                                                        |
+| ---------------- | --------------------------------------------------------------------------------------------------- |
+| `make dev`       | Dev server with the full theme pipeline (writes `hugo_stats.json` on every rebuild)                 |
+| `make serve`     | Dev server without the theme pipeline — faster startup when you're only editing content             |
+| `make stats`     | Regenerate `docs/hugo_stats.json` (the class inventory Tailwind tree-shakes against)                |
+| `make css`       | Compile production CSS — regenerates stats first, so it's always correct                            |
+| `make css-watch` | Recompile CSS on change; run alongside `make dev`                                                   |
+| `make skill`     | Regenerate the skill reference in `skills/hextra/` and stamp `.claude-plugin/*.json` from `VERSION` |
 
 ### Writing content
 
@@ -41,10 +42,14 @@ Run `make help` for the full annotated list. The important targets, by workflow:
 
 | Target                            | What it does                                                                                                                              |
 | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `make verify`                     | Everything, in order — format and regenerate, then re-check, build, and run the suite. The pre-commit command                             |
 | `make test`                       | Full Playwright suite against a fresh draft-free production build                                                                         |
 | `make test-a11y`                  | Accessibility tests only (WCAG 2.2 AA)                                                                                                    |
 | `make test-mobile` / `test-build` | Mobile menu and build-output suites                                                                                                       |
 | `make test-preview`               | Rebuild the preview (drafts included), then run the suite against the live preview container — what you tested is what 8043 keeps serving |
+| `make fmt-check`                  | Verify formatting without writing anything — what CI runs                                                                                 |
+| `make skill-check`                | Verify the generated skill reference and plugin manifests are current                                                                     |
+| `make report`                     | Serve the last Playwright HTML report at [localhost:9323](http://localhost:9323)                                                          |
 
 ### Housekeeping
 
