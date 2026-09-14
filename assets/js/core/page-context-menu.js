@@ -139,8 +139,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const items = Array.from(menu.querySelectorAll('[role="menuitem"]'));
       if (items.length === 0) return;
 
-      // -1 when focus is still on the toggle, which is why the wrap-around is
-      // not a plain modulo: ArrowUp from there has to reach the last item.
+      // -1 when focus is inside the menu but not on a row. Not the toggle:
+      // that is a DOM sibling of this <ul>, so its keydown never bubbles here
+      // and it has its own handler. The case that does reach this listener is
+      // the panel itself holding focus - it is a scroll container
+      // (`overflow-auto` under a `max-h-80`), and Firefox makes those
+      // keyboard-focusable. Hence the explicit -1 arms rather than a plain
+      // modulo: ArrowDown from the panel goes to the first row, ArrowUp to the
+      // last.
       const currentIndex = items.indexOf(document.activeElement);
 
       switch (e.key) {

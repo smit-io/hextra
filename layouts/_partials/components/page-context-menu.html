@@ -13,8 +13,13 @@
   computation walks the row's contents and returns label-and-description as one
   run-on sentence; `aria-describedby` alone does not change that, because it
   adds a description rather than removing anything from the name. With both, a
-  screen reader announces name-then-description, and the copy row's name stays
-  equal to the split button's - clicking one forwards to the other.
+  screen reader announces name-then-description.
+
+  The copy row and the split button share behaviour, not a name: the row is
+  `copyAsMarkdown`, the button is `copyPage`, because the button's accessible
+  name has to contain its visible label "Copy Page" (WCAG 2.5.3 Label in Name,
+  see the comment on the button itself). Clicking the row forwards to the
+  button, and the two are named for what each one looks like.
 
   Hover tints the row with the accent colour, matching the theme switcher's
   menu rather than the neutral grey this used to carry - the two dropdowns sit
