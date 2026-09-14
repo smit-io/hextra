@@ -294,8 +294,11 @@ that skips them is a change that has to be redone.
 - `VERSION` at the repo root is the single source of truth. A push to `main`
   that changes it fires `.github/workflows/release.yml`, which tags `v<VERSION>`
   and publishes the release — so the release happens when the PR merges.
-- Run `make skill` in the same commit, which restamps `.claude-plugin/*.json`
-  from `VERSION`. CI fails if they drift.
+- `make bump VERSION=0.21.2` sets it and restamps `.claude-plugin/*.json` in one
+  step. Setting the file by hand works too, but then `make skill` has to follow
+  in the same commit or CI fails on the drift.
+- `bump` refuses a malformed version, a version already in `VERSION`, and one
+  whose tag exists. It only edits files — nothing publishes until the merge.
 - Preview the notes first with `npm run changelog`.
 - Minor bump for a `feat`, patch otherwise.
 

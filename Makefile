@@ -311,6 +311,35 @@ report: ## Serve the last Playwright HTML report on port 9323
 	@test -d playwright-report || { $(WARN) "no playwright-report/ - run make test first"; exit 1; }
 	@npx playwright show-report --host 0.0.0.0 --port $(REPORT_PORT)
 
+##@ Release
+
+# `VERSION` at the repository root is the only version number in the tree.
+# release.yml triggers on a push to main that changes it, tags v<VERSION> and
+# publishes the release, so the release happens when the PR merges. The two
+# .claude-plugin manifests carry the same number, stamped from VERSION by the
+# skill generator - which makes setting a version two steps that must not be
+# separated. CI fails when they drift; this target keeps them together instead.
+#
+# It only edits files. Nothing leaves the machine until the commit reaches main,
+# which is what the closing reminders are for.
+.PHONY: bump
+bump: deps ## Set the release version: make bump VERSION=0.21.2
+	@if [ -z "$(VERSION)" ]; then $(WARN) "VERSION required, e.g. make bump VERSION=0.21.2"; exit 1; fi
+	@printf '%s' "$(VERSION)" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$$' \
+		|| { $(WARN) "VERSION must be MAJOR.MINOR.PATCH, got '$(VERSION)'"; exit 1; }
+	@if [ "$(VERSION)" = "$$(tr -d ' \t\n\r' < VERSION)" ]; then \
+		$(WARN) "VERSION is already $(VERSION) - nothing to do"; exit 1; \
+	fi
+	@if git rev-parse -q --verify "refs/tags/v$(VERSION)" >/dev/null 2>&1; then \
+		$(WARN) "tag v$(VERSION) already exists - pick another version"; exit 1; \
+	fi
+	@$(SAY) "Setting VERSION to $(VERSION), was $$(tr -d ' \t\n\r' < VERSION)"
+	@printf '%s\n' "$(VERSION)" > VERSION
+	@npm run build:skill
+	@$(OK) "VERSION and .claude-plugin/*.json are at $(VERSION)"
+	@$(WARN) "Nothing is published yet - merging this to main tags v$(VERSION) and cuts the release."
+	@$(WARN) "Preview the notes first: npm run changelog"
+
 ##@ Local CI (act)
 
 # Run the GitHub Actions workflows locally in Docker via nektos/act, with the
