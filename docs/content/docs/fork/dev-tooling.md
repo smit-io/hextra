@@ -51,6 +51,14 @@ Run `make help` for the full annotated list. The important targets, by workflow:
 | `make skill-check`                | Verify the generated skill reference and plugin manifests are current                                                                     |
 | `make report`                     | Serve the last Playwright HTML report at [localhost:9323](http://localhost:9323)                                                          |
 
+### Releasing
+
+| Target                     | What it does                                               |
+| -------------------------- | ---------------------------------------------------------- |
+| `make bump VERSION=0.21.2` | Set `VERSION` and restamp `.claude-plugin/*.json` to match |
+
+`VERSION` at the repository root is the only version number in the tree, and the only file that arms a publish: a push to `main` that changes it tags `v<VERSION>` and cuts the GitHub release. `bump` writes the file and regenerates the manifests in one step, refusing a malformed version, one already in the file, or one whose tag exists. It edits files only — nothing is published until the commit merges, so preview the notes with `npm run changelog` while you still can.
+
 ### Housekeeping
 
 | Target                                     | What it does                                                               |
