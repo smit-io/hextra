@@ -20,8 +20,8 @@ did not until `64bee54`:
 
 They exist because Hugo's `.Process` / `.Resize` are raster-only, and Hugo
 classifies `image/svg+xml` as resource type `image`, so an SVG reaches them
-unless something stops it. `card.html:44` states it plainly: *".Process does not
-work on svgs"*.
+unless something stops it. `card.html:44` states it plainly: _".Process does not
+work on svgs"_.
 
 ## The actual problem
 
@@ -36,8 +36,8 @@ path**. So an SVG gets none of the work the theme does for a raster image:
 | `data-zoom-src` for medium-zoom     | nothing          |
 
 The first is the one that costs something real. `render-image.html`'s doc
-comment says the point of the hook is that an image *"reserves its space before
-it loads"* — that is Cumulative Layout Shift, and it is exactly what SVGs do not
+comment says the point of the hook is that an image _"reserves its space before
+it loads"_ — that is Cumulative Layout Shift, and it is exactly what SVGs do not
 get. A theme that works hard to avoid CLS has one image format that reintroduces
 it.
 
