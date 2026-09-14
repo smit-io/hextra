@@ -320,13 +320,18 @@ report: ## Serve the last Playwright HTML report on port 9323
 # skill generator - which makes setting a version two steps that must not be
 # separated. CI fails when they drift; this target keeps them together instead.
 #
+# The accepted format is the one release.yml validates: MAJOR.MINOR.PATCH with
+# an optional semver prerelease suffix. release.yml publishes a suffixed version
+# with --prerelease, so `make bump VERSION=0.22.0-rc.1` is a supported release
+# and must not be rejected here.
+#
 # It only edits files. Nothing leaves the machine until the commit reaches main,
 # which is what the closing reminders are for.
 .PHONY: bump
 bump: deps ## Set the release version: make bump VERSION=0.21.2
 	@if [ -z "$(VERSION)" ]; then $(WARN) "VERSION required, e.g. make bump VERSION=0.21.2"; exit 1; fi
-	@printf '%s' "$(VERSION)" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$$' \
-		|| { $(WARN) "VERSION must be MAJOR.MINOR.PATCH, got '$(VERSION)'"; exit 1; }
+	@printf '%s' "$(VERSION)" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$$' \
+		|| { $(WARN) "VERSION must be MAJOR.MINOR.PATCH[-PRERELEASE], got '$(VERSION)'"; exit 1; }
 	@if [ "$(VERSION)" = "$$(tr -d ' \t\n\r' < VERSION)" ]; then \
 		$(WARN) "VERSION is already $(VERSION) - nothing to do"; exit 1; \
 	fi
