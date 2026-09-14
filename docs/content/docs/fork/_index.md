@@ -14,7 +14,7 @@ This fork of [Hextra](https://github.com/imfing/hextra) adds a set of features o
 | -------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | Typography     | Fixed system font stack                                         | Configurable [Google Fonts](google-fonts) for headings, body, and code                  |
 | Theme color    | Single HSL primary color (`--primary-hue/saturation/lightness`) | Full 11-shade [accent palette](accent-color) in `oklch`                                 |
-| Neutral colors | Flat `bg-white` / `#111` backgrounds                            | Dedicated 11-shade [light and dark palettes](color-palettes) in `oklch`                 |
+| Neutral colors | Flat `bg-white` / `#111`, plus `gray` and `slate` elsewhere     | One achromatic family, [Tailwind's `neutral`](color-palettes), for every surface        |
 | Code blocks    | Borderless, `rounded-xl`, faint highlight                       | [Bordered blocks](code-blocks), `rounded-sm`, accent line highlighting, file-type icons |
 | Blog           | Single-column list                                              | [Three-column layout](blog) with identity rail, post cards, share buttons, and widgets  |
 | Favicons       | Flat files in `static/`                                         | Organized under `static/icons/` with [dark-mode favicon](favicons) support              |
@@ -24,7 +24,7 @@ This fork of [Hextra](https://github.com/imfing/hextra) adds a set of features o
 {{< cards >}}
 {{< card link="google-fonts" title="Google Fonts" icon="sparkles" subtitle="Configurable heading, body, and code fonts with variable-font axes" >}}
 {{< card link="accent-color" title="Accent Color" icon="color-swatch" subtitle="An 11-shade oklch accent palette used across every component" >}}
-{{< card link="color-palettes" title="Color Palettes" icon="adjustments" subtitle="Neutral light and dark palettes replacing the flat backgrounds" >}}
+{{< card link="color-palettes" title="Color Palettes" icon="adjustments" subtitle="One achromatic neutral family for every surface, border and text colour" >}}
 {{< card link="code-blocks" title="Code Blocks" icon="code" subtitle="Borders, tighter radii, accent line highlighting, and file-type icons" >}}
 {{< card link="blog" title="Blog Layout" icon="newspaper" subtitle="Identity rail, post cards, share buttons, and sidebar widgets" >}}
 {{< card link="favicons" title="Favicons" icon="photograph" subtitle="Organized icon directory and automatic dark-mode favicon" >}}

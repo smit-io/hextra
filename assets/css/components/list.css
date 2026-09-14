@@ -4,7 +4,7 @@
 
 .hextra-list__title {
   @apply hx:mb-3 hx:text-lg hx:font-semibold;
-  @apply hx:text-gray-900 hx:dark:text-gray-100;
+  @apply hx:text-neutral-900 hx:dark:text-neutral-100;
 }
 
 .hextra-list__items {

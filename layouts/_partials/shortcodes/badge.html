@@ -17,7 +17,7 @@
 {{- $color = index $mapping $color | default $color | default "gray" -}}
 
 {{- $styleClass := newScratch -}}
-{{- $styleClass.Set "gray" "hx:text-gray-700 hx:bg-gray-100 hx:dark:bg-neutral-800 hx:dark:text-neutral-200 hx:border-gray-400 hx:dark:border-neutral-600" -}}
+{{- $styleClass.Set "gray" "hx:text-neutral-700 hx:bg-neutral-100 hx:dark:bg-neutral-800 hx:dark:text-neutral-200 hx:border-neutral-400 hx:dark:border-neutral-600" -}}
 {{- $styleClass.Set "purple" "hx:border-purple-400 hx:bg-purple-100 hx:text-purple-950 hx:dark:border-purple-800 hx:dark:bg-purple-950 hx:dark:text-purple-100" -}}
 {{- $styleClass.Set "indigo" "hx:border-indigo-400 hx:bg-indigo-100 hx:text-indigo-950 hx:dark:border-indigo-800 hx:dark:bg-indigo-950 hx:dark:text-indigo-100" -}}
 {{- $styleClass.Set "blue" "hx:border-blue-400 hx:bg-blue-100 hx:text-blue-950 hx:dark:border-blue-800 hx:dark:bg-blue-950 hx:dark:text-blue-100" -}}

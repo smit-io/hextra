@@ -26,7 +26,7 @@
             {{- end -}}
           </div>
         {{- else }}
-          <p class="hx:text-gray-500 hx:dark:text-gray-400">{{ (T "noResultsFound") | default "No results found." }}</p>
+          <p class="hx:text-neutral-500 hx:dark:text-neutral-400">{{ (T "noResultsFound") | default "No results found." }}</p>
         {{- end }}
         {{- partial "blog/widgets.html" (dict "context" . "config" $cfg "layout" "inline" "section" "blog") -}}
         {{ partial "custom/page-end.html" . }}

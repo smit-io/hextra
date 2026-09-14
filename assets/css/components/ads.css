@@ -34,7 +34,7 @@
 
 .hextra-ad__label {
   @apply hx:text-xs hx:font-medium hx:uppercase hx:tracking-wider;
-  @apply hx:text-gray-400 hx:dark:text-gray-500;
+  @apply hx:text-neutral-400 hx:dark:text-neutral-500;
 }
 
 .hextra-ad__slot {
@@ -44,20 +44,20 @@
 }
 
 .hextra-ad--bordered .hextra-ad__slot {
-  @apply hx:border hx:border-gray-200 hx:dark:border-neutral-800;
+  @apply hx:border hx:border-neutral-200 hx:dark:border-neutral-800;
 }
 
 .hextra-ad--filled .hextra-ad__slot {
-  @apply hx:bg-gray-50 hx:dark:bg-neutral-900;
+  @apply hx:bg-neutral-50 hx:dark:bg-neutral-900;
 }
 
 /* Development only: what a slot looks like before an ad network fills it.
    Dashed rather than solid so it cannot be mistaken for a real unit. */
 .hextra-ad--placeholder .hextra-ad__slot {
-  @apply hx:border hx:border-dashed hx:border-gray-300 hx:dark:border-neutral-700;
+  @apply hx:border hx:border-dashed hx:border-neutral-300 hx:dark:border-neutral-700;
   @apply hx:bg-transparent;
 }
 
 .hextra-ad__note {
-  @apply hx:px-4 hx:text-center hx:text-xs hx:text-gray-400 hx:dark:text-gray-500;
+  @apply hx:px-4 hx:text-center hx:text-xs hx:text-neutral-400 hx:dark:text-neutral-500;
 }

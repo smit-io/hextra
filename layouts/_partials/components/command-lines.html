@@ -11,7 +11,11 @@
 */}}
 {{- $prompt := .prompt -}}
 {{- range .lines -}}
-  <span class="hextra-command__line">
+  {{/* A div, not a span: `highlight` wraps its output in `<div class="highlight">`,
+    and a div inside a span is invalid - the parser's repair leaves the two on
+    separate lines whatever `display` the stylesheet asks for.
+  */}}
+  <div class="hextra-command__line">
     <span class="hextra-command__prompt" aria-hidden="true">{{ $prompt }}</span>
     {{/* `highlight` emits `<pre tabindex="0">` so that a wide block can be
       scrolled by keyboard. This one is not a scroll container - it is sized to
@@ -19,5 +23,5 @@
       focus nothing and lead nowhere.
     */}}
     {{- highlight . "shell" "" | replaceRE ` tabindex="0"` "" | safeHTML -}}
-  </span>
+  </div>
 {{- end -}}

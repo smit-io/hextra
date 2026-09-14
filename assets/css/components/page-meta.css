@@ -12,7 +12,7 @@
 */
 
 .hextra-page-meta {
-  @apply hx:mt-12 hx:mb-8 hx:flex hx:flex-wrap hx:items-baseline hx:gap-2 hx:text-xs hx:text-gray-500 hx:dark:text-gray-400;
+  @apply hx:mt-12 hx:mb-8 hx:flex hx:flex-wrap hx:items-baseline hx:gap-2 hx:text-xs hx:text-neutral-500 hx:dark:text-neutral-400;
 }
 
 .hextra-page-license {

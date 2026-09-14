@@ -86,17 +86,17 @@ The fork migrated every component that previously used the HSL primary color:
 
 ## Step 3 (optional) — Tune the neutrals
 
-Beyond the accent, the fork replaces upstream's flat backgrounds (`bg-white` / `#111`) with dedicated **neutral palettes**: `hextra-light-50`–`950` for light mode and `hextra-dark-50`–`950` for dark mode, both in `oklch`. The page body sits at `hextra-light-100` / `hextra-dark-600`, so content surfaces like code blocks and headers sit visibly above or below the page background — dark mode is intentionally not pure black.
+Beyond the accent, the fork replaces upstream's flat backgrounds (`bg-white` / `#111`) with one achromatic family — Tailwind's **`neutral`** — used for every surface, border and piece of text. The page body sits at `neutral-100` in light mode and `neutral-900` in dark, so content surfaces like code blocks and headers sit visibly above or below it; dark mode is intentionally not pure black.
 
 Override only the shades you want to change, same file:
 
 ```css {filename="assets/css/custom.css"}
 :root {
   /* Warmer light background */
-  --color-hextra-light-100: oklch(97.3% 0.005 85);
+  --color-neutral-100: oklch(97.3% 0.005 85);
 
   /* Slightly blue-tinted dark background */
-  --color-hextra-dark-600: oklch(17.6% 0.01 250);
+  --color-neutral-900: oklch(17.6% 0.01 250);
 }
 ```
 

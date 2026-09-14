@@ -57,12 +57,12 @@ Greys are two more 11-shade ramps, overridable the same way:
 
 ```css
 :root {
-  --color-hextra-light-100: oklch(97.3% 0.005 85); /* light-mode surfaces */
-  --color-hextra-dark-600: oklch(17.6% 0.01 250); /* dark-mode surfaces */
+  --color-neutral-100: oklch(97.3% 0.005 85); /* light-mode page background */
+  --color-neutral-900: oklch(21% 0.01 250); /* dark-mode page background */
 }
 ```
 
-`--color-hextra-white-*` and `--color-hextra-black-*` are extra ramps for the extremes.
+Neutrals are Tailwind's `neutral` family throughout, light mode on the low end and dark on the high end; overriding a shade retints every surface, border and text colour that uses it.
 
 ## Layout widths
 

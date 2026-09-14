@@ -56,16 +56,16 @@
   expressed in cqi. The stylesheet's clamp handles both ends of the range, so
   no bounds are applied here.
 */}}
-{{- $fontSize := 0.0 -}}
+{{- $longest := 1 -}}
+{{- range $lines -}}
+  {{- $longest = math.Max $longest (strings.RuneCount (printf "%s %s" $prompt .)) -}}
+{{- end -}}
+{{- $fontSize := div 141.9 $longest -}}
+
 {{- $ratio := 0.0 -}}
 {{- if $cover -}}
-  {{- $longest := 1 -}}
-  {{- range $lines -}}
-    {{- $longest = math.Max $longest (strings.RuneCount (printf "%s %s" $prompt .)) -}}
-  {{- end -}}
-  {{- $fontSize = div 141.9 $longest -}}
-
-  {{/* How much empty band sits above and below the command. Divided by the
+  {{/* How much empty band sits above and below the command. Only a cover has a
+    fixed box to fill; inline the height just follows the lines. Divided by the
     line count so that each extra line buys its own height instead of
     squeezing the ones already there.
   */}}
@@ -90,14 +90,20 @@
   {{- $frameClass = printf "%s %s" $frameClass . -}}
 {{- end -}}
 
+{{/* Both modes render the same frame and the same container-query text scaling,
+  so a `command` shortcode and a `coverText` cover are one component. A cover
+  adds only the fixed aspect ratio it has to fill.
+*/}}
 {{- if $cover -}}
-  <div class="{{ $frameClass }}" style="{{ printf "--hextra-command-ratio:%.2f" $ratio | safeCSS }}">
+  <div class="{{ $frameClass }} hextra-command__frame--fixed" style="{{ printf "--hextra-command-ratio:%.2f" $ratio | safeCSS }}">
     <div class="hextra-command hextra-command--cover" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
       {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt) -}}
     </div>
   </div>
 {{- else -}}
-  <div class="hextra-command hextra-command--inline">
-    {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt) -}}
+  <div class="{{ $frameClass }}">
+    <div class="hextra-command hextra-command--inline" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
+      {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt) -}}
+    </div>
   </div>
 {{- end -}}

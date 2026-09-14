@@ -9,15 +9,15 @@ The fork restyles code blocks for a crisper, more "editor-like" look: visible bo
 
 ## What changed vs upstream
 
-| Aspect          | Upstream                                   | This fork                                                                               |
-| --------------- | ------------------------------------------ | --------------------------------------------------------------------------------------- |
-| Border          | None                                       | 1px border: `hextra-light-900` (light), `neutral-700` (dark)                            |
-| Corner radius   | `rounded-xl`                               | `rounded-sm`                                                                            |
-| Background      | Translucent primary tint (`primary-700/5`) | Solid palette: `hextra-light-50` / `hextra-dark-50`                                     |
-| Filename header | Primary-tinted, `rounded-t-xl`             | Palette background (`hextra-light-200` / `hextra-dark-700`) with border, `rounded-t-sm` |
-| Line highlight  | Faint `primary-800/10` wash                | Accent background + 2px accent left border, tuned per mode                              |
-| Copy button     | Broken contrast in light mode              | Fixed, neutral surface that fits both modes                                             |
-| File-type icons | None                                       | Monochrome icon resolved from the filename extension                                    |
+| Aspect          | Upstream                                   | This fork                                                                      |
+| --------------- | ------------------------------------------ | ------------------------------------------------------------------------------ |
+| Border          | None                                       | 1px border: `neutral-400` (light), `neutral-700` (dark)                        |
+| Corner radius   | `rounded-xl`                               | `rounded-sm`                                                                   |
+| Background      | Translucent primary tint (`primary-700/5`) | Solid palette: `neutral-50` / `neutral-950`                                    |
+| Filename header | Primary-tinted, `rounded-t-xl`             | Palette background (`neutral-200` / `neutral-800`) with border, `rounded-t-sm` |
+| Line highlight  | Faint `primary-800/10` wash                | Accent background + 2px accent left border, tuned per mode                     |
+| Copy button     | Broken contrast in light mode              | Fixed, neutral surface that fits both modes                                    |
+| File-type icons | None                                       | Monochrome icon resolved from the filename extension                           |
 
 ## Line highlighting
 
@@ -89,7 +89,7 @@ params:
     enable: true
 ```
 
-The filename bar sits flush on top of the block with its own border and palette background (`hextra-light-200` light / `hextra-dark-700` dark), visually reading as an editor tab.
+The filename bar sits flush on top of the block with its own border and palette background (`neutral-200` light / `neutral-800` dark), visually reading as an editor tab.
 
 ## File-type icons
 
@@ -153,7 +153,7 @@ Everything is driven by the palette and accent tokens, so the usual override pat
 ```css {filename="assets/css/custom.css"}
 :root {
   /* Lighter code block background in dark mode */
-  --color-hextra-dark-50: oklch(9% 0 0);
+  --color-neutral-950: oklch(9% 0 0);
 }
 ```
 

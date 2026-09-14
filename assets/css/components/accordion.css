@@ -8,12 +8,16 @@
    two draw the same weight of edge. Dark mode is unchanged. */
 .hextra-accordion {
   @apply hx:my-6 hx:overflow-hidden hx:rounded-lg hx:border;
-  @apply hx:border-hextra-light-900 hx:bg-hextra-light-50;
-  @apply hx:dark:border-neutral-700 hx:dark:bg-hextra-dark-700;
+  @apply hx:border-neutral-400 hx:bg-neutral-50;
+  @apply hx:dark:border-neutral-800 hx:dark:bg-neutral-900;
+  /* The edge lifts with the fill on hover, the way Nextra's cards do. Without
+     it the border and the hovered surface converge and the outline vanishes
+     for exactly as long as the pointer is on it. */
+  @apply hx:transition-colors hx:hover:border-neutral-500 hx:dark:hover:border-neutral-700;
 }
 
 .hextra-accordion__item {
-  @apply hx:border-b hx:border-hextra-light-900 hx:dark:border-neutral-700;
+  @apply hx:border-b hx:border-neutral-400 hx:dark:border-neutral-800;
 
   &:last-child {
     @apply hx:border-b-0;
@@ -23,7 +27,7 @@
 .hextra-accordion__summary {
   @apply hx:flex hx:items-center hx:gap-2 hx:cursor-pointer hx:select-none hx:list-none;
   @apply hx:px-4 hx:py-3 hx:font-medium;
-  @apply hx:text-gray-900 hx:dark:text-gray-100;
+  @apply hx:text-neutral-900 hx:dark:text-neutral-100;
   @apply hx:transition-colors hx:ease-in hx:duration-200;
 
   /* Safari still paints its own triangle without this. */
@@ -32,12 +36,12 @@
   }
 
   &:hover {
-    @apply hx:bg-hextra-light-200 hx:dark:bg-hextra-dark-900;
+    @apply hx:bg-neutral-200 hx:dark:bg-neutral-800;
   }
 }
 
 .hextra-accordion__marker {
-  @apply hx:inline-flex hx:shrink-0 hx:text-gray-500 hx:dark:text-neutral-400;
+  @apply hx:inline-flex hx:shrink-0 hx:text-neutral-500 hx:dark:text-neutral-400;
   @apply hx:transition-transform hx:ease-in hx:duration-200;
   @apply hx:rtl:rotate-180;
 }
@@ -52,7 +56,7 @@
 
 .hextra-accordion__content {
   @apply hx:px-4 hx:pb-4 hx:leading-relaxed;
-  @apply hx:text-gray-700 hx:dark:text-gray-300;
+  @apply hx:text-neutral-700 hx:dark:text-neutral-300;
 
   > :first-child {
     @apply hx:mt-0;

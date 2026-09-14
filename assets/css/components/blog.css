@@ -23,7 +23,7 @@
 /* Language/theme switches: mirrors the docs sidebar's sticky bottom panel
    (sidebar.html) so both surfaces behave and look the same */
 .hextra-blog-rail-switches {
-  @apply hx:sticky hx:bottom-0 hx:mx-4 hx:flex hx:items-center hx:gap-2 hx:py-4 hx:border-t hx:border-gray-200 hx:bg-hextra-light-100 hx:shadow-[0_-12px_16px_#fff] hx:dark:border-neutral-800 hx:dark:bg-hextra-dark-600 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none;
+  @apply hx:sticky hx:bottom-0 hx:mx-4 hx:flex hx:items-center hx:gap-2 hx:py-4 hx:border-t hx:border-neutral-200 hx:bg-hextra-bg hx:shadow-[0_-12px_16px_#f7f7f7] hx:dark:border-neutral-800 hx:dark:shadow-[0_-12px_16px_#111] hx:contrast-more:border-neutral-400 hx:contrast-more:shadow-none hx:contrast-more:dark:shadow-none;
 }
 
 .hextra-blog-profile {
@@ -43,11 +43,11 @@
 }
 
 .hextra-blog-name {
-  @apply hx:m-0 hx:text-lg hx:font-bold hx:tracking-tight hx:text-gray-900 hx:dark:text-gray-100;
+  @apply hx:m-0 hx:text-lg hx:font-bold hx:tracking-tight hx:text-neutral-900 hx:dark:text-neutral-100;
 }
 
 .hextra-blog-tagline {
-  @apply hx:mt-1 hx:text-sm hx:leading-relaxed hx:text-gray-500 hx:dark:text-gray-400;
+  @apply hx:mt-1 hx:text-sm hx:leading-relaxed hx:text-neutral-500 hx:dark:text-neutral-400;
 }
 
 .hextra-blog-nav {
@@ -55,7 +55,7 @@
 }
 
 .hextra-blog-nav-link {
-  @apply hx:flex hx:items-center hx:gap-2 hx:-mx-2 hx:rounded-md hx:px-2 hx:py-1.5 hx:text-sm hx:font-medium hx:text-gray-600 hx:transition-colors hx:hover:bg-gray-100 hx:hover:text-gray-900 hx:dark:text-gray-300 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-gray-50 hx:hextra-focus-visible;
+  @apply hx:flex hx:items-center hx:gap-2 hx:-mx-2 hx:rounded-md hx:px-2 hx:py-1.5 hx:text-sm hx:font-medium hx:text-neutral-600 hx:transition-colors hx:hover:bg-neutral-100 hx:hover:text-neutral-900 hx:dark:text-neutral-300 hx:dark:hover:bg-neutral-800 hx:dark:hover:text-neutral-50 hx:hextra-focus-visible;
 }
 
 /* Active state lives in components/nav-active.css, shared with the sidebar. */
@@ -69,11 +69,11 @@
 }
 
 .hextra-blog-social {
-  @apply hx:flex hx:h-9 hx:w-9 hx:items-center hx:justify-center hx:rounded-md hx:border hx:border-gray-200 hx:text-gray-500 hx:transition-colors hx:hover:border-hextra-accent-400 hx:hover:text-hextra-accent-600 hx:dark:border-neutral-800 hx:dark:text-gray-400 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
+  @apply hx:flex hx:h-9 hx:w-9 hx:items-center hx:justify-center hx:rounded-md hx:border hx:border-neutral-200 hx:text-neutral-500 hx:transition-colors hx:hover:border-hextra-accent-400 hx:hover:text-hextra-accent-600 hx:dark:border-neutral-800 hx:dark:text-neutral-400 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
 }
 
 .hextra-blog-sponsor {
-  @apply hx:mt-auto hx:rounded-lg hx:border hx:border-gray-200 hx:bg-hextra-light-50 hx:p-3 hx:text-sm hx:leading-relaxed hx:text-gray-500 hx:dark:border-neutral-800 hx:dark:bg-hextra-dark-500 hx:dark:text-gray-400;
+  @apply hx:mt-auto hx:rounded-lg hx:border hx:border-neutral-200 hx:bg-neutral-50 hx:p-3 hx:text-sm hx:leading-relaxed hx:text-neutral-500 hx:dark:border-neutral-800 hx:dark:bg-neutral-950 hx:dark:text-neutral-400;
 }
 
 .hextra-blog-sponsor > p {
@@ -81,7 +81,7 @@
 }
 
 .hextra-blog-sponsor-title {
-  @apply hx:font-semibold hx:text-gray-900 hx:dark:text-gray-100;
+  @apply hx:font-semibold hx:text-neutral-900 hx:dark:text-neutral-100;
 }
 
 .hextra-blog-sponsor-link {
@@ -91,7 +91,7 @@
 /* -------------------------------------------------------- mobile banner */
 
 .hextra-blog-banner {
-  @apply hx:mb-8 hx:flex hx:flex-col hx:gap-4 hx:border-b hx:border-gray-200 hx:pb-6 hx:md:hidden hx:dark:border-neutral-800;
+  @apply hx:mb-8 hx:flex hx:flex-col hx:gap-4 hx:border-b hx:border-neutral-200 hx:pb-6 hx:md:hidden hx:dark:border-neutral-800;
 }
 
 .hextra-blog-banner .hextra-blog-profile-head {
@@ -111,7 +111,7 @@
 }
 
 .hextra-blog-chip {
-  @apply hx:inline-flex hx:items-center hx:gap-1.5 hx:whitespace-nowrap hx:rounded-full hx:border hx:border-gray-200 hx:px-3 hx:py-1 hx:text-sm hx:text-gray-600 hx:dark:border-neutral-800 hx:dark:text-gray-300 hx:hextra-focus-visible;
+  @apply hx:inline-flex hx:items-center hx:gap-1.5 hx:whitespace-nowrap hx:rounded-full hx:border hx:border-neutral-200 hx:px-3 hx:py-1 hx:text-sm hx:text-neutral-600 hx:dark:border-neutral-800 hx:dark:text-neutral-300 hx:hextra-focus-visible;
 }
 
 .hextra-blog-chip[aria-current="page"] {
@@ -131,18 +131,18 @@
 }
 
 .hextra-blog-widgets-inline {
-  @apply hx:mt-12 hx:grid hx:gap-8 hx:border-t hx:border-gray-200 hx:pt-8 hx:text-sm hx:sm:grid-cols-2 hx:xl:hidden hx:dark:border-neutral-800;
+  @apply hx:mt-12 hx:grid hx:gap-8 hx:border-t hx:border-neutral-200 hx:pt-8 hx:text-sm hx:sm:grid-cols-2 hx:xl:hidden hx:dark:border-neutral-800;
 }
 
 /* Rail only: rule between adjacent widgets (recently updated | pinned |
    trending tags). The inner flex gap provides the space above the rule and
    the matching padding the space below it. */
 .hextra-blog-widgets-inner .hextra-blog-widget + .hextra-blog-widget {
-  @apply hx:border-t hx:border-gray-200 hx:pt-3.5 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400;
+  @apply hx:border-t hx:border-neutral-200 hx:pt-3.5 hx:dark:border-neutral-800 hx:contrast-more:border-neutral-400;
 }
 
 .hextra-blog-widget-title {
-  @apply hx:mb-3 hx:flex hx:items-center hx:gap-1.5 hx:text-xs hx:font-semibold hx:tracking-wider hx:uppercase hx:text-gray-500 hx:dark:text-gray-400;
+  @apply hx:mb-3 hx:flex hx:items-center hx:gap-1.5 hx:text-xs hx:font-semibold hx:tracking-wider hx:uppercase hx:text-neutral-500 hx:dark:text-neutral-400;
 }
 
 .hextra-blog-widget-icon {
@@ -154,7 +154,7 @@
 }
 
 .hextra-blog-widget-link {
-  @apply hx:block hx:text-gray-700 hx:transition-colors hx:hover:text-hextra-accent-600 hx:dark:text-gray-300 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
+  @apply hx:block hx:text-neutral-700 hx:transition-colors hx:hover:text-hextra-accent-600 hx:dark:text-neutral-300 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
 }
 
 .hextra-blog-widget-label {
@@ -162,7 +162,7 @@
 }
 
 .hextra-blog-widget-meta {
-  @apply hx:mt-0.5 hx:block hx:text-xs hx:tabular-nums hx:text-gray-500 hx:dark:text-gray-400;
+  @apply hx:mt-0.5 hx:block hx:text-xs hx:tabular-nums hx:text-neutral-500 hx:dark:text-neutral-400;
 }
 
 /* Tag chips live in components/tags.css: the table of contents uses them too,
@@ -175,7 +175,7 @@
 }
 
 .hextra-blog-card {
-  @apply hx:relative hx:overflow-hidden hx:rounded-lg hx:border hx:border-gray-200 hx:bg-hextra-light-50 hx:transition-colors hx:hover:border-hextra-accent-400 hx:dark:border-neutral-800 hx:dark:bg-hextra-dark-500;
+  @apply hx:relative hx:overflow-hidden hx:rounded-lg hx:border hx:border-neutral-200 hx:bg-neutral-50 hx:transition-colors hx:hover:border-hextra-accent-400 hx:dark:border-neutral-800 hx:dark:bg-neutral-950;
 }
 
 /* Stretch the title link over the whole card so anywhere on it opens the post,
@@ -187,9 +187,9 @@
 
 /* The dark value matches the theme selector's panel (`theme-toggle.html`),
    so a cover and the light/dark menu read as the same surface. Light is still
-   `gray-100` and a shade off `hextra-light-100`; see the palette note. */
+   `neutral-100` and a shade off `neutral-100`; see the palette note. */
 .hextra-blog-card-cover {
-  @apply hx:block hx:overflow-hidden hx:bg-gray-100 hx:dark:bg-neutral-900;
+  @apply hx:block hx:overflow-hidden hx:bg-neutral-100 hx:dark:bg-neutral-900;
 }
 
 /* Dynamic height: the image keeps its natural aspect ratio at full card
@@ -207,7 +207,7 @@
 }
 
 .hextra-blog-card-title {
-  @apply hx:m-0 hx:text-xl hx:font-semibold hx:leading-snug hx:tracking-tight hx:text-gray-900 hx:dark:text-gray-100;
+  @apply hx:m-0 hx:text-xl hx:font-semibold hx:leading-snug hx:tracking-tight hx:text-neutral-900 hx:dark:text-neutral-100;
 }
 
 .hextra-blog-card-title a {
@@ -219,7 +219,7 @@
 }
 
 .hextra-blog-card-excerpt {
-  @apply hx:mt-3 hx:mb-0 hx:leading-7 hx:text-gray-600 hx:dark:text-gray-300;
+  @apply hx:mt-3 hx:mb-0 hx:leading-7 hx:text-neutral-600 hx:dark:text-neutral-300;
 }
 
 /* Horizontal card variant (tag pages): cover on the inline-start 40%, text
@@ -231,7 +231,7 @@
 }
 
 .hextra-blog-card-h-cover {
-  @apply hx:w-2/5 hx:shrink-0 hx:overflow-hidden hx:bg-gray-100 hx:max-sm:hidden hx:dark:bg-neutral-900;
+  @apply hx:w-2/5 hx:shrink-0 hx:overflow-hidden hx:bg-neutral-100 hx:max-sm:hidden hx:dark:bg-neutral-900;
 }
 
 /* Contained, not cropped: covers are often UI screenshots, which lose their
@@ -268,7 +268,7 @@
 }
 
 .hextra-blog-meta {
-  @apply hx:mt-2 hx:flex hx:flex-wrap hx:items-center hx:gap-x-2 hx:gap-y-1 hx:text-sm hx:tabular-nums hx:text-gray-500 hx:dark:text-gray-400;
+  @apply hx:mt-2 hx:flex hx:flex-wrap hx:items-center hx:gap-x-2 hx:gap-y-1 hx:text-sm hx:tabular-nums hx:text-neutral-500 hx:dark:text-neutral-400;
 }
 
 .hextra-blog-meta-sep {
@@ -286,7 +286,7 @@
    crop: covers are often UI screenshots, which must render whole —
    cropping clips their top and bottom edges */
 .hextra-blog-hero {
-  @apply hx:mt-4 hx:mb-4 hx:w-full hx:rounded-lg hx:border hx:border-gray-200 hx:dark:border-neutral-800;
+  @apply hx:mt-4 hx:mb-4 hx:w-full hx:rounded-lg hx:border hx:border-neutral-200 hx:dark:border-neutral-800;
   @apply hx:bg-cover hx:bg-center hx:bg-no-repeat;
   background-image: var(--hextra-lqip, none);
 }
@@ -298,7 +298,7 @@
    matching once a section is disabled. */
 .hextra-blog-share,
 .hextra-blog-related {
-  @apply hx:border-t hx:border-gray-200 hx:pt-6 hx:pb-6 hx:sm:pt-8 hx:sm:pb-8 hx:dark:border-neutral-800;
+  @apply hx:border-t hx:border-neutral-200 hx:pt-6 hx:pb-6 hx:sm:pt-8 hx:sm:pb-8 hx:dark:border-neutral-800;
 }
 
 /* mt-8 matches the last-updated line's mb-8, so the first rule keeps its
@@ -308,7 +308,7 @@
 }
 
 .hextra-blog-share-label {
-  @apply hx:text-sm hx:font-medium hx:text-gray-500 hx:dark:text-gray-400;
+  @apply hx:text-sm hx:font-medium hx:text-neutral-500 hx:dark:text-neutral-400;
 }
 
 .hextra-blog-share-links {
@@ -318,7 +318,7 @@
 /* Shared by the share anchors and the copy-link button; the transparent
    background and pointer cursor are what a <button> needs to match an <a>. */
 .hextra-blog-share-link {
-  @apply hx:flex hx:h-9 hx:w-9 hx:cursor-pointer hx:items-center hx:justify-center hx:rounded-md hx:border hx:border-gray-200 hx:bg-transparent hx:text-gray-500 hx:transition-colors hx:hover:border-hextra-accent-400 hx:hover:text-hextra-accent-600 hx:dark:border-neutral-800 hx:dark:text-gray-400 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
+  @apply hx:flex hx:h-9 hx:w-9 hx:cursor-pointer hx:items-center hx:justify-center hx:rounded-md hx:border hx:border-neutral-200 hx:bg-transparent hx:text-neutral-500 hx:transition-colors hx:hover:border-hextra-accent-400 hx:hover:text-hextra-accent-600 hx:dark:border-neutral-800 hx:dark:text-neutral-400 hx:dark:hover:text-hextra-accent-400 hx:hextra-focus-visible;
 }
 
 .hextra-blog-share-copy.copied {
@@ -326,7 +326,7 @@
 }
 
 .hextra-blog-related-title {
-  @apply hx:mb-4 hx:text-xs hx:font-semibold hx:tracking-wider hx:uppercase hx:text-gray-500 hx:dark:text-gray-400;
+  @apply hx:mb-4 hx:text-xs hx:font-semibold hx:tracking-wider hx:uppercase hx:text-neutral-500 hx:dark:text-neutral-400;
 }
 
 .hextra-blog-related-list {
@@ -334,13 +334,13 @@
 }
 
 .hextra-blog-related-link {
-  @apply hx:block hx:rounded-lg hx:border hx:border-gray-200 hx:p-3 hx:transition-colors hx:hover:border-hextra-accent-400 hx:dark:border-neutral-800 hx:hextra-focus-visible;
+  @apply hx:block hx:rounded-lg hx:border hx:border-neutral-200 hx:p-3 hx:transition-colors hx:hover:border-hextra-accent-400 hx:dark:border-neutral-800 hx:hextra-focus-visible;
 }
 
 .hextra-blog-related-label {
-  @apply hx:block hx:font-medium hx:leading-snug hx:text-gray-800 hx:dark:text-gray-200;
+  @apply hx:block hx:font-medium hx:leading-snug hx:text-neutral-800 hx:dark:text-neutral-200;
 }
 
 .hextra-blog-related-meta {
-  @apply hx:mt-1 hx:block hx:text-xs hx:tabular-nums hx:text-gray-500 hx:dark:text-gray-400;
+  @apply hx:mt-1 hx:block hx:text-xs hx:tabular-nums hx:text-neutral-500 hx:dark:text-neutral-400;
 }

@@ -37,8 +37,13 @@
 
 /* ----------------------------------------------------------------- inline */
 
+/* Identical to a cover apart from the height, which follows the lines rather
+   than a fixed ratio - same frame, same padding, same container-query scaling,
+   so `{{< command >}}` mid-page and a `coverText` cover are one component. */
 .hextra-command--inline {
-  @apply hx:my-6 hx:overflow-x-auto hx:text-lg;
+  @apply hx:flex hx:flex-col hx:gap-[0.3em];
+  @apply hx:px-[5cqi] hx:py-[4cqi];
+  font-size: clamp(0.9rem, calc(var(--hextra-command-fs, 6) * 1cqi), 2.5rem);
 }
 
 /* ------------------------------------------------------------------ cover */
@@ -57,8 +62,20 @@
    Declaring a ratio at all is also why a text cover cannot shift the layout:
    there is nothing to measure and nothing to wait for. */
 .hextra-command__frame {
-  @apply hx:w-full hx:overflow-hidden hx:rounded-lg;
+  @apply hx:w-full hx:overflow-hidden hx:rounded-lg hx:border;
+  /* The same surface and edge as the collapsibles - `series.css` and the
+     accordion - so a text cover reads as one object wherever it lands. Without
+     it the frame is transparent and takes the colour of whatever is behind it:
+     the page as an article hero, `.hextra-blog-card-cover` in a card. */
+  @apply hx:border-neutral-400 hx:bg-neutral-50;
+  @apply hx:dark:border-neutral-800 hx:dark:bg-neutral-900;
+  @apply hx:my-6;
   container-type: inline-size;
+}
+
+/* Only a cover has a box to fill. Inline, the height follows the content. */
+.hextra-command__frame--fixed {
+  @apply hx:my-0;
   aspect-ratio: var(--hextra-command-ratio, 7.2);
 }
 
@@ -71,8 +88,9 @@
   font-size: clamp(0.7rem, calc(var(--hextra-command-fs, 6) * 1cqi), 4rem);
 }
 
-/* Hero covers sit between the breadcrumb and the title, where the image
-   variant carries the same spacing and border - see `.hextra-blog-hero`. */
+/* Hero covers sit between the breadcrumb and the title, where the image variant
+   carries the same spacing - see `.hextra-blog-hero`. The border comes from the
+   frame itself, so only the margins are left here. */
 .hextra-command__frame.hextra-command--hero {
-  @apply hx:mt-4 hx:mb-4 hx:border hx:border-gray-200 hx:dark:border-neutral-800;
+  @apply hx:mt-4 hx:mb-4;
 }
