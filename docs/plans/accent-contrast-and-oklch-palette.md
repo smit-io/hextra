@@ -125,9 +125,9 @@ for 1.4.3 Contrast.
 
 ### Failing — dark mode, `accent-600` at 4.09:1 against the same 4.5:1 floor
 
-| file:line                | selector                                                     | note                             |
-| ------------------------ | ------------------------------------------------------------ | -------------------------------- |
-| `nav-active.css:7` dark  | `accent-600` on `accent-400`@10% over `#111111` = 4.09:1      | `text-sm` semibold, so 14px      |
+| file:line               | selector                                                 | note                        |
+| ----------------------- | -------------------------------------------------------- | --------------------------- |
+| `nav-active.css:7` dark | `accent-600` on `accent-400`@10% over `#111111` = 4.09:1 | `text-sm` semibold, so 14px |
 
 This one was filed under **Passing** in the first two passes, on the unstated
 assumption that `font-semibold` buys the 3:1 large-text floor. It does not: WCAG
