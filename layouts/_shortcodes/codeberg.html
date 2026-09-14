@@ -11,8 +11,7 @@
   @param {bool} showThumbnail Show the owner's avatar. Default false.
   @param {string} icon Icon shown before the title. Default "codeberg".
 
-  @example {{< codeberg repo="forgejo/forgejo"
->}}
+  @example {{< codeberg repo="forgejo/forgejo" >}}
 */}}
 {{- partial "shortcodes/gitea-card.html" (dict
   "repo" (.Get "repo" | default (.Get 0))

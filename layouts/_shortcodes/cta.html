@@ -10,8 +10,7 @@
   @param {string} rel The anchor rel attribute.
   @param {string} icon Optional icon name shown before the label.
 
-  @example {{< cta url="/docs/guide/configuration" label="Start building"
->}}
+  @example {{< cta url="/docs/guide/configuration" label="Start building" >}}
 */}}
 {{- $url := .Get "url" | default "#" -}}
 {{- $url = cond (hasPrefix $url "/") ($url | relURL) $url -}}

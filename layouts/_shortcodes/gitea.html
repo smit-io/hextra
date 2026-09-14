@@ -10,8 +10,7 @@
   @param {bool} showThumbnail Show the owner's avatar. Default false.
   @param {string} icon Icon shown before the title. Default "gitea".
 
-  @example {{< gitea server="https://git.fsfe.org" repo="FSFE/fsfe-website"
->}}
+  @example {{< gitea server="https://git.fsfe.org" repo="FSFE/fsfe-website" >}}
 */}}
 {{- partial "shortcodes/gitea-card.html" (dict
   "repo" (.Get "repo")

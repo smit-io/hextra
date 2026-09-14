@@ -13,8 +13,7 @@
 
   @param {string} mode "multiple" (default) or "collapse" for one section at a time.
 
-  @example {{< accordion mode="collapse"
->}}{{< /accordion >}}
+  @example {{< accordion mode="collapse" >}}{{< /accordion >}}
 */}}
 {{- $mode := .Get "mode" | default "multiple" -}}
 {{- if not (in (slice "multiple" "collapse" "open") $mode) -}}
