@@ -8,8 +8,8 @@
   @apply hx:text-[.9em] hx:leading-5;
 
   pre {
-    /* @apply hx:text-[.9em] hx:bg-hextra-light-50 hx:overflow-x-auto hx:font-medium hx:subpixel-antialiased hx:dark:bg-hextra-dark-50 hx:contrast-more:border hx:contrast-more:border-primary-900/20 hx:contrast-more:contrast-150 hx:contrast-more:dark:border-primary-100/40; */
-    @apply hx:text-[.9em] hx:bg-hextra-light-50 hx:border hx:border-hextra-light-900 hx:overflow-x-auto hx:font-medium hx:subpixel-antialiased hx:dark:border hx:dark:border-neutral-700 hx:dark:bg-hextra-dark-50 hx:contrast-more:border hx:contrast-more:border-primary-900/20 hx:contrast-more:contrast-150 hx:contrast-more:dark:border-primary-100/40;
+    /* @apply hx:text-[.9em] hx:bg-hextra-light-50 hx:overflow-x-auto hx:font-medium hx:subpixel-antialiased hx:dark:bg-hextra-dark-50 hx:contrast-more:border hx:contrast-more:border-hextra-accent-900/20 hx:contrast-more:contrast-150 hx:contrast-more:dark:border-hextra-accent-100/40; */
+    @apply hx:text-[.9em] hx:bg-hextra-light-50 hx:border hx:border-hextra-light-900 hx:overflow-x-auto hx:font-medium hx:subpixel-antialiased hx:dark:border hx:dark:border-neutral-700 hx:dark:bg-hextra-dark-50 hx:contrast-more:border hx:contrast-more:border-hextra-accent-900/20 hx:contrast-more:contrast-150 hx:contrast-more:dark:border-hextra-accent-100/40;
   }
 
   /* .code-border {
@@ -121,7 +121,7 @@
   }
   /* LineHighlight */
   .hl {
-    /* @apply hx:block hx:w-full hx:bg-primary-800/10; */
+    /* @apply hx:block hx:w-full hx:bg-hextra-accent-800/10; */
     @apply hx:block hx:w-full hx:dark:bg-hextra-accent-950/60 hx:dark:border-l-2 hx:dark:border-hextra-accent-500 hx:bg-hextra-accent-200/60 hx:border-l-2 hx:border-hextra-accent-500;
   }
   /* In inline (non-table) blocks the pre has px-4, so bleed the highlight

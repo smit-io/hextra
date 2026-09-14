@@ -60,7 +60,7 @@ next: /docs/guide/deploy-site
 
 ```
 {{</* hextra/hero-badge */>}}
-  <div class="hx:w-2 hx:h-2 hx:rounded-full hx:bg-primary-400"></div>
+  <div class="hx:w-2 hx:h-2 hx:rounded-full hx:bg-hextra-accent-400"></div>
   <span>Free, open source</span>
   {{</* icon name="arrow-circle-right" attributes="height=14" */>}}
 {{</* /hextra/hero-badge */>}}

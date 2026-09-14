@@ -1021,7 +1021,7 @@ A shortcode for rendering a badge with a link.
 
 ```markdown
 {{< hextra/hero-badge link="https://github.com/imfing/hextra/releases" >}}
-  <div class="hx:w-2 hx:h-2 hx:rounded-full hx:bg-primary-400"></div>
+  <div class="hx:w-2 hx:h-2 hx:rounded-full hx:bg-hextra-accent-400"></div>
   <span>New release</span>
 {{< /hextra/hero-badge >}}
 

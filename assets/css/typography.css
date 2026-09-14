@@ -37,7 +37,7 @@
   }
   /* ! Change the accent-* colors if they are not going with the theme*/
   :where(pre):not(:where(.hextra-code-block pre, [class~="not-prose"], [class~="not-prose"] *)) {
-    @apply hx:bg-hextra-accent-700 hx:mb-4 hx:overflow-x-auto hx:rounded-xl hx:font-medium hx:subpixel-antialiased hx:dark:bg-hextra-accent-300 hx:text-[.9em] hx:contrast-more:border hx:contrast-more:border-primary-900/20 hx:contrast-more:contrast-150 hx:contrast-more:dark:border-primary-100/40 hx:py-4;
+    @apply hx:bg-hextra-accent-700 hx:mb-4 hx:overflow-x-auto hx:rounded-xl hx:font-medium hx:subpixel-antialiased hx:dark:bg-hextra-accent-300 hx:text-[.9em] hx:contrast-more:border hx:contrast-more:border-hextra-accent-900/20 hx:contrast-more:contrast-150 hx:contrast-more:dark:border-hextra-accent-100/40 hx:py-4;
     font-family: var(--font-code);
   }
   :where(code):not(:where(.hextra-code-block code, [class~="not-prose"], [class~="not-prose"] *)) {

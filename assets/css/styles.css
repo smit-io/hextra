@@ -3,16 +3,6 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-primary-50: hsl(var(--primary-hue) var(--primary-saturation) calc(var(--primary-lightness) + calc(calc(100% - var(--primary-lightness)) / 50) * 47));
-  --color-primary-100: hsl(var(--primary-hue) var(--primary-saturation) calc(var(--primary-lightness) + calc(calc(100% - var(--primary-lightness)) / 50) * 44));
-  --color-primary-200: hsl(var(--primary-hue) var(--primary-saturation) calc(var(--primary-lightness) + calc(calc(100% - var(--primary-lightness)) / 50) * 36));
-  --color-primary-300: hsl(var(--primary-hue) var(--primary-saturation) calc(var(--primary-lightness) + calc(calc(100% - var(--primary-lightness)) / 50) * 27));
-  --color-primary-400: hsl(var(--primary-hue) var(--primary-saturation) calc(var(--primary-lightness) + calc(calc(100% - var(--primary-lightness)) / 50) * 16));
-  --color-primary-500: hsl(var(--primary-hue) var(--primary-saturation) var(--primary-lightness));
-  --color-primary-600: hsl(var(--primary-hue) var(--primary-saturation) calc(calc(var(--primary-lightness) / 50) * 45));
-  --color-primary-700: hsl(var(--primary-hue) var(--primary-saturation) calc(calc(var(--primary-lightness) / 50) * 39));
-  --color-primary-800: hsl(var(--primary-hue) var(--primary-saturation) calc(calc(var(--primary-lightness) / 50) * 32));
-  --color-primary-900: hsl(var(--primary-hue) var(--primary-saturation) calc(calc(var(--primary-lightness) / 50) * 24));
   --color-dark: #111;
 
   /* Rather than having a hue, saturation and lightness, it is better to generate a custom palette for hextra-light and dark modes and have an accent color */
@@ -90,8 +80,8 @@
     file compiles into main.css, which head.html concatenates *after*
     variables.css. Pointing it at our own variable sidesteps that — custom
     properties resolve at use time, so the declaration order stops mattering.
-    The indirection is the same trick `--color-primary-*` already uses for
-    `--primary-hue` above.
+    The indirection is the same trick `--color-hextra-accent-*` already uses
+    for `--color-accent-color-*` above.
 
     The effect is that `hx:font-mono` follows params.fonts.mono everywhere,
     including the four places that already used it before the param existed.
@@ -114,9 +104,6 @@ body {
 }
 
 :root {
-  --primary-hue: 212deg;
-  --primary-saturation: 100%;
-  --primary-lightness: 50%;
   --hextra-navbar-height: 3.5rem;
   --hextra-banner-height: 2rem;
   --menu-height: 3.75rem; /* 60px */
@@ -161,22 +148,16 @@ body {
   --color-hextra-black-950: #000000;
 }
 
-.dark {
-  --primary-hue: 204deg;
-  --primary-saturation: 100%;
-  --primary-lightness: 50%;
-}
-
 @utility hextra-focus {
-  @apply hx:outline-none hx:ring-2 hx:ring-primary-200 hx:ring-offset-1 hx:ring-offset-primary-300 hx:dark:ring-primary-800 hx:dark:ring-offset-primary-700;
+  @apply hx:outline-none hx:ring-2 hx:ring-hextra-accent-200 hx:ring-offset-1 hx:ring-offset-hextra-accent-300 hx:dark:ring-hextra-accent-800 hx:dark:ring-offset-hextra-accent-700;
 }
 
 @utility hextra-focus-visible {
-  @apply hx:focus-visible:outline-none hx:focus-visible:ring-2 hx:focus-visible:ring-primary-200 hx:focus-visible:ring-offset-1 hx:focus-visible:ring-offset-primary-300 hx:dark:focus-visible:ring-primary-800 hx:dark:focus-visible:ring-offset-primary-700;
+  @apply hx:focus-visible:outline-none hx:focus-visible:ring-2 hx:focus-visible:ring-hextra-accent-200 hx:focus-visible:ring-offset-1 hx:focus-visible:ring-offset-hextra-accent-300 hx:dark:focus-visible:ring-hextra-accent-800 hx:dark:focus-visible:ring-offset-hextra-accent-700;
 }
 
 @utility hextra-focus-visible-inset {
-  @apply hx:focus-visible:outline-none hx:focus-visible:ring-inset hx:focus-visible:ring-2 hx:focus-visible:ring-primary-200 hx:dark:focus-visible:ring-primary-800 hx:focus-visible:ring-offset-0;
+  @apply hx:focus-visible:outline-none hx:focus-visible:ring-inset hx:focus-visible:ring-2 hx:focus-visible:ring-hextra-accent-200 hx:dark:focus-visible:ring-hextra-accent-800 hx:focus-visible:ring-offset-0;
 }
 
 @layer base {

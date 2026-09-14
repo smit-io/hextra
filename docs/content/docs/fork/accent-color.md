@@ -11,6 +11,11 @@ Upstream Hextra themes its primary color from three HSL variables (`--primary-hu
 
 Deriving 10 shades from a single hue/saturation pair produces muddy mid-tones and poor contrast at the extremes. A hand-picked (or generator-picked) palette lets each shade be tuned independently — and `oklch` keeps perceived lightness consistent across hues, so an orange accent and a blue accent at shade `500` _look_ equally bright.
 
+The replacement is now complete. Upstream's `--color-primary-*` ramp and the
+three HSL variables behind it are gone, and the last things still using them —
+every focus ring on the site, plus two `contrast-more` borders — use the accent
+palette directly. There is no `primary` colour left to set.
+
 ## Overriding the accent color
 
 Add the eleven variables to your site's `assets/css/custom.css` (Hextra loads this file automatically):
@@ -111,6 +116,7 @@ The fork migrated every component that previously used the HSL primary color:
 | Theme toggle & language switch | Hover/active states                                             |
 | Code blocks                    | Copy button, [line highlighting](code-blocks#line-highlighting) |
 | Links & homepage               | Accent text and decorations                                     |
+| Focus rings                    | Every focus and focus-visible indicator, site-wide              |
 
 ## Shade usage conventions
 

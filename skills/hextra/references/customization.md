@@ -49,7 +49,7 @@ These are runtime CSS variables, so no theme rebuild is needed — every accent-
 
 [uicolors.app](https://uicolors.app/create) generates a full `50`–`950` ramp from one brand color and exports it in Tailwind OKLCH format, which maps one-to-one onto these variable names.
 
-Do not set `--primary-hue` / `--primary-saturation` / `--primary-lightness`; that is the upstream mechanism this replaces.
+`--primary-hue` / `--primary-saturation` / `--primary-lightness` and the `primary-*` colour utilities they fed no longer exist; the accent palette replaced them outright.
 
 ## Neutral palettes
 
