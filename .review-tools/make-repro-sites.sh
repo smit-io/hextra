@@ -3,7 +3,7 @@
 # Usage: .review-tools/make-repro-sites.sh [outdir]   (default: /tmp/hextra-repro)
 #
 # The theme is consumed from the PARENT of this repo, so the repo directory name
-# must match the `theme:` key in the two configs (currently `hextra2`).
+# must match the `theme:` key in the two configs (currently `hextra`).
 set -euo pipefail
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo="$(dirname "$here")"

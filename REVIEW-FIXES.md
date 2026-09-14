@@ -9,24 +9,14 @@ This file exists so the work can be picked up cold. Delete it — and
 
 ## What this repo is
 
-`/Users/smit/Code/hextra2` had **no `.git`** and none of the dotfiles. It is a
-dotfile-stripped, otherwise byte-identical copy of `/Users/smit/Code/hextra`,
-which is a clean checkout at `origin/main` (`3335046`, the merge of PR #13
-`feat/context-menu-descriptions`).
+`/Users/smit/Code/hextra`, the real checkout, with full history against
+`imfing/hextra`. The fixes below were written in a throwaway copy with no `.git`
+and replayed here, so every path and `theme:` key in this file and in
+`.review-tools/` refers to `hextra` — the directory name matters, see
+`make-repro-sites.sh` below.
 
-Baseline commit `4467f01` did two things:
-
-- `git init` here, with `main` as the initial branch.
-- Restored the dotfiles the repo needs to build and lint, copied from
-  `/Users/smit/Code/hextra`: `.gitignore`, `.gitattributes`, `.prettierrc`,
-  `.prettierignore`, `.github`, `.claude-plugin`, `.vscode`, `.devcontainer`.
-  Without `.gitignore` the first commit would have swallowed `node_modules`;
-  without the others there is nothing to lint against.
-
-There is **no shared history with `imfing/hextra` or with `~/Code/hextra`**, so
-this branch cannot be pushed as a PR against either. To land it, the commits
-have to be replayed onto a real checkout (`git format-patch` / `git am`, or
-cherry-pick with `--no-commit` from a remote added by path).
+They branch from `origin/main` at `3335046`, the merge of PR #13
+`feat/context-menu-descriptions`.
 
 ## Where the findings came from
 
@@ -155,10 +145,10 @@ npx prettier --check <file>
 
 ### Gotchas that cost time
 
-- **`npm run build:css` rewrites `package-lock.json`**, changing `"name"` from
-  `hextra` to `hextra2`, because `package.json` has no `name` field and npm
-  infers it from the directory. It is pure noise. `git checkout
-package-lock.json` before every commit.
+- **`npm run build:css` rewrites `package-lock.json`** when the checkout
+  directory is not named `hextra`: `package.json` has no `name` field, so npm
+  infers one from the directory and writes it into the lockfile. It is pure
+  noise. `git checkout package-lock.json` before every commit.
 - **Tailwind tree-shakes from `docs/hugo_stats.json`.** A new utility class is
   dropped from the build if the stats are stale, so it is always `make css`
   (which regenerates stats first), never `npm run build:css` alone. Commit the
@@ -201,7 +191,7 @@ node .review-tools/btnname.mjs docs/public               # split button name vs 
 
 `make-repro-sites.sh` consumes the theme from this repo's **parent** directory,
 so the repo folder name must match the `theme:` key in the two configs
-(currently `hextra2`). The `ru` site covers reflow, a long custom description,
+(currently `hextra`). The `ru` site covers reflow, a long custom description,
 an internal link and an icon-less link; the `tr` site is the untranslated-locale
 case (there is no `i18n/tr.yaml`).
 

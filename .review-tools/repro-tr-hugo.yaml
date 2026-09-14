@@ -1,5 +1,5 @@
 baseURL: http://localhost/
-theme: hextra2
+theme: hextra
 defaultContentLanguage: tr
 languages:
   tr:
