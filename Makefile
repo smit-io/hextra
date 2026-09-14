@@ -256,8 +256,16 @@ skill-check: deps ## Verify the generated skill files are current (for CI)
 # now nothing local caught a stale skill reference. That gate lives only in
 # test-build.yml, which triggers on pull_request, so a push straight to main ran
 # no check at all and a generated file once rode along stale for four pushes.
+#
+# Sub-makes rather than prerequisites, for the reason spelled out on `verify`
+# below: prerequisites may run in any order, or concurrently under -j, and the
+# ordering above is the whole point of listing them. As a prerequisite list this
+# comment described an ordering that `make test -j2` did not provide.
 .PHONY: test
-test: fmt-check skill-check build ## Check formatting and the skill, build, then run the full Playwright suite
+test: ## Check formatting and the skill, build, then run the full Playwright suite
+	@$(MAKE) fmt-check
+	@$(MAKE) skill-check
+	@$(MAKE) build
 	@npm test
 
 # Runs against the always-on preview container instead of Playwright's own
