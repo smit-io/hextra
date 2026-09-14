@@ -123,6 +123,24 @@ so it is the single rule governing link colour in both modes across every docs
 page and blog post. The underline satisfies 1.4.1 Use of Color; it does nothing
 for 1.4.3 Contrast.
 
+### Failing — dark mode, `accent-600` at 4.09:1 against the same 4.5:1 floor
+
+| file:line                | selector                                                     | note                             |
+| ------------------------ | ------------------------------------------------------------ | -------------------------------- |
+| `nav-active.css:7` dark  | `accent-600` on `accent-400`@10% over `#111111` = 4.09:1      | `text-sm` semibold, so 14px      |
+
+This one was filed under **Passing** in the first two passes, on the unstated
+assumption that `font-semibold` buys the 3:1 large-text floor. It does not: WCAG
+large text is 18pt (24px), or 14pt (18.66px) when bold. Both elements the rule
+styles are 14px — `layouts/_partials/sidebar.html:291` and `blog.css:58` are
+`hx:text-sm`, and `nav-active.css:7` adds `hx:font-semibold` — so the 4.5:1
+floor applies exactly as it does to the 3.71:1 and 3.88:1 entries above, and
+4.09:1 is under it.
+
+It is the current-page indicator for the docs sidebar and the blog rail: always
+on screen, on every docs page and every blog page, in dark mode. Treat it as
+part of the same sweep, not as a margin to watch.
+
 ### Passing, and why
 
 | file:line                     | reason                                                       |
@@ -130,7 +148,6 @@ for 1.4.3 Contrast.
 | `stats.css:22`                | `.hextra-stat__value` is `text-3xl` (30px) → large text, 3:1 |
 | `blog.css:72`, `:318`, `:322` | icon-only `h-9 w-9` buttons → SC 1.4.11 non-text, 3:1        |
 | `nav-active.css:7` light      | `accent-800` on `accent-200` = 5.66:1                        |
-| `nav-active.css:7` dark       | `accent-600` on `accent-400`@10% over `#111111` = 4.09:1     |
 | every `dark:text-accent-400`  | 8.67:1 on `#111111`                                          |
 
 ### Corrections to the first pass
@@ -139,8 +156,9 @@ Recorded because the reasoning, not just the numbers, was wrong:
 
 - `typography.css:31` was reported as failing in **both** modes at 3.36:1 dark.
   Dark passes at 4.71:1. Only light fails.
-- `nav-active.css:7` dark was reported as the worst failure at 2.82:1. It passes
-  at 4.09:1.
+- `nav-active.css:7` dark was reported as the worst failure at 2.82:1. The real
+  figure is 4.09:1 — still a failure, just not that one. The second pass then
+  over-corrected and filed it as passing; see the dark-mode table above.
 - Both errors came from reading hex out of the `/* */` comments beside the
   `oklch()` declarations instead of converting the declarations.
 
@@ -152,9 +170,8 @@ which is 5.41:1 on the page and 5.66:1 on a card. Two need more than that:
 - `typography.css:31` has no dark variant. Adding `dark:text-hextra-accent-400`
   makes it 8.67:1 and survives a palette correction, where bare `accent-600`
   would not.
-- `nav-active.css:7` passes today but only by 4.09:1 against a 4.5:1 floor, on a
-  translucent background. Moving its dark half to `accent-400` gives 7.52:1 and
-  takes it out of the margin.
+- `nav-active.css:7` fails in dark mode at 4.09:1 against the 4.5:1 floor, on a
+  translucent background. Moving its dark half to `accent-400` gives 7.52:1.
 
 ## Do this first
 
