@@ -332,7 +332,7 @@ test-mobile: ## Build, then run mobile menu tests
 	@npm run test:mobile-menu
 
 .PHONY: test-build
-test-build: ## Build, then run build-output tests (asciidoc, render-link, search data)
+test-build: ## Build, then run build-output tests (asciidoc, command, render-link, search)
 	@$(MAKE) skill-check
 	@$(MAKE) build
 	@npm run test:build

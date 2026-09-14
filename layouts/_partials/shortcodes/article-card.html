@@ -68,7 +68,11 @@
     {{- end -}}
 
     <a class="hextra-article-card not-prose" href="{{ .RelPermalink }}">
-      {{- with $cover.url -}}
+      {{- if and $showCover .Params.coverText -}}
+        <span class="hextra-article-card__cover">
+          {{- partial "components/command-block.html" (dict "lines" .Params.coverText "mode" "cover") -}}
+        </span>
+      {{- else -}}{{- with $cover.url -}}
         <span class="hextra-article-card__cover">
           <img
             src="{{ . }}"
@@ -80,7 +84,7 @@
             {{ with $cover.height }}height="{{ . }}"{{ end }}
           />
         </span>
-      {{- end -}}
+      {{- end -}}{{- end -}}
       <span class="hextra-article-card__body">
         <span class="hextra-article-card__title">{{ .Title }}</span>
         {{- if or $date $readingTime -}}

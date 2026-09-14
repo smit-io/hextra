@@ -424,6 +424,13 @@ params:
     lineNumberDivider:
       enable: false
 
+  command:
+    # Prompt glyph for the `command` shortcode and for a post's `coverText`.
+    prompt: "$"
+    # Width over height of a text cover. Larger is shorter; the renderer
+    # divides it by the number of lines.
+    coverRatio: 7.2
+
   page:
     # full (100%), wide (90rem), normal (80rem)
     width: wide

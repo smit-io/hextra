@@ -1,0 +1,23 @@
+{{/* The lines of a command block. Split out of `command-block.html` only so
+  that each branch there wraps balanced markup: an element opened inside one
+  template action and closed inside another parses fine in Hugo, but Prettier's
+  Go-template plugin cannot print it.
+
+  @param {slice} lines The command lines.
+  @param {string} prompt Prompt glyph, already resolved.
+
+  @example {{ partial "components/command-lines.html" (dict "lines" (slice "npm install") "prompt" "$")
+}}
+*/}}
+{{- $prompt := .prompt -}}
+{{- range .lines -}}
+  <span class="hextra-command__line">
+    <span class="hextra-command__prompt" aria-hidden="true">{{ $prompt }}</span>
+    {{/* `highlight` emits `<pre tabindex="0">` so that a wide block can be
+      scrolled by keyboard. This one is not a scroll container - it is sized to
+      fit, and in a card it sits inside the post's own link - so the stop would
+      focus nothing and lead nowhere.
+    */}}
+    {{- highlight . "shell" "" | replaceRE ` tabindex="0"` "" | safeHTML -}}
+  </span>
+{{- end -}}

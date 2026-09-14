@@ -22,7 +22,7 @@ Docs pages and blog posts read overlapping but different sets. A key from the wr
 | `linkTitle`                                   | yes                    | no effect                                 |
 | `sidebar.*`                                   | yes                    | **inert**                                 |
 | `date`                                        | stored, not shown      | **orders and dates the post**             |
-| `authors`, `cover`, `pinned`                  | no effect              | yes                                       |
+| `authors`, `cover`, `coverText`, `pinned`     | no effect              | yes                                       |
 | `series`, `seriesOrder`, `seriesOpened`       | no effect              | yes                                       |
 
 Two of those deserve emphasis, because both look like they should work:
@@ -149,12 +149,14 @@ series:
   - Fork Guides
 seriesOrder: 5
 seriesOpened: true
+coverText: claude add skill hextra
 ```
 
 | Key            | Notes                                                                                                  |
 | -------------- | ------------------------------------------------------------------------------------------------------ |
 | `authors`      | List of objects with `name`, and optional `link` and `image`. A bare list of strings also works.       |
 | `cover`        | Page resource, asset path, or absolute URL. Used on the post card, the article header, and Open Graph. |
+| `coverText`    | A shell command, or a list of them, rendered as the cover instead of an image. Overrides `cover`.      |
 | `pinned`       | Surfaces the post in the pinned widget.                                                                |
 | `series`       | List of series names. Adds the "part of a series" module.                                              |
 | `seriesOrder`  | Position within the series. Without it, posts fall back to date order.                                 |

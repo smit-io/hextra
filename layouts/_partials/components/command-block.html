@@ -1,0 +1,103 @@
+{{/* A shell command rendered as text rather than as a picture of one.
+
+  Two callers. The `command` shortcode puts one in the page flow. A blog post's
+  `coverText` front matter puts one where the cover image would go, which is
+  why "cover" mode exists at all: covers render at wildly different sizes, from
+  400px inside an article card to the full content width as a hero.
+
+  Sizing in cover mode is the only interesting part. The outer frame declares
+  `container-type: inline-size`, so `1cqi` inside it is one percent of the
+  frame's own width rather than the viewport's - an element cannot query
+  itself, hence the separate wrapper. This partial supplies the multiplier,
+  derived from the longest line so that a long command shrinks to fit instead
+  of overflowing; the stylesheet clamps it at both ends.
+
+  The command itself goes through Hugo's `highlight` with the shell lexer, so
+  it arrives already wrapped in `.highlight > .chroma` and already coloured by
+  `assets/css/chroma/` in both modes. Nothing here picks a syntax colour.
+
+  The prompt glyph is punctuation, not content - a screen reader announcing
+  "dollar" before every line is noise - so it is hidden from assistive
+  technology.
+
+  @param {string|slice} lines One command line, or several.
+  @param {string} [prompt] Prompt glyph. Defaults to `params.command.prompt`, then `$`.
+  @param {string} [mode] "inline" (default) or "cover".
+  @param {string} [class] Extra class for the cover frame.
+  @param {float} [ratio] Cover width over height. Defaults to `params.command.coverRatio`, then 7.2.
+
+  @example {{ partial "components/command-block.html" (dict "lines" (slice "npm install") "mode" "cover")
+}}
+*/}}
+{{- $lines := .lines -}}
+{{- if not (reflect.IsSlice $lines) -}}
+  {{- $lines = slice $lines -}}
+{{- end -}}
+
+{{/* Read through nested `with` rather than chaining: `site.Params.command.prompt`
+  errors outright when a site has no `command` key at all, which is every site
+  that never customised it.
+*/}}
+{{- $prompt := "$" -}}
+{{- with site.Params.command -}}
+  {{- with .prompt -}}
+    {{- $prompt = . -}}
+  {{- end -}}
+{{- end -}}
+{{- with .prompt -}}
+  {{- $prompt = . -}}
+{{- end -}}
+
+{{- $cover := eq (.mode | default "inline") "cover" -}}
+
+{{/* 0.62 is the advance width of a monospace glyph as a fraction of the font
+  size, so a line of N characters occupies 0.62 * N ems. Solving for the font
+  size that makes the longest line span 88% of the frame gives 88 / (0.62 * N),
+  expressed in cqi. The stylesheet's clamp handles both ends of the range, so
+  no bounds are applied here.
+*/}}
+{{- $fontSize := 0.0 -}}
+{{- $ratio := 0.0 -}}
+{{- if $cover -}}
+  {{- $longest := 1 -}}
+  {{- range $lines -}}
+    {{- $longest = math.Max $longest (strings.RuneCount (printf "%s %s" $prompt .)) -}}
+  {{- end -}}
+  {{- $fontSize = div 141.9 $longest -}}
+
+  {{/* How much empty band sits above and below the command. Divided by the
+    line count so that each extra line buys its own height instead of
+    squeezing the ones already there.
+  */}}
+  {{- $coverRatio := 7.2 -}}
+  {{- with site.Params.command -}}
+    {{- with .coverRatio -}}
+      {{- $coverRatio = . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with .ratio -}}
+    {{- $coverRatio = . -}}
+  {{- end -}}
+  {{- $ratio = div $coverRatio (len $lines) -}}
+{{- end -}}
+
+{{/* Joined here rather than in the attribute itself: separating the two class
+  names there needs a literal space next to a template action, and Prettier
+  deletes exactly that space, fusing them into one unmatched class.
+*/}}
+{{- $frameClass := "hextra-command__frame" -}}
+{{- with .class -}}
+  {{- $frameClass = printf "%s %s" $frameClass . -}}
+{{- end -}}
+
+{{- if $cover -}}
+  <div class="{{ $frameClass }}" style="{{ printf "--hextra-command-ratio:%.2f" $ratio | safeCSS }}">
+    <div class="hextra-command hextra-command--cover" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
+      {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt) -}}
+    </div>
+  </div>
+{{- else -}}
+  <div class="hextra-command hextra-command--inline">
+    {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt) -}}
+  </div>
+{{- end -}}

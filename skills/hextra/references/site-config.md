@@ -181,7 +181,18 @@ params:
       enable: true
     lineNumberDivider:
       enable: false
+  command:
+    prompt: "$" # glyph before each line of a `command` block
+    coverRatio: 7.2 # width over height of a text cover
 ```
+
+`params.command.prompt` sets the glyph for the `command` shortcode and for a
+post's `coverText`. It renders in the accent colour and is hidden from screen
+readers; a shortcode call can override it per block with `prompt=`.
+
+`coverRatio` controls how much empty band sits above and below a text cover:
+larger is shorter. It is divided by the number of lines, so each extra line
+adds height rather than squeezing what is already there.
 
 ## Network fetching
 

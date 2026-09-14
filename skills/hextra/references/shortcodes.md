@@ -3,7 +3,7 @@
 
 # Shortcode reference
 
-Every shortcode the theme ships: 59 of them, with parameters taken from the templates in `layouts/_shortcodes/` and examples from the theme's editor snippets.
+Every shortcode the theme ships: 60 of them, with parameters taken from the templates in `layouts/_shortcodes/` and examples from the theme's editor snippets.
 
 ## Rules that apply throughout
 
@@ -784,6 +784,27 @@ Site config: `params.highlight.copy.enable`.
 ## Code and content import
 
 Pull code or Markdown in from elsewhere.
+
+### command
+
+{{< >}} · paired
+
+Render a shell command as text: the prompt glyph in the accent colour, the command itself coloured by Chroma's shell lexer.
+
+| Parameter | Type | Notes |
+| --- | --- | --- |
+| `prompt` | string | Prompt glyph. command.prompt`, then `$`. Default ``params`. |
+
+```markdown
+{{< command >}}
+claude add skill hextra
+{{< /command >}}
+
+{{< command prompt=">" >}}
+npm install
+npm run dev
+{{< /command >}}
+```
 
 ### gist
 

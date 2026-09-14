@@ -1,0 +1,78 @@
+/* A shell command rendered as text - the `command` shortcode, and the
+   `coverText` front matter key that puts one where a post's cover image goes.
+
+   The command arrives as Chroma output, so it is already wrapped in
+   `.highlight > .chroma` and already coloured by `assets/css/chroma/` in both
+   modes. Everything here undoes that wrapper's *block* styling - background,
+   padding, margin, its own font size - so the command reads as text on the
+   page rather than as a code block, and takes its size from the container
+   instead of from `highlight.css`. */
+
+.hextra-command {
+  @apply hx:font-mono hx:leading-snug;
+
+  .highlight,
+  .chroma,
+  pre,
+  code {
+    @apply hx:m-0 hx:overflow-visible hx:bg-transparent hx:p-0;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  /* Chroma puts the whole line in a block-level <pre>, which would push the
+     prompt onto a line of its own. */
+  .highlight {
+    @apply hx:inline hx:min-w-0;
+  }
+}
+
+.hextra-command__line {
+  @apply hx:flex hx:items-baseline hx:gap-[0.6em];
+}
+
+.hextra-command__prompt {
+  @apply hx:shrink-0 hx:select-none hx:text-hextra-accent-500 hx:dark:text-hextra-accent-400;
+}
+
+/* ----------------------------------------------------------------- inline */
+
+.hextra-command--inline {
+  @apply hx:my-6 hx:overflow-x-auto hx:text-lg;
+}
+
+/* ------------------------------------------------------------------ cover */
+
+/* The frame is what the command sizes itself against. `container-type:
+   inline-size` makes `1cqi` one percent of *this* element's width, and an
+   element cannot query itself, so the multiplier has to be applied to a child
+   - hence the frame/command split rather than one element.
+
+   The aspect ratio is what decides how much empty band sits above and below a
+   short command, so it is the knob worth exposing: `params.command.coverRatio`,
+   width over height, larger being shorter. The partial divides it by the line
+   count before writing it here, so a three-line block gets three times the
+   height rather than squeezing.
+
+   Declaring a ratio at all is also why a text cover cannot shift the layout:
+   there is nothing to measure and nothing to wait for. */
+.hextra-command__frame {
+  @apply hx:w-full hx:overflow-hidden hx:rounded-lg;
+  container-type: inline-size;
+  aspect-ratio: var(--hextra-command-ratio, 7.2);
+}
+
+.hextra-command--cover {
+  @apply hx:flex hx:h-full hx:flex-col hx:justify-center hx:gap-[0.3em];
+  @apply hx:px-[5cqi] hx:py-[1.5cqi];
+  /* The partial picks the middle term from the longest line. The bounds stop a
+     two-word command from filling the frame edge to edge and a very long one
+     from becoming unreadable. */
+  font-size: clamp(0.7rem, calc(var(--hextra-command-fs, 6) * 1cqi), 4rem);
+}
+
+/* Hero covers sit between the breadcrumb and the title, where the image
+   variant carries the same spacing and border - see `.hextra-blog-hero`. */
+.hextra-command__frame.hextra-command--hero {
+  @apply hx:mt-4 hx:mb-4 hx:border hx:border-gray-200 hx:dark:border-neutral-800;
+}

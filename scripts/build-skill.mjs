@@ -364,7 +364,7 @@ const CATEGORIES = [
   {
     title: "Code and content import",
     blurb: "Pull code or Markdown in from elsewhere.",
-    names: ["gist", "codeimporter", "include"],
+    names: ["command", "gist", "codeimporter", "include"],
   },
   {
     title: "Repository cards",

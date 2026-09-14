@@ -258,4 +258,5 @@ body {
 /* Must stay after ./typography.css: most of its cell rules only tie the
    default table styling on specificity and win on source order. */
 @import "./components/borderless-table.css";
+@import "./components/command.css";
 @import "./fonts.css";
