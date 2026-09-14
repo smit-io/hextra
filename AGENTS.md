@@ -201,6 +201,73 @@ range.
 - Compiled output goes to `assets/css/compiled/main.css`
 - Prettier formatting for Go templates and code consistency
 
+### Styling components
+
+**Colours: three tokens, nothing else.** The palette is deliberately small — a
+wider one is what produced surfaces that nearly matched but didn't.
+
+| Token             | For                                                        |
+| ----------------- | ---------------------------------------------------------- |
+| `neutral-*`       | every surface, border and text colour                      |
+| `hextra-accent-*` | links, focus rings, active states, prompts                 |
+| `hextra-bg`       | the page itself                                            |
+
+`gray`, `slate` and `primary` are gone; do not reintroduce them. `gray` and
+`slate` are blue-tinted, which fights a warm accent. The only exceptions are
+hue-coded semantics — callouts, alerts, badges, Jupyter output states — where
+red/amber/blue/green carry meaning; those live in `alert.css`, `jupyter.css`,
+`callout.html` and `badge.html` and nowhere else.
+
+**Surface levels.** Pick by role, not by eye. Note the direction inverts between
+modes: light raises by getting lighter, dark by getting darker.
+
+| Role                            | Light         | Dark          |
+| ------------------------------- | ------------- | ------------- |
+| Page                            | `hextra-bg`   | `hextra-bg`   |
+| Raised — code blocks, cards      | `neutral-50`  | `neutral-950` |
+| Panel — collapsibles, series box | `neutral-50`  | `neutral-900` |
+| Overlay — dropdowns, menus       | `neutral-100` | `neutral-900` |
+| Chrome — filename bars, hover    | `neutral-200` | `neutral-800` |
+| Borders                         | `neutral-400` | `neutral-800` |
+
+Overlays are their own level on purpose: a floating menu sits slightly darker
+than the page in light mode so it reads as above it, which is how Material and
+Nextra both treat them. `page-context-menu.html`'s item hover at `neutral-200` /
+`neutral-700` only works from that base.
+
+A hover must differ from its own resting surface — check the pair, not the class
+list. Lift the border with the fill (`hover:border-neutral-500` /
+`dark:hover:border-neutral-700`) so the edge is not swallowed by a fill that
+matches it.
+
+**Anything that continues the page uses `hx:bg-hextra-bg`,** with no `dark:`
+twin — the token flips under `.dark`, so one class is correct in both modes.
+That covers the navbar blur, sidebar drawer, sticky footers, step markers, and
+the `shadow-[0_-12px_16px_var(--hextra-bg)]` fades. Never hardcode `#f7f7f7` or
+`#111111`; those values exist once, in `styles.css`.
+
+**Everything else is a hand-written `dark:` pair,** and nothing checks that the
+two halves relate. Write them adjacent and from the table above.
+
+**Structure.** One file per component in `assets/css/components/`, imported from
+`styles.css`. Style through `@apply` with `hx:` utilities rather than raw CSS,
+so the design tokens stay in play. Class names are `hextra-<component>`,
+`hextra-<component>__<part>`, `hextra-<component>--<variant>`. A component that
+shares a look with another says so in a comment naming the file, or the two
+drift apart one edit at a time.
+
+**Contrast is a gate, not a nicety.** `make test-a11y` enforces WCAG AA, and
+accent-on-surface is where it fails. Verify in both modes before assuming.
+
+**Two traps, both hit in anger:**
+
+- Hugo's `highlight` returns `<div class="highlight">`. A `<div>` inside a
+  `<span>` is invalid; the parser splits the line and no `display:flex` can undo
+  it. Rows that wrap highlighted output must be `<div>`.
+- Container query units resolve against the nearest *ancestor* container, never
+  the element declaring `container-type`. Sizing something against its own box
+  needs a wrapper — see `command.css`.
+
 ### Accessibility (WCAG Compliance)
 
 All new features and UI changes must follow the [Web Content Accessibility Guidelines (WCAG) 2.2](https://www.w3.org/TR/WCAG22/) at the **AA** conformance level. Key requirements:
