@@ -23,6 +23,33 @@
   @apply hx:border-s-hextra-accent-700 hx:dark:border-s-hextra-accent-400;
 }
 
+/* `:has()` is the only way to colour the li from a class the scroll spy puts
+   on the link, and a browser that does not understand a selector drops the
+   whole rule rather than the one part - so without a fallback the rail simply
+   never appears, the text still recolours, and the result is the colour-only
+   indicator this file exists to replace. Firefox before 121, including the
+   ESR 115 builds still in the field, is that browser.
+
+   So the fallback moves the rail to the link, the one element reachable
+   without `:has()`. Every link reserves it transparent, as the li does, so
+   nothing shifts as the active row moves. Two differences from the real thing,
+   both accepted as the price of a fallback: the column sits 2px further in,
+   and the rail follows each row's nesting indentation instead of holding one
+   x, because the padding that creates the indentation lives on the link. It
+   reads as a marker per level rather than a single rail - still a non-colour
+   indicator at the same 5.42:1, which is what 1.4.1 asks for.
+
+   Browsers with `:has()` never see this block, so there is no doubled rail. */
+@supports not selector(:has(*)) {
+  .hextra-toc ul li > a {
+    @apply hx:border-s-2 hx:border-s-transparent;
+  }
+
+  .hextra-toc ul li > a.hextra-toc-active {
+    @apply hx:border-s-hextra-accent-700 hx:dark:border-s-hextra-accent-400;
+  }
+}
+
 /* accent-700 rather than the accent-600 used for hover elsewhere: on the light
    background (#f6f6f6) accent-600 measures 3.71:1, under the 4.5:1 WCAG AA
    floor for 14px text. accent-700 is 5.41:1. Dark mode keeps accent-400 at
