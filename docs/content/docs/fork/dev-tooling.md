@@ -13,13 +13,14 @@ Run `make help` for the full annotated list. The important targets, by workflow:
 
 ### Developing
 
-| Target           | What it does                                                                            |
-| ---------------- | --------------------------------------------------------------------------------------- |
-| `make dev`       | Dev server with the full theme pipeline (writes `hugo_stats.json` on every rebuild)     |
-| `make serve`     | Dev server without the theme pipeline — faster startup when you're only editing content |
-| `make stats`     | Regenerate `docs/hugo_stats.json` (the class inventory Tailwind tree-shakes against)    |
-| `make css`       | Compile production CSS — regenerates stats first, so it's always correct                |
-| `make css-watch` | Recompile CSS on change; run alongside `make dev`                                       |
+| Target           | What it does                                                                                        |
+| ---------------- | --------------------------------------------------------------------------------------------------- |
+| `make dev`       | Dev server with the full theme pipeline (writes `hugo_stats.json` on every rebuild)                 |
+| `make serve`     | Dev server without the theme pipeline — faster startup when you're only editing content             |
+| `make stats`     | Regenerate `docs/hugo_stats.json` (the class inventory Tailwind tree-shakes against)                |
+| `make css`       | Compile production CSS — regenerates stats first, so it's always correct                            |
+| `make css-watch` | Recompile CSS on change; run alongside `make dev`                                                   |
+| `make skill`     | Regenerate the skill reference in `skills/hextra/` and stamp `.claude-plugin/*.json` from `VERSION` |
 
 ### Writing content
 
@@ -41,10 +42,22 @@ Run `make help` for the full annotated list. The important targets, by workflow:
 
 | Target                            | What it does                                                                                                                              |
 | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `make test`                       | Full Playwright suite against a fresh draft-free production build                                                                         |
+| `make verify`                     | Everything, in order — format and regenerate, then re-check, build, and run the suite. The pre-commit command                             |
+| `make test`                       | `fmt-check` and `skill-check` first, then the full Playwright suite against a fresh draft-free production build                           |
 | `make test-a11y`                  | Accessibility tests only (WCAG 2.2 AA)                                                                                                    |
 | `make test-mobile` / `test-build` | Mobile menu and build-output suites                                                                                                       |
 | `make test-preview`               | Rebuild the preview (drafts included), then run the suite against the live preview container — what you tested is what 8043 keeps serving |
+| `make fmt-check`                  | Verify formatting without writing anything — what CI runs                                                                                 |
+| `make skill-check`                | Verify the generated skill reference and plugin manifests are current                                                                     |
+| `make report`                     | Serve the last Playwright HTML report at [localhost:9323](http://localhost:9323)                                                          |
+
+### Releasing
+
+| Target                     | What it does                                               |
+| -------------------------- | ---------------------------------------------------------- |
+| `make bump VERSION=0.21.2` | Set `VERSION` and restamp `.claude-plugin/*.json` to match |
+
+`VERSION` at the repository root is the only version number in the tree, and the only file that arms a publish: a push to `main` that changes it tags `v<VERSION>` and cuts the GitHub release. `bump` writes the file and regenerates the manifests in one step, refusing a malformed version, one already in the file, or one whose tag exists. It edits files only — nothing is published until the commit merges, so preview the notes with `npm run changelog` while you still can.
 
 ### Housekeeping
 

@@ -45,12 +45,9 @@
   @param {string} 0 The ad unit id.
 
   @example {{< ad slot="1234567890" >}}
-  @example {{< ad slot="1234567890" format="fluid" height="120px" label=false
->}}
-  @example {{< ad provider="ethicalads" type="text"
->}}
-  @example {{< ad provider="custom" slot="sponsor"
->}}
+  @example {{< ad slot="1234567890" format="fluid" height="120px" label=false >}}
+  @example {{< ad provider="ethicalads" type="text" >}}
+  @example {{< ad provider="custom" slot="sponsor" >}}
 */}}
 {{- $ads := partialCached "ads/config.html" .Page .Page.RelPermalink -}}
 

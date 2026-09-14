@@ -4,8 +4,7 @@
   @param {string} icon Optional icon shown before the heading.
   @param {bool} open Whether the section starts open. Default false.
 
-  @example {{< accordion-item title="What is included?" icon="check"
->}}Content{{< /accordion-item >}}
+  @example {{< accordion-item title="What is included?" icon="check" >}}Content{{< /accordion-item >}}
 */}}
 {{- $title := .Get "title" | default (.Get 0) -}}
 {{- $icon := .Get "icon" -}}

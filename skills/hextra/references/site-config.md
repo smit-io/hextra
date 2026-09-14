@@ -450,7 +450,7 @@ outputs:
   section: [html, rss, markdown]
 ```
 
-The `llms` format writes an `llms.txt` index of the site at the root. The `markdown` format gives every page a raw-Markdown twin, which is what the page context menu's "Open in ChatGPT / Claude" links point at. Exclude a page from `llms.txt` with `llms: false` in its front matter.
+The `llms` format writes an `llms.txt` index of the site at the root. The `markdown` format gives every page a raw-Markdown twin, which the page context menu's "Copy as Markdown" and "View as Markdown" rows read — and which a custom link can point at via `{markdown_url}`. The whole menu is gated on that output format, so dropping `markdown` from `outputs.page` removes it entirely. Exclude a page from `llms.txt` with `llms: false` in its front matter.
 
 ```yaml
 params:
@@ -464,8 +464,11 @@ params:
           url: "https://claude.ai/new?q=Reading+this+page%3A+{url}"
 ```
 
-`{url}` and `{title}` are substituted per page. `description` is optional and
-renders as a muted second line under the link's name.
+`{url}`, `{title}` and `{markdown_url}` are substituted per page, each
+URL-encoded: the page's own URL, its title, and the URL of its raw-Markdown
+twin. `icon` and `description` are both optional; `description` renders as a
+muted second line under the link's name, and is announced as the row's
+description rather than as part of its name.
 
 ```yaml
 params:

@@ -22,12 +22,13 @@ Run `make help` for the full annotated list. The targets you'll actually live in
 
 ### Developing
 
-| Target           | What it does                                                                        |
-| ---------------- | ----------------------------------------------------------------------------------- |
-| `make dev`       | Dev server with the full theme pipeline (writes `hugo_stats.json` on every rebuild) |
-| `make serve`     | Dev server without the theme pipeline — faster startup when only editing content    |
-| `make css`       | Compile production CSS — regenerates stats first, so it's always correct            |
-| `make css-watch` | Recompile CSS on change; run alongside `make dev`                                   |
+| Target           | What it does                                                                                        |
+| ---------------- | --------------------------------------------------------------------------------------------------- |
+| `make dev`       | Dev server with the full theme pipeline (writes `hugo_stats.json` on every rebuild)                 |
+| `make serve`     | Dev server without the theme pipeline — faster startup when only editing content                    |
+| `make css`       | Compile production CSS — regenerates stats first, so it's always correct                            |
+| `make css-watch` | Recompile CSS on change; run alongside `make dev`                                                   |
+| `make skill`     | Regenerate the skill reference in `skills/hextra/` and stamp `.claude-plugin/*.json` from `VERSION` |
 
 The dependency chaining is the point. Tailwind tree-shakes against `docs/hugo_stats.json`, so compiling CSS after a template change requires regenerating stats _first_. Upstream's raw npm scripts make you remember that two-step dance; `make css` encodes it — it depends on `make stats`, and `make build` depends on `make css`. You can't get the order wrong.
 
@@ -43,15 +44,25 @@ Blog posts start as drafts (`draft: true`): visible on the dev server and previe
 
 ### Building, previewing, testing
 
-| Target              | What it does                                                                             |
-| ------------------- | ---------------------------------------------------------------------------------------- |
-| `make build`        | Full production build into `docs/public`, drafts excluded — what ships                   |
-| `make preview`      | Production build **including drafts**, served at [localhost:8043](http://localhost:8043) |
-| `make test`         | Full Playwright suite against a fresh draft-free production build                        |
-| `make test-a11y`    | Accessibility tests only (WCAG 2.2 AA)                                                   |
-| `make test-preview` | Rebuild the preview, then test the live preview container                                |
-| `make fmt`          | Prettier over templates, CSS, and JS                                                     |
-| `make doctor`       | Diagnose toolchain problems (Hugo/Node versions, stale binaries)                         |
+| Target              | What it does                                                                                                    |
+| ------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `make build`        | Full production build into `docs/public`, drafts excluded — what ships                                          |
+| `make preview`      | Production build **including drafts**, served at [localhost:8043](http://localhost:8043)                        |
+| `make verify`       | Format and regenerate, then re-check, build, and run the suite — the one command to run before committing       |
+| `make test`         | `fmt-check` and `skill-check` first, then the full Playwright suite against a fresh draft-free production build |
+| `make test-a11y`    | Accessibility tests only (WCAG 2.2 AA)                                                                          |
+| `make test-preview` | Rebuild the preview, then test the live preview container                                                       |
+| `make skill-check`  | Verify the generated skill reference and plugin manifests are current                                           |
+| `make fmt`          | Prettier over templates, CSS, and JS                                                                            |
+| `make doctor`       | Diagnose toolchain problems (Hugo/Node versions, stale binaries)                                                |
+
+### Releasing
+
+| Target                     | What it does                                               |
+| -------------------------- | ---------------------------------------------------------- |
+| `make bump VERSION=0.21.2` | Set `VERSION` and restamp `.claude-plugin/*.json` to match |
+
+`VERSION` at the repository root is the only version number in the repo — the theme, the shipped skill, and the plugin manifests all release under it. It is also the only file that arms a publish: a push to `main` that changes it tags `v<VERSION>` and cuts the GitHub release, so an ordinary merge ships the site and nothing else. `bump` writes the file and regenerates the manifests together, and refuses a malformed version, one already set, or one whose tag exists. Preview the notes with `npm run changelog` before merging — afterwards the release is already out.
 
 ## The devcontainer
 

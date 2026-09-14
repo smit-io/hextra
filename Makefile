@@ -215,6 +215,27 @@ preview: css ## Build production output for the always-on preview service (inclu
 	@$(WARN) "Served by the 'preview' container, which is already running."
 	@$(WARN) "Re-run this target to update it; no restart needed."
 
+# Regenerates skills/hextra/references/{shortcodes,icons}.md and stamps the
+# version into .claude-plugin/*.json. The references are generated from the
+# `@param` and `@example` doc comments in layouts/_shortcodes/ and from
+# data/icons.yaml, so editing any of those without re-running this leaves the
+# shipped skill describing a theme that no longer exists.
+.PHONY: skill
+skill: deps ## Regenerate the shipped skill reference and plugin manifests
+	@$(SAY) "Generating the skill reference"
+	@npm run build:skill
+	@$(OK) "skill reference is current"
+
+# The same generator in --check mode: writes nothing, exits non-zero if any
+# output has drifted. It also reports documentation gaps - a parameter read but
+# not documented, or documented but never read - which are warnings rather than
+# failures unless --strict is passed.
+.PHONY: skill-check
+skill-check: deps ## Verify the generated skill files are current (for CI)
+	@$(SAY) "Checking the skill reference"
+	@npm run build:skill -- --check
+	@$(OK) "skill reference is current"
+
 ##@ Test
 
 # Every test target builds first. Playwright serves docs/public, so without a
@@ -230,29 +251,80 @@ preview: css ## Build production output for the always-on preview service (inclu
 # a full Hugo build. It is safe in that order: docs/hugo_stats.json, which every
 # build rewrites, is in .prettierignore, so the build cannot invalidate the check
 # that just passed.
+#
+# skill-check follows for the same reason - seconds, no Hugo - and because until
+# now nothing local caught a stale skill reference. That gate lives only in
+# test-build.yml, which triggers on pull_request, so a push straight to main ran
+# no check at all and a generated file once rode along stale for four pushes.
+#
+# Sub-makes rather than prerequisites, for the reason spelled out on `verify`
+# below: prerequisites may run in any order, or concurrently under -j, and the
+# ordering above is the whole point of listing them. As a prerequisite list this
+# comment described an ordering that `make test -j2` did not provide.
 .PHONY: test
-test: fmt-check build ## Check formatting, build, then run the full Playwright suite
+test: ## Check formatting and the skill, build, then run the full Playwright suite
+	@$(MAKE) fmt-check
+	@$(MAKE) skill-check
+	@$(MAKE) build
 	@npm test
+
+# One command for "I am about to commit this". Two phases, in this order:
+# everything that writes, then everything that checks.
+#
+# The write phase formats the tree and regenerates the skill reference and
+# plugin manifests. The check phase is plain `make test`, which re-runs
+# fmt-check and skill-check over what the write phase just produced, then
+# regenerates the stats, compiles the CSS, builds docs/ and runs the full
+# Playwright suite. Re-checking output this same command generated is not
+# redundant: Prettier and the skill generator are not idempotent by assumption,
+# and a write phase that leaves the tree failing its own checks is exactly the
+# failure worth catching before a PR does.
+#
+# Sub-makes rather than prerequisites, because prerequisites may run in any
+# order (or concurrently under -j) and these three must not.
+.PHONY: verify
+verify: ## Format, regenerate, build and run everything - use before committing
+	@$(MAKE) fmt
+	@$(MAKE) skill
+	@$(MAKE) test
+	@$(OK) "verified - formatted, generated files current, build and suite green"
+
+# The four suites below each carry skill-check for the same reason `test` does:
+# a stale skill reference is generated-file drift, it fails CI, and running one
+# suite while fixing it is the normal loop - so the warning has to be on the
+# targets people actually iterate with, not only on the slowest one. It costs a
+# node run of a couple of seconds and no Hugo build.
+#
+# Sub-makes, not prerequisites, so skill-check really does come before the
+# build rather than beside it under -j.
 
 # Runs against the always-on preview container instead of Playwright's own
 # `npx serve`, so what you tested is exactly what port 8043 keeps serving
 # afterwards. Drafts are included - preview builds with -D - so a failing
 # half-written draft fails here, not in `make test`.
 .PHONY: test-preview
-test-preview: preview ## Rebuild the preview (with drafts), then run the suite against it
+test-preview: ## Rebuild the preview (with drafts), then run the suite against it
+	@$(MAKE) skill-check
+	@$(MAKE) preview
 	@BASE_URL=$(PREVIEW_TEST_URL) npm test
 
 .PHONY: test-a11y
-test-a11y: build ## Build, then run accessibility tests (WCAG 2.2 AA)
+test-a11y: ## Build, then run accessibility tests (WCAG 2.2 AA)
+	@$(MAKE) skill-check
+	@$(MAKE) build
 	@$(WARN) "Accent colours change contrast ratios - failures here mean tune the shade, not revert."
 	@npm run test:a11y
 
 .PHONY: test-mobile
-test-mobile: build ## Build, then run mobile menu tests
+test-mobile: ## Build, then run mobile menu tests
+	@$(MAKE) skill-check
+	@$(MAKE) build
 	@npm run test:mobile-menu
 
 .PHONY: test-build
-test-build: build ## Build, then run build-output tests (asciidoc, render-link, search data)
+test-build: ## Build, then run build-output tests (asciidoc, render-link, search data)
+	@$(MAKE) skill-check
+	@$(MAKE) build
 	@npm run test:build
 
 # Serves playwright-report/ from the last run. The port is fixed in
@@ -263,6 +335,71 @@ report: ## Serve the last Playwright HTML report on port 9323
 	@$(SAY) "Serving the Playwright report on http://localhost:$(REPORT_PORT)"
 	@test -d playwright-report || { $(WARN) "no playwright-report/ - run make test first"; exit 1; }
 	@npx playwright show-report --host 0.0.0.0 --port $(REPORT_PORT)
+
+##@ Release
+
+# `VERSION` at the repository root is the only version number in the tree.
+# release.yml triggers on a push to main that changes it, tags v<VERSION> and
+# publishes the release, so the release happens when the PR merges. The two
+# .claude-plugin manifests carry the same number, stamped from VERSION by the
+# skill generator - which makes setting a version two steps that must not be
+# separated. CI fails when they drift; this target keeps them together instead.
+#
+# The accepted format is the one release.yml validates: MAJOR.MINOR.PATCH with
+# an optional semver prerelease suffix. release.yml publishes a suffixed version
+# with --prerelease, so `make bump VERSION=0.22.0-rc.1` is a supported release
+# and must not be rejected here.
+#
+# A version must also be strictly newer than the one in VERSION, and its tag
+# must not exist locally or on origin. Neither guard was there, so a typo -
+# 0.2.1 for 0.21.2 - passed every check and would have tagged a release
+# numerically older than the current one, and an unfetched remote tag let a
+# version through that release.yml then skips in silence, merging with no
+# release cut at all. The ordering approximates semver with sort -V, which is
+# enough to catch a typo; it is not a spec-complete prerelease comparison.
+#
+# It only edits files. Nothing leaves the machine until the commit reaches main,
+# which is what the closing reminders are for.
+.PHONY: bump
+bump: deps ## Set the release version: make bump VERSION=0.21.2
+	@if [ -z "$(VERSION)" ]; then $(WARN) "VERSION required, e.g. make bump VERSION=0.21.2"; exit 1; fi
+	@printf '%s' "$(VERSION)" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$$' \
+		|| { $(WARN) "VERSION must be MAJOR.MINOR.PATCH[-PRERELEASE], got '$(VERSION)'"; exit 1; }
+	@if [ "$(VERSION)" = "$$(tr -d ' \t\n\r' < VERSION)" ]; then \
+		$(WARN) "VERSION is already $(VERSION) - nothing to do"; exit 1; \
+	fi
+	@cur="$$(tr -d ' \t\n\r' < VERSION)"; new="$(VERSION)"; \
+	curcore="$${cur%%-*}"; newcore="$${new%%-*}"; \
+	curpre="$${cur#$$curcore}"; curpre="$${curpre#-}"; \
+	newpre="$${new#$$newcore}"; newpre="$${newpre#-}"; \
+	older=; \
+	if [ "$$curcore" != "$$newcore" ]; then \
+		if [ "$$(printf '%s\n%s\n' "$$curcore" "$$newcore" | sort -V | head -1)" = "$$newcore" ]; then older=1; fi; \
+	elif [ -n "$$curpre" ] && [ -z "$$newpre" ]; then \
+		:; \
+	elif [ -z "$$curpre" ] && [ -n "$$newpre" ]; then \
+		older=1; \
+	elif [ "$$curpre" != "$$newpre" ]; then \
+		if [ "$$(printf '%s\n%s\n' "$$curpre" "$$newpre" | sort -V | head -1)" = "$$newpre" ]; then older=1; fi; \
+	fi; \
+	if [ -n "$$older" ]; then \
+		$(WARN) "VERSION $(VERSION) is not newer than $$cur - refusing to go backwards"; exit 1; \
+	fi
+	@if git rev-parse -q --verify "refs/tags/v$(VERSION)" >/dev/null 2>&1; then \
+		$(WARN) "tag v$(VERSION) already exists locally - pick another version"; exit 1; \
+	fi
+	@remote="$$(git ls-remote --tags origin "refs/tags/v$(VERSION)" 2>/dev/null)" || remote=__unreachable__; \
+	if [ "$$remote" = __unreachable__ ]; then \
+		$(WARN) "could not reach origin - checked local tags only"; \
+	elif [ -n "$$remote" ]; then \
+		$(WARN) "tag v$(VERSION) already exists on origin - pick another version"; exit 1; \
+	fi
+	@$(SAY) "Setting VERSION to $(VERSION), was $$(tr -d ' \t\n\r' < VERSION)"
+	@printf '%s\n' "$(VERSION)" > VERSION
+	@npm run build:skill
+	@$(OK) "VERSION and .claude-plugin/*.json are at $(VERSION)"
+	@$(WARN) "Nothing is published yet - merging this to main tags v$(VERSION) and cuts the release."
+	@$(WARN) "Preview the notes first: npm run changelog"
 
 ##@ Local CI (act)
 

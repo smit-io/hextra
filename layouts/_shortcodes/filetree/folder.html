@@ -3,8 +3,7 @@
   @param {string} name The name of the folder.
   @param {string} state The state of the folder.
 
-  @example {{< filetree/folder name="docs" state="closed"
->}}
+  @example {{< filetree/folder name="docs" state="closed" >}}
 */}}
 {{- $name := .Get "name" -}}
 {{- $state := .Get "state" | default "open" }}

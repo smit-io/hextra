@@ -24,7 +24,6 @@ A shortcode to create a callout.
 
 | Parameter | Type | Notes |
 | --- | --- | --- |
-| `content` | string | The content of the callout. _Documented but not read by the template._ |
 | `emoji` | string | The emoji of the callout. |
 | `icon` | string | The icon of the callout (related to type or can be a custom icon). |
 | `type` | string | The type of the callout (default, info, warning, error, important). One of `default`, `info`, `warning`, `error`, `important`. Default `default`. |
@@ -1108,7 +1107,6 @@ A simple hero section with a heading and optional style.
 
 | Parameter | Type | Notes |
 | --- | --- | --- |
-| `content` | string | The content of the heading. _Documented but not read by the template._ |
 | `heading` | string | The heading level (default: h2). One of `h2`, `h3`, `h4`. Default `h2`. |
 | `style` | string | The style of the heading. |
 
