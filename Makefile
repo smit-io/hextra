@@ -264,6 +264,27 @@ test: fmt-check skill-check build ## Check formatting and the skill, build, then
 # `npx serve`, so what you tested is exactly what port 8043 keeps serving
 # afterwards. Drafts are included - preview builds with -D - so a failing
 # half-written draft fails here, not in `make test`.
+# One command for "I am about to commit this". Two phases, in this order:
+# everything that writes, then everything that checks.
+#
+# The write phase formats the tree and regenerates the skill reference and
+# plugin manifests. The check phase is plain `make test`, which re-runs
+# fmt-check and skill-check over what the write phase just produced, then
+# regenerates the stats, compiles the CSS, builds docs/ and runs the full
+# Playwright suite. Re-checking output this same command generated is not
+# redundant: Prettier and the skill generator are not idempotent by assumption,
+# and a write phase that leaves the tree failing its own checks is exactly the
+# failure worth catching before a PR does.
+#
+# Sub-makes rather than prerequisites, because prerequisites may run in any
+# order (or concurrently under -j) and these three must not.
+.PHONY: verify
+verify: ## Format, regenerate, build and run everything - use before committing
+	@$(MAKE) fmt
+	@$(MAKE) skill
+	@$(MAKE) test
+	@$(OK) "verified - formatted, generated files current, build and suite green"
+
 .PHONY: test-preview
 test-preview: preview ## Rebuild the preview (with drafts), then run the suite against it
 	@BASE_URL=$(PREVIEW_TEST_URL) npm test

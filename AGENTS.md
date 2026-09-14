@@ -304,6 +304,14 @@ that skips them is a change that has to be redone.
 Run everything in the devcontainer, not on the host:
 
 ```bash
+make verify      # everything, in order - use this before committing
+```
+
+`verify` formats the tree and regenerates the skill reference, then re-checks
+both, compiles the CSS, builds `docs/` and runs the full Playwright suite. The
+individual targets are still there when you want one of them on its own:
+
+```bash
 make fmt-check   # formatting, without writing
 make skill-check # generated skill files are current
 make test        # the two checks above, then Playwright: build output,
