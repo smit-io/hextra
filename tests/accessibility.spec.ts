@@ -201,30 +201,60 @@ const TOC_PAGE = "/docs/guide/configuration/";
 const TOC_VIEWPORT = { width: 1440, height: 900 };
 
 type RGB = [number, number, number];
+type RGBA = [number, number, number, number];
 
-function parseColor(value: string): [number, number, number, number] {
-  const match = value.match(/rgba?\(([^)]+)\)/);
-  if (!match) return [0, 0, 0, 0];
-  const parts = match[1]
-    .split(/[,/\s]+/)
-    .filter(Boolean)
-    .map(Number);
-  return [parts[0], parts[1], parts[2], parts.length > 3 ? parts[3] : 1];
+// Colours are read back through a 1x1 canvas rather than parsed out of the
+// computed-style string. The palette is authored in `oklch()` - see
+// `--color-accent-color-700` in the compiled CSS - and Chromium keeps the
+// colour space in the computed value, so `getComputedStyle(el).color` returns
+// `oklch(...)` and not `rgb(...)`. A regex expecting `rgb()` silently yields
+// zeroes, which reads as a fully transparent black: an indicator that is
+// actually painted looks absent, and a contrast check scores black against the
+// page and passes for the wrong reason. Letting the browser resolve the colour
+// sidesteps every syntax it may serialise.
+function resolveColor(locator: import("@playwright/test").Locator, property: string): Promise<RGBA> {
+  return locator.evaluate((el, prop) => {
+    const value = getComputedStyle(el).getPropertyValue(prop);
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 1;
+    const ctx = canvas.getContext("2d")!;
+    ctx.clearRect(0, 0, 1, 1);
+    // Assigning an invalid value leaves fillStyle at its previous setting, so
+    // seed it transparent: an unparseable colour then reads as alpha 0 rather
+    // than as the default opaque black.
+    ctx.fillStyle = "rgba(0, 0, 0, 0)";
+    ctx.fillStyle = value;
+    ctx.fillRect(0, 0, 1, 1);
+    const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
+    return [r, g, b, a / 255] as [number, number, number, number];
+  }, property);
 }
 
-// Composites an element's ancestor backgrounds over the canvas, root first.
-// Taking the first non-transparent background instead would be wrong here: the
-// theme uses Tailwind opacity modifiers (`dark:bg-hextra-accent-400/10` and
-// friends), and treating a 10%-alpha layer as if it were the backdrop is how a
-// contrast figure ends up several points off.
-function compositeOver(stack: string[]): RGB {
-  let base: RGB = [255, 255, 255];
-  for (const layer of stack.slice().reverse()) {
-    const [r, g, b, a] = parseColor(layer);
-    if (a === 0) continue;
-    base = [r * a + base[0] * (1 - a), g * a + base[1] * (1 - a), b * a + base[2] * (1 - a)];
-  }
-  return base;
+// The real backdrop, composited by the browser. Taking the first
+// non-transparent ancestor background instead would be wrong here: the theme
+// uses Tailwind opacity modifiers (`dark:bg-hextra-accent-400/10` and friends),
+// and treating a 10%-alpha layer as if it were the backdrop is how a contrast
+// figure ends up several points off.
+function resolveBackdrop(locator: import("@playwright/test").Locator): Promise<RGB> {
+  return locator.evaluate((el) => {
+    const layers: string[] = [];
+    let node: Element | null = el;
+    while (node) {
+      layers.push(getComputedStyle(node).backgroundColor);
+      node = node.parentElement;
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 1;
+    const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, 1, 1);
+    for (const layer of layers.reverse()) {
+      ctx.fillStyle = layer;
+      ctx.fillRect(0, 0, 1, 1);
+    }
+    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+    return [r, g, b] as [number, number, number];
+  });
 }
 
 function relativeLuminance([r, g, b]: RGB): number {
@@ -238,18 +268,6 @@ function relativeLuminance([r, g, b]: RGB): number {
 function contrastRatio(a: RGB, b: RGB): number {
   const [light, dark] = [relativeLuminance(a), relativeLuminance(b)].sort((x, y) => y - x);
   return (light + 0.05) / (dark + 0.05);
-}
-
-function backgroundStack(locator: import("@playwright/test").Locator): Promise<string[]> {
-  return locator.evaluate((el) => {
-    const layers: string[] = [];
-    let node: Element | null = el;
-    while (node) {
-      layers.push(getComputedStyle(node).backgroundColor);
-      node = node.parentElement;
-    }
-    return layers;
-  });
 }
 
 // Activates the first TOC entry through the hash path rather than by scrolling.
@@ -290,33 +308,38 @@ for (const colorScheme of COLOR_SCHEMES) {
     expect(new Set(widths), "every TOC row must reserve the rail at the same width").toEqual(new Set(["2px"]));
 
     const inactive = toc.locator("ul li:not(:has(> a.hextra-toc-active))").first();
-    const inactiveColor = await inactive.evaluate((el) => getComputedStyle(el).borderInlineStartColor);
-    expect(parseColor(inactiveColor)[3], "an inactive row must leave its rail transparent").toBe(0);
+    const inactiveRail = await resolveColor(inactive, "border-inline-start-color");
+    expect(inactiveRail[3], "an inactive row must leave its rail transparent").toBe(0);
 
     // This is the assertion that fails if `:has()` is unsupported or the rule
     // is dropped for any other reason: the class still lands on the link, the
     // text still recolours, and the non-colour indicator silently disappears -
     // the WCAG 1.4.1 failure the rail exists to fix.
-    const activeColor = await activeItem.evaluate((el) => getComputedStyle(el).borderInlineStartColor);
-    expect(parseColor(activeColor)[3], "the active row's rail is transparent - the :has() rule did not apply").toBeGreaterThan(0);
-    expect(activeColor, "the active rail must differ from an inactive one").not.toBe(inactiveColor);
+    const activeRail = await resolveColor(activeItem, "border-inline-start-color");
+    expect(activeRail[3], "the active row's rail is transparent - the :has() rule did not apply").toBeGreaterThan(0);
+    expect(activeRail, "the active rail must differ from an inactive one").not.toEqual(inactiveRail);
   });
 
   test(`TOC active rail and label meet their contrast floors (${colorScheme})`, async ({ page }) => {
     await page.emulateMedia({ colorScheme });
     const { active, activeItem } = await activateFirstTocItem(page);
 
-    const backdrop = compositeOver(await backgroundStack(activeItem));
+    const backdrop = await resolveBackdrop(activeItem);
 
-    // SC 1.4.11: the rail is a non-text indicator, so 3:1.
-    const rail = parseColor(await activeItem.evaluate((el) => getComputedStyle(el).borderInlineStartColor));
+    // SC 1.4.11: the rail is a non-text indicator, so 3:1. The opacity check
+    // comes first because a transparent rail resolves to (0, 0, 0, 0), and
+    // black against a light page scores well over 3:1 - the ratio alone would
+    // pass on an indicator that is not painted at all.
+    const rail = await resolveColor(activeItem, "border-inline-start-color");
+    expect(rail[3], "the active rail is transparent, so its contrast is meaningless").toBeGreaterThan(0);
     const railRatio = contrastRatio([rail[0], rail[1], rail[2]], backdrop);
     expect(railRatio, `active rail is ${railRatio.toFixed(2)}:1 against its backdrop, under the 3:1 SC 1.4.11 floor`).toBeGreaterThanOrEqual(3);
 
     // SC 1.4.3: the label is 14px and not bold, so 4.5:1 - no large-text
     // exemption. This is the gate the accent shade was picked against and the
     // global axe sweep cannot supply while color-contrast is disabled.
-    const label = parseColor(await active.evaluate((el) => getComputedStyle(el).color));
+    const label = await resolveColor(active, "color");
+    expect(label[3], "the active label is transparent").toBeGreaterThan(0);
     const labelRatio = contrastRatio([label[0], label[1], label[2]], backdrop);
     expect(labelRatio, `active TOC link is ${labelRatio.toFixed(2)}:1 against its backdrop, under the 4.5:1 AA floor`).toBeGreaterThanOrEqual(4.5);
   });
