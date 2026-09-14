@@ -224,4 +224,20 @@ document.addEventListener("DOMContentLoaded", () => {
       window.open(url, "_blank", "noopener,noreferrer");
     });
   });
+
+  // Custom links from site.Params.page.contextMenu.links render as
+  // <a role="menuitem"> with no data-action, so neither handler above matches
+  // them, and the outside-click guard treats a click inside the menu as inside
+  // by definition. Without this they were the one menuitem kind that left the
+  // menu open: an external link opened its new tab and the original tab kept
+  // data-state="open", aria-expanded="true", the panel visible and the chevron
+  // rotated until the user clicked elsewhere or pressed Escape.
+  //
+  // No preventDefault - the link still navigates. An internal link unloads the
+  // page and the close is moot; an external one leaves a tidy tab behind.
+  document.querySelectorAll('.hextra-page-context-menu-dropdown a[role="menuitem"]').forEach((link) => {
+    link.addEventListener("click", () => {
+      closeDropdown(link.closest(".hextra-page-context-menu"), true);
+    });
+  });
 });
