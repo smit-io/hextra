@@ -43,7 +43,7 @@ Run `make help` for the full annotated list. The important targets, by workflow:
 | Target                            | What it does                                                                                                                              |
 | --------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | `make verify`                     | Everything, in order — format and regenerate, then re-check, build, and run the suite. The pre-commit command                             |
-| `make test`                       | Full Playwright suite against a fresh draft-free production build                                                                         |
+| `make test`                       | `fmt-check` and `skill-check` first, then the full Playwright suite against a fresh draft-free production build                           |
 | `make test-a11y`                  | Accessibility tests only (WCAG 2.2 AA)                                                                                                    |
 | `make test-mobile` / `test-build` | Mobile menu and build-output suites                                                                                                       |
 | `make test-preview`               | Rebuild the preview (drafts included), then run the suite against the live preview container — what you tested is what 8043 keeps serving |
