@@ -325,6 +325,14 @@ report: ## Serve the last Playwright HTML report on port 9323
 # with --prerelease, so `make bump VERSION=0.22.0-rc.1` is a supported release
 # and must not be rejected here.
 #
+# A version must also be strictly newer than the one in VERSION, and its tag
+# must not exist locally or on origin. Neither guard was there, so a typo -
+# 0.2.1 for 0.21.2 - passed every check and would have tagged a release
+# numerically older than the current one, and an unfetched remote tag let a
+# version through that release.yml then skips in silence, merging with no
+# release cut at all. The ordering approximates semver with sort -V, which is
+# enough to catch a typo; it is not a spec-complete prerelease comparison.
+#
 # It only edits files. Nothing leaves the machine until the commit reaches main,
 # which is what the closing reminders are for.
 .PHONY: bump
@@ -335,8 +343,31 @@ bump: deps ## Set the release version: make bump VERSION=0.21.2
 	@if [ "$(VERSION)" = "$$(tr -d ' \t\n\r' < VERSION)" ]; then \
 		$(WARN) "VERSION is already $(VERSION) - nothing to do"; exit 1; \
 	fi
+	@cur="$$(tr -d ' \t\n\r' < VERSION)"; new="$(VERSION)"; \
+	curcore="$${cur%%-*}"; newcore="$${new%%-*}"; \
+	curpre="$${cur#$$curcore}"; curpre="$${curpre#-}"; \
+	newpre="$${new#$$newcore}"; newpre="$${newpre#-}"; \
+	older=; \
+	if [ "$$curcore" != "$$newcore" ]; then \
+		if [ "$$(printf '%s\n%s\n' "$$curcore" "$$newcore" | sort -V | head -1)" = "$$newcore" ]; then older=1; fi; \
+	elif [ -n "$$curpre" ] && [ -z "$$newpre" ]; then \
+		:; \
+	elif [ -z "$$curpre" ] && [ -n "$$newpre" ]; then \
+		older=1; \
+	elif [ "$$curpre" != "$$newpre" ]; then \
+		if [ "$$(printf '%s\n%s\n' "$$curpre" "$$newpre" | sort -V | head -1)" = "$$newpre" ]; then older=1; fi; \
+	fi; \
+	if [ -n "$$older" ]; then \
+		$(WARN) "VERSION $(VERSION) is not newer than $$cur - refusing to go backwards"; exit 1; \
+	fi
 	@if git rev-parse -q --verify "refs/tags/v$(VERSION)" >/dev/null 2>&1; then \
-		$(WARN) "tag v$(VERSION) already exists - pick another version"; exit 1; \
+		$(WARN) "tag v$(VERSION) already exists locally - pick another version"; exit 1; \
+	fi
+	@remote="$$(git ls-remote --tags origin "refs/tags/v$(VERSION)" 2>/dev/null)" || remote=__unreachable__; \
+	if [ "$$remote" = __unreachable__ ]; then \
+		$(WARN) "could not reach origin - checked local tags only"; \
+	elif [ -n "$$remote" ]; then \
+		$(WARN) "tag v$(VERSION) already exists on origin - pick another version"; exit 1; \
 	fi
 	@$(SAY) "Setting VERSION to $(VERSION), was $$(tr -d ' \t\n\r' < VERSION)"
 	@printf '%s\n' "$(VERSION)" > VERSION

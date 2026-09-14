@@ -297,8 +297,11 @@ that skips them is a change that has to be redone.
 - `make bump VERSION=0.21.2` sets it and restamps `.claude-plugin/*.json` in one
   step. Setting the file by hand works too, but then `make skill` has to follow
   in the same commit or CI fails on the drift.
-- `bump` refuses a malformed version, a version already in `VERSION`, and one
-  whose tag exists. It only edits files — nothing publishes until the merge.
+- `bump` refuses a malformed version, a version already in `VERSION`, one that
+  is not strictly newer than the current one, and one whose tag exists locally
+  or on `origin`. It accepts the prerelease suffix `release.yml` publishes with
+  `--prerelease`, so `make bump VERSION=0.22.0-rc.1` works. It only edits files
+  — nothing publishes until the merge.
 - Preview the notes first with `npm run changelog`.
 - Minor bump for a `feat`, patch otherwise.
 
