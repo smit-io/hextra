@@ -200,7 +200,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const copyBtn = container.querySelector(".hextra-page-context-menu-copy");
       if (!copyBtn) return;
 
-      closeDropdown(container);
+      // focusToggle, same as the Escape paths: closeDropdown sets display:none
+      // on a menu that still holds focus, and the HTML focus-fixup algorithm
+      // then resets document.activeElement to <body>. copyBtn.click() does not
+      // move focus either, so without this a keyboard user lands nowhere and
+      // the next Tab restarts from the top of the document.
+      closeDropdown(container, true);
       copyBtn.click();
     });
   });
@@ -215,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const url = btn.dataset.url;
       if (!url) return;
 
-      closeDropdown(container);
+      closeDropdown(container, true);
       window.open(url, "_blank", "noopener,noreferrer");
     });
   });
