@@ -164,6 +164,21 @@ document.addEventListener("DOMContentLoaded", () => {
           e.preventDefault();
           closeDropdown(menu.closest(".hextra-page-context-menu"), true);
           break;
+        case " ":
+          // An ARIA role does not change native key handling. The two built-in
+          // rows are <button role="menuitem">, which browsers activate on both
+          // Enter and Space; the custom links are <a role="menuitem">, which
+          // activate on Enter only - Space scrolls the page behind the open
+          // menu instead. So Space worked on the rows above a link row and did
+          // nothing on the link row itself, in one widget. WCAG 2.1.1.
+          //
+          // Only the anchors need the handler; forwarding Space for the
+          // buttons would double-fire against the browser's own default.
+          if (currentIndex !== -1 && items[currentIndex].tagName === "A") {
+            e.preventDefault();
+            items[currentIndex].click();
+          }
+          break;
         case "Tab":
           // Deliberately no preventDefault: Tab has to keep moving, it is the
           // documented way out of a menu. Closing first and focusing the
