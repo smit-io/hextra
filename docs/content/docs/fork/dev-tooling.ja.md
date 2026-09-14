@@ -120,6 +120,29 @@ VS Code → "Reopen in Container"。初回オープン時に Hugo、Node、npm �
 
 {{% /steps %}}
 
+## act によるローカル CI
+
+リポジトリの GitHub Actions ワークフローは [act](https://nektosact.com) を使って Docker 上でローカル実行できるため、PR のチェックをプッシュ前に試せます。既定値は `.actrc`（ランナーイメージ、Apple Silicon 向けの amd64 アーキテクチャ、コンテナの再利用）にあり、Makefile が呼び出しをラップします。
+
+| ターゲット       | 内容                                                                                                                                                                                 |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `make ci-dry`    | 全ワークフローのドライラン（`act -n`）: ジョブグラフをたどり、コンテナを起動せずに各ステップを表示 — ワークフローの構文と配線を数秒で検証、イメージのプルなし                        |
+| `make ci`        | `pull_request` で起動する全ワークフロー — アクセシビリティ、ビルド出力、モバイルメニュー — を PR と同じようにジョブごとに 1 コンテナで実行                                           |
+| `make ci-a11y`   | アクセシビリティのワークフロー（`test-accessibility.yml`）: 本番ビルドのあと、英語の全ページに axe-core の WCAG 2.2 AA チェックを実施                                                |
+| `make ci-build`  | ビルド出力のワークフロー（`test-build.yml`）: 本番ビルドのあと、asciidoc・render-link・search-data のアサーションを実行                                                              |
+| `make ci-mobile` | モバイルメニューのワークフロー（`test-mobile-menu.yml`）: 本番ビルドのあと、Playwright のモバイルナビゲーションスイートを実行                                                        |
+| `make ci-pages`  | Pages デプロイ（`pages.yml`）の **build** ジョブ — GitHub Pages と同じ方法でサイトがビルドできるか検証。deploy ジョブは除外: GitHub の OIDC トークンが必要でローカルでは実行できない |
+
+いずれのターゲットも、開始前に act がインストールされているか（`brew install act`）と Docker が起動しているかを確認します。
+
+{{< callout type="info" >}}
+初回は時間がかかります: act が約 2 GB のランナーイメージをプルし、ジョブコンテナ内で Hugo と Playwright のブラウザーをダウンロードします。`.actrc` は `--reuse` を設定しており、ジョブコンテナが実行間で保持されるため、2 回目以降はこれらをすべてスキップします。やり直したいときは `act-*` コンテナを削除してください。
+{{< /callout >}}
+
+テストレポートをアップロードするワークフローステップ（`actions/upload-artifact`）は、act 自身が起動するローカルのアーティファクトサーバー（`.actrc` の `--artifact-server-path`）と通信します。アップロードされたアーティファクトは `/tmp/act-artifacts` 配下に置かれます。
+
+devcontainer 内では act CLI と Docker CLI があらかじめ入っており（devcontainer features）、ホストの Docker ソケットがマウントされています。ただしその場合、act のジョブコンテナはネストではなくホストのデーモン上の **兄弟** として動くため、バインドマウントはホスト側で解決できる必要があります。したがって `make ci` はホストのチェックアウトから実行するのが確実で、コンテナ内の act はベストエフォートと考えてください。
+
 ## アップストリームとの同期
 
 このフォークは、[imfing/hextra](https://github.com/imfing/hextra) を追跡するための Makefile ターゲットを 2 つ追加しています：

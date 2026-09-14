@@ -120,6 +120,29 @@ VS Code → "Reopen in Container"。首次打开会自动安装 Hugo、Node 和 
 
 {{% /steps %}}
 
+## 使用 act 运行本地 CI
+
+仓库的 GitHub Actions 工作流可以通过 [act](https://nektosact.com) 在本地 Docker 中运行，因此可以在推送前先跑一遍 PR 的检查。默认值放在 `.actrc` 中（运行器镜像、面向 Apple Silicon 的 amd64 架构、容器复用），Makefile 负责包装这些调用：
+
+| 目标             | 作用                                                                                                                                            |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `make ci-dry`    | 对所有工作流做空跑（`act -n`）：遍历作业图并打印每个步骤，但不启动容器——几秒内校验工作流语法与接线，不拉取镜像                                  |
+| `make ci`        | 运行所有由 `pull_request` 触发的工作流——可访问性、构建输出与移动端菜单——与 PR 完全一致，每个作业一个容器                                        |
+| `make ci-a11y`   | 可访问性工作流（`test-accessibility.yml`）：先做生产构建，再用 axe-core 对每个英文页面执行 WCAG 2.2 AA 检查                                     |
+| `make ci-build`  | 构建输出工作流（`test-build.yml`）：先做生产构建，再运行 asciidoc、render-link 与 search-data 断言                                              |
+| `make ci-mobile` | 移动端菜单工作流（`test-mobile-menu.yml`）：先做生产构建，再运行 Playwright 的移动端导航测试套件                                                |
+| `make ci-pages`  | Pages 部署（`pages.yml`）的 **build** 作业——验证站点能以 GitHub Pages 的方式构建。deploy 作业被排除：它需要 GitHub 的 OIDC 令牌，无法在本地运行 |
+
+每个目标在开始前都会检查 act 是否已安装（`brew install act`）以及 Docker 是否在运行。
+
+{{< callout type="info" >}}
+首次运行较慢：act 会拉取约 2 GB 的运行器镜像，工作流还会在作业容器内下载 Hugo 和 Playwright 浏览器。`.actrc` 设置了 `--reuse`，作业容器会在多次运行之间保留，因此后续运行会跳过这些步骤。想从头再来时，删除 `act-*` 容器即可。
+{{< /callout >}}
+
+上传测试报告的工作流步骤（`actions/upload-artifact`）会与 act 自己启动的本地产物服务器通信（`.actrc` 中的 `--artifact-server-path`）；上传的产物位于 `/tmp/act-artifacts` 下。
+
+在 devcontainer 内，act CLI 与 Docker CLI 已预装（devcontainer features），并挂载了宿主机的 Docker socket。但要注意，此时 act 的作业容器是在宿主机守护进程上以**兄弟**身份运行，而非嵌套运行——绑定挂载必须能在宿主机上解析，因此从宿主机检出目录运行 `make ci` 才是可靠路径；容器内的 act 请视为尽力而为。
+
 ## 与上游同步
 
 本 fork 添加了两个 Makefile 目标用于跟踪 [imfing/hextra](https://github.com/imfing/hextra)：
