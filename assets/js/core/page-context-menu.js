@@ -164,6 +164,16 @@ document.addEventListener("DOMContentLoaded", () => {
           e.preventDefault();
           closeDropdown(menu.closest(".hextra-page-context-menu"), true);
           break;
+        case "Tab":
+          // Deliberately no preventDefault: Tab has to keep moving, it is the
+          // documented way out of a menu. Closing first and focusing the
+          // toggle makes sequential navigation resume from the menu button,
+          // so Tab lands on whatever follows the widget and Shift+Tab on
+          // whatever precedes it. Without this the panel stayed open,
+          // aria-expanded stayed "true", and the menu floated over the
+          // content Tab had moved to.
+          closeDropdown(menu.closest(".hextra-page-context-menu"), true);
+          break;
       }
     });
   });
