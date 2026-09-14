@@ -268,10 +268,6 @@ test: ## Check formatting and the skill, build, then run the full Playwright sui
 	@$(MAKE) build
 	@npm test
 
-# Runs against the always-on preview container instead of Playwright's own
-# `npx serve`, so what you tested is exactly what port 8043 keeps serving
-# afterwards. Drafts are included - preview builds with -D - so a failing
-# half-written draft fails here, not in `make test`.
 # One command for "I am about to commit this". Two phases, in this order:
 # everything that writes, then everything that checks.
 #
@@ -302,6 +298,10 @@ verify: ## Format, regenerate, build and run everything - use before committing
 # Sub-makes, not prerequisites, so skill-check really does come before the
 # build rather than beside it under -j.
 
+# Runs against the always-on preview container instead of Playwright's own
+# `npx serve`, so what you tested is exactly what port 8043 keeps serving
+# afterwards. Drafts are included - preview builds with -D - so a failing
+# half-written draft fails here, not in `make test`.
 .PHONY: test-preview
 test-preview: ## Rebuild the preview (with drafts), then run the suite against it
 	@$(MAKE) skill-check
