@@ -20,6 +20,13 @@
   "dollar" before every line is noise - so it is hidden from assistive
   technology.
 
+  `dir="ltr"` on the command itself, not on the frame: a shell command is LTR
+  whatever the page is. Under `dir="rtl"` - `fa` in the docs site, set on
+  `<html>` by `baseof.html` - flex main-start moves to the right edge, which
+  puts the prompt after the command, and the bidi-neutral characters a command
+  is full of (`-`, `/`, `.`, `"`) reorder around it. The frame stays in the
+  page direction so its margins and placement still follow the text.
+
   @param {string|slice} lines One command line, or several. A string is split
     on newlines, so a YAML block scalar works as well as a sequence.
   @param {string} [prompt] Prompt glyph. Defaults to `params.command.prompt`, then `$`.
@@ -120,13 +127,13 @@
 {{- if $lines -}}
   {{- if $cover -}}
     <div class="{{ $frameClass }} hextra-command__frame--fixed" style="{{ printf "--hextra-command-ratio:%.2f" $ratio | safeCSS }}">
-      <div class="hextra-command hextra-command--cover" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
+      <div class="hextra-command hextra-command--cover" dir="ltr" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
         {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt "scrollable" false) -}}
       </div>
     </div>
   {{- else -}}
     <div class="{{ $frameClass }}">
-      <div class="hextra-command hextra-command--inline" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
+      <div class="hextra-command hextra-command--inline" dir="ltr" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
         {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt "scrollable" true) -}}
       </div>
     </div>
