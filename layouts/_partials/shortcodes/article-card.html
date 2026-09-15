@@ -68,12 +68,13 @@
     {{- end -}}
 
     <a class="hextra-article-card not-prose" href="{{ .RelPermalink }}">
+      {{- /* A div, not a span: a text cover is a Chroma block. See `article.html`. */ -}}
       {{- if and $showCover .Params.coverText -}}
-        <span class="hextra-article-card__cover">
+        <div class="hextra-article-card__cover">
           {{- partial "components/command-block.html" (dict "lines" .Params.coverText "mode" "cover") -}}
-        </span>
+        </div>
       {{- else -}}{{- with $cover.url -}}
-        <span class="hextra-article-card__cover">
+        <div class="hextra-article-card__cover">
           <img
             src="{{ . }}"
             {{ with $cover.lqip }}style="{{ printf "--hextra-lqip:url('%s')" . | safeCSS }}"{{ end }}
@@ -83,7 +84,7 @@
             {{ with $cover.width }}width="{{ . }}"{{ end }}
             {{ with $cover.height }}height="{{ . }}"{{ end }}
           />
-        </span>
+        </div>
       {{- end -}}{{- end -}}
       <span class="hextra-article-card__body">
         <span class="hextra-article-card__title">{{ .Title }}</span>

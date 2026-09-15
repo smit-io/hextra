@@ -102,6 +102,19 @@
   font-size: clamp(0.7rem, calc(var(--hextra-command-fs, 6) * 1cqi), 4rem);
 }
 
+/* The two side-by-side card layouts give the cover column a height of its own:
+   `.hextra-article-card__cover` (article-card.css) stretches to the card, and
+   `.hextra-blog-card-h-cover` (blog.css) to the card's `sm:h-64`. A fixed
+   aspect ratio there sizes the frame independently of the column - at 288px
+   wide a 7.2 ratio is 40px tall in a ~130px slot - so the ratio is dropped and
+   the frame fills the column instead. `.hextra-blog-card-cover` is full-width
+   with no height of its own, so it keeps the ratio. */
+.hextra-article-card__cover .hextra-command__frame--fixed,
+.hextra-blog-card-h-cover .hextra-command__frame--fixed {
+  @apply hx:h-full;
+  aspect-ratio: auto;
+}
+
 /* Hero covers sit between the breadcrumb and the title, where the image variant
    carries the same spacing - see `.hextra-blog-hero`. The border comes from the
    frame itself, so only the margins are left here. */

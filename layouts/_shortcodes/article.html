@@ -38,14 +38,22 @@
       {{- warnf "The 'article' shortcode links to its own page, skipping." -}}
     {{- end -}}
 
-    {{- partial "shortcodes/article-card.html" (dict
-      "page" $target
-      "self" $self
-      "showSummary" (.Get "showSummary")
-      "compactSummary" (.Get "compactSummary")
-      "cover" (.Get "cover")
-      )
-    -}}
+    {{/* Wrapped in a div so Goldmark reads the output as an HTML block. A bare
+      `<a ...>` on a line of its own does not meet any HTML-block start
+      condition, so Markdown wraps it in a paragraph - and the card's cover can
+      hold a `coverText` command block, which Chroma renders as a div. A div
+      inside a p is invalid and the parser splits it back out.
+    */}}
+    <div class="hextra-article">
+      {{- partial "shortcodes/article-card.html" (dict
+        "page" $target
+        "self" $self
+        "showSummary" (.Get "showSummary")
+        "compactSummary" (.Get "compactSummary")
+        "cover" (.Get "cover")
+        )
+      -}}
+    </div>
   {{- end -}}
 
 {{- end -}}
