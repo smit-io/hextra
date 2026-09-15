@@ -700,7 +700,7 @@ const DOCS_TOPICS = [
   { page: "fork/code-blocks", probe: /base_url/ },
   { page: "fork/blog", probe: /params\.blog|params:\s*\n\s*blog:/ },
   { page: "fork/accent-color", probe: /--color-accent-color-500/ },
-  { page: "fork/color-palettes", probe: /--color-neutral-/ },
+  { page: "fork/color-palettes", probe: /--hx-color-neutral-/ },
   { page: "fork/favicons", probe: /favicon-dark\.svg/ },
   // Out of scope: these document the theme's own development workflow, not
   // how to author a site with it.
