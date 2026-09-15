@@ -65,8 +65,13 @@
     {{- $prompt = . -}}
   {{- end -}}
 {{- end -}}
-{{- with .prompt -}}
-  {{- $prompt = . -}}
+{{/* Not `with`: that skips an empty string as well as a missing key, so
+  `prompt=""` - a deliberate "no glyph" - fell back to `$`. A key absent from
+  the dict reads as nil, which prints as `<nil>`; the same `printf "%v"`
+  comparison `article-card.html` uses for its own tri-state parameters.
+*/}}
+{{- if ne (printf "%v" .prompt) "<nil>" -}}
+  {{- $prompt = .prompt -}}
 {{- end -}}
 
 {{- $cover := eq (.mode | default "inline") "cover" -}}

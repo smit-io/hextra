@@ -18,7 +18,13 @@
     separate lines whatever `display` the stylesheet asks for.
   */}}
   <div class="hextra-command__line">
-    <span class="hextra-command__prompt" aria-hidden="true">{{ $prompt }}</span>
+    {{/* Omitted entirely when empty rather than rendered as an empty span: the
+      line is a flex row with a gap, so an empty glyph would still indent the
+      command by one gap with nothing in it.
+    */}}
+    {{- with $prompt -}}
+      <span class="hextra-command__prompt" aria-hidden="true">{{ . }}</span>
+    {{- end -}}
     {{/* `highlight` emits `<pre tabindex="0">` so that a wide block can be
       scrolled by keyboard, and the `pre` really is a scroll container: the
       fit-to-width maths clamps, so a long enough line overflows and the frame
