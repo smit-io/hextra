@@ -219,8 +219,11 @@ function parseShortcode(file) {
     const desc = d?.desc ?? "";
     const inCode = named.has(pname);
 
-    const declaredDefault = desc.match(/\bDefaults? (?:to )?([^.]+)\./i)?.[1];
-    const enumFromDesc = desc.match(/\bOne of ([^.]+)\./i)?.[1];
+    // The sentence ends at a period followed by whitespace or the end of the
+    // description, not at the first period in it - a declared default is
+    // often a dotted path, and `[^.]+` stopped inside `params.command.prompt`.
+    const declaredDefault = desc.match(/\bDefaults? (?:to )?(.+?)\.(?=\s|$)/i)?.[1];
+    const enumFromDesc = desc.match(/\bOne of (.+?)\.(?=\s|$)/i)?.[1];
 
     return {
       name: pname,
@@ -418,8 +421,8 @@ function paramTable(shortcode, enums) {
         escapeCell(
           p.desc
             .replace(/\s*Required\.\s*/, " ")
-            .replace(/\s*Defaults? (?:to )?[^.]+\.\s*/i, " ")
-            .replace(/\s*One of [^.]+\.\s*/i, " ")
+            .replace(/\s*Defaults? (?:to )?.+?\.(?=\s|$)\s*/i, " ")
+            .replace(/\s*One of .+?\.(?=\s|$)\s*/i, " ")
             .trim()
         )
       );
