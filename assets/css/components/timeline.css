@@ -12,6 +12,10 @@
   their selector after `::before`, which never matches, so `dark:` and
   `ltr:`/`rtl:` utilities silently do nothing on a pseudo-element. Logical
   properties handle RTL without a variant.
+
+  Note the `--hx-` prefix: `@import "tailwindcss" prefix(hx)` in `styles.css`
+  prefixes the emitted custom properties too, so the unprefixed
+  `--color-neutral-300` a Tailwind reference would give you does not exist.
 */
 .hextra-timeline__item::before {
   content: "";
@@ -20,25 +24,25 @@
   bottom: 0;
   width: 1px;
   inset-inline-start: 15.5px;
-  background-color: var(--color-hextra-white-300);
+  background-color: var(--hx-color-neutral-300);
 }
 
 .dark .hextra-timeline__item::before {
-  background-color: var(--color-hextra-black-800);
+  background-color: var(--hx-color-neutral-700);
 }
 
 .hextra-timeline__marker {
   @apply hx:absolute hx:top-1.5 hx:flex hx:size-8 hx:items-center hx:justify-center;
   @apply hx:rounded-full hx:border;
-  @apply hx:border-gray-300 hx:bg-hextra-light-50 hx:text-gray-500;
-  @apply hx:dark:border-neutral-700 hx:dark:bg-hextra-dark-700 hx:dark:text-neutral-400;
+  @apply hx:border-neutral-300 hx:bg-neutral-50 hx:text-neutral-500;
+  @apply hx:dark:border-neutral-700 hx:dark:bg-neutral-800 hx:dark:text-neutral-400;
   inset-inline-start: 0;
 }
 
 .hextra-timeline__content {
   @apply hx:rounded-lg hx:border hx:px-4 hx:py-3;
-  @apply hx:border-gray-200 hx:bg-hextra-light-50;
-  @apply hx:dark:border-neutral-800 hx:dark:bg-hextra-dark-700;
+  @apply hx:border-neutral-200 hx:bg-neutral-50;
+  @apply hx:dark:border-neutral-800 hx:dark:bg-neutral-900;
 }
 
 /*
@@ -50,7 +54,7 @@
 }
 
 .hextra-timeline__header {
-  @apply hx:min-w-0 hx:grow hx:font-semibold hx:text-gray-900 hx:dark:text-gray-100;
+  @apply hx:min-w-0 hx:grow hx:font-semibold hx:text-neutral-900 hx:dark:text-neutral-100;
 }
 
 .hextra-timeline__badge {
@@ -58,12 +62,12 @@
 }
 
 .hextra-timeline__subheader {
-  @apply hx:mt-1 hx:text-sm hx:text-gray-600 hx:dark:text-gray-400;
+  @apply hx:mt-1 hx:text-sm hx:text-neutral-600 hx:dark:text-neutral-400;
 }
 
 .hextra-timeline__body {
   @apply hx:mt-3 hx:text-sm hx:leading-relaxed;
-  @apply hx:text-gray-700 hx:dark:text-gray-300;
+  @apply hx:text-neutral-700 hx:dark:text-neutral-300;
 
   > :first-child {
     @apply hx:mt-0;

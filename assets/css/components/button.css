@@ -37,6 +37,6 @@
 }
 
 .hextra-button--ghost {
-  @apply hx:bg-transparent hx:text-gray-700 hx:hover:bg-gray-100;
-  @apply hx:dark:text-gray-200 hx:dark:hover:bg-neutral-800;
+  @apply hx:bg-transparent hx:text-neutral-700 hx:hover:bg-neutral-100;
+  @apply hx:dark:text-neutral-200 hx:dark:hover:bg-neutral-800;
 }

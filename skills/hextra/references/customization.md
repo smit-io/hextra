@@ -49,20 +49,26 @@ These are runtime CSS variables, so no theme rebuild is needed — every accent-
 
 [uicolors.app](https://uicolors.app/create) generates a full `50`–`950` ramp from one brand color and exports it in Tailwind OKLCH format, which maps one-to-one onto these variable names.
 
-Do not set `--primary-hue` / `--primary-saturation` / `--primary-lightness`; that is the upstream mechanism this replaces.
+`--primary-hue` / `--primary-saturation` / `--primary-lightness` and the `primary-*` colour utilities they fed no longer exist; the accent palette replaced them outright.
 
-## Neutral palettes
+## Neutrals and the page background
 
-Greys are two more 11-shade ramps, overridable the same way:
+Every surface, border and text colour is a step of Tailwind's `neutral` family — light mode on the low end, dark on the high end. The page itself is not: it is its own token, `--hextra-bg`, whose two values sit between Tailwind's steps deliberately.
 
 ```css
 :root {
-  --color-hextra-light-100: oklch(97.3% 0.005 85); /* light-mode surfaces */
-  --color-hextra-dark-600: oklch(17.6% 0.01 250); /* dark-mode surfaces */
+  --hextra-bg: oklch(97.3% 0.005 85); /* the page, light mode */
+  --hx-color-neutral-50: oklch(98.5% 0.002 85); /* raised surfaces above it */
+}
+
+.dark {
+  --hextra-bg: oklch(17.6% 0.01 250); /* the page, dark mode */
 }
 ```
 
-`--color-hextra-white-*` and `--color-hextra-black-*` are extra ramps for the extremes.
+Note the `--hx-` prefix on the Tailwind steps. Hextra imports Tailwind as `@import "tailwindcss" prefix(hx)`, which prefixes the emitted custom properties too, so `--color-neutral-50` is not a name anything reads. The accent is the one unprefixed exception, because `styles.css` defines `--color-accent-color-*` by hand and maps it through.
+
+Overriding a shade retints every surface, border and text colour that uses it.
 
 ## Layout widths
 

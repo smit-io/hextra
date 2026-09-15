@@ -538,6 +538,27 @@
     ],
     "description": "Ansible Galaxy collection card. role and collection are mutually exclusive."
   },
+  "Hextra: command": {
+    "scope": "markdown",
+    "prefix": "hxcommand",
+    "body": [
+      "{{< command >}}",
+      "${1:claude add skill hextra}",
+      "{{< /command >}}"
+    ],
+    "description": "A shell command rendered as text: prompt glyph in the accent colour, command coloured by Chroma (layouts/_shortcodes/command.html)."
+  },
+  "Hextra: command (custom prompt)": {
+    "scope": "markdown",
+    "prefix": "hxcommand-prompt",
+    "body": [
+      "{{< command prompt=\"${1:>}\" >}}",
+      "${2:npm install}",
+      "${3:npm run dev}",
+      "{{< /command >}}"
+    ],
+    "description": "Command block with a prompt glyph other than params.command.prompt."
+  },
   "Hextra: gist": {
     "scope": "markdown",
     "prefix": "hxgist",
@@ -603,7 +624,7 @@
     "prefix": "hxhero",
     "body": [
       "{{< hextra/hero-badge link=\"${1:https://github.com/imfing/hextra/releases}\" >}}",
-      "  <div class=\"hx:w-2 hx:h-2 hx:rounded-full hx:bg-primary-400\"></div>",
+      "  <div class=\"hx:w-2 hx:h-2 hx:rounded-full hx:bg-hextra-accent-400\"></div>",
       "  <span>${2:New release}</span>",
       "{{< /hextra/hero-badge >}}",
       "",

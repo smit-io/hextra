@@ -3,7 +3,7 @@
 
 # Shortcode reference
 
-Every shortcode the theme ships: 59 of them, with parameters taken from the templates in `layouts/_shortcodes/` and examples from the theme's editor snippets.
+Every shortcode the theme ships: 60 of them, with parameters taken from the templates in `layouts/_shortcodes/` and examples from the theme's editor snippets.
 
 ## Rules that apply throughout
 
@@ -609,7 +609,7 @@ A shortcode for creating an image gallery.
 | Parameter | Type | Notes |
 | --- | --- | --- |
 | `cols` | number | Number of columns (default 3, ignored for masonry which is responsive) Default `3`. |
-| `gap` | string | Gap between items (CSS length, 5rem") Default `"0`. |
+| `gap` | string | Gap between items (CSS length, default "0.5rem") Default `0.5rem`. |
 | `type` | string | Layout type: grid (default) \| mosaic \| masonry \| carousel One of `grid`, `mosaic`, `masonry`, `carousel`. Default `grid`. |
 
 ```markdown
@@ -785,6 +785,27 @@ Site config: `params.highlight.copy.enable`.
 
 Pull code or Markdown in from elsewhere.
 
+### command
+
+{{< >}} · paired
+
+Render a shell command as text: the prompt glyph in the accent colour, the command itself coloured by Chroma's shell lexer.
+
+| Parameter | Type | Notes |
+| --- | --- | --- |
+| `prompt` | string | Prompt glyph. Default ``params.command.prompt`, then `$``. |
+
+```markdown
+{{< command >}}
+claude add skill hextra
+{{< /command >}}
+
+{{< command prompt=">" >}}
+npm install
+npm run dev
+{{< /command >}}
+```
+
 ### gist
 
 {{< >}} · self-closing · accepts positional arguments · fetches at build time
@@ -884,7 +905,7 @@ Render a card for a GitLab project, with its description and current star and fo
 
 | Parameter | Type | Notes |
 | --- | --- | --- |
-| `baseURL` | string | Instance URL. com". Default `"https://gitlab`. |
+| `baseURL` | string | Instance URL. Default `"https://gitlab.com"`. |
 | `project` | string | Namespace path, e.g. "gitlab-org/gitlab". Also accepted as the first positional argument. |
 | `projectID` | string | **Required.** Numeric project id, e.g. "278964". |
 | `showThumbnail` | bool | Show the project's avatar. Default `false`. |
@@ -939,7 +960,7 @@ Render a card for a Codeberg repository, with its description, language and curr
 | --- | --- | --- |
 | `icon` | string | Icon shown before the title. Default `"codeberg"`. |
 | `repo` | string | **Required.** Repository as "owner/name". Also accepted as the first positional argument. |
-| `server` | string | Instance URL. org". Default `"https://codeberg`. |
+| `server` | string | Instance URL. Default `"https://codeberg.org"`. |
 | `showThumbnail` | bool | Show the owner's avatar. Default `false`. |
 
 ```markdown
@@ -1000,7 +1021,7 @@ A shortcode for rendering a badge with a link.
 
 ```markdown
 {{< hextra/hero-badge link="https://github.com/imfing/hextra/releases" >}}
-  <div class="hx:w-2 hx:h-2 hx:rounded-full hx:bg-primary-400"></div>
+  <div class="hx:w-2 hx:h-2 hx:rounded-full hx:bg-hextra-accent-400"></div>
   <span>New release</span>
 {{< /hextra/hero-badge >}}
 

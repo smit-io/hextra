@@ -219,8 +219,11 @@ function parseShortcode(file) {
     const desc = d?.desc ?? "";
     const inCode = named.has(pname);
 
-    const declaredDefault = desc.match(/\bDefaults? (?:to )?([^.]+)\./i)?.[1];
-    const enumFromDesc = desc.match(/\bOne of ([^.]+)\./i)?.[1];
+    // The sentence ends at a period followed by whitespace or the end of the
+    // description, not at the first period in it - a declared default is
+    // often a dotted path, and `[^.]+` stopped inside `params.command.prompt`.
+    const declaredDefault = desc.match(/\bDefaults? (?:to )?(.+?)\.(?=\s|$)/i)?.[1];
+    const enumFromDesc = desc.match(/\bOne of (.+?)\.(?=\s|$)/i)?.[1];
 
     return {
       name: pname,
@@ -364,7 +367,7 @@ const CATEGORIES = [
   {
     title: "Code and content import",
     blurb: "Pull code or Markdown in from elsewhere.",
-    names: ["gist", "codeimporter", "include"],
+    names: ["command", "gist", "codeimporter", "include"],
   },
   {
     title: "Repository cards",
@@ -418,8 +421,8 @@ function paramTable(shortcode, enums) {
         escapeCell(
           p.desc
             .replace(/\s*Required\.\s*/, " ")
-            .replace(/\s*Defaults? (?:to )?[^.]+\.\s*/i, " ")
-            .replace(/\s*One of [^.]+\.\s*/i, " ")
+            .replace(/\s*Defaults? (?:to )?.+?\.(?=\s|$)\s*/i, " ")
+            .replace(/\s*One of .+?\.(?=\s|$)\s*/i, " ")
             .trim()
         )
       );
@@ -697,7 +700,7 @@ const DOCS_TOPICS = [
   { page: "fork/code-blocks", probe: /base_url/ },
   { page: "fork/blog", probe: /params\.blog|params:\s*\n\s*blog:/ },
   { page: "fork/accent-color", probe: /--color-accent-color-500/ },
-  { page: "fork/color-palettes", probe: /--color-hextra-light/ },
+  { page: "fork/color-palettes", probe: /--hx-color-neutral-/ },
   { page: "fork/favicons", probe: /favicon-dark\.svg/ },
   // Out of scope: these document the theme's own development workflow, not
   // how to author a site with it.

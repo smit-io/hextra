@@ -49,7 +49,30 @@
   // to ~/.cache/ms-playwright. Run unprivileged so that cache is owned by the
   // container user; --with-deps elevates on its own for the apt step only.
   // Chromium only: playwright.config.ts declares no projects.
-  "postCreateCommand": "sudo chown -R \"$(id -u):$(id -g)\" node_modules && npm install && npx playwright install --with-deps chromium",
+  //
+  // Then the two content-authoring tools: freeze renders code snippets to SVG
+  // with the font embedded, asciinema records the .cast files the asciinema
+  // shortcode plays. Last so a failure here cannot block npm or the Playwright
+  // browser download, which the test suite depends on - and independent of
+  // each other, and non-fatal. They were `&&`-chained to the required steps
+  // and to each other, so an unpinned `apt-get` hiccup skipped freeze and
+  // failed postCreateCommand outright, after which `make doctor` advises
+  // reopening in the devcontainer: the step that had just failed. Neither
+  // tool is needed to build, test or preview the site.
+  //
+  // freeze needs no sudo and no arch detection: the base image (golang:trixie)
+  // sets GOPATH=/go and puts /go/bin on PATH, and freeze is pure Go, no cgo.
+  // Pinned; `go install` verifies it against sum.golang.org.
+  //
+  // asciinema comes from Debian rather than upstream - 2.4.0 against 3.2.1 -
+  // which costs `asciinema convert` and live streaming, neither of which is
+  // needed to produce docs casts. It records asciicast v2 and the player is
+  // loaded unpinned from jsDelivr, which reads v2 and v3 both.
+  //
+  // The apt-get update is deliberate even though `playwright install
+  // --with-deps` directly above runs one of its own; depending on that as an
+  // implicit side effect would break the moment the Playwright step moves.
+  "postCreateCommand": "sudo chown -R \"$(id -u):$(id -g)\" node_modules && npm install && npx playwright install --with-deps chromium || exit 1; { sudo apt-get update && sudo apt-get install -y --no-install-recommends asciinema; } || echo 'devcontainer: asciinema unavailable (optional, docs casts only)'; go install github.com/charmbracelet/freeze@v0.2.2 || echo 'devcontainer: freeze unavailable (optional, snippet SVGs only)';",
   // Docker Desktop's VirtioFS periodically serves uid 0 for the *root inode* of
   // a bind mount. Measured in this container: 32 of 300 reads (~11%), in ~1s
   // windows roughly every 25s. Children are never affected - 0 of 300 on both

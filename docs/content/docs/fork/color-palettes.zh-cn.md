@@ -3,82 +3,68 @@ title: 调色板
 weight: 3
 ---
 
-除了[强调色](accent-color)之外，本 fork 还将上游的扁平背景（浅色模式的 `bg-white`、深色模式的 `#111`）替换为专用的**中性调色板**——浅色和深色模式各有十一级色阶，均以 `oklch` 定义。
+上游 Hextra 使用扁平的背景色——浅色模式用 `bg-white`，深色模式用单一的 `#111`，其余地方则使用 Tailwind 中带蓝色调的 `gray` 和 `slate`。本 fork 只用一个中性色系——**Tailwind 的 `neutral`**——来处理所有背景、边框和文字。
 
 <!--more-->
 
-## 调色板
+## 一个色系，两种模式
 
-所有调色板都位于 `assets/css/styles.css`，并作为 Tailwind v4 颜色令牌暴露出来，因此可以在主题中的任何地方作为工具类使用（`hx:bg-hextra-light-200`、`hx:dark:border-hextra-dark-900`、……）。
+主题中的所有中性色都是 `neutral-*` 工具类。浅色模式用低段，深色模式用高段，在元素上成对出现：
 
-### 浅色模式 —— `hextra-light-*`
+```html
+<div class="hx:bg-neutral-100 hx:dark:bg-neutral-900">…</div>
+```
 
-一条从近白色到中灰的紧凑灰阶梯度：
+与带蓝色调的 `gray` 和 `slate` 不同，`neutral` 是真正的无彩色。这一点在正文文字上最为明显：读者停留在页面上的整段时间都在看它，暖色强调色配冷灰文字即使没有明显问题，读起来也会觉得不协调。
 
-| 令牌               | 值                 | 十六进制  |
-| ------------------ | ------------------ | --------- |
-| `hextra-light-50`  | `oklch(98.8% 0 0)` | `#fcfcfc` |
-| `hextra-light-100` | `oklch(97.3% 0 0)` | `#f8f8f8` |
-| `hextra-light-200` | `oklch(93.7% 0 0)` | `#efefef` |
-| `hextra-light-300` | `oklch(90.6% 0 0)` | `#e7e7e7` |
-| `hextra-light-400` | `oklch(87.1% 0 0)` | `#dedede` |
-| `hextra-light-500` | `oklch(83.5% 0 0)` | `#d5d5d5` |
-| `hextra-light-600` | `oklch(80.4% 0 0)` | `#cdcdcd` |
-| `hextra-light-700` | `oklch(76.9% 0 0)` | `#c4c4c4` |
-| `hextra-light-800` | `oklch(73.3% 0 0)` | `#bbbbbb` |
-| `hextra-light-900` | `oklch(70.2% 0 0)` | `#b3b3b3` |
-| `hextra-light-950` | `oklch(66.7% 0 0)` | `#aaaaaa` |
+## 层级
 
-### 深色模式 —— `hextra-dark-*`
+主题把各个表面固定在既定层级上，使某个表面相对页面的位置始终符合预期：
 
-一条从近黑色向上延伸的深灰梯度：
+| 用途                   | 浅色          | 深色          |
+| ---------------------- | ------------- | ------------- |
+| 页面——`--hextra-bg`    | `#f7f7f7`     | `#111111`     |
+| 抬升表面——代码块、卡片 | `neutral-50`  | `neutral-950` |
+| 面板——折叠块、系列盒   | `neutral-50`  | `neutral-900` |
+| 浮层——下拉框、菜单     | `neutral-100` | `neutral-900` |
+| 外框——文件名栏、悬停   | `neutral-200` | `neutral-800` |
+| 边框                   | `neutral-400` | `neutral-800` |
 
-| 令牌              | 值                 | 十六进制  |
-| ----------------- | ------------------ | --------- |
-| `hextra-dark-50`  | `oklch(3.1% 0 0)`  | `#080808` |
-| `hextra-dark-100` | `oklch(6.7% 0 0)`  | `#111111` |
-| `hextra-dark-200` | `oklch(9.0% 0 0)`  | `#171717` |
-| `hextra-dark-300` | `oklch(11.0% 0 0)` | `#1c1c1c` |
-| `hextra-dark-400` | `oklch(13.3% 0 0)` | `#222222` |
-| `hextra-dark-500` | `oklch(15.7% 0 0)` | `#282828` |
-| `hextra-dark-600` | `oklch(17.6% 0 0)` | `#2d2d2d` |
-| `hextra-dark-700` | `oklch(20.0% 0 0)` | `#333333` |
-| `hextra-dark-800` | `oklch(22.4% 0 0)` | `#393939` |
-| `hextra-dark-900` | `oklch(24.3% 0 0)` | `#3e3e3e` |
-| `hextra-dark-950` | `oklch(26.7% 0 0)` | `#444444` |
+注意方向在两种模式之间是相反的：浅色模式下抬升表面比页面 _更亮_，深色模式下则 _更暗_。
 
-### 额外梯度 —— `hextra-white-*` 和 `hextra-black-*`
-
-另外还定义了两条覆盖全范围的灰阶梯度（`#ffffff` → `#292929` 和 `#f6f6f6` → `#000000`），供需要比紧凑的 `light`/`dark` 梯度更高对比度中性色的场景使用。
-
-## 使用位置
-
-- **页面背景** —— `body` 在浅色模式使用 `hextra-light-100`，在深色模式使用 `hextra-dark-600`（而非上游的纯白 / `#111`）。深色模式刻意*不*使用纯黑：内容表面（代码块的 `hextra-dark-50`、标题栏的 `hextra-dark-700`）会明显地衬托在页面背景之上或之下。
-- **代码块** —— 背景、边框和文件名标题栏；参见[代码块](code-blocks)。
-- **分节边框** —— 例如深色模式下 `h2` 的下划线边框使用 `hextra-dark-900`。
-- **组件外观** —— 搜索、侧边栏、步骤、警告框、画廊、导航栏和 jupyter 组件都已从 `primary` 染色的灰色迁移到调色板令牌。
-- **提示框与徽章** —— 提示框和 GitHub 风格的警告框按类型（info、warning、error……）使用一套饱和的、受 GitHub 启发的调色板，徽章则使用同一思路的高对比度变体。二者都为浅色和深色模式分别调校，而不是在不同透明度下复用同一种染色。
+页面本身是个例外：它根本不是 `neutral` 的某一色阶，而是自己的令牌 `--hextra-bg`，两个取值刻意落在 Tailwind 的色阶之间。这也是为什么凡是延续页面的元素——导航栏模糊层、侧边栏抽屉、吸底页脚——都只用 `hx:bg-hextra-bg` 而没有 `dark:` 搭档：该令牌本身会在 `.dark` 下切换。
 
 ## 自定义
 
-调色板变量遵循与强调色相同的模式——在 `assets/css/custom.css` 中覆盖它们：
+Tailwind v4 会把自身的主题颜色暴露为 CSS 自定义属性，因此覆盖某一色阶只需一行。写在 `assets/css/custom.css` 里即可，该文件会在主题样式表之后加载。
+
+有两个名字需要注意。页面是 `--hextra-bg`，浅色模式设一次，`.dark` 下再设一次。其余表面都是 Tailwind 的色阶，而 Hextra 以 `@import "tailwindcss" prefix(hx)` 引入 Tailwind，连同输出的自定义属性一起加了前缀——所以要覆盖的名字是 `--hx-color-neutral-50`，而不是 `--color-neutral-50`。（强调色是唯一没有前缀的名字，因为 `styles.css` 自己定义了 `--color-accent-color-*` 并做了映射；参见[强调色](accent-color)。）
 
 ```css {filename="assets/css/custom.css"}
 :root {
-  /* Warmer light background */
-  --color-hextra-light-100: oklch(97.3% 0.005 85);
+  /* 更暖的页面背景 */
+  --hextra-bg: oklch(97.3% 0.005 85);
 
-  /* Slightly blue-tinted dark background */
-  --color-hextra-dark-600: oklch(17.6% 0.01 250);
+  /* 高它一级的抬升表面 */
+  --hx-color-neutral-50: oklch(98.5% 0.002 85);
+}
+
+.dark {
+  /* 略带蓝调的深色页面 */
+  --hextra-bg: oklch(17.6% 0.01 250);
 }
 ```
 
-只需覆盖你想改变的色阶；其余的会保持默认值。
+只需覆盖想改的色阶，其余保持 Tailwind 的默认值。
 
 {{< callout type="warning" >}}
-请保持梯度的*顺序*不变（每级色阶都比相邻级更深/更浅，与默认值一致）。组件假定梯度是单调的——颠倒色阶会导致边框不可见或文字对比度过低。
+请保持色阶的顺序——像默认值一样，每一级都比相邻级更亮或更暗。组件假定色阶是单调的，颠倒顺序会导致边框不可见、文字对比度过低。
 {{< /callout >}}
 
-## 为什么用 `oklch`？
+## 为什么用 `neutral` 而不是自定义色阶？
 
-`oklch` 是一个感知均匀的色彩空间：亮度通道上相等的步长在视觉上看起来也是相等的，而十六进制/HSL 无法保证这一点。对于灰阶梯度来说，这意味着 `100` 和 `200` 之间的视觉距离与 `800` 和 `900` 之间的相同。它也让染色变得轻而易举——给任何色阶加上少量的色度和一个色相值，无需重新调整其亮度。每级色阶在 `styles.css` 中都以注释形式附有等效的十六进制值以供参考。
+早期版本的 fork 自带四套色阶——`hextra-light-*`、`hextra-dark-*`、`hextra-white-*` 和 `hextra-black-*`——与 `gray`、`slate`、`neutral` 并存。同一件事有七个色系，且没有选用规则；更麻烦的是两套模式专用色阶的编号方向相反：`hextra-light-100` 接近白色，而 `hextra-dark-100` 接近黑色。
+
+统一之后不仅消除了歧义，也顺带修掉了一个缺陷。深色色阶的 `oklch` 明度值是用 `byte / 255` 算出来的，而不是真正转换得到的，于是十一级全部挤在 `#000000`–`#262626` 区间内，前四级彼此相差不到两点。`neutral` 在整个范围内都有真实的间距。
+
+`hextra-accent-*` 不受影响，强调色调色板仍然是本 fork 自己的。参见[强调色](accent-color)。

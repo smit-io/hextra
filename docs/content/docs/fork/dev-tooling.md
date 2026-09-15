@@ -88,10 +88,10 @@ Details worth knowing:
 
 Upstream uses a plain devcontainer image. The fork runs the devcontainer under **Docker Compose** (`.devcontainer/docker-compose.yml`) with two services:
 
-- **`dev`** — the Go devcontainer image your editor attaches to, with the repo mounted at `/workspaces/hextra`. Devcontainer features install Hugo Extended (pinned version) and Node 22; `postCreateCommand` runs `npm install` so the container is build-ready on first open. A curated set of VS Code extensions (Tailwind, Hugo, Prettier, Git Graph, …) comes preconfigured.
+- **`dev`** — the Go devcontainer image your editor attaches to, with the repo mounted at `/workspaces/hextra`. Devcontainer features install Hugo Extended (pinned version) and Node 22; `postCreateCommand` runs `npm install` so the container is build-ready on first open, then installs two content-authoring tools: [**freeze**](https://github.com/charmbracelet/freeze), which renders code snippets to SVG with the font embedded, and **asciinema**, which records the `.cast` files the [asciinema shortcode](../guide/shortcodes/asciinema) plays. A curated set of VS Code extensions (Tailwind, Hugo, Prettier, Git Graph, …) comes preconfigured.
 - **`preview`** — a tiny (~258 kB) static file server (`pierrezemb/gostatic`) that serves `docs/public` read-only, with `Cache-Control: no-store` so you never debug a stale page. It starts with the dev container and stays up: re-running `make build` (or `make preview`) updates the served site with no container restart.
 
-`devcontainer-lock.json` is tracked for reproducible tool versions. `.vscode/hextra.code-snippets` is picked up automatically in both the container and a plain host checkout — see [VS Code Snippets](vscode-snippets).
+`devcontainer-lock.json` is tracked for reproducible tool versions. It records the devcontainer _features_ only, so the two authoring tools are pinned elsewhere: `freeze` by version in the `postCreateCommand` itself (`go install` verifies it against `sum.golang.org`), `asciinema` by whatever Debian ships — 2.4.0, which records asciicast v2. `.vscode/hextra.code-snippets` is picked up automatically in both the container and a plain host checkout — see [VS Code Snippets](vscode-snippets).
 
 A named volume masks `node_modules` inside the container, so the container keeps its own Linux-native npm binaries (e.g. `lightningcss`) while the host keeps macOS ones — running `npm install` on one side no longer breaks the other.
 

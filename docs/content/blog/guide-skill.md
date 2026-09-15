@@ -10,6 +10,7 @@ tags:
 series:
   - Guides
 seriesOrder: 8
+coverText: claude add skill hextra
 ---
 
 Ask a coding agent to add a collapsible section to a Hextra page and watch what happens. It writes `{{</* details summary="More" open="true" */>}}` — Hugo's built-in syntax, confidently, because that is what the training data holds. Hextra shadows `details` with its own, which takes `title=` and `closed=` and needs the percent notation. The build succeeds. The page renders an empty label and ignores the state. Nothing errors.

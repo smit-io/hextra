@@ -5,12 +5,12 @@
 
 .hextra-stat {
   @apply hx:rounded-lg hx:border hx:p-5;
-  @apply hx:border-gray-200 hx:bg-hextra-light-50;
-  @apply hx:dark:border-neutral-800 hx:dark:bg-hextra-dark-700;
+  @apply hx:border-neutral-200 hx:bg-neutral-50;
+  @apply hx:dark:border-neutral-800 hx:dark:bg-neutral-900;
 }
 
 .hextra-stat__icon {
-  @apply hx:mb-2 hx:text-gray-400 hx:dark:text-neutral-500;
+  @apply hx:mb-2 hx:text-neutral-400 hx:dark:text-neutral-500;
 
   svg {
     @apply hx:inline-block;
@@ -24,12 +24,12 @@
 
 .hextra-stat__label {
   @apply hx:mt-1 hx:text-sm hx:font-medium hx:tracking-wide;
-  @apply hx:text-gray-600 hx:dark:text-gray-300;
+  @apply hx:text-neutral-600 hx:dark:text-neutral-300;
 }
 
 .hextra-stat__body {
   @apply hx:mt-2 hx:text-sm hx:leading-relaxed;
-  @apply hx:text-gray-600 hx:dark:text-gray-400;
+  @apply hx:text-neutral-600 hx:dark:text-neutral-400;
 
   > :first-child {
     @apply hx:mt-0;
