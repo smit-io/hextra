@@ -20,7 +20,7 @@
 
 <article class="hextra-blog-card hextra-blog-card-h">
   {{- if $card.cover -}}
-    {{- $cover := partial "blog/cover.html" (dict "page" $page "variant" "card") -}}
+    {{- $cover := partialCached "blog/cover.html" (dict "page" $page "variant" "card") $page.RelPermalink "card" -}}
     {{- if trim $cover " \n\t" -}}
       <div class="hextra-blog-card-h-cover">
         {{- $cover | safeHTML -}}

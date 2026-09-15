@@ -55,7 +55,7 @@
           the post is before being told where it sits in the series.
         */}}
         {{- partial "blog/series.html" (dict "context" . "config" $cfg) -}}
-        {{ if $cfg.article.cover }}{{ partial "blog/cover.html" (dict "page" . "variant" "hero") }}{{ end }}
+        {{ if $cfg.article.cover }}{{ partialCached "blog/cover.html" (dict "page" . "variant" "hero") .RelPermalink "hero" }}{{ end }}
         <div class="content">
           {{ partial "custom/content-begin.html" . }}
           {{ .Content }}

@@ -29,8 +29,11 @@
 {{- with .page -}}
   {{- if ne .RelPermalink $self -}}
 
+    {{/* A text cover wins below, so resolving the image here would run the
+      resize and the LQIP encode and then throw both away.
+    */}}
     {{- $cover := dict -}}
-    {{- if $showCover -}}
+    {{- if and $showCover (not .Params.coverText) -}}
       {{- $cover = partial "utils/page-image.html" (dict "page" . "process" "Resize 400x webp q80") -}}
     {{- end -}}
 

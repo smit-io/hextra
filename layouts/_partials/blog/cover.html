@@ -13,6 +13,12 @@
   stand-in shows until the real pixels land on top of it. Covers without one
   (remote URLs, SVGs) simply fall back to the flat column background.
 
+  Callers reach this through `partialCached`, keyed on the post's
+  RelPermalink and the variant: the output depends on nothing else, and a list
+  page renders the same post's card on /blog/, its tag pages and its series
+  page. A `coverText` post is the expensive case - each line is a separate
+  `highlight` call.
+
   @param {page} page The post.
   @param {string} [variant] "card" (default) or "hero".
 
