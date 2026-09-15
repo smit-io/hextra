@@ -41,8 +41,12 @@
   @apply hx:flex hx:items-baseline hx:gap-[0.6em];
 }
 
+/* accent-700 in light, not accent-500: the prompt sits on the frame's
+   `neutral-50`, where accent-500 measures 2.60:1 - under the 3:1 floor even
+   for large text. `toc.css` records the same finding one step darker, having
+   rejected accent-600 at 3.71:1 on the page. Dark mode already passes. */
 .hextra-command__prompt {
-  @apply hx:shrink-0 hx:select-none hx:text-hextra-accent-500 hx:dark:text-hextra-accent-400;
+  @apply hx:shrink-0 hx:select-none hx:text-hextra-accent-700 hx:dark:text-hextra-accent-400;
 }
 
 /* ----------------------------------------------------------------- inline */
