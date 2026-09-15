@@ -5,13 +5,13 @@
 }
 
 @media (max-width: 48rem) {
+  /* One rule, no `.dark` twin: `--hextra-bg` flips under `.dark` itself, so it
+     is correct in both modes. The dark half used to name `--hx-color-dark`,
+     which no longer exists - the backdrop resolved to transparent and the
+     `!important` still beat the blur above it. */
   [data-hextra-banner="visible"] .hextra-nav-container-blur {
-    background-color: var(--hx-color-white) !important;
+    background-color: var(--hextra-bg) !important;
     height: max(100%, var(--hextra-banner-height));
-  }
-
-  .dark[data-hextra-banner="visible"] .hextra-nav-container-blur {
-    background-color: var(--hx-color-dark) !important;
   }
 }
 
