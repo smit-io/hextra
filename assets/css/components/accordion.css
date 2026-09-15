@@ -1,11 +1,11 @@
 /* Surface, border and hover colours match the `details` shortcode, so the two
    collapsibles read as the same component family in a page that uses both.
 
-   The light surface is `light-50`, the same near-white a code block uses, rather
-   than the `light-200` grey it had: side by side with a code block the grey read
-   as muddy. The hover keeps its two-step distance from the resting surface, so
-   it moves down with it. The border is `light-900`, also the code block's, so the
-   two draw the same weight of edge. Dark mode is unchanged. */
+   The light surface is `neutral-50`, the same near-white a code block uses,
+   rather than the mid grey it had: side by side with a code block the grey read
+   as muddy. The hover keeps its distance from the resting surface, so it moves
+   down with it. The border is `neutral-400`, also the code block's, so the two
+   draw the same weight of edge. See `series.css`, which matches this. */
 .hextra-accordion {
   @apply hx:my-6 hx:overflow-hidden hx:rounded-lg hx:border;
   @apply hx:border-neutral-400 hx:bg-neutral-50;

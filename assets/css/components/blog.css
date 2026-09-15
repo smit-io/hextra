@@ -185,9 +185,11 @@
   content: "";
 }
 
-/* The dark value matches the theme selector's panel (`theme-toggle.html`),
-   so a cover and the light/dark menu read as the same surface. Light is still
-   `neutral-100` and a shade off `neutral-100`; see the palette note. */
+/* The Overlay level: `neutral-100` in light, `neutral-900` in dark - the same
+   pair as the theme selector's panel (`theme-toggle.html`), so a cover and the
+   light/dark menu read as the same surface. It is what shows through the
+   letterboxing of a contained cover image, so it has to be a real surface
+   rather than the page. */
 .hextra-blog-card-cover {
   @apply hx:block hx:overflow-hidden hx:bg-neutral-100 hx:dark:bg-neutral-900;
 }

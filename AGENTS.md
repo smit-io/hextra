@@ -81,7 +81,7 @@ assets/
     repeating positions without a shortcode)
   - Media: `video`, `youtube-lite`, `gallery`, `gallery-item`, `pdf`, `chart`,
     `typeit`, `asciinema`, `term`, `jupyter`
-  - Code and content import: `gist`, `codeimporter`, `include`
+  - Code and content import: `command`, `gist`, `codeimporter`, `include`
   - Repository cards: `github`, `gitlab`, `gitea`, `codeberg`, `forgejo`,
     `huggingface`, `ansible`
 - **Code Features**: Syntax highlighting (Chroma), copy buttons, line numbers via render hooks
@@ -232,8 +232,10 @@ modes: light raises by getting lighter, dark by getting darker.
 
 Overlays are their own level on purpose: a floating menu sits slightly darker
 than the page in light mode so it reads as above it, which is how Material and
-Nextra both treat them. `page-context-menu.html`'s item hover at `neutral-200` /
-`neutral-700` only works from that base.
+Nextra both treat them. Dropdown items hover one level up from their panel -
+`neutral-200` / `neutral-800` - which only works from that base.
+`page-context-menu.html` is the exception and hovers to `hextra-accent-100` /
+`hextra-accent-950` instead, tinting its icon and label with it.
 
 **Radius by size, not by taste.** The scale in use is four steps, and which one
 you want follows from what the element is:

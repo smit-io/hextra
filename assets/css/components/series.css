@@ -55,11 +55,12 @@
 }
 
 .hextra-series__intro {
-  /* neutral-500 is the theme's usual muted text, but it is only ever set on the
-     light-50/light-100 surfaces. On this module's light-200 it measures
-     4.02:1, and 3.27:1 against the summary's own hover colour - both under
-     the 4.5:1 AA floor for 14px normal-weight text. neutral-600 gives 6.29:1 and
-     is already what the sibling links use. */
+  /* neutral-500 is the theme's usual muted text, but on this module's
+     `neutral-50` it sits right on the 4.5:1 AA floor for 14px normal-weight
+     text, with nothing left over for the summary's own hover surface.
+     neutral-600 has real headroom and is already what the sibling links use.
+     (The original figures here were measured against the pre-unification
+     `hextra-light-*` ramp and no longer describe these surfaces.) */
   @apply hx:text-neutral-600 hx:dark:text-neutral-400;
 }
 
@@ -71,9 +72,9 @@ ol.hextra-series__list {
 }
 
 .hextra-series__item {
-  /* Left at `light-600`: this is the dotted rule threading the parts together,
-     not a component edge, and at the container's `light-900` it competed with
-     the border it sits inside. */
+  /* Deliberately lighter than the container's own `neutral-400` edge: this is
+     the dotted rule threading the parts together, not a component edge, and at
+     the container's weight it competed with the border it sits inside. */
   @apply hx:border-s hx:border-dotted hx:border-neutral-300 hx:dark:border-neutral-700;
   @apply hx:py-1 hx:ps-4 hx:text-sm;
 
