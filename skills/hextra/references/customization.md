@@ -51,18 +51,24 @@ These are runtime CSS variables, so no theme rebuild is needed — every accent-
 
 `--primary-hue` / `--primary-saturation` / `--primary-lightness` and the `primary-*` colour utilities they fed no longer exist; the accent palette replaced them outright.
 
-## Neutral palettes
+## Neutrals and the page background
 
-Greys are two more 11-shade ramps, overridable the same way:
+Every surface, border and text colour is a step of Tailwind's `neutral` family — light mode on the low end, dark on the high end. The page itself is not: it is its own token, `--hextra-bg`, whose two values sit between Tailwind's steps deliberately.
 
 ```css
 :root {
-  --color-neutral-100: oklch(97.3% 0.005 85); /* light-mode page background */
-  --color-neutral-900: oklch(21% 0.01 250); /* dark-mode page background */
+  --hextra-bg: oklch(97.3% 0.005 85); /* the page, light mode */
+  --hx-color-neutral-50: oklch(98.5% 0.002 85); /* raised surfaces above it */
+}
+
+.dark {
+  --hextra-bg: oklch(17.6% 0.01 250); /* the page, dark mode */
 }
 ```
 
-Neutrals are Tailwind's `neutral` family throughout, light mode on the low end and dark on the high end; overriding a shade retints every surface, border and text colour that uses it.
+Note the `--hx-` prefix on the Tailwind steps. Hextra imports Tailwind as `@import "tailwindcss" prefix(hx)`, which prefixes the emitted custom properties too, so `--color-neutral-50` is not a name anything reads. The accent is the one unprefixed exception, because `styles.css` defines `--color-accent-color-*` by hand and maps it through.
+
+Overriding a shade retints every surface, border and text colour that uses it.
 
 ## Layout widths
 

@@ -86,17 +86,22 @@ The fork migrated every component that previously used the HSL primary color:
 
 ## Step 3 (optional) — Tune the neutrals
 
-Beyond the accent, the fork replaces upstream's flat backgrounds (`bg-white` / `#111`) with one achromatic family — Tailwind's **`neutral`** — used for every surface, border and piece of text. The page body sits at `neutral-100` in light mode and `neutral-900` in dark, so content surfaces like code blocks and headers sit visibly above or below it; dark mode is intentionally not pure black.
+Beyond the accent, the fork replaces upstream's flat backgrounds (`bg-white` / `#111`) with one achromatic family — Tailwind's **`neutral`** — used for every surface, border and piece of text. The page body is the exception: it has its own token, `--hextra-bg`, which sits between Tailwind's steps so content surfaces like code blocks and headers land visibly above or below it. Dark mode is intentionally not pure black.
 
-Override only the shades you want to change, same file:
+Override only what you want to change, same file. Note the `--hx-` prefix on the Tailwind steps — Hextra imports Tailwind as `@import "tailwindcss" prefix(hx)`, so `--color-neutral-50` is not a name anything reads:
 
 ```css {filename="assets/css/custom.css"}
 :root {
-  /* Warmer light background */
-  --color-neutral-100: oklch(97.3% 0.005 85);
+  /* Warmer light page */
+  --hextra-bg: oklch(97.3% 0.005 85);
 
-  /* Slightly blue-tinted dark background */
-  --color-neutral-900: oklch(17.6% 0.01 250);
+  /* A raised surface, one step above it */
+  --hx-color-neutral-50: oklch(98.5% 0.002 85);
+}
+
+.dark {
+  /* Slightly blue-tinted dark page */
+  --hextra-bg: oklch(17.6% 0.01 250);
 }
 ```
 

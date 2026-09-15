@@ -26,34 +26,53 @@ when nothing looks obviously wrong.
 
 ## The levels
 
-The theme uses four background levels per mode, and keeps them consistent so a
-surface always sits where you expect relative to the page:
+The theme keeps its surfaces at fixed levels so one always sits where you expect
+relative to the page:
 
-| Role                                 | Light         | Dark          |
-| ------------------------------------ | ------------- | ------------- |
-| Page background                      | `neutral-100` | `neutral-900` |
-| Raised surface — code blocks, cards  | `neutral-50`  | `neutral-950` |
-| Chrome — filename bars, menus, cards | `neutral-200` | `neutral-800` |
-| Hover and raised-most                | `neutral-200` | `neutral-800` |
+| Role                             | Light         | Dark          |
+| -------------------------------- | ------------- | ------------- |
+| Page — `--hextra-bg`             | `#f7f7f7`     | `#111111`     |
+| Raised — code blocks, cards      | `neutral-50`  | `neutral-950` |
+| Panel — collapsibles, series box | `neutral-50`  | `neutral-900` |
+| Overlay — dropdowns, menus       | `neutral-100` | `neutral-900` |
+| Chrome — filename bars, hover    | `neutral-200` | `neutral-800` |
+| Borders                          | `neutral-400` | `neutral-800` |
 
 Note the direction flips between modes. In light mode a raised surface is
-_lighter_ than the page; in dark mode it is _darker_. Borders run the other way
-in both — `neutral-400` in light, `neutral-700`/`800` in dark.
+_lighter_ than the page; in dark mode it is _darker_.
+
+The page itself is the exception: it is not a `neutral` step at all but its own
+token, `--hextra-bg`, whose two values fall between Tailwind's steps
+deliberately. That is also why anything meant to continue the page — the navbar
+blur, the sidebar drawer, sticky footers — uses `hx:bg-hextra-bg` with no
+`dark:` twin: the token flips under `.dark` on its own.
 
 ## Customizing
 
 Tailwind v4 exposes its own theme colors as CSS custom properties, so overriding
-a shade is the same one-liner as [the accent color](accent-color) — put it in
-your site's `assets/css/custom.css`, which Hextra loads after the theme's own
-stylesheet:
+a shade is a one-liner — put it in your site's `assets/css/custom.css`, which
+Hextra loads after the theme's own stylesheet.
+
+Two names matter. The page is `--hextra-bg`, set once for light and again under
+`.dark`. Every other surface is a Tailwind step, and Hextra imports Tailwind as
+`@import "tailwindcss" prefix(hx)`, which prefixes the emitted custom properties
+too — so the name to override is `--hx-color-neutral-50`, not
+`--color-neutral-50`. (The accent is the one unprefixed name, because
+`styles.css` defines `--color-accent-color-*` by hand and maps it through; see
+[the accent color](accent-color).)
 
 ```css {filename="assets/css/custom.css"}
 :root {
   /* Warmer page background */
-  --color-neutral-100: oklch(97.3% 0.005 85);
+  --hextra-bg: oklch(97.3% 0.005 85);
 
-  /* Slightly blue-tinted dark background */
-  --color-neutral-900: oklch(21% 0.01 250);
+  /* A raised surface, one step above it */
+  --hx-color-neutral-50: oklch(98.5% 0.002 85);
+}
+
+.dark {
+  /* Slightly blue-tinted dark page */
+  --hextra-bg: oklch(17.6% 0.01 250);
 }
 ```
 

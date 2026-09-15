@@ -148,8 +148,9 @@ Everything is driven by the palette and accent tokens, so the usual override pat
 
 ```css {filename="assets/css/custom.css"}
 :root {
-  /* Lighter code block background in dark mode */
-  --color-neutral-950: oklch(9% 0 0);
+  /* Lighter code block background in dark mode. The `hx` prefix is Hextra's
+     Tailwind import prefix; `--color-neutral-950` is not a name anything reads. */
+  --hx-color-neutral-950: oklch(9% 0 0);
 }
 ```
 
