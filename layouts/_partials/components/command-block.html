@@ -78,7 +78,13 @@
   {{- with .ratio -}}
     {{- $coverRatio = . -}}
   {{- end -}}
-  {{- $ratio = div $coverRatio (len $lines) -}}
+  {{/* Cast before dividing: YAML reads `coverRatio: 7` as an int, Hugo's `div`
+    returns an int for int/int, and `printf "%.2f"` on an int emits a Go format
+    error - `%!f(int64=7)` - straight into the style attribute. The custom
+    property is then defined but invalid, so the `7.2` fallback in `command.css`
+    does not apply and every text cover collapses to content height.
+  */}}
+  {{- $ratio = div (float $coverRatio) (len $lines) -}}
 {{- end -}}
 
 {{/* Joined here rather than in the attribute itself: separating the two class
