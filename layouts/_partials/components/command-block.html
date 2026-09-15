@@ -20,7 +20,8 @@
   "dollar" before every line is noise - so it is hidden from assistive
   technology.
 
-  @param {string|slice} lines One command line, or several.
+  @param {string|slice} lines One command line, or several. A string is split
+    on newlines, so a YAML block scalar works as well as a sequence.
   @param {string} [prompt] Prompt glyph. Defaults to `params.command.prompt`, then `$`.
   @param {string} [mode] "inline" (default) or "cover".
   @param {string} [class] Extra class for the cover frame.
@@ -29,9 +30,22 @@
   @example {{ partial "components/command-block.html" (dict "lines" (slice "npm install") "mode" "cover")
 }}
 */}}
+{{/* A string arrives from `coverText` as often as a slice does, and YAML has
+  two ways of writing several lines: a sequence, and a block scalar (`|`) that
+  produces one string with newlines in it. Splitting here rather than only in
+  `command.html` means both spellings reach the same code path - otherwise a
+  block scalar is measured, counted and prompted as a single line, and every
+  line after the first is clipped by the frame.
+*/}}
 {{- $lines := .lines -}}
 {{- if not (reflect.IsSlice $lines) -}}
-  {{- $lines = slice $lines -}}
+  {{- $split := slice -}}
+  {{- range (split (string $lines) "\n") -}}
+    {{- with (trim . " \t\r") -}}
+      {{- $split = $split | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $lines = $split -}}
 {{- end -}}
 
 {{/* Read through nested `with` rather than chaining: `site.Params.command.prompt`
@@ -63,7 +77,7 @@
 {{- $fontSize := div 141.9 $longest -}}
 
 {{- $ratio := 0.0 -}}
-{{- if $cover -}}
+{{- if and $cover $lines -}}
   {{/* How much empty band sits above and below the command. Only a cover has a
     fixed box to fill; inline the height just follows the lines. Divided by the
     line count so that each extra line buys its own height instead of
@@ -100,16 +114,21 @@
   so a `command` shortcode and a `coverText` cover are one component. A cover
   adds only the fixed aspect ratio it has to fill.
 */}}
-{{- if $cover -}}
-  <div class="{{ $frameClass }} hextra-command__frame--fixed" style="{{ printf "--hextra-command-ratio:%.2f" $ratio | safeCSS }}">
-    <div class="hextra-command hextra-command--cover" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
-      {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt "scrollable" false) -}}
+{{/* Nothing to render when the body was blank, and a cover would divide the
+  ratio by a line count of zero.
+*/}}
+{{- if $lines -}}
+  {{- if $cover -}}
+    <div class="{{ $frameClass }} hextra-command__frame--fixed" style="{{ printf "--hextra-command-ratio:%.2f" $ratio | safeCSS }}">
+      <div class="hextra-command hextra-command--cover" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
+        {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt "scrollable" false) -}}
+      </div>
     </div>
-  </div>
-{{- else -}}
-  <div class="{{ $frameClass }}">
-    <div class="hextra-command hextra-command--inline" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
-      {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt "scrollable" true) -}}
+  {{- else -}}
+    <div class="{{ $frameClass }}">
+      <div class="hextra-command hextra-command--inline" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
+        {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt "scrollable" true) -}}
+      </div>
     </div>
-  </div>
+  {{- end -}}
 {{- end -}}
