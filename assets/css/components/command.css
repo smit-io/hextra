@@ -13,9 +13,19 @@
 
   .highlight,
   .chroma,
-  pre,
   code {
     @apply hx:m-0 hx:overflow-visible hx:bg-transparent hx:p-0;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  /* The one element that keeps an overflow of its own. `pre` never wraps, the
+     fit-to-width maths clamps rather than shrinking indefinitely, and the
+     frame clips - so a line past the clamp would be silently truncated with
+     no way to reach the rest. Inline, `command-lines.html` leaves Chroma's
+     `tabindex="0"` in place so the scroll is reachable by keyboard too. */
+  pre {
+    @apply hx:m-0 hx:min-w-0 hx:overflow-x-auto hx:bg-transparent hx:p-0;
     font-size: inherit;
     line-height: inherit;
   }

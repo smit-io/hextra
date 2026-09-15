@@ -97,13 +97,13 @@
 {{- if $cover -}}
   <div class="{{ $frameClass }} hextra-command__frame--fixed" style="{{ printf "--hextra-command-ratio:%.2f" $ratio | safeCSS }}">
     <div class="hextra-command hextra-command--cover" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
-      {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt) -}}
+      {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt "scrollable" false) -}}
     </div>
   </div>
 {{- else -}}
   <div class="{{ $frameClass }}">
     <div class="hextra-command hextra-command--inline" style="{{ printf "--hextra-command-fs:%.2f" $fontSize | safeCSS }}">
-      {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt) -}}
+      {{- partial "components/command-lines.html" (dict "lines" $lines "prompt" $prompt "scrollable" true) -}}
     </div>
   </div>
 {{- end -}}
