@@ -12,6 +12,10 @@
   their selector after `::before`, which never matches, so `dark:` and
   `ltr:`/`rtl:` utilities silently do nothing on a pseudo-element. Logical
   properties handle RTL without a variant.
+
+  Note the `--hx-` prefix: `@import "tailwindcss" prefix(hx)` in `styles.css`
+  prefixes the emitted custom properties too, so the unprefixed
+  `--color-neutral-300` a Tailwind reference would give you does not exist.
 */
 .hextra-timeline__item::before {
   content: "";
@@ -20,11 +24,11 @@
   bottom: 0;
   width: 1px;
   inset-inline-start: 15.5px;
-  background-color: var(--color-neutral-300);
+  background-color: var(--hx-color-neutral-300);
 }
 
 .dark .hextra-timeline__item::before {
-  background-color: var(--color-neutral-700);
+  background-color: var(--hx-color-neutral-700);
 }
 
 .hextra-timeline__marker {
