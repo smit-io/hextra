@@ -60,6 +60,14 @@ const BLOG_CONFIG = `${BASE_CONFIG}params:
       cover: true
 `;
 
+// The list cards are off by default too - `blog/config.html` seeds
+// `list.card.enable` as false - so a test that asserts against a card has to
+// turn them on as well as the hero.
+const LIST_CONFIG = `${BLOG_CONFIG}    list:
+      card:
+        enable: true
+`;
+
 const ratio = (html: string) => Number(html.match(/--hextra-command-ratio:([\d.]+)/)?.[1]);
 const size = (html: string) => Number(html.match(/--hextra-command-fs:([\d.]+)/)?.[1]);
 
@@ -206,6 +214,112 @@ Body.
     // One line each, so both frames get the default ratio undivided. A block
     // with more lines must get a taller frame, not a squeezed one.
     expect(ratio(short)).toBeCloseTo(7.2, 2);
+  } finally {
+    rmSync(siteDir, { recursive: true, force: true });
+  }
+});
+
+test("a front matter cover beats coverText, and a bundle image does not", () => {
+  const siteDir = buildSite(
+    {
+      "blog/_index.md": "---\ntitle: Blog\n---\n",
+      // Both declared by the post itself. The picture is the more specific
+      // statement, so it wins - otherwise a `cascade` setting `coverText`
+      // across a section would blank out every illustrated post in it.
+      "blog/named/index.md": `---
+title: Named
+date: 2026-01-03
+cover: cover.png
+coverText: ls
+---
+
+Body.
+`,
+      "blog/named/cover.png": PNG,
+      // The same image, reached by the bundle convention rather than named in
+      // front matter. A convention the post never states must not outrank a
+      // key it does, so the text still wins here.
+      "blog/bundle/index.md": `---
+title: Bundle
+date: 2026-01-02
+coverText: ls
+---
+
+Body.
+`,
+      "blog/bundle/cover.png": PNG,
+      // The plain case, so the assertions above cannot pass on a site that
+      // renders no text covers at all.
+      "blog/textonly.md": `---
+title: Text only
+date: 2026-01-01
+coverText: ls
+---
+
+Body.
+`,
+      // A `cover` that names nothing. The key is present, so by the rule above
+      // it beats the text - but there is no image behind it, and the point of
+      // the fallback is that the post gets its text cover rather than a broken
+      // <img>.
+      "blog/broken.md": `---
+title: Broken
+date: 2026-01-04
+cover: iamges/hero.png
+coverText: ls
+---
+
+Body.
+`,
+      // `article` renders its own card rather than going through
+      // `blog/cover.html`, so it needs its own assertion.
+      "_index.md": `---
+title: Home
+---
+
+{{< article link="/blog/named" >}}
+{{< article link="/blog/bundle" >}}
+{{< article link="/blog/broken" >}}
+`,
+    },
+    LIST_CONFIG
+  );
+
+  try {
+    const named = readFileSync(join(siteDir, "public", "blog", "named", "index.html"), "utf8");
+    const bundle = readFileSync(join(siteDir, "public", "blog", "bundle", "index.html"), "utf8");
+    const textOnly = readFileSync(join(siteDir, "public", "blog", "textonly", "index.html"), "utf8");
+    const broken = readFileSync(join(siteDir, "public", "blog", "broken", "index.html"), "utf8");
+    const list = readFileSync(join(siteDir, "public", "blog", "index.html"), "utf8");
+    const home = readFileSync(join(siteDir, "public", "index.html"), "utf8");
+
+    // The hero. Only the hero carries `hextra-blog-hero` - cards use
+    // `hextra-blog-card-image` - so a related-posts strip cannot satisfy it by
+    // accident.
+    expect(named).toContain("hextra-blog-hero");
+    expect(named).not.toContain("hextra-command--cover");
+
+    expect(bundle).toContain("hextra-command--cover");
+    expect(bundle).not.toContain("hextra-blog-hero");
+
+    expect(textOnly).toContain("hextra-command--cover");
+    expect(textOnly).not.toContain("hextra-blog-hero");
+
+    // The unresolvable `cover`: the text stands in, and nothing points at the
+    // name that matched no resource.
+    expect(broken).toContain("hextra-command--cover");
+    expect(broken).not.toContain("hextra-blog-hero");
+    expect(broken).not.toContain("iamges/hero.png");
+
+    // The list cards: one image among the four, and a text cover for the other
+    // three.
+    expect(list.match(/hextra-blog-card-image/g) ?? []).toHaveLength(1);
+    expect(list.match(/hextra-command--cover/g) ?? []).toHaveLength(3);
+
+    // The `article` cards, which resolve their cover themselves.
+    expect(home.match(/hextra-article-card__cover/g) ?? []).toHaveLength(3);
+    expect(home.match(/hextra-command--cover/g) ?? []).toHaveLength(2);
+    expect(home).toContain("<img");
   } finally {
     rmSync(siteDir, { recursive: true, force: true });
   }

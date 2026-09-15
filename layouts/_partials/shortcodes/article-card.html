@@ -29,12 +29,30 @@
 {{- with .page -}}
   {{- if ne .RelPermalink $self -}}
 
-    {{/* A text cover wins below, so resolving the image here would run the
-      resize and the LQIP encode and then throw both away.
+    {{/* Same order as `blog/cover.html`, so a post's card and its hero never
+      disagree about which cover it has: a `cover` or `featured_image` the post
+      names itself beats `coverText`, and with both declared the lookup runs
+      with `verify` so a name that matches nothing falls back to the text
+      instead of emitting a broken `<img>`. A post with only a text cover skips
+      the lookup, which would otherwise run the resize and the LQIP encode and
+      then throw both away.
     */}}
+    {{- $text := .Params.coverText -}}
+    {{- $named := or .Params.cover .Params.featured_image -}}
     {{- $cover := dict -}}
-    {{- if and $showCover (not .Params.coverText) -}}
-      {{- $cover = partial "utils/page-image.html" (dict "page" . "process" "Resize 400x webp q80") -}}
+    {{- if and $showCover (or $named (not $text)) -}}
+      {{- $verify := false -}}
+      {{- if and $named $text -}}
+        {{- $verify = true -}}
+      {{- end -}}
+      {{- $cover = partial "utils/page-image.html" (dict "page" . "process" "Resize 400x webp q80" "verify" $verify) -}}
+    {{- end -}}
+    {{/* Read out here rather than inside the markup: `with $cover.url` rebinds
+      the context to the URL string, and the page is gone by then.
+    */}}
+    {{- $coverText := "" -}}
+    {{- if and $showCover (not $cover.url) -}}
+      {{- $coverText = $text -}}
     {{- end -}}
 
     {{- $date := "" -}}
@@ -72,9 +90,9 @@
 
     <a class="hextra-article-card not-prose" href="{{ .RelPermalink }}">
       {{- /* A div, not a span: a text cover is a Chroma block. See `article.html`. */ -}}
-      {{- if and $showCover .Params.coverText -}}
+      {{- with $coverText -}}
         <div class="hextra-article-card__cover">
-          {{- partial "components/command-block.html" (dict "lines" .Params.coverText "mode" "cover") -}}
+          {{- partial "components/command-block.html" (dict "lines" . "mode" "cover") -}}
         </div>
       {{- else -}}{{- with $cover.url -}}
         <div class="hextra-article-card__cover">

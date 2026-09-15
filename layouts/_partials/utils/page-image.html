@@ -10,6 +10,15 @@
   assets, then treated as a path under /static. Remote URLs and SVGs are passed
   through unprocessed.
 
+  That last step is a guess: Hugo cannot see /static at build time, so a name
+  that matches no resource is handed back as a URL and only 404s in the
+  browser. `verify` withdraws the guess for a *relative* name - one that
+  matched no page resource and no asset, and that does not start with `/` - so
+  a caller with something to fall back on can tell that nothing was found.
+  A rooted `/images/hero.png` is still passed through either way; it is the
+  spelling the docs give for a static file, and there is nothing to check it
+  against.
+
   Local raster images also get an `lqip`: a 16px-wide copy inlined as a data
   URI. Painted as the `background-image` of the same `<img>`, it stands in for
   the cover until the real pixels arrive, and is covered by them exactly when
@@ -21,6 +30,7 @@
   @param {string} [image] An explicit image path, overriding front matter.
   @param {string} [process] Image processing spec. Default "Resize 800x webp q80".
   @param {bool} [lqip] Generate the placeholder. Default true.
+  @param {bool} [verify] Return nothing rather than guessing at a relative name that matched no resource. Default false.
   @returns {dict} `url`, `width`, `height`, `lqip` — empty dict when there is no image.
 
   @example {{ $cover := partial "utils/page-image.html" (dict "page" . "process" "Resize 1600x webp q80")
@@ -31,6 +41,7 @@
 {{- $image := .image -}}
 {{- $lqip := "" -}}
 {{- $wantLqip := not (eq .lqip false) -}}
+{{- $verify := eq (printf "%v" .verify) "true" -}}
 {{- $url := "" -}}
 {{- $width := 0 -}}
 {{- $height := 0 -}}
@@ -47,7 +58,11 @@
     {{- else -}}
       {{- $resource = or (.Resources.Get $image) (resources.Get $image) -}}
       {{- if not $resource -}}
-        {{- $url = cond (hasPrefix $image "/") (relURL (strings.TrimPrefix "/" $image)) $image -}}
+        {{- if hasPrefix $image "/" -}}
+          {{- $url = relURL (strings.TrimPrefix "/" $image) -}}
+        {{- else if not $verify -}}
+          {{- $url = $image -}}
+        {{- end -}}
       {{- end -}}
     {{- end -}}
   {{- else -}}

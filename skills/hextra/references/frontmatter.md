@@ -152,15 +152,15 @@ seriesOpened: true
 coverText: claude add skill hextra
 ```
 
-| Key            | Notes                                                                                                  |
-| -------------- | ------------------------------------------------------------------------------------------------------ |
-| `authors`      | List of objects with `name`, and optional `link` and `image`. A bare list of strings also works.       |
-| `cover`        | Page resource, asset path, or absolute URL. Used on the post card, the article header, and Open Graph. |
-| `coverText`    | A shell command, or a list of them, rendered as the cover instead of an image. Overrides `cover`.      |
-| `pinned`       | Surfaces the post in the pinned widget.                                                                |
-| `series`       | List of series names. Adds the "part of a series" module.                                              |
-| `seriesOrder`  | Position within the series. Without it, posts fall back to date order.                                 |
-| `seriesOpened` | Expands the series list on this post.                                                                  |
+| Key            | Notes                                                                                                        |
+| -------------- | ------------------------------------------------------------------------------------------------------------ |
+| `authors`      | List of objects with `name`, and optional `link` and `image`. A bare list of strings also works.             |
+| `cover`        | Page resource, asset path, or absolute URL. Used on the post card, the article header, and Open Graph.       |
+| `coverText`    | A shell command, or a list of them, rendered as the cover. A `cover` or `featured_image` that resolves wins. |
+| `pinned`       | Surfaces the post in the pinned widget.                                                                      |
+| `series`       | List of series names. Adds the "part of a series" module.                                                    |
+| `seriesOrder`  | Position within the series. Without it, posts fall back to date order.                                       |
+| `seriesOpened` | Expands the series list on this post.                                                                        |
 
 Content above a `<!--more-->` marker is the excerpt shown on list pages. Without the marker, Hugo takes an automatic summary.
 

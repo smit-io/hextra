@@ -82,8 +82,28 @@ coverText:
   - npm run dev
 ```
 
-`coverText` takes precedence over `cover`, and nothing about the image pipeline
-runs when it is set — there is no file to resolve, process or measure.
+A `cover` or `featured_image` in the same front matter wins, and nothing about
+the image pipeline runs when it does not — there is no file to resolve, process
+or measure. So a `coverText` set across a section with `cascade` fills in only
+the posts that named no picture of their own:
+
+```yaml {filename="content/blog/_index.md"}
+---
+title: Blog
+cascade:
+  coverText: claude add skill hextra
+---
+```
+
+Only those two keys outrank it. A page bundle holding an image named
+`cover.png` — the convention the cover lookup falls back to — does not, since
+the post never said so in its front matter.
+
+A key that names nothing does not outrank it either: with a text cover
+declared, a `cover` matching no page resource and no asset falls back to the
+command rather than emitting a broken image. Only a relative name can be
+checked that way — a rooted `/images/hero.png` is taken on trust, because Hugo
+cannot see `static/` at build time.
 
 Covers render at very different sizes: the full content width as the article
 hero, and around 400px inside a card. The block sizes itself to whichever box it

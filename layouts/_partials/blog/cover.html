@@ -8,6 +8,17 @@
   in which case none of the image machinery below runs: there is no file to
   resolve, process or measure.
 
+  A `cover` or `featured_image` in the post's own front matter beats it, so a
+  `coverText` set across a section by `cascade` fills in only the posts that
+  named no picture of their own. Only those two keys count - a bundle image
+  merely named `cover.png` does not, because it is a convention the post never
+  states, and it would then silently outrank a key the post does state.
+
+  A key that names nothing loses too: with a text cover to fall back on, the
+  image is resolved with `verify`, so `cover: iamges/hero.png` gives the
+  command rather than a broken `<img>`. Only a relative name can be checked -
+  see `utils/page-image.html`.
+
   When the resolver returns an `lqip`, it is handed to the stylesheet as
   `--hextra-lqip` and painted as the image's own background, so a blurred
   stand-in shows until the real pixels land on top of it. Covers without one
@@ -26,22 +37,36 @@
 }}
 */}}
 {{- $hero := eq (.variant | default "card") "hero" -}}
-{{- with .page.Params.coverText -}}
-  {{- partial "components/command-block.html" (dict "lines" . "mode" "cover" "class" (cond $hero "hextra-command--hero" "")) -}}
-{{- else -}}
+{{- $text := .page.Params.coverText -}}
+{{- $named := or .page.Params.cover .page.Params.featured_image -}}
+
+{{/* Skipped entirely when a text cover has already won, so a post that names
+  no picture still costs nothing: no file to resolve, process or measure.
+*/}}
+{{- $cover := dict -}}
+{{- if or $named (not $text) -}}
+  {{- $verify := false -}}
+  {{- if and $named $text -}}
+    {{- $verify = true -}}
+  {{- end -}}
   {{- $process := cond $hero "Resize 1600x webp q80" "Resize 800x webp q80" -}}
-  {{- $cover := partial "utils/page-image.html" (dict "page" .page "process" $process) -}}
-  {{- with $cover.url -}}
-    {{- $lazyLoading := site.Params.enableImageLazyLoading | default true -}}
-    <img
-      class="{{ cond $hero "hextra-blog-hero" "hextra-blog-card-image" }}"
-      src="{{ . | safeURL }}"
-      {{ with $cover.lqip }}style="{{ printf "--hextra-lqip:url('%s')" . | safeCSS }}"{{ end }}
-      alt=""
-      {{ with $cover.width }}width="{{ . }}"{{ end }}
-      {{ with $cover.height }}height="{{ . }}"{{ end }}
-      decoding="async"
-      {{ if $lazyLoading }}loading="lazy"{{ end }}
-    />
+  {{- $cover = partial "utils/page-image.html" (dict "page" .page "process" $process "verify" $verify) -}}
+{{- end -}}
+
+{{- with $cover.url -}}
+  {{- $lazyLoading := site.Params.enableImageLazyLoading | default true -}}
+  <img
+    class="{{ cond $hero "hextra-blog-hero" "hextra-blog-card-image" }}"
+    src="{{ . | safeURL }}"
+    {{ with $cover.lqip }}style="{{ printf "--hextra-lqip:url('%s')" . | safeCSS }}"{{ end }}
+    alt=""
+    {{ with $cover.width }}width="{{ . }}"{{ end }}
+    {{ with $cover.height }}height="{{ . }}"{{ end }}
+    decoding="async"
+    {{ if $lazyLoading }}loading="lazy"{{ end }}
+  />
+{{- else -}}
+  {{- with $text -}}
+    {{- partial "components/command-block.html" (dict "lines" . "mode" "cover" "class" (cond $hero "hextra-command--hero" "")) -}}
   {{- end -}}
 {{- end -}}
