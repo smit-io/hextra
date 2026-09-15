@@ -85,11 +85,22 @@
    there is nothing to measure and nothing to wait for. */
 .hextra-command__frame {
   @apply hx:w-full hx:overflow-hidden hx:rounded-lg hx:border;
-  /* The same surface and edge as the collapsibles - `series.css` and the
-     accordion - so a text cover reads as one object wherever it lands. Without
-     it the frame is transparent and takes the colour of whatever is behind it:
-     the page as an article hero, `.hextra-blog-card-cover` in a card. */
-  @apply hx:border-neutral-400 hx:bg-neutral-50;
+  /* Without a fill the frame is transparent and takes the colour of whatever
+     is behind it: the page as an article hero, `.hextra-blog-card-cover` in a
+     card.
+
+     Light is `neutral-100`, not the `neutral-50` the collapsibles use
+     (`series.css`, the accordion). Those sit on the page, where `neutral-50`
+     reads as raised. This one mostly sits in a card, and both
+     `.hextra-blog-card` and `.hextra-article-card` are themselves
+     `neutral-50` - the cover was rendering in the exact same colour as the
+     body beside it, with nothing to separate them once the frame's own border
+     was dropped inside card slots. Dark never had the problem: the card drops
+     to `neutral-950` while the frame stays at `neutral-900`.
+
+     `neutral-100` is also the Overlay level `.hextra-blog-card-cover` uses, so
+     an image cover and a text cover now sit on the same surface. */
+  @apply hx:border-neutral-400 hx:bg-neutral-100;
   @apply hx:dark:border-neutral-800 hx:dark:bg-neutral-900;
   @apply hx:my-6;
   container-type: inline-size;
