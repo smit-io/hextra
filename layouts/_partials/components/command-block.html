@@ -112,7 +112,17 @@
   names there needs a literal space next to a template action, and Prettier
   deletes exactly that space, fusing them into one unmatched class.
 */}}
-{{- $frameClass := "hextra-command__frame" -}}
+{{/* `not-prose` because the frame holds Chroma output and, inline, sits inside
+  `.content`, where `typography.css` styles `pre` and `code` directly - it
+  excludes `.hextra-code-block` and `not-prose` subtrees and nothing else. Left
+  on, the `pre` inherits `--font-code` while the prompt span inherits
+  `--font-monospace` from `.hextra-command`, which is two different faces
+  whenever `params.fonts.code` and `params.fonts.mono` differ, and the
+  advance-width constant above then measures a font that is not laying out the
+  text. `font-medium`, `rounded-xl`, the inner `code`'s own border and the
+  per-line `contrast-more:` rules leak in the same way.
+*/}}
+{{- $frameClass := "hextra-command__frame not-prose" -}}
 {{- with .class -}}
   {{- $frameClass = printf "%s %s" $frameClass . -}}
 {{- end -}}
