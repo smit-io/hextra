@@ -21,10 +21,12 @@
 
   Local raster images also get an `lqip`: a 16px-wide copy inlined as a data
   URI. Painted as the `background-image` of the same `<img>`, it stands in for
-  the cover until the real pixels arrive, and is covered by them exactly when
-  they do — no JavaScript, and nothing to undo on a cached repeat visit. It is
-  empty for remote images and SVGs, which are passed through unprocessed and so
-  have no resource to downscale.
+  the cover until the real pixels arrive. They cover it only where the image is
+  opaque, so `assets/js/core/lqip.js` drops the property once the image has
+  loaded; without that, a cover with transparent corners or a drop shadow keeps
+  a blurred fringe around its edges for good. It is empty for remote images and
+  SVGs, which are passed through unprocessed and so have no resource to
+  downscale.
 
   @param {page} page The page to resolve the image for.
   @param {string} [image] An explicit image path, overriding front matter.
@@ -81,8 +83,8 @@
       {{- $height = $processed.Height -}}
       {{/* 16px wide is small enough to inline as text rather than cost a
         second request, and stretching it back up is what produces the blur —
-        no filter needed, which matters because a filter would blur the real
-        image too and there is no JavaScript here to remove it.
+        no filter needed, which matters because a filter on the `<img>` would
+        blur the real image too.
       */}}
       {{- if $wantLqip -}}
         {{- $tiny := .Process "Resize 16x webp q20" -}}

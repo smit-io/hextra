@@ -21,7 +21,9 @@
 
   When the resolver returns an `lqip`, it is handed to the stylesheet as
   `--hextra-lqip` and painted as the image's own background, so a blurred
-  stand-in shows until the real pixels land on top of it. Covers without one
+  stand-in shows until the real pixels land on top of it;
+  `assets/js/core/lqip.js` then removes it, which is what keeps a cover with
+  transparent edges from wearing a permanent blurred fringe. Covers without one
   (remote URLs, SVGs) simply fall back to the flat column background.
 
   Callers reach this through `partialCached`, keyed on the post's
