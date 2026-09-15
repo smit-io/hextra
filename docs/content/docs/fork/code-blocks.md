@@ -148,12 +148,12 @@ When [Google Fonts](google-fonts) are enabled, code blocks (and inline code) use
 
 ## Customizing
 
-Everything is driven by the palette and accent tokens, so the usual override path applies — set variables in `assets/css/custom.css`:
+Everything is driven by the palette and accent tokens, so the usual override path applies — set variables in `assets/css/custom.css`. Note the `--hx-` prefix: Hextra imports Tailwind as `@import "tailwindcss" prefix(hx)`, which prefixes the emitted custom properties too, so an unprefixed `--color-neutral-950` is not a name anything reads.
 
 ```css {filename="assets/css/custom.css"}
 :root {
   /* Lighter code block background in dark mode */
-  --color-neutral-950: oklch(9% 0 0);
+  --hx-color-neutral-950: oklch(9% 0 0);
 }
 ```
 

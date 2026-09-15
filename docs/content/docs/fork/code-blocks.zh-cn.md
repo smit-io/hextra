@@ -148,12 +148,12 @@ def main():
 
 ## 自定义
 
-一切都由调色板和强调色令牌驱动，因此常规的覆盖方式同样适用——在 `assets/css/custom.css` 中设置变量：
+一切都由调色板和强调色令牌驱动，因此常规的覆盖方式同样适用——在 `assets/css/custom.css` 中设置变量。注意 `--hx-` 前缀：Hextra 以 `@import "tailwindcss" prefix(hx)` 引入 Tailwind，连同输出的自定义属性一起加了前缀，因此不带前缀的 `--color-neutral-950` 并不是任何地方会读取的名字：
 
 ```css {filename="assets/css/custom.css"}
 :root {
   /* Lighter code block background in dark mode */
-  --color-neutral-950: oklch(9% 0 0);
+  --hx-color-neutral-950: oklch(9% 0 0);
 }
 ```
 

@@ -148,12 +148,12 @@ def main():
 
 ## カスタマイズ
 
-すべてはパレットとアクセントトークンで制御されているため、いつもの上書き方法が使えます。`assets/css/custom.css` で変数を設定してください：
+すべてはパレットとアクセントトークンで制御されているため、いつもの上書き方法が使えます。`assets/css/custom.css` で変数を設定してください。`--hx-` という接頭辞に注意してください。Hextra は Tailwind を `@import "tailwindcss" prefix(hx)` で読み込むため、出力されるカスタムプロパティにも接頭辞が付きます。接頭辞なしの `--color-neutral-950` はどこからも参照されない名前です：
 
 ```css {filename="assets/css/custom.css"}
 :root {
   /* Lighter code block background in dark mode */
-  --color-neutral-950: oklch(9% 0 0);
+  --hx-color-neutral-950: oklch(9% 0 0);
 }
 ```
 
