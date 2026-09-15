@@ -6,7 +6,7 @@
 .hextra-stat {
   @apply hx:rounded-lg hx:border hx:p-5;
   @apply hx:border-neutral-200 hx:bg-neutral-50;
-  @apply hx:dark:border-neutral-800 hx:dark:bg-neutral-800;
+  @apply hx:dark:border-neutral-800 hx:dark:bg-neutral-900;
 }
 
 .hextra-stat__icon {
