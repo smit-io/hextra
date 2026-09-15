@@ -14,7 +14,7 @@ weight: 10
 | ------------------ | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
 | タイポグラフィ     | 固定のシステムフォントスタック                                      | 見出し・本文・コードごとに設定可能な [Google Fonts](google-fonts)                                         |
 | テーマカラー       | 単一の HSL プライマリカラー（`--primary-hue/saturation/lightness`） | `oklch` で定義された 11 段階の[アクセントパレット](accent-color)                                          |
-| ニュートラルカラー | フラットな `bg-white` / `#111` 背景                                 | `oklch` で定義された専用の 11 段階[ライト・ダークパレット](color-palettes)                                |
+| ニュートラルカラー | フラットな `bg-white` / `#111` 背景に加え、他所では `gray` と `slate` | すべての面に単一の無彩色ファミリー、[Tailwind の `neutral`](color-palettes) |
 | コードブロック     | ボーダーなし、`rounded-xl`、淡いハイライト                          | [ボーダー付きブロック](code-blocks)、`rounded-sm`、アクセントカラーの行ハイライト、ファイルタイプアイコン |
 | ブログ             | 単一カラムのリスト                                                  | アイデンティティレール・記事カード・共有ボタン・ウィジェットを備えた[3 カラムレイアウト](blog)            |
 | ファビコン         | `static/` 直下のフラットな配置                                      | `static/icons/` 配下に整理され、[ダークモードファビコン](favicons)に対応                                  |
@@ -24,7 +24,7 @@ weight: 10
 {{< cards >}}
 {{< card link="google-fonts" title="Google Fonts" icon="sparkles" subtitle="バリアブルフォントの axes に対応した、見出し・本文・コードごとに設定可能なフォント" >}}
 {{< card link="accent-color" title="アクセントカラー" icon="color-swatch" subtitle="すべてのコンポーネントで使われる 11 段階の oklch アクセントパレット" >}}
-{{< card link="color-palettes" title="カラーパレット" icon="adjustments" subtitle="フラットな背景を置き換えるニュートラルなライト・ダークパレット" >}}
+{{< card link="color-palettes" title="カラーパレット" icon="adjustments" subtitle="すべての面・ボーダー・テキストに使う単一の無彩色ニュートラルファミリー" >}}
 {{< card link="code-blocks" title="コードブロック" icon="code" subtitle="ボーダー、より小さい角丸、アクセントカラーの行ハイライト、ファイルタイプアイコン" >}}
 {{< card link="blog" title="ブログレイアウト" icon="newspaper" subtitle="アイデンティティレール、記事カード、共有ボタン、サイドバーウィジェット" >}}
 {{< card link="favicons" title="ファビコン" icon="photograph" subtitle="整理されたアイコンディレクトリと自動ダークモードファビコン" >}}

@@ -14,7 +14,7 @@ weight: 10
 | ---------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | 排版字体   | 固定的系统字体栈                                      | 可分别为标题、正文和代码配置的 [Google Fonts](google-fonts)                         |
 | 主题色     | 单一 HSL 主色（`--primary-hue/saturation/lightness`） | 完整的 11 级 `oklch` [强调色调色板](accent-color)                                   |
-| 中性色     | 扁平的 `bg-white` / `#111` 背景                       | 专用的 11 级 `oklch` [浅色与深色调色板](color-palettes)                             |
+| 中性色     | 扁平的 `bg-white` / `#111` 背景，其他地方还混用 `gray` 和 `slate` | 所有表面统一使用一个无彩色系，[Tailwind 的 `neutral`](color-palettes) |
 | 代码块     | 无边框、`rounded-xl`、微弱的高亮                      | [带边框的代码块](code-blocks)、`rounded-sm`、强调色行高亮、文件类型图标             |
 | 博客       | 单栏列表                                              | 带身份栏、文章卡片、分享按钮和小部件的[三栏布局](blog)                              |
 | Favicon    | 散落在 `static/` 中的文件                             | 统一整理到 `static/icons/` 下，并支持[深色模式 favicon](favicons)                   |
@@ -24,7 +24,7 @@ weight: 10
 {{< cards >}}
 {{< card link="google-fonts" title="Google Fonts" icon="sparkles" subtitle="可配置的标题、正文和代码字体，支持可变字体 axes" >}}
 {{< card link="accent-color" title="强调色" icon="color-swatch" subtitle="贯穿所有组件的 11 级 oklch 强调色调色板" >}}
-{{< card link="color-palettes" title="调色板" icon="adjustments" subtitle="取代扁平背景的中性浅色与深色调色板" >}}
+{{< card link="color-palettes" title="调色板" icon="adjustments" subtitle="用于所有表面、边框和文字的单一无彩色中性色系" >}}
 {{< card link="code-blocks" title="代码块" icon="code" subtitle="边框、更小的圆角、强调色行高亮和文件类型图标" >}}
 {{< card link="blog" title="博客布局" icon="newspaper" subtitle="身份栏、文章卡片、分享按钮和侧边栏小部件" >}}
 {{< card link="favicons" title="Favicon" icon="photograph" subtitle="规范的图标目录和自动深色模式 favicon" >}}
