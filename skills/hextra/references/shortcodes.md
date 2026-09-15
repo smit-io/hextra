@@ -609,7 +609,7 @@ A shortcode for creating an image gallery.
 | Parameter | Type | Notes |
 | --- | --- | --- |
 | `cols` | number | Number of columns (default 3, ignored for masonry which is responsive) Default `3`. |
-| `gap` | string | Gap between items (CSS length, 5rem") Default `"0`. |
+| `gap` | string | Gap between items (CSS length, default "0.5rem") Default `0.5rem`. |
 | `type` | string | Layout type: grid (default) \| mosaic \| masonry \| carousel One of `grid`, `mosaic`, `masonry`, `carousel`. Default `grid`. |
 
 ```markdown
@@ -793,7 +793,7 @@ Render a shell command as text: the prompt glyph in the accent colour, the comma
 
 | Parameter | Type | Notes |
 | --- | --- | --- |
-| `prompt` | string | Prompt glyph. command.prompt`, then `$`. Default ``params`. |
+| `prompt` | string | Prompt glyph. Default ``params.command.prompt`, then `$``. |
 
 ```markdown
 {{< command >}}
@@ -905,7 +905,7 @@ Render a card for a GitLab project, with its description and current star and fo
 
 | Parameter | Type | Notes |
 | --- | --- | --- |
-| `baseURL` | string | Instance URL. com". Default `"https://gitlab`. |
+| `baseURL` | string | Instance URL. Default `"https://gitlab.com"`. |
 | `project` | string | Namespace path, e.g. "gitlab-org/gitlab". Also accepted as the first positional argument. |
 | `projectID` | string | **Required.** Numeric project id, e.g. "278964". |
 | `showThumbnail` | bool | Show the project's avatar. Default `false`. |
@@ -960,7 +960,7 @@ Render a card for a Codeberg repository, with its description, language and curr
 | --- | --- | --- |
 | `icon` | string | Icon shown before the title. Default `"codeberg"`. |
 | `repo` | string | **Required.** Repository as "owner/name". Also accepted as the first positional argument. |
-| `server` | string | Instance URL. org". Default `"https://codeberg`. |
+| `server` | string | Instance URL. Default `"https://codeberg.org"`. |
 | `showThumbnail` | bool | Show the owner's avatar. Default `false`. |
 
 ```markdown

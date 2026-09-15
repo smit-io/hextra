@@ -41,10 +41,7 @@ function buildSite(files: Record<string, string | Buffer>, config: string): stri
 }
 
 // A 1x1 PNG, enough for Hugo to treat the bundle as having a cover resource.
-const PNG = Buffer.from(
-  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
-  "base64"
-);
+const PNG = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==", "base64");
 
 const BASE_CONFIG = `title: Test
 baseURL: https://example.org/

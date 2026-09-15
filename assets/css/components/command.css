@@ -41,12 +41,20 @@
   @apply hx:flex hx:items-baseline hx:gap-[0.6em];
 }
 
-/* accent-700 in light, not accent-500: the prompt sits on the frame's
+/* accent-600 in light, not accent-500: the prompt sits on the frame's
    `neutral-50`, where accent-500 measures 2.60:1 - under the 3:1 floor even
-   for large text. `toc.css` records the same finding one step darker, having
-   rejected accent-600 at 3.71:1 on the page. Dark mode already passes. */
+   for large text. accent-600 is 3.81:1 there (`toc.css` records 3.71:1 for the
+   same value against the page, which is marginally darker).
+
+   That clears 3:1 but not 4.5:1, which is a deliberate call rather than an
+   oversight. The glyph is decorative punctuation, marked `aria-hidden`, and it
+   scales with the container: `clamp(0.7rem, ..., 4rem)` as a cover and
+   `clamp(0.9rem, ..., 2.5rem)` inline, so most of that range is large text at
+   the 3:1 bar. At the bottom of the range it is not, and accent-700 would have
+   covered that case - it was traded for keeping the prompt recognisably the
+   accent rather than a near-navy. Dark mode passes at 8.21:1 either way. */
 .hextra-command__prompt {
-  @apply hx:shrink-0 hx:select-none hx:text-hextra-accent-700 hx:dark:text-hextra-accent-400;
+  @apply hx:shrink-0 hx:select-none hx:text-hextra-accent-600 hx:dark:text-hextra-accent-400;
 }
 
 /* ----------------------------------------------------------------- inline */
