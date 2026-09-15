@@ -115,6 +115,17 @@
   aspect-ratio: auto;
 }
 
+/* In a card the slot is already inside the card's own rounded, clipped border
+   - `.hextra-blog-card` (blog.css) and `.hextra-article-card`
+   (article-card.css) - so the frame's edge sits flush inside it and reads as a
+   doubled border. The frame keeps its own edge everywhere else, including as a
+   hero, where there is no card around it. */
+.hextra-blog-card-cover .hextra-command__frame,
+.hextra-blog-card-h-cover .hextra-command__frame,
+.hextra-article-card__cover .hextra-command__frame {
+  @apply hx:rounded-none hx:border-0;
+}
+
 /* Hero covers sit between the breadcrumb and the title, where the image variant
    carries the same spacing - see `.hextra-blog-hero`. The border comes from the
    frame itself, so only the margins are left here. */
